@@ -27,6 +27,7 @@ export function StatsCard({ title, value, subtitle, icon, color, badge, progress
       className={`bg-white rounded-2xl p-5 border border-[#EDEEF0] text-left ${onClick ? 'clickable-card' : ''} ${className}`}
       style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
       onClick={onClick}
+      type={onClick ? 'button' : undefined}
     >
       <div className="flex items-start justify-between mb-3">
         <span style={{ fontSize: '13px', fontWeight: 500, color: '#9EA8B3', lineHeight: '18px' }}>{title}</span>

@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { Check, Upload, FileText, Eye, Download, AlertTriangle } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
+import { WorkbenchTabs } from '../shared/WorkbenchTabs';
+import { complianceDocTabs, complianceQueueTabs } from '../../data/roleNav';
 import { mockLoans, mockDocuments } from '../../data/mockData';
-import { csDocumentChecklist, csWorkspaceLoan } from '../../data/complianceData';
+import { csWorkspaceLoan } from '../../data/complianceData';
 
 interface DocumentWorkspaceProps {
   onNavigate: (page: string) => void;
@@ -122,6 +124,8 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
     'cs-agreement': { title: 'Loan Agreement', subtitle: 'Stamped, notarised, and witnessed agreement execution' },
   };
   const workspace = workspaceCopy[activePage] || { title: `Document Workspace — ${loan.id}`, subtitle: `${loan.farmerName} · Stage 4: Documentation in Progress` };
+  const showQueueTabs = complianceQueueTabs.some(tab => tab.key === activePage);
+  const showDocTabs = complianceDocTabs.some(tab => tab.key === activePage);
 
   return (
     <Shell
@@ -129,7 +133,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
       onNavigate={onNavigate}
       breadcrumbs={['Compliance', activePage.startsWith('cs-awaiting') || activePage === 'cs-signoff' ? 'Document Queue' : 'Document Templates', workspace.title]}
       pageTitle={workspace.title}
-      pageSubtitle={`${loan.id} · ${loan.farmerName} · Documentation In Progress · Sanction Approved: ${csWorkspaceLoan.sanctionDate} · Approved Amount: ₹${csWorkspaceLoan.amount.toLocaleString('en-IN')} · CFO: ${csWorkspaceLoan.cfo} · Director: ${csWorkspaceLoan.director}`}
+      pageSubtitle={`${loan.id} · ${loan.farmerName} · ₹${csWorkspaceLoan.amount.toLocaleString('en-IN')}`}
       actions={
         <div className="flex items-center gap-3">
           <span style={{ fontSize: '13px', color: '#9EA8B3' }}>5/8 core instruments done</span>
@@ -139,6 +143,8 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
         </div>
       }
     >
+      {showQueueTabs && <WorkbenchTabs tabs={complianceQueueTabs} activeKey={activePage} onChange={onNavigate} accent="#1A3C2A" />}
+      {showDocTabs && <WorkbenchTabs tabs={complianceDocTabs} activeKey={activePage} onChange={onNavigate} accent="#1A3C2A" />}
       <div className="grid grid-cols-4 gap-3 mb-5">
         {[
           { label: 'Documents', value: `${checkedCount}/15`, ready: allDocsChecked, note: allDocsChecked ? 'All file items present' : `${15 - checkedCount} pending` },
@@ -146,37 +152,20 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           { label: 'Loan Agreement', value: agreementStamped && agreementNotarised ? 'Ready' : 'Blocked', ready: agreementStamped && agreementNotarised, note: '₹500 stamp + notary' },
           { label: 'Signatures', value: `${Object.values(signatures).filter(Boolean).length}/4`, ready: allSignaturesDone, note: 'CS → Credit → Sanction → Finance' },
         ].map(item => (
-          <div key={item.label} className="rounded-xl p-4 border" style={{ backgroundColor: item.ready ? '#F0FDF4' : '#FFFBEB', borderColor: item.ready ? '#BBF7D0' : '#FDE68A' }}>
+          <button key={item.label} onClick={() => setActiveTab(item.label === 'Documents' || item.label === 'Signatures' ? 'checklist' : item.label === 'PoA Execution' ? 'poa' : 'agreement')} className="rounded-xl p-4 border text-left clickable-card" style={{ backgroundColor: item.ready ? '#F0FDF4' : '#FFFBEB', borderColor: item.ready ? '#BBF7D0' : '#FDE68A' }}>
             <div style={{ fontSize: '11px', color: item.ready ? '#16A34A' : '#B45309', fontWeight: 700, textTransform: 'uppercase' }}>{item.label}</div>
             <div style={{ fontSize: '20px', color: item.ready ? '#166534' : '#92400E', fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
             <div style={{ fontSize: '12px', color: item.ready ? '#22C55E' : '#B45309', marginTop: '2px' }}>{item.note}</div>
-          </div>
+          </button>
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl p-4 mb-5 border border-[#EDEEF0]" style={{ backgroundColor: '#FDFAF4' }}>
-        <div className="flex items-center justify-between mb-3">
-          <h3 style={{ fontSize: '15px', fontWeight: 900, color: '#1A3C2A' }}>Document Checklist Progress</h3>
-          <span style={{ fontSize: '13px', color: '#6D4C41', fontWeight: 800 }}>5/8 done</span>
+      <div className="rounded-xl p-4 mb-5 border border-[#EDEEF0]" style={{ backgroundColor: '#F0FDF4' }}>
+        <div style={{ fontSize: '13px', color: '#166534', fontWeight: 800 }}>
+          Start here: PoA → Tri-Party → SH-4/CDSL → Term Sheet → Loan Agreement → Bank Verification → Checklist
         </div>
-        <div className="grid grid-cols-4 gap-3">
-          {csDocumentChecklist.map(item => (
-            <button
-              key={item.id}
-              onClick={() => {
-                const map: Record<string, DocTab> = { poa: 'poa', triparty: 'triparty', sh4: 'sh4', cdsl: 'sh4', termsheet: 'termsheet', agreement: 'agreement', bank: 'bank', checklist: 'checklist' };
-                setActiveTab(map[item.id] || 'checklist');
-              }}
-              className="p-3 rounded-xl text-left"
-              style={{ backgroundColor: item.status === 'Done' ? '#F0FDF4' : item.status === 'Action Required' ? '#FFFBEB' : '#FFFFFF', border: '1px solid #EDEEF0' }}
-            >
-              <div className="flex items-center justify-between">
-                <span style={{ fontSize: '13px', color: '#12151A', fontWeight: 800 }}>{item.label}</span>
-                <StatusBadge status={item.status} />
-              </div>
-              <div style={{ fontSize: '11px', color: '#6B7280', marginTop: '5px' }}>{item.note}</div>
-            </button>
-          ))}
+        <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '6px' }}>
+          Work through each tab below. Treasury cannot disburse until checklist and CS sign-off are complete.
         </div>
       </div>
 
@@ -256,7 +245,8 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                 ))}
               </div>
               <div className="p-3 rounded-xl mb-4 flex items-center gap-2" style={{ backgroundColor: '#FEF3C7' }}>
-                <span style={{ fontSize: '13px', color: '#92400E' }}>📋 ₹500 stamp paper required for PoA execution</span>
+                <AlertTriangle size={15} color="#92400E" />
+                <span style={{ fontSize: '13px', color: '#92400E' }}>₹500 stamp paper required for PoA execution</span>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {[

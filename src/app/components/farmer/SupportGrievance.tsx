@@ -28,6 +28,8 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
   const [contactPreference, setContactPreference] = useState<'Call' | 'WhatsApp' | 'SMS'>('Call');
   const [openFaq, setOpenFaq] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [attachmentAdded, setAttachmentAdded] = useState(false);
+  const [supportAction, setSupportAction] = useState('');
 
   return (
     <Shell
@@ -35,7 +37,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
       onNavigate={onNavigate}
       breadcrumbs={['Farmer Portal', 'Support & Help']}
       pageTitle="Support & Help"
-      pageSubtitle="Raise complaints, ask for help, and track grievance tickets"
+      pageSubtitle="Grievances and support"
     >
       {submitted && (
         <div className="mb-5 p-4 rounded-2xl" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
@@ -44,18 +46,32 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
         </div>
       )}
 
+      {supportAction && (
+        <div className="mb-5 p-4 rounded-2xl flex items-center justify-between gap-3" style={{ backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE' }}>
+          <div style={{ fontSize: '13px', color: '#1E40AF', fontWeight: 700 }}>{supportAction}</div>
+          <button onClick={() => setSupportAction('')} style={{ fontSize: '12px', color: '#1E40AF', fontWeight: 700 }}>Dismiss</button>
+        </div>
+      )}
+
       <div className="grid grid-cols-4 gap-4 mb-5">
         {[
-          ['Call Support', '1800-123-7722', <Phone size={20} />],
-          ['WhatsApp Help', '+91 98765 43210', <MessageCircle size={20} />],
-          ['Visit Office', 'Dindori member desk', <FileText size={20} />],
-          ['Track Tickets', `${grievanceRows.length} recent`, <ChevronDown size={20} />],
-        ].map(([title, sub, icon]) => (
-          <div key={title as string} className="bg-white rounded-2xl p-4 border border-[#EDEEF0]">
+          ['Call Support', '1800-123-7722', <Phone size={20} />, 'Calling support desk: 1800-123-7722'],
+          ['WhatsApp Help', '+91 98765 43210', <MessageCircle size={20} />, 'Opening WhatsApp support chat for your registered mobile.'],
+          ['Visit Office', 'Dindori member desk', <FileText size={20} />, 'Office visit details selected. Carry PAN, Aadhaar, and loan ID LO00000047.'],
+          ['Track Tickets', `${grievanceRows.length} recent`, <ChevronDown size={20} />, 'Ticket list opened below.'],
+        ].map(([title, sub, icon, action]) => (
+          <button
+            key={title as string}
+            onClick={() => {
+              setSupportAction(action as string);
+              if (title === 'Track Tickets') document.getElementById('grievance-tickets')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="bg-white rounded-2xl p-4 border border-[#EDEEF0] text-left clickable-card"
+          >
             <div style={{ color: '#1A3C2A', marginBottom: '10px' }}>{icon}</div>
             <div style={{ fontSize: '14px', fontWeight: 700, color: '#12151A' }}>{title}</div>
             <div style={{ fontSize: '12px', color: '#9EA8B3', marginTop: '4px' }}>{sub}</div>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -91,10 +107,12 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
               <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450' }}>Description</label>
               <textarea value={description} onChange={e => setDescription(e.target.value)} rows={5} className="w-full px-4 py-3 rounded-xl border border-[#D1D5DB] focus:outline-none resize-none" style={{ fontSize: '14px', color: '#12151A' }} placeholder="Describe the issue in your own words..." />
             </div>
-            <div className="border-2 border-dashed rounded-xl p-4 flex items-center gap-2" style={{ borderColor: '#D1D5DB', backgroundColor: '#FAFAFA' }}>
-              <Upload size={18} style={{ color: '#9EA8B3' }} />
-              <span style={{ fontSize: '13px', color: '#3D4450' }}>Attach supporting receipt, message, or document</span>
-            </div>
+            <button type="button" onClick={() => setAttachmentAdded(true)} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 text-left hover:bg-[#F0FDF4]" style={{ borderColor: attachmentAdded ? '#22C55E' : '#D1D5DB', backgroundColor: attachmentAdded ? '#F0FDF4' : '#FAFAFA' }}>
+              <Upload size={18} style={{ color: attachmentAdded ? '#22C55E' : '#9EA8B3' }} />
+              <span style={{ fontSize: '13px', color: attachmentAdded ? '#166534' : '#3D4450', fontWeight: attachmentAdded ? 700 : 400 }}>
+                {attachmentAdded ? 'Supporting document attached' : 'Attach supporting receipt, message, or document'}
+              </span>
+            </button>
             <button
               onClick={() => description.trim() && setSubmitted(true)}
               disabled={!description.trim()}
@@ -106,7 +124,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
           </div>
         </div>
 
-        <div className="col-span-3 bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden">
+        <div id="grievance-tickets" className="col-span-3 bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden table-scroll">
           <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
             <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#12151A' }}>My Grievance Tickets</h3>
           </div>
@@ -120,7 +138,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
             </thead>
             <tbody>
               {grievanceRows.map(row => (
-                <tr key={row.id} className="border-b border-[#EDEEF0]">
+                <tr key={row.id} onClick={() => setSupportAction(`${row.id}: ${row.status} · ${row.tat}`)} className="border-b border-[#EDEEF0] clickable-row">
                   <td className="px-4 py-4" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#1E88E5' }}>{row.id}</td>
                   <td className="px-4" style={{ fontSize: '13px', color: '#3D4450' }}>{row.category}</td>
                   <td className="px-4" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#3D4450' }}>{row.loan}</td>

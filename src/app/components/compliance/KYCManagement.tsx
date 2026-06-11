@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { Download, Search, Send } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
+import { WorkbenchTabs } from '../shared/WorkbenchTabs';
+import { complianceKycTabs } from '../../data/roleNav';
 import { AppModal } from '../shared/AppModal';
 import { kycRenewals } from '../../data/complianceData';
 
@@ -31,9 +33,10 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
       onNavigate={onNavigate}
       breadcrumbs={['Compliance', 'KYC Renewal Tracker']}
       pageTitle="KYC Renewal Tracker"
-      pageSubtitle="Track 769+ member KYC records against the 2-year renewal cycle"
+      pageSubtitle="Member renewal cycle"
       actions={<button className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}><Download size={14} /> Export CSV</button>}
     >
+      <WorkbenchTabs tabs={complianceKycTabs} activeKey={activePage} onChange={onNavigate} accent="#1A3C2A" />
       <div className="bg-white rounded-lg p-4 border border-[#EDEEF0] mb-4">
         <div className="flex flex-wrap gap-2 mb-3">
           <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800, alignSelf: 'center' }}>Status:</span>
@@ -55,15 +58,15 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
 
       <div className="grid grid-cols-4 gap-4 mb-4">
         {[
-          ['Overdue (expired)', '4', '#EF4444'],
-          ['<30 days', '9', '#F59E0B'],
-          ['30-60 days', '17', '#E65100'],
-          ['Current (>60 days)', '739', '#22C55E'],
-        ].map(([label, value, color]) => (
-          <div key={label} className="bg-white rounded-lg p-4 border border-[#EDEEF0]">
+          ['Overdue (expired)', '4', '#EF4444', 'Overdue'],
+          ['<30 days', '9', '#F59E0B', '<30 days'],
+          ['30-60 days', '17', '#E65100', '30-60 days'],
+          ['Current (>60 days)', '739', '#22C55E', 'Current'],
+        ].map(([label, value, color, nextStatus]) => (
+          <button key={label} onClick={() => setStatus(nextStatus as typeof status)} className="bg-white rounded-lg p-4 border border-[#EDEEF0] text-left clickable-card">
             <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</div>
             <div style={{ fontSize: '26px', color, fontWeight: 900, marginTop: '5px' }}>{value}</div>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -76,22 +79,22 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
         </div>
       )}
 
-      <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
+      <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden table-scroll">
         <table className="w-full">
           <thead><tr style={{ backgroundColor: '#F7F8FA', borderBottom: '1px solid #EDEEF0' }}>
             <th className="px-4 py-3"><input type="checkbox" onChange={e => setSelected(e.target.checked ? rows.map(r => r.folio) : [])} style={{ accentColor: '#1A3C2A' }} /></th>
             {['Member', 'Name', 'KYC Date', 'Expiry', 'Days Left', 'Status', 'Action'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: '#9EA8B3', fontWeight: 800, textTransform: 'uppercase' }}>{h}</th>)}
           </tr></thead>
           <tbody>{rows.map(row => (
-            <tr key={row.folio} className="border-b border-[#EDEEF0]">
-              <td className="px-4 py-4"><input type="checkbox" checked={selected.includes(row.folio)} onChange={() => setSelected(prev => prev.includes(row.folio) ? prev.filter(id => id !== row.folio) : [...prev, row.folio])} style={{ accentColor: '#1A3C2A' }} /></td>
+            <tr key={row.folio} onClick={() => setRequestMember(row)} className="border-b border-[#EDEEF0] clickable-row">
+              <td className="px-4 py-4"><input type="checkbox" checked={selected.includes(row.folio)} onClick={e => e.stopPropagation()} onChange={() => setSelected(prev => prev.includes(row.folio) ? prev.filter(id => id !== row.folio) : [...prev, row.folio])} style={{ accentColor: '#1A3C2A' }} /></td>
               <td className="px-4" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#1E88E5', fontWeight: 800 }}>{row.folio}</td>
               <td className="px-4" style={{ fontSize: '14px', color: '#12151A', fontWeight: 700 }}>{row.name}</td>
               <td className="px-4" style={{ fontSize: '13px', color: '#3D4450' }}>{row.kycDate}</td>
               <td className="px-4" style={{ fontSize: '13px', color: '#3D4450' }}>{row.expiry}</td>
               <td className="px-4" style={{ fontSize: '13px', color: row.daysLeft < 0 ? '#EF4444' : row.daysLeft < 30 ? '#F59E0B' : '#E65100', fontWeight: 900 }}>{row.daysLeft < 0 ? `${row.daysLeft} days` : `${row.daysLeft} days`}</td>
               <td className="px-4"><StatusBadge status={row.status} /></td>
-              <td className="px-4"><button onClick={() => setRequestMember(row)} className="px-3 py-1.5 rounded-lg flex items-center gap-1.5" style={{ backgroundColor: row.daysLeft < 0 ? '#FEE2E2' : '#E8F5E9', color: row.daysLeft < 0 ? '#EF4444' : '#1A3C2A', fontSize: '12px', fontWeight: 800 }}><Send size={11} /> Send</button></td>
+              <td className="px-4"><button onClick={(e) => { e.stopPropagation(); setRequestMember(row); }} className="px-3 py-1.5 rounded-lg flex items-center gap-1.5" style={{ backgroundColor: row.daysLeft < 0 ? '#FEE2E2' : '#E8F5E9', color: row.daysLeft < 0 ? '#EF4444' : '#1A3C2A', fontSize: '12px', fontWeight: 800 }}><Send size={11} /> Send</button></td>
             </tr>
           ))}</tbody>
         </table>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Banknote, Check, CheckCircle, ClipboardList, FolderOpen, Search, Stamp } from 'lucide-react';
 
 interface LoanTrackerProps {
   currentStage: number;
@@ -8,12 +9,12 @@ interface LoanTrackerProps {
 }
 
 const stages = [
-  { name: 'Application Submitted', icon: '📝' },
-  { name: 'Credit Assessment', icon: '🔍' },
-  { name: 'Sanctioned', icon: '✅' },
-  { name: 'Documentation', icon: '📋' },
-  { name: 'Disbursed', icon: '💸' },
-  { name: 'Active / Closed', icon: '🔒' },
+  { name: 'Application Submitted', icon: ClipboardList },
+  { name: 'Credit Assessment', icon: Search },
+  { name: 'Sanction Approved', icon: Stamp },
+  { name: 'Documentation', icon: FolderOpen },
+  { name: 'Disbursed', icon: Banknote },
+  { name: 'Active / Closed', icon: CheckCircle },
 ];
 
 export function LoanTracker({ currentStage, compact = false, completedDates = [], onStageClick }: LoanTrackerProps) {
@@ -25,6 +26,7 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
         {stages.map((stage, i) => {
           const isDone = i < currentStage;
           const isCurrent = i === currentStage - 1;
+          const StageIcon = stage.icon;
           return (
             <div key={i} className="flex items-center">
               <button
@@ -42,7 +44,9 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
                       : 'bg-[#EDEEF0] border-[#EDEEF0]'
                   }`}
                   style={isCurrent ? { boxShadow: '0 0 0 3px rgba(26,60,42,0.15)' } : undefined}
-                />
+                >
+                  {isDone ? <Check size={10} className="text-white" /> : <StageIcon size={9} />}
+                </div>
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#12151A] text-white text-xs px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 whitespace-nowrap z-10 pointer-events-none transition-opacity" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
                   {stage.name}
                   {completedDates[i] && <div className="text-white/60 mt-0.5">{completedDates[i]}</div>}
@@ -67,6 +71,7 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
         const isDone = i < currentStage;
         const isCurrent = i === currentStage - 1;
         const isHovered = hoveredStage === i;
+        const StageIcon = stage.icon;
         return (
           <button
             key={i}
@@ -98,7 +103,7 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
                 ...(isHovered && isDone ? { transform: 'scale(1.1)', boxShadow: '0 4px 12px rgba(34,197,94,0.3)' } : {}),
               }}
             >
-              {isDone ? '✓' : stage.icon}
+              {isDone ? <Check size={18} /> : <StageIcon size={18} />}
             </div>
             <div className="mt-2 text-center">
               <div

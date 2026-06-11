@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
+import { RoleCommandCenter } from '../shared/RoleCommandCenter';
 import { mockLoans, mockUsers, mockAuditLogs, portfolioDonut } from '../../data/mockData';
 import { Bell, Edit, Search, ShieldCheck, Upload, UserPlus, UserX } from 'lucide-react';
 
@@ -24,19 +25,19 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
       onNavigate={onNavigate}
       breadcrumbs={['Admin', 'Portfolio Overview']}
       pageTitle="CFO / Admin Portfolio Overview"
-      pageSubtitle="Total loans, outstanding, collection efficiency, DPD ageing, and statutory headroom"
+      pageSubtitle="Portfolio health and statutory headroom"
     >
       <div className="grid grid-cols-4 gap-5 mb-5">
         {[
-          ['Total Sanctioned', formatCurrency(totalDisbursed), '#1A3C2A'],
-          ['Outstanding', formatCurrency(totalOutstanding), '#0891B2'],
-          ['Collection Efficiency', '82%', '#22C55E'],
-          ['Defaults', defaults.toString(), '#EF4444'],
-        ].map(([label, value, color]) => (
-          <div key={label} className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
+          ['Total Sanctioned', formatCurrency(totalDisbursed), '#1A3C2A', 'admin-portfolio'],
+          ['Outstanding', formatCurrency(totalOutstanding), '#0891B2', 'admin-portfolio'],
+          ['Collection Efficiency', '82%', '#22C55E', 'admin-portfolio'],
+          ['Defaults', defaults.toString(), '#EF4444', 'shared-audit-trail'],
+        ].map(([label, value, color, page]) => (
+          <button key={label} onClick={() => onNavigate(page)} className="bg-white rounded-2xl p-5 border border-[#EDEEF0] text-left clickable-card">
             <div style={{ fontSize: '12px', color: '#9EA8B3', fontWeight: 700 }}>{label}</div>
             <div style={{ fontSize: '26px', color, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{value}</div>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -45,7 +46,7 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
           <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>Portfolio Register</h3>
           </div>
-          <table className="w-full">
+          <div className="table-scroll"><table className="w-full">
             <thead>
               <tr style={{ borderBottom: '1px solid #EDEEF0' }}>
                 {['Loan ID', 'Borrower', 'Sanctioned', 'Outstanding', 'DPD', 'Status'].map(h => (
@@ -55,7 +56,7 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
             </thead>
             <tbody>
               {mockLoans.map(loan => (
-                <tr key={loan.id} className="border-b border-[#EDEEF0]">
+                <tr key={loan.id} onClick={() => onNavigate('member-loan-profile')} className="border-b border-[#EDEEF0] clickable-row">
                   <td className="px-4 py-3" style={{ fontSize: '13px', color: '#1E88E5', fontFamily: 'Roboto Mono' }}>{loan.id}</td>
                   <td className="px-4" style={{ fontSize: '13px', color: '#12151A', fontWeight: 600 }}>{loan.farmerName}</td>
                   <td className="px-4 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono' }}>{formatCurrency(loan.sanctionedAmount)}</td>
@@ -65,14 +66,14 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         <div className="col-span-2 space-y-5">
           <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A', marginBottom: '12px' }}>Portfolio Split</h3>
             {portfolioDonut.map(item => (
-              <div key={item.name} className="mb-3">
+              <button key={item.name} onClick={() => onNavigate('admin-portfolio')} className="w-full mb-3 text-left p-1 rounded-lg clickable-row">
                 <div className="flex items-center justify-between mb-1">
                   <span style={{ fontSize: '13px', color: '#3D4450', fontWeight: 600 }}>{item.name}</span>
                   <span style={{ fontSize: '13px', color: '#12151A', fontFamily: 'Roboto Mono' }}>{formatCurrency(item.value)}</span>
@@ -80,10 +81,10 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
                 <div className="h-2 bg-[#EDEEF0] rounded-full">
                   <div className="h-full rounded-full" style={{ width: `${Math.round((item.value / 9000000) * 100)}%`, backgroundColor: item.color }} />
                 </div>
-              </div>
+              </button>
             ))}
           </div>
-          <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
+          <button onClick={() => onNavigate('admin-section186')} className="bg-white rounded-2xl p-5 border border-[#EDEEF0] text-left clickable-card">
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A', marginBottom: '12px' }}>Statutory Headroom</h3>
             <div className="mb-3">
               <div className="flex justify-between mb-1"><span style={{ fontSize: '13px', color: '#3D4450' }}>Section 186 used</span><strong>62%</strong></div>
@@ -93,7 +94,7 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
               <div className="flex justify-between mb-1"><span style={{ fontSize: '13px', color: '#3D4450' }}>NBFC asset ratio</span><strong>42%</strong></div>
               <div className="h-2 bg-[#EDEEF0] rounded-full"><div className="h-full rounded-full" style={{ width: '42%', backgroundColor: '#F59E0B' }} /></div>
             </div>
-          </div>
+          </button>
         </div>
       </div>
     </Shell>
@@ -113,13 +114,31 @@ export function UserManagement({ onNavigate, activePage }: AdminScreensProps) {
       onNavigate={onNavigate}
       breadcrumbs={['Admin', 'User Management']}
       pageTitle="User Management"
-      pageSubtitle={`${mockUsers.length} users across all roles`}
+      pageSubtitle={`${mockUsers.length} users`}
       actions={
         <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>
           <UserPlus size={14} /> Invite New User
         </button>
       }
     >
+      <RoleCommandCenter
+        title="Admin Control Room"
+        focus="Keep access, limits and audit controls healthy"
+        primaryAction={{ label: 'Review users', detail: 'Confirm role access and disable stale accounts before workflow actions are assigned.', page: 'admin-users', tone: 'green' }}
+        metrics={[
+          { label: 'Users', value: `${mockUsers.length}`, tone: 'green' },
+          { label: 'Audit', value: 'Live', tone: 'blue' },
+          { label: 'Limits', value: '62%', tone: 'amber' },
+        ]}
+        secondaryActions={[
+          { label: 'Portfolio overview', detail: 'Review exposure, collection efficiency and defaults.', page: 'admin-portfolio', tone: 'blue' },
+          { label: 'Audit log', detail: 'Inspect immutable workflow and access events.', page: 'admin-audit', tone: 'neutral' },
+          { label: 'Configuration', detail: 'Maintain loan parameters and rate controls.', page: 'admin-config', tone: 'green' },
+          { label: 'Compliance limits', detail: 'Watch Section 186 and NBFC thresholds.', page: 'admin-section186', tone: 'amber' },
+        ]}
+        onNavigate={onNavigate}
+      />
+
       <div className="relative mb-4 max-w-sm">
         <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#9EA8B3' }} />
         <input
@@ -132,7 +151,7 @@ export function UserManagement({ onNavigate, activePage }: AdminScreensProps) {
         />
       </div>
 
-      <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden table-scroll">
         <table className="w-full">
           <thead>
             <tr style={{ backgroundColor: '#F7F8FA', borderBottom: '1px solid #EDEEF0' }}>
@@ -143,7 +162,7 @@ export function UserManagement({ onNavigate, activePage }: AdminScreensProps) {
           </thead>
           <tbody>
             {filtered.map(user => (
-              <tr key={user.id} className="border-b border-[#EDEEF0] hover:bg-[#F7F8FA] transition-colors">
+              <tr key={user.id} onClick={() => onNavigate('admin-users')} className="border-b border-[#EDEEF0] clickable-row">
                 <td className="px-5 py-4" style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: '#9EA8B3' }}>{user.id}</td>
                 <td className="px-5">
                   <div className="flex items-center gap-2">
@@ -163,8 +182,8 @@ export function UserManagement({ onNavigate, activePage }: AdminScreensProps) {
                 <td className="px-5" style={{ fontSize: '13px', color: '#9EA8B3' }}>{user.lastLogin}</td>
                 <td className="px-5">
                   <div className="flex items-center gap-2">
-                    <button className="p-2 rounded-lg hover:bg-[#F7F8FA] transition-colors"><Edit size={14} style={{ color: '#9EA8B3' }} /></button>
-                    <button className="p-2 rounded-lg hover:bg-[#FEE2E2] transition-colors"><UserX size={14} style={{ color: '#9EA8B3' }} /></button>
+                    <button onClick={e => e.stopPropagation()} className="p-2 rounded-lg hover:bg-[#F7F8FA] transition-colors"><Edit size={14} style={{ color: '#9EA8B3' }} /></button>
+                    <button onClick={e => e.stopPropagation()} className="p-2 rounded-lg hover:bg-[#FEE2E2] transition-colors"><UserX size={14} style={{ color: '#9EA8B3' }} /></button>
                   </div>
                 </td>
               </tr>
@@ -220,7 +239,7 @@ export function AuditLog({ onNavigate, activePage }: AdminScreensProps) {
       onNavigate={onNavigate}
       breadcrumbs={['Admin', 'Audit Log']}
       pageTitle="System Audit Log"
-      pageSubtitle="Immutable event log — all actions recorded"
+      pageSubtitle="Immutable event log"
     >
       <div className="bg-white rounded-2xl p-4 border border-[#EDEEF0] mb-4 grid grid-cols-4 gap-3">
         {['User', 'Action Type', 'Date Range', 'Entity'].map((filter, i) => (
@@ -237,11 +256,11 @@ export function AuditLog({ onNavigate, activePage }: AdminScreensProps) {
       <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden">
         <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: '#FEF3C7' }}>
           <div className="flex items-center gap-2">
-            <span style={{ fontSize: '13px', color: '#92400E', fontWeight: 600 }}>🔒 Immutable Audit Log</span>
-            <span style={{ fontSize: '12px', color: '#B45309' }}>All records are write-protected and tamper-evident</span>
+            <ShieldCheck size={14} style={{ color: '#92400E' }} />
+            <span style={{ fontSize: '13px', color: '#92400E', fontWeight: 600 }}>Immutable Audit Log</span>
           </div>
         </div>
-        <table className="w-full">
+        <div className="table-scroll"><table className="w-full">
           <thead>
             <tr style={{ backgroundColor: '#F7F8FA', borderBottom: '1px solid #EDEEF0' }}>
               {['Timestamp', 'User', 'Action', 'Entity', 'Old Value', 'New Value', 'IP Address'].map(h => (
@@ -251,7 +270,7 @@ export function AuditLog({ onNavigate, activePage }: AdminScreensProps) {
           </thead>
           <tbody>
             {mockAuditLogs.map(log => (
-              <tr key={log.id} className="border-b border-[#EDEEF0] hover:bg-[#F7F8FA] transition-colors">
+              <tr key={log.id} onClick={() => onNavigate('shared-audit-trail')} className="border-b border-[#EDEEF0] clickable-row">
                 <td className="px-4 py-3.5" style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: '#9EA8B3', whiteSpace: 'nowrap' }}>{log.timestamp}</td>
                 <td className="px-4" style={{ fontSize: '13px', color: '#3D4450' }}>{log.user}</td>
                 <td className="px-4">
@@ -266,7 +285,7 @@ export function AuditLog({ onNavigate, activePage }: AdminScreensProps) {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table></div>
       </div>
     </Shell>
   );

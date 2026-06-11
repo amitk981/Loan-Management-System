@@ -1,6 +1,8 @@
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
-import { csChecklistBand, csDeadlines, csDocQueue, csKpis, csProfile } from '../../data/complianceData';
+import { RoleCommandCenter } from '../shared/RoleCommandCenter';
+import { useAuth } from '../../context/AuthContext';
+import { csDeadlines, csDocQueue } from '../../data/complianceData';
 
 interface ComplianceDashboardProps {
   onNavigate: (page: string) => void;
@@ -8,23 +10,35 @@ interface ComplianceDashboardProps {
 }
 
 export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashboardProps) {
+  const { user } = useAuth();
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
   return (
     <Shell
       activePage={activePage}
       onNavigate={onNavigate}
       breadcrumbs={['Compliance', 'Dashboard']}
       pageTitle="CS Dashboard"
-      pageSubtitle={`Welcome, ${csProfile.name}`}
+      pageSubtitle={`${greeting}, ${user?.name || 'Company Secretary'} · ${user?.roleLabel || 'Compliance'}`}
     >
-      <div className="grid grid-cols-4 gap-4 mb-5">
-        {csKpis.map(kpi => (
-          <button key={kpi.title} onClick={() => onNavigate(kpi.page)} className="bg-white rounded-xl p-5 border border-[#EDEEF0] text-left clickable-card">
-            <div style={{ fontSize: '11px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{kpi.title}</div>
-            <div style={{ fontSize: '32px', fontWeight: 800, color: kpi.color, marginTop: '8px' }}>{kpi.value}</div>
-            <div className="mt-2"><StatusBadge status={kpi.status} /></div>
-          </button>
-        ))}
-      </div>
+      <RoleCommandCenter
+        title="CS Workbench"
+        focus="Finish documents blocking disbursement"
+        primaryAction={{ label: 'Open document queue', detail: '14 files need CS action. Start with notarisation and witness gaps.', page: 'cs-queue', tone: 'green', badge: '14' }}
+        metrics={[
+          { label: 'Docs', value: '14', tone: 'amber' },
+          { label: 'KYC', value: '9', tone: 'blue' },
+          { label: 'NOC', value: '2', tone: 'green' },
+        ]}
+        secondaryActions={[
+          { label: 'Workspace', detail: 'Complete PoA, term sheet, agreement and checklist.', page: 'cs-workspace', tone: 'green' },
+          { label: 'KYC renewals', detail: 'Send Re-KYC requests before expiry.', page: 'cs-kyc', tone: 'blue' },
+          { label: 'Issue NOC', detail: 'Close fully repaid loans and return security.', page: 'cs-noc', tone: 'amber' },
+          { label: 'Compliance calendar', detail: 'Resolve statutory deadlines and evidence.', page: 'cs-calendar', tone: 'neutral' },
+        ]}
+        onNavigate={onNavigate}
+      />
 
       <div className="grid grid-cols-12 gap-5 mb-5">
         <div className="col-span-7 bg-white rounded-xl border border-[#EDEEF0] overflow-hidden">
@@ -75,24 +89,6 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-5 border border-[#EDEEF0]">
-        <div className="flex items-center justify-between mb-4">
-          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>Checklist Sign-off Tracker</h3>
-          <button onClick={() => onNavigate('cs-signoff')} className="hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: '#1E88E5', fontWeight: 700 }}>View All →</button>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          {csChecklistBand.map(row => (
-            <button key={row.loan} onClick={() => onNavigate('cs-workspace')} className="p-4 rounded-lg text-left clickable-card" style={{ backgroundColor: '#FDFAF4', border: '1px solid #EDEEF0' }}>
-              <div style={{ fontSize: '13px', color: '#1E88E5', fontFamily: 'Roboto Mono', fontWeight: 700 }}>{row.loan} · {row.borrower}</div>
-              <div className="flex items-center justify-between mt-3">
-                <span style={{ fontSize: '12px', color: '#3D4450' }}>Docs: {row.docs}</span>
-                <span style={{ fontSize: '12px', color: '#3D4450' }}>CS Sign: {row.sign}</span>
-              </div>
-              <div className="mt-3"><StatusBadge status={row.status} /></div>
-            </button>
-          ))}
-        </div>
-      </div>
     </Shell>
   );
 }

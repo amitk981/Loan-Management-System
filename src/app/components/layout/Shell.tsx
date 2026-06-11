@@ -1,7 +1,8 @@
-import { useState, ReactNode } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { useAuth } from '../../context/AuthContext';
+import { defaultExpandedGroups } from '../../data/roleNav';
 
 interface ShellProps {
   children: ReactNode;
@@ -16,9 +17,13 @@ interface ShellProps {
 export function Shell({ children, activePage, onNavigate, breadcrumbs = [], pageTitle, pageSubtitle, actions }: ShellProps) {
   const { user } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [expandedGroups, setExpandedGroups] = useState<string[]>([
-    'credit-inbox', 'cs-queue', 'sc-queue', 'treasury-disburse', 'farmer-loans'
-  ]);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(
+    () => defaultExpandedGroups[user?.role || 'farmer'] || []
+  );
+
+  useEffect(() => {
+    setExpandedGroups(defaultExpandedGroups[user?.role || 'farmer'] || []);
+  }, [user?.role]);
 
   const toggleGroup = (key: string) => {
     setExpandedGroups(prev =>

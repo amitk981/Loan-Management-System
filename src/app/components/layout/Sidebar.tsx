@@ -1,22 +1,14 @@
-import { ReactNode } from 'react';
 import {
   LayoutDashboard, FileText, CreditCard, Files, Wallet, HeadphonesIcon,
-  Inbox, Users, BookOpen, Calculator, BarChart3, AlertTriangle, Archive,
-  Calendar, Building, ClipboardCheck, CheckSquare, Clock, PenTool, TrendingUp,
-  DollarSign, Receipt, FileBarChart, Settings, UserCog, ScrollText,
-  ShieldCheck, FileWarning, Plus, ChevronRight
+  Inbox, BookOpen, BarChart3, AlertTriangle, Calendar, Building, ClipboardCheck,
+  CheckSquare, PenTool, TrendingUp, DollarSign, Receipt, FileBarChart,
+  Settings, UserCog, ScrollText, ShieldCheck, Plus, ChevronRight, Users,
+  Calculator, Archive, Scale, Bell, Link2, Landmark, FileCheck, Download,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
-
-interface NavItem {
-  icon: ReactNode;
-  label: string;
-  key: string;
-  i18nKey?: string;
-  children?: { label: string; key: string }[];
-  badge?: number;
-}
+import type { NavItem } from '../../data/roleNav';
+import { roleAccents, roleSectionLabels } from '../../data/roleNav';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -27,130 +19,224 @@ interface SidebarProps {
 }
 
 const farmerNav: NavItem[] = [
-  { icon: <LayoutDashboard size={20} />, label: 'My Dashboard', key: 'farmer-dashboard', i18nKey: 'nav.myDashboard' },
-  { icon: <FileText size={20} />, label: 'Apply for Loan', key: 'farmer-apply', i18nKey: 'nav.applyLoan' },
+  { icon: <LayoutDashboard size={20} />, label: 'My Dashboard', key: 'farmer-dashboard', i18nKey: 'nav.myDashboard', section: 'Today' },
+  { icon: <FileText size={20} />, label: 'Apply for Loan', key: 'farmer-apply', i18nKey: 'nav.applyLoan', section: 'Today' },
   {
-    icon: <CreditCard size={20} />, label: 'My Loans', key: 'farmer-loans', i18nKey: 'nav.myLoans',
+    icon: <CreditCard size={20} />,
+    label: 'My Loan',
+    key: 'farmer-active-loans',
+    groupKey: 'farmer-loans',
+    i18nKey: 'nav.myLoans',
+    section: 'My Loan',
     children: [
-      { label: 'Active Loans', key: 'farmer-active-loans' },
+      { label: 'Active Loan', key: 'farmer-active-loans' },
       { label: 'Loan History', key: 'farmer-loan-history' },
-    ]
+      { label: 'NOC & Closure', key: 'farmer-noc' },
+    ],
   },
-  { icon: <Files size={20} />, label: 'My Documents', key: 'farmer-documents', i18nKey: 'nav.myDocuments' },
-  { icon: <Wallet size={20} />, label: 'Make Payment', key: 'farmer-repayment', i18nKey: 'nav.repayment' },
-  { icon: <HeadphonesIcon size={20} />, label: 'Support & Grievance', key: 'farmer-support', i18nKey: 'nav.support' },
-  { icon: <ScrollText size={20} />, label: 'Lifecycle Handoffs', key: 'integration-overview' },
+  { icon: <Files size={20} />, label: 'My Documents', key: 'farmer-documents', i18nKey: 'nav.myDocuments', section: 'My Loan' },
+  { icon: <Wallet size={20} />, label: 'Make Payment', key: 'farmer-repayment', i18nKey: 'nav.repayment', section: 'Services' },
+  { icon: <HeadphonesIcon size={20} />, label: 'Support', key: 'farmer-support', i18nKey: 'nav.support', section: 'Services' },
 ];
 
 const creditNav: NavItem[] = [
-  { icon: <LayoutDashboard size={20} />, label: 'Dashboard', key: 'credit-dashboard' },
-  { icon: <Inbox size={20} />, label: 'New Applications', key: 'credit-queue', badge: 12 },
-  { icon: <Clock size={20} />, label: 'Under Review', key: 'credit-pending', badge: 5 },
-  { icon: <FileText size={20} />, label: 'Pending Documents', key: 'credit-returned', badge: 3 },
-  { icon: <Calculator size={20} />, label: 'Appraisal Queue', key: 'credit-review' },
-  { icon: <CheckSquare size={20} />, label: 'Sanction Committee', key: 'credit-sc-queue', badge: 2 },
-  { icon: <BookOpen size={20} />, label: 'Live Loans', key: 'credit-active-loans' },
-  { icon: <Receipt size={20} />, label: 'Repayments', key: 'credit-repayments' },
-  { icon: <BarChart3 size={20} />, label: 'DPD / Monitoring', key: 'credit-dpd' },
-  { icon: <BookOpen size={20} />, label: 'Loan Register', key: 'credit-register' },
-  { icon: <AlertTriangle size={20} />, label: 'Rejected Applications', key: 'credit-rejected' },
-  { icon: <ScrollText size={20} />, label: 'Exception Register', key: 'credit-exceptions' },
-  { icon: <FileBarChart size={20} />, label: 'Portfolio MIS', key: 'credit-mis' },
-  { icon: <Receipt size={20} />, label: 'Interest Invoices', key: 'credit-interest-invoices' },
-  { icon: <Plus size={20} />, label: 'Manual Application', key: 'credit-manual-entry' },
-  { icon: <ScrollText size={20} />, label: 'Integration Map', key: 'integration-overview' },
+  { icon: <LayoutDashboard size={20} />, label: 'Dashboard', key: 'credit-dashboard', section: 'Today' },
+  {
+    icon: <Inbox size={20} />,
+    label: 'Application Inbox',
+    key: 'credit-queue',
+    groupKey: 'credit-inbox',
+    badge: 12,
+    section: 'Intake',
+    children: [
+      { label: 'New Applications', key: 'credit-queue', badge: 12 },
+      { label: 'Pending Appraisal', key: 'credit-pending' },
+      { label: 'Returned / Incomplete', key: 'credit-returned' },
+      { label: 'SC Tracker', key: 'credit-sc-queue' },
+    ],
+  },
+  { icon: <FileCheck size={20} />, label: 'Appraisal Note', key: 'credit-review', section: 'Intake' },
+  { icon: <Plus size={20} />, label: 'Manual Entry', key: 'credit-manual-entry', section: 'Intake' },
+  {
+    icon: <BookOpen size={20} />,
+    label: 'Loan Register',
+    key: 'credit-register',
+    groupKey: 'credit-portfolio',
+    section: 'Portfolio',
+    children: [
+      { label: 'Full Register', key: 'credit-register' },
+      { label: 'Active Loans', key: 'credit-active-loans' },
+      { label: 'All Applications', key: 'credit-all-apps' },
+      { label: 'Repayments', key: 'credit-repayments' },
+      { label: 'Interest Invoices', key: 'credit-interest-invoices' },
+    ],
+  },
+  { icon: <BarChart3 size={20} />, label: 'DPD Monitoring', key: 'credit-dpd', section: 'Portfolio' },
+  { icon: <AlertTriangle size={20} />, label: 'Defaults & Recovery', key: 'credit-defaults', section: 'Portfolio' },
+  { icon: <TrendingUp size={20} />, label: 'Portfolio Analytics', key: 'credit-analytics', section: 'Portfolio' },
+  { icon: <FileBarChart size={20} />, label: 'MIS Reports', key: 'credit-mis', section: 'Portfolio' },
+  {
+    icon: <Users size={20} />,
+    label: 'Member Registry',
+    key: 'credit-search-member',
+    groupKey: 'credit-members',
+    section: 'Tools',
+    children: [
+      { label: 'Search Member', key: 'credit-search-member' },
+      { label: 'Member Profile', key: 'credit-member-profile' },
+    ],
+  },
+  { icon: <Calculator size={20} />, label: 'Loan Calculator', key: 'credit-calculator', section: 'Tools' },
 ];
 
 const complianceNav: NavItem[] = [
-  { icon: <LayoutDashboard size={20} />, label: 'CS Dashboard', key: 'cs-dashboard' },
-  { icon: <ClipboardCheck size={20} />, label: 'Pending Document Queue', key: 'cs-queue', badge: 14 },
-  { icon: <PenTool size={20} />, label: 'Document Workspace', key: 'cs-workspace' },
-  { icon: <Files size={20} />, label: 'Executed Documents Archive', key: 'cs-archive' },
-  { icon: <Calendar size={20} />, label: 'Statutory Deadlines', key: 'cs-calendar', badge: 3 },
-  { icon: <CheckSquare size={20} />, label: 'KYC Renewal Tracker', key: 'cs-kyc', badge: 9 },
-  { icon: <AlertTriangle size={20} />, label: 'Re-KYC Due', key: 'cs-rekyc', badge: 4 },
-  { icon: <FileText size={20} />, label: 'NOC Issuance Queue', key: 'cs-noc', badge: 2 },
-  { icon: <Building size={20} />, label: 'Security Return Log', key: 'cs-security-return' },
-  { icon: <BookOpen size={20} />, label: 'Loan Register (CS View)', key: 'cs-loan-register' },
-  { icon: <ScrollText size={20} />, label: 'Credit Sanction Register', key: 'cs-sanction-register' },
-  { icon: <AlertTriangle size={20} />, label: 'Exception Register', key: 'cs-exception-register' },
-  { icon: <HeadphonesIcon size={20} />, label: 'Grievance Register', key: 'cs-grievance' },
-  { icon: <BookOpen size={20} />, label: 'Stamp Duty Tracker', key: 'cs-stamp' },
-  { icon: <PenTool size={20} />, label: 'PoA Register', key: 'cs-poa-register' },
-  { icon: <FileBarChart size={20} />, label: 'Compliance Status Report', key: 'cs-reports' },
-  { icon: <Inbox size={20} />, label: 'New SC-Approved Loan', key: 'cs-new-loan', badge: 1 },
-  { icon: <Archive size={20} />, label: 'Archive Disbursed File', key: 'cs-archive-file' },
+  { icon: <LayoutDashboard size={20} />, label: 'CS Dashboard', key: 'cs-dashboard', section: 'Today' },
+  {
+    icon: <ClipboardCheck size={20} />,
+    label: 'Document Queue',
+    key: 'cs-queue',
+    groupKey: 'cs-doc-queue',
+    badge: 14,
+    section: 'Documents',
+    children: [
+      { label: 'All Pending', key: 'cs-queue', badge: 14 },
+      { label: 'Awaiting Preparation', key: 'cs-awaiting-prep' },
+      { label: 'Awaiting Review', key: 'cs-awaiting-review' },
+      { label: 'Awaiting CS Sign-off', key: 'cs-signoff', badge: 3 },
+    ],
+  },
+  {
+    icon: <PenTool size={20} />,
+    label: 'Document Workspace',
+    key: 'cs-workspace',
+    groupKey: 'cs-doc-templates',
+    section: 'Documents',
+    children: [
+      { label: 'Workspace Hub', key: 'cs-workspace' },
+      { label: 'PoA Generator', key: 'cs-poa' },
+      { label: 'Tri-Party Agreement', key: 'cs-triparty' },
+      { label: 'SH-4 / CDSL', key: 'cs-sh4' },
+      { label: 'Term Sheet', key: 'cs-termsheet' },
+      { label: 'Loan Agreement', key: 'cs-agreement' },
+    ],
+  },
+  {
+    icon: <CheckSquare size={20} />,
+    label: 'KYC & CKYC',
+    key: 'cs-kyc',
+    groupKey: 'cs-kyc-group',
+    badge: 9,
+    section: 'Compliance',
+    children: [
+      { label: 'All Members', key: 'cs-kyc' },
+      { label: 'Pending KYC', key: 'cs-pending-kyc', badge: 4 },
+      { label: 'Re-KYC Due', key: 'cs-rekyc', badge: 9 },
+    ],
+  },
+  { icon: <Landmark size={20} />, label: 'CDSL Pledge Tracker', key: 'cs-cdsl', section: 'Compliance' },
+  { icon: <FileText size={20} />, label: 'NOC Management', key: 'cs-noc', badge: 2, section: 'Compliance' },
+  { icon: <Calendar size={20} />, label: 'Compliance Calendar', key: 'cs-calendar', badge: 3, section: 'Compliance' },
+  { icon: <ShieldCheck size={20} />, label: 'Security Return', key: 'cs-security-return', section: 'Compliance' },
+  {
+    icon: <BookOpen size={20} />,
+    label: 'Registers & Reports',
+    key: 'cs-loan-register',
+    groupKey: 'cs-registers',
+    section: 'Registers',
+    children: [
+      { label: 'Loan Register', key: 'cs-loan-register' },
+      { label: 'Sanction Register', key: 'cs-sanction-register' },
+      { label: 'Stamp Duty Register', key: 'cs-stamp' },
+      { label: 'PoA Register', key: 'cs-poa-register' },
+      { label: 'Exception Register', key: 'cs-exception-register' },
+      { label: 'Grievance Register', key: 'cs-grievance' },
+      { label: 'Document Archive', key: 'cs-archive' },
+      { label: 'Compliance Reports', key: 'cs-reports' },
+    ],
+  },
 ];
 
 const sanctionNav: NavItem[] = [
-  { icon: <LayoutDashboard size={20} />, label: 'SC Dashboard', key: 'sc-dashboard' },
-  { icon: <CheckSquare size={20} />, label: 'Approval Queue', key: 'sc-awaiting', badge: 7 },
-  { icon: <PenTool size={20} />, label: 'Awaiting My Sign', key: 'sc-my-sign', badge: 5 },
-  { icon: <Users size={20} />, label: 'Joint Approval (>₹5L)', key: 'sc-joint', badge: 2 },
-  { icon: <AlertTriangle size={20} />, label: 'Special Cases', key: 'sc-special-cases', badge: 1 },
-  { icon: <FileText size={20} />, label: 'Return for Clarification', key: 'sc-returns', badge: 3 },
-  { icon: <BookOpen size={20} />, label: 'Credit Sanction Register', key: 'sc-register' },
-  { icon: <AlertTriangle size={20} />, label: 'Exception Register', key: 'sc-exceptions' },
-  { icon: <ScrollText size={20} />, label: 'Board Minutes Archive', key: 'sc-board' },
-  { icon: <TrendingUp size={20} />, label: 'Portfolio Health', key: 'sc-health' },
-  { icon: <BarChart3 size={20} />, label: 'Exposure & Limits', key: 'sc-exposure' },
-  { icon: <AlertTriangle size={20} />, label: 'DPD / Default Summary', key: 'sc-dpd' },
-  { icon: <ShieldCheck size={20} />, label: 'Security Invocation Queue', key: 'sc-security-invocation' },
-  { icon: <FileWarning size={20} />, label: 'Default Escalations', key: 'sc-default-escalations' },
-  { icon: <ClipboardCheck size={20} />, label: 'Final Checklist Sign-off', key: 'sc-final-signoff', badge: 1 },
-  { icon: <ShieldCheck size={20} />, label: 'Director Case Rules', key: 'shared-director-case' },
+  { icon: <LayoutDashboard size={20} />, label: 'SC Dashboard', key: 'sc-dashboard', section: 'Today' },
+  {
+    icon: <CheckSquare size={20} />,
+    label: 'Approval Queue',
+    key: 'sc-awaiting',
+    groupKey: 'sc-decisions',
+    badge: 7,
+    section: 'Decisions',
+    children: [
+      { label: 'Awaiting Approval', key: 'sc-awaiting', badge: 7 },
+      { label: 'Awaiting My Sign', key: 'sc-my-sign', badge: 5 },
+      { label: 'Joint Approvals', key: 'sc-joint', badge: 2 },
+      { label: 'Special Cases', key: 'sc-special-cases', badge: 1 },
+      { label: 'Returns', key: 'sc-returns' },
+      { label: 'Final Sign-off', key: 'sc-final-signoff', badge: 2 },
+    ],
+  },
+  { icon: <BookOpen size={20} />, label: 'Sanction Register', key: 'sc-register', section: 'Decisions' },
+  { icon: <AlertTriangle size={20} />, label: 'Exception Register', key: 'sc-exceptions', section: 'Decisions' },
+  { icon: <TrendingUp size={20} />, label: 'Portfolio Health', key: 'sc-health', section: 'Oversight' },
+  { icon: <Scale size={20} />, label: 'Exposure & Limits', key: 'sc-exposure', section: 'Oversight' },
+  { icon: <BarChart3 size={20} />, label: 'DPD Summary', key: 'sc-dpd', section: 'Oversight' },
+  { icon: <ShieldCheck size={20} />, label: 'Recovery Actions', key: 'sc-default-escalations', section: 'Oversight' },
+  { icon: <Archive size={20} />, label: 'Board Minutes', key: 'sc-board', section: 'Governance' },
+  { icon: <Settings size={20} />, label: 'Policy Settings', key: 'sc-policy', section: 'Governance' },
 ];
 
 const treasuryNav: NavItem[] = [
-  { icon: <LayoutDashboard size={20} />, label: 'Dashboard', key: 'treasury-dashboard' },
+  { icon: <LayoutDashboard size={20} />, label: 'Dashboard', key: 'treasury-dashboard', section: 'Today' },
   {
-    icon: <DollarSign size={20} />, label: 'Disbursement Queue', key: 'treasury-disburse', badge: 2,
+    icon: <DollarSign size={20} />,
+    label: 'Disbursements',
+    key: 'treasury-pending',
+    groupKey: 'treasury-disburse',
+    badge: 2,
+    section: 'Disbursements',
     children: [
-      { label: 'Pending Initiation', key: 'treasury-pending' },
-      { label: 'Pending Authorization', key: 'treasury-auth' },
+      { label: 'Pending Initiation', key: 'treasury-pending', badge: 2 },
+      { label: 'Authorizations', key: 'treasury-auth', badge: 2 },
       { label: 'Disbursed Today', key: 'treasury-today' },
-    ]
+      { label: 'Process Flow', key: 'treasury-disbursement' },
+    ],
   },
   {
-    icon: <Building size={20} />, label: 'SAP Management', key: 'treasury-sap',
+    icon: <Building size={20} />,
+    label: 'SAP Management',
+    key: 'treasury-sap-codes',
+    groupKey: 'treasury-sap',
+    section: 'Disbursements',
     children: [
-      { label: 'Customer Code Creation', key: 'treasury-sap-codes' },
+      { label: 'Customer Codes', key: 'treasury-sap-codes' },
       { label: 'SAP Entries Log', key: 'treasury-sap-log' },
-    ]
+    ],
   },
   {
-    icon: <Receipt size={20} />, label: 'Repayment Tracking', key: 'treasury-repayment',
+    icon: <Receipt size={20} />,
+    label: 'Repayments',
+    key: 'treasury-incoming',
+    groupKey: 'treasury-finance',
+    section: 'Finance',
     children: [
-      { label: 'Incoming (Direct)', key: 'treasury-incoming' },
+      { label: 'Incoming Payments', key: 'treasury-incoming' },
       { label: 'Subsidiary Deductions', key: 'treasury-deductions' },
       { label: 'Interest Accruals', key: 'treasury-interest' },
-    ]
+      { label: 'Reconciliation', key: 'treasury-reconciliation' },
+    ],
   },
-  {
-    icon: <FileBarChart size={20} />, label: 'Financial Reports', key: 'treasury-reports',
-    children: [
-      { label: 'Bank Reconciliation', key: 'treasury-reconciliation' },
-      { label: 'Ledger Summary', key: 'treasury-ledger' },
-      { label: 'Export Centre', key: 'treasury-exports' },
-    ]
-  },
-  { icon: <ScrollText size={20} />, label: 'Audit & Handoffs', key: 'shared-audit-trail' },
+  { icon: <BookOpen size={20} />, label: 'Ledger Summary', key: 'treasury-ledger', section: 'Reporting' },
+  { icon: <FileBarChart size={20} />, label: 'Financial Reports', key: 'treasury-reports', section: 'Reporting' },
+  { icon: <Download size={20} />, label: 'Export Centre', key: 'treasury-exports', section: 'Reporting' },
 ];
 
 const adminNav: NavItem[] = [
-  { icon: <UserCog size={20} />, label: 'User Management', key: 'admin-users' },
-  { icon: <BarChart3 size={20} />, label: 'Portfolio Overview', key: 'admin-portfolio' },
-  { icon: <ScrollText size={20} />, label: 'Audit Log', key: 'admin-audit' },
-  {
-    icon: <Settings size={20} />, label: 'System Configuration', key: 'admin-config',
-    children: [
-      { label: 'Loan Parameters', key: 'admin-config' },
-      { label: 'Section 186 Tracker', key: 'admin-section186' },
-      { label: 'NBFC Principal Test', key: 'admin-nbfc' },
-    ]
-  },
-  { icon: <AlertTriangle size={20} />, label: 'Rate Change Broadcast', key: 'shared-rate-change' },
-  { icon: <FileWarning size={20} />, label: 's.186 Lending Lock', key: 'shared-s186-lock' },
+  { icon: <LayoutDashboard size={20} />, label: 'Control Center', key: 'admin-portfolio', section: 'Today' },
+  { icon: <UserCog size={20} />, label: 'User Management', key: 'admin-users', section: 'Controls' },
+  { icon: <ScrollText size={20} />, label: 'Audit Log', key: 'admin-audit', section: 'Controls' },
+  { icon: <Settings size={20} />, label: 'Configuration', key: 'admin-config', section: 'Controls' },
+  { icon: <ShieldCheck size={20} />, label: 's.186 Limits', key: 'admin-section186', section: 'Compliance' },
+  { icon: <Scale size={20} />, label: 'NBFC Monitor', key: 'admin-nbfc', section: 'Compliance' },
+  { icon: <Link2 size={20} />, label: 'Integration Hub', key: 'integration-overview', section: 'Compliance' },
 ];
 
 const navByRole: Record<string, NavItem[]> = {
@@ -163,64 +249,63 @@ const navByRole: Record<string, NavItem[]> = {
 };
 
 const labelI18nKeys: Record<string, string> = {
-  'Dashboard': 'nav.dashboard',
+  Dashboard: 'nav.dashboard',
   'My Dashboard': 'nav.myDashboard',
   'Apply for Loan': 'nav.applyLoan',
-  'My Loans': 'nav.myLoans',
-  'Active Loans': 'nav.activeLoans',
-  'Loan History': 'nav.loanHistory',
+  'My Loan': 'nav.myLoans',
   'My Documents': 'nav.myDocuments',
-  'Repayment': 'nav.repayment',
   'Make Payment': 'nav.repayment',
-  'Support & Grievance': 'nav.support',
+  Support: 'nav.support',
   'Application Inbox': 'nav.applicationInbox',
-  'New Applications': 'nav.newApplications',
-  'Pending Appraisal': 'nav.pendingAppraisal',
-  'Returned / Incomplete': 'nav.returned',
-  'Member Registry': 'nav.memberRegistry',
-  'Search Member': 'nav.searchMember',
-  'Member Profile': 'nav.memberProfile',
   'Loan Register': 'nav.loanRegister',
-  'Loan Calculator': 'nav.loanCalculator',
-  'Portfolio Analytics': 'nav.analytics',
-  'DPD Report': 'nav.dpd',
-  'DPD Summary': 'nav.dpd',
+  'DPD Monitoring': 'nav.dpd',
   'MIS Reports': 'nav.reports',
-  'Defaults & Recovery': 'nav.defaults',
   'Document Queue': 'nav.documentQueue',
-  'Document Templates': 'nav.templates',
+  'Document Workspace': 'nav.workspace',
   'KYC & CKYC': 'nav.kyc',
-  'Compliance Calendar': 'nav.calendar',
   'NOC Management': 'nav.noc',
-  'Stamp Duty Register': 'nav.stamp',
-  'Compliance Reports': 'nav.reports',
+  'Compliance Calendar': 'nav.calendar',
+  'Registers & Reports': 'nav.reports',
   'Approval Queue': 'nav.approvalQueue',
-  'Credit Sanction Register': 'nav.sanctionRegister',
-  'Exception Register': 'nav.exceptions',
-  'Board Minutes': 'nav.board',
-  'Policy Settings': 'nav.policy',
-  'Disbursement Queue': 'nav.disbursement',
+  'Joint Approvals': 'nav.jointApprovals',
+  'Special Cases': 'nav.specialCases',
+  'Portfolio Health': 'nav.portfolioHealth',
+  'Sanction Register': 'nav.sanctionRegister',
+  'Recovery Actions': 'nav.recovery',
+  Disbursements: 'nav.disbursement',
+  Authorizations: 'nav.authorizations',
   'SAP Management': 'nav.sap',
-  'Incoming Payments': 'nav.incoming',
+  Repayments: 'nav.incoming',
+  Reconciliation: 'nav.reconciliation',
+  'Control Center': 'nav.controlCenter',
   'User Management': 'nav.userManagement',
   'Audit Log': 'nav.audit',
-  'System Configuration': 'nav.config',
+  Configuration: 'nav.config',
+  's.186 Limits': 'nav.limits',
 };
 
-const roleSectionLabels: Record<string, string[]> = {
-  farmer: ['Main', 'Applications', 'My Account', 'Payments', 'Help'],
-  credit: ['Main', 'Applications', '', '', 'Processing', '', 'Active Loans', '', '', 'Records', '', '', 'Reports'],
-  compliance: ['Main', 'Document Management', '', '', 'Compliance Calendar', '', '', 'Loan Closure', '', 'Registers', '', '', '', 'Legal Instruments', '', 'Reports', 'Cross-Role Handoffs'],
-  sanction: ['Main', 'Decisions', '', '', '', '', 'Records', '', '', 'Portfolio', '', '', 'Recovery Authority', 'Cross-Role Sign-offs'],
-  treasury: ['Main', 'Disbursements', 'SAP Management', 'Repayment Tracking', 'Reports', 'Audit'],
-  admin: ['Administration', '', '', 'Platform Controls'],
-};
+function groupId(item: NavItem) {
+  return item.groupKey || item.key;
+}
+
+function isItemActive(item: NavItem, activePage: string) {
+  return activePage === item.key || item.children?.some(c => c.key === activePage) || false;
+}
 
 export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onToggleGroup }: SidebarProps) {
   const { user } = useAuth();
   const { t } = useLanguage();
   const navItems = navByRole[user?.role || 'farmer'] || farmerNav;
-  const sectionLabels = roleSectionLabels[user?.role || 'farmer'] || [];
+  const accent = roleAccents[user?.role || 'farmer'] || '#1E88E5';
+  let lastSection = '';
+
+  const handleParentClick = (item: NavItem) => {
+    const gid = groupId(item);
+    if (item.children && !expandedGroups.includes(gid)) {
+      onToggleGroup(gid);
+    }
+    onNavigate(item.key);
+  };
 
   return (
     <aside
@@ -230,94 +315,116 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
         backgroundColor: '#1A3C2A',
       }}
     >
-      <div className="flex-1 overflow-y-auto py-3 shell-scroll" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.12) transparent' }}>
+      <div className="flex-1 overflow-y-auto py-2 shell-scroll" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.12) transparent' }}>
         {navItems.map((item, index) => {
-          const isActive = activePage === item.key || item.children?.some(c => c.key === activePage);
-          const isExpanded = expandedGroups.includes(item.key);
+          const gid = groupId(item);
+          const isActive = isItemActive(item, activePage);
+          const isExpanded = expandedGroups.includes(gid) || (item.children && isActive);
           const itemLabel = t(item.i18nKey || labelI18nKeys[item.label] || `nav.${item.key}`, item.label);
+          const showSection = !collapsed && item.section && item.section !== lastSection;
+          if (showSection) lastSection = item.section!;
 
           return (
-            <div key={item.key}>
-              {!collapsed && sectionLabels[index] && (
-                <div className="sidebar-section px-4 pt-3 pb-1">
-                  <div style={{ height: '1px', backgroundColor: index === 0 ? 'transparent' : 'rgba(255,255,255,0.18)', marginBottom: '8px' }} />
-                  <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.38)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    {sectionLabels[index]}
+            <div key={`${item.key}-${index}`}>
+              {showSection && (
+                <div className="sidebar-section px-4 pt-4 pb-1.5">
+                  {index > 0 && (
+                    <div style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.14)', marginBottom: '10px' }} />
+                  )}
+                  <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.38)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                    {item.section}
                   </div>
                 </div>
               )}
-              <button
-                className="w-full flex items-center gap-3 px-4 transition-all group relative hover:bg-white/10"
+              <div
+                className="w-full flex items-center transition-all group relative"
                 style={{
-                  height: '48px',
-                  backgroundColor: isActive ? '#2D7A4F' : 'transparent',
-                  borderLeft: isActive ? '3px solid #1E88E5' : '3px solid transparent',
-                  color: isActive ? 'white' : 'rgba(255,255,255,0.65)',
+                  height: '46px',
+                  backgroundColor: isActive ? 'rgba(45,122,79,0.55)' : 'transparent',
+                  borderLeft: isActive ? `3px solid ${accent}` : '3px solid transparent',
+                  color: isActive ? 'white' : 'rgba(255,255,255,0.68)',
                 }}
-                onClick={() => {
-                  if (item.children) {
-                    onToggleGroup(item.key);
-                  } else {
-                    onNavigate(item.key);
-                  }
-                }}
-                title={collapsed ? itemLabel : undefined}
-                aria-label={item.children ? `${itemLabel} menu` : itemLabel}
-                aria-current={isActive ? 'page' : undefined}
-                aria-expanded={item.children ? isExpanded : undefined}
               >
-                <span className="flex-shrink-0" style={{ opacity: isActive ? 1 : 0.75 }} aria-hidden="true">
-                  {item.icon}
-                </span>
-                {!collapsed && (
-                  <>
-                    <span className="sidebar-label flex-1 text-left" style={{ fontSize: '14px', fontWeight: isActive ? 600 : 400, lineHeight: '20px' }}>
-                      {itemLabel}
-                    </span>
-                    {item.badge && (
-                      <span
-                        className="sidebar-badge w-5 h-5 rounded-full flex items-center justify-center text-white"
-                        style={{ backgroundColor: '#EF4444', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}
-                      >
-                        {item.badge}
+                <button
+                  className="flex-1 h-full flex items-center gap-3 px-4 hover:bg-white/10 transition-all"
+                  onClick={() => {
+                    if (item.children) {
+                      handleParentClick(item);
+                    } else {
+                      onNavigate(item.key);
+                    }
+                  }}
+                  title={collapsed ? itemLabel : undefined}
+                  aria-label={item.children ? `${itemLabel} menu` : itemLabel}
+                  aria-current={isActive ? 'page' : undefined}
+                  aria-expanded={item.children ? isExpanded : undefined}
+                >
+                  <span className="flex-shrink-0" style={{ opacity: isActive ? 1 : 0.72 }} aria-hidden="true">
+                    {item.icon}
+                  </span>
+                  {!collapsed && (
+                    <>
+                      <span className="sidebar-label flex-1 text-left truncate" style={{ fontSize: '13.5px', fontWeight: isActive ? 600 : 400, lineHeight: '20px' }}>
+                        {itemLabel}
                       </span>
-                    )}
-                    {item.children && (
-                      <ChevronRight
-                        size={14}
-                        className="sidebar-chevron flex-shrink-0 transition-transform"
-                        style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', opacity: 0.5 }}
-                      />
-                    )}
-                  </>
+                      {item.badge ? (
+                        <span
+                          className="sidebar-badge min-w-5 h-5 px-1 rounded-full flex items-center justify-center text-white"
+                          style={{ backgroundColor: '#EF4444', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}
+                        >
+                          {item.badge}
+                        </span>
+                      ) : null}
+                    </>
+                  )}
+                </button>
+                {!collapsed && item.children && (
+                  <button
+                    type="button"
+                    className="sidebar-chevron flex-shrink-0 p-2 mr-1 rounded hover:bg-white/10"
+                    onClick={() => onToggleGroup(gid)}
+                    aria-label={isExpanded ? `Collapse ${itemLabel}` : `Expand ${itemLabel}`}
+                  >
+                    <ChevronRight
+                      size={14}
+                      className="transition-transform"
+                      style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', opacity: 0.55 }}
+                    />
+                  </button>
                 )}
                 {collapsed && (
                   <div className="absolute left-16 bg-[#12151A] text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 whitespace-nowrap z-50 pointer-events-none shadow-lg">
                     {itemLabel}
                   </div>
                 )}
-              </button>
+              </div>
 
               {!collapsed && item.children && isExpanded && (
-                <div className="sidebar-children" style={{ backgroundColor: 'rgba(0,0,0,0.15)' }}>
+                <div className="sidebar-children pb-1" style={{ backgroundColor: 'rgba(0,0,0,0.12)' }}>
                   {item.children.map(child => {
                     const isChildActive = activePage === child.key;
                     const childLabel = t(labelI18nKeys[child.label] || `nav.${child.key}`, child.label);
                     return (
                       <button
                         key={child.key}
-                        className="w-full text-left py-2.5 pl-14 pr-4 transition-colors hover:bg-white/8"
+                        className="w-full text-left py-2 pl-12 pr-3 transition-colors hover:bg-white/8 flex items-center justify-between gap-2"
                         style={{
-                          fontSize: '13px',
-                          color: isChildActive ? 'white' : 'rgba(255,255,255,0.55)',
-                          fontWeight: isChildActive ? 500 : 400,
-                          backgroundColor: isChildActive ? 'rgba(45,122,79,0.4)' : 'transparent',
+                          fontSize: '12.5px',
+                          color: isChildActive ? 'white' : 'rgba(255,255,255,0.52)',
+                          fontWeight: isChildActive ? 600 : 400,
+                          backgroundColor: isChildActive ? 'rgba(45,122,79,0.35)' : 'transparent',
+                          borderLeft: isChildActive ? `2px solid ${accent}` : '2px solid transparent',
                         }}
                         onClick={() => onNavigate(child.key)}
                         aria-current={isChildActive ? 'page' : undefined}
                         aria-label={childLabel}
                       >
-                        {childLabel}
+                        <span className="truncate">{childLabel}</span>
+                        {child.badge ? (
+                          <span className="min-w-4 h-4 px-1 rounded-full flex items-center justify-center" style={{ backgroundColor: '#EF4444', color: 'white', fontSize: '9px', fontWeight: 800 }}>
+                            {child.badge}
+                          </span>
+                        ) : null}
                       </button>
                     );
                   })}
@@ -329,14 +436,25 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
       </div>
 
       {!collapsed && (
-        <div
-          className="sidebar-user px-3 py-3 border-t"
-          style={{ borderColor: 'rgba(255,255,255,0.1)' }}
-        >
-          <div className="flex items-center gap-2 p-2 rounded-xl" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+        <div className="sidebar-footer px-3 py-3 border-t space-y-2" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+          {user?.role !== 'farmer' && (
+            <button
+              onClick={() => onNavigate('notifications-center')}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/8 transition-colors text-left"
+              style={{ fontSize: '12px', color: 'rgba(255,255,255,0.65)' }}
+            >
+              <Bell size={15} />
+              <span>Notifications</span>
+            </button>
+          )}
+          <button
+            onClick={() => onNavigate('user-profile')}
+            className="w-full flex items-center gap-2 p-2 rounded-xl hover:bg-white/8 transition-colors text-left"
+            style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
+          >
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0"
-              style={{ backgroundColor: '#2D7A4F' }}
+              style={{ backgroundColor: accent, boxShadow: `0 0 0 2px rgba(255,255,255,0.2)` }}
             >
               {user?.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
@@ -348,7 +466,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                 {user?.roleLabel}
               </div>
             </div>
-          </div>
+          </button>
         </div>
       )}
     </aside>

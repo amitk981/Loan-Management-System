@@ -39,7 +39,7 @@ export const farmerLoan = {
 };
 
 export const farmerEligibility = {
-  method1: farmerProfile.shares * farmerProfile.loanValuePerShare * 0.3,
+  method1: farmerProfile.shares * farmerProfile.loanValuePerShare,
   method2: farmerProfile.landAcres * farmerProfile.scaleOfFinance,
   get eligible() {
     return Math.min(this.method1, this.method2);

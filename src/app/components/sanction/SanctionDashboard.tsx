@@ -1,7 +1,9 @@
 import { TrendingUp } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
-import { scAlerts, scApprovalQueue, scPortfolio, scProfile } from '../../data/sanctionData';
+import { RoleCommandCenter } from '../shared/RoleCommandCenter';
+import { useAuth } from '../../context/AuthContext';
+import { scApprovalQueue, scPortfolio } from '../../data/sanctionData';
 
 interface SanctionDashboardProps {
   onNavigate: (page: string) => void;
@@ -13,24 +15,36 @@ function formatCurrency(n: number) {
 }
 
 export function SanctionDashboard({ onNavigate, activePage }: SanctionDashboardProps) {
+  const { user } = useAuth();
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
   return (
     <Shell
       activePage={activePage}
       onNavigate={onNavigate}
       breadcrumbs={['Sanction Committee', 'Dashboard']}
-      pageTitle={`Good morning, ${scProfile.name}`}
-      pageSubtitle={`${scProfile.role} · Authority: ${scProfile.authority}`}
+      pageTitle={`${greeting}, ${user?.name || 'CFO'}`}
+      pageSubtitle={`${user?.roleLabel || 'Sanction Committee'} · Review authority up to ₹5,00,000`}
       actions={<button onClick={() => onNavigate('sc-awaiting')} className="px-4 py-2.5 rounded-lg font-semibold hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: '#7C3AED', color: 'white', fontSize: '14px' }}>Review Now →</button>}
     >
-      <div className="grid grid-cols-3 gap-5 mb-5">
-        {scAlerts.map(alert => (
-          <button key={alert.title} onClick={() => onNavigate(alert.page)} className="rounded-xl p-5 text-left clickable-card" style={{ backgroundColor: alert.bg, borderTop: `3px solid ${alert.color}`, borderLeft: '1px solid #EDEEF0', borderRight: '1px solid #EDEEF0', borderBottom: '1px solid #EDEEF0' }}>
-            <div style={{ fontSize: '12px', fontWeight: 800, color: alert.color, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{alert.title}</div>
-            <div style={{ fontSize: '36px', fontWeight: 900, color: alert.color, marginTop: '8px' }}>{alert.value}</div>
-            <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '4px' }}>{alert.note}</div>
-          </button>
-        ))}
-      </div>
+      <RoleCommandCenter
+        title="Decision Room"
+        focus="Review applications waiting for your signature"
+        primaryAction={{ label: 'Open approval queue', detail: '7 applications are waiting. Oldest case has crossed the 2-day mark.', page: 'sc-awaiting', tone: 'purple', badge: '7' }}
+        metrics={[
+          { label: 'Awaiting', value: '7', tone: 'red' },
+          { label: 'Joint', value: '2', tone: 'amber' },
+          { label: 'NPA', value: scPortfolio.npaRate, tone: 'red' },
+        ]}
+        secondaryActions={[
+          { label: 'Joint approvals', detail: 'Loans above authority threshold need co-signature.', page: 'sc-joint', tone: 'purple' },
+          { label: 'Special cases', detail: 'Director/relative applications need GM evidence.', page: 'sc-special-cases', tone: 'amber' },
+          { label: 'Portfolio health', detail: 'Check exposure, capacity and overdue buckets.', page: 'sc-health', tone: 'blue' },
+          { label: 'Recovery actions', detail: 'Authorize default escalation or security invocation.', page: 'sc-default-escalations', tone: 'red' },
+        ]}
+        onNavigate={onNavigate}
+      />
 
       <div className="grid grid-cols-4 gap-5 mb-5">
         {[

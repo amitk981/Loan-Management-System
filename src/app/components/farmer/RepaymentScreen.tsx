@@ -20,6 +20,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
   const [submitted, setSubmitted] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const [receiptUploaded, setReceiptUploaded] = useState(false);
 
   const paymentAmount = parseFloat(amount) || 0;
   const principalAllocation = Math.min(paymentAmount, farmerLoan.outstandingPrincipal);
@@ -67,8 +68,9 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
       pageTitle="Make a Payment"
       pageSubtitle={`Loan ${farmerLoan.id} · Outstanding ${formatCurrency(farmerLoan.outstandingBalance)}`}
     >
-      <div className="max-w-3xl">
-        <div className="rounded-2xl p-5 mb-6" style={{ background: 'linear-gradient(135deg, #1A3C2A 0%, #2D7A4F 100%)' }}>
+      <div className="farmer-page grid grid-cols-12 gap-6 items-start">
+        <div className="col-span-8">
+        <div className="farmer-hero p-6 mb-6">
           <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', fontWeight: 600, marginBottom: '6px' }}>TOTAL OUTSTANDING</div>
           <div style={{ fontSize: '40px', fontWeight: 700, color: 'white', fontFamily: 'Roboto Mono' }}>{formatCurrency(farmerLoan.outstandingBalance)}</div>
           <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', marginTop: '4px' }}>
@@ -86,7 +88,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-5 mb-5 border border-[#EDEEF0]">
+        <div className="farmer-panel p-5 mb-5">
           <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#12151A', marginBottom: '12px' }}>Payment Method</h3>
           <div className="grid grid-cols-2 gap-3">
             {[
@@ -108,7 +110,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
         </div>
 
         {method === 'direct' && (
-          <div className="bg-white rounded-2xl p-5 mb-5 border border-[#EDEEF0]">
+          <div className="farmer-panel p-5 mb-5">
             <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#12151A', marginBottom: '12px' }}>SFPCL Bank Details</h3>
             <div className="space-y-3">
               {bankDetails.map(detail => (
@@ -126,7 +128,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
           </div>
         )}
 
-        <div className="bg-white rounded-2xl p-5 mb-5 border border-[#EDEEF0]">
+        <div className="farmer-panel p-5 mb-5">
           <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#12151A', marginBottom: '12px' }}>Payment Details</h3>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
@@ -162,10 +164,12 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
             ))}
           </div>
           {method === 'direct' && (
-            <div className="mt-4 border-2 border-dashed rounded-xl p-4 flex items-center gap-2" style={{ borderColor: '#D1D5DB', backgroundColor: '#FAFAFA' }}>
-              <Upload size={18} style={{ color: '#9EA8B3' }} />
-              <span style={{ fontSize: '13px', color: '#3D4450' }}>Upload UTR screenshot or payment receipt</span>
-            </div>
+            <button type="button" onClick={() => setReceiptUploaded(true)} className="w-full mt-4 border-2 border-dashed rounded-xl p-4 flex items-center gap-2 text-left hover:bg-[#F0FDF4]" style={{ borderColor: receiptUploaded ? '#22C55E' : '#D1D5DB', backgroundColor: receiptUploaded ? '#F0FDF4' : '#FAFAFA' }}>
+              {receiptUploaded ? <CheckCircle size={18} style={{ color: '#22C55E' }} /> : <Upload size={18} style={{ color: '#9EA8B3' }} />}
+              <span style={{ fontSize: '13px', color: receiptUploaded ? '#166534' : '#3D4450', fontWeight: receiptUploaded ? 700 : 400 }}>
+                {receiptUploaded ? 'Receipt attached for verification' : 'Upload UTR screenshot or payment receipt'}
+              </span>
+            </button>
           )}
         </div>
 
@@ -177,6 +181,33 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
         >
           Review Payment Confirmation
         </button>
+        </div>
+
+        <aside className="col-span-4 farmer-panel p-5 sticky top-4">
+          <div className="farmer-kicker">Payment Preview</div>
+          <div className="mt-3 space-y-3">
+            {[
+              ['Amount', formatCurrency(paymentAmount)],
+              ['Method', method === 'direct' ? 'Direct Transfer' : 'Subsidiary Deduction'],
+              ['Principal', formatCurrency(principalAllocation)],
+              ['Interest', formatCurrency(interestAllocation)],
+              ['Reference', method === 'subsidiary' ? 'Auto generated' : utr || 'Pending'],
+            ].map(([label, value]) => (
+              <div key={label} className="flex items-center justify-between gap-3 py-2 border-b border-[#E4E7EC] last:border-b-0">
+                <span style={{ fontSize: '12px', color: '#667085', fontWeight: 700 }}>{label}</span>
+                <span style={{ fontSize: '13px', color: '#111827', fontWeight: 850, textAlign: 'right', fontFamily: label === 'Amount' || label === 'Principal' || label === 'Interest' ? 'Roboto Mono' : 'inherit' }}>{value}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: canSubmit ? '#F0FDF4' : '#FFF7ED', border: `1px solid ${canSubmit ? '#BBF7D0' : '#FED7AA'}` }}>
+            <div style={{ fontSize: '13px', fontWeight: 850, color: canSubmit ? '#166534' : '#9A3412' }}>
+              {canSubmit ? 'Ready to review' : 'Reference needed'}
+            </div>
+            <div style={{ fontSize: '12px', color: '#667085', lineHeight: '18px', marginTop: '5px' }}>
+              {canSubmit ? 'Submit after checking the allocation and bank reference.' : 'Enter a UTR of at least 6 characters, or choose subsidiary deduction.'}
+            </div>
+          </div>
+        </aside>
       </div>
 
       {showConfirm && (
@@ -196,6 +227,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
             <div>Principal allocation: <strong>{formatCurrency(principalAllocation)}</strong></div>
             <div>Interest allocation: <strong>{formatCurrency(interestAllocation)}</strong></div>
             {unallocated > 0 && <div>Advance/excess: <strong>{formatCurrency(unallocated)}</strong></div>}
+            {method === 'direct' && <div>Receipt: <strong>{receiptUploaded ? 'Attached' : 'Not attached'}</strong></div>}
             <div>SFPCL will verify this before posting it to your ledger.</div>
           </div>
         </AppModal>

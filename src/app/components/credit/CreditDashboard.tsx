@@ -1,14 +1,13 @@
 import { ArrowRight, Check } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
-import { creditKpis } from '../../data/creditData';
+import { RoleCommandCenter } from '../shared/RoleCommandCenter';
 
 interface CreditDashboardProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
-
-const kpiPages = ['credit-queue', 'credit-pending', 'credit-sc-queue', 'credit-active-loans'];
 
 const actionQueue = [
   { icon: '!', loan: 'LO00000089', name: 'Rajesh Patil', note: 'Appraisal Note overdue 1d', status: 'Overdue', page: 'credit-review', color: '#C62828' },
@@ -31,27 +30,40 @@ const dpdData = [
 ];
 
 export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps) {
+  const { user } = useAuth();
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
   return (
     <Shell
       activePage={activePage}
       onNavigate={onNavigate}
       breadcrumbs={['Credit Assessment', 'Dashboard']}
-      pageTitle="Credit Dashboard"
+      pageTitle={`${greeting}, ${user?.name || 'Credit Manager'}`}
+      pageSubtitle={user?.roleLabel || 'Credit Assessment'}
       actions={
         <button onClick={() => onNavigate('credit-queue')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2 hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>
           New Applications <ArrowRight size={15} />
         </button>
       }
     >
-      <div className="grid grid-cols-4 gap-4 mb-5">
-        {creditKpis.map((kpi, i) => (
-          <button key={kpi.label} onClick={() => onNavigate(kpiPages[i] || 'credit-queue')} className="bg-white rounded-xl p-5 border border-[#E5E7EB] text-left clickable-card" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-            <div style={{ fontSize: '11px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{kpi.label}</div>
-            <div style={{ fontSize: '32px', fontWeight: 800, color: kpi.color, marginTop: '8px' }}>{kpi.value}</div>
-            <span className="inline-flex mt-2 px-2 py-1 rounded-full" style={{ backgroundColor: `${kpi.color}18`, color: kpi.color, fontSize: '11px', fontWeight: 700 }}>{kpi.tag}</span>
-          </button>
-        ))}
-      </div>
+      <RoleCommandCenter
+        title="Credit Workbench"
+        focus="Clear the oldest appraisal first"
+        primaryAction={{ label: 'Open appraisal', detail: 'LO00000089 is overdue by 1 day and should be resolved before new intake.', page: 'credit-review', tone: 'green', badge: 'Overdue' }}
+        metrics={[
+          { label: 'New', value: '12', tone: 'blue' },
+          { label: 'Review', value: '5', tone: 'amber' },
+          { label: 'SC', value: '2', tone: 'purple' },
+        ]}
+        secondaryActions={[
+          { label: 'Intake queue', detail: 'Verify new applications and request missing documents.', page: 'credit-queue', tone: 'blue' },
+          { label: 'SC tracker', detail: 'Follow decisions already submitted for sanction.', page: 'credit-sc-queue', tone: 'purple' },
+          { label: 'Monitor DPD', detail: 'Review overdue borrowers and default notes.', page: 'credit-dpd', tone: 'red' },
+          { label: 'Loan register', detail: 'Search active loans and update records.', page: 'credit-register', tone: 'neutral' },
+        ]}
+        onNavigate={onNavigate}
+      />
 
       <div className="grid grid-cols-11 gap-5 mb-5">
         <div className="col-span-6 bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">

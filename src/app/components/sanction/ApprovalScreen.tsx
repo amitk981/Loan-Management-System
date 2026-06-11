@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Check, CheckCircle, Printer, RotateCcw, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Printer, RotateCcw, XCircle } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { AppModal } from '../shared/AppModal';
@@ -52,7 +52,9 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
           <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#12151A' }}>Decision Recorded</h2>
           <p style={{ fontSize: '14px', color: '#6B7280', marginTop: '8px' }}>{scReviewLoan.id} · {formatCurrency(amountNum)} · {decision.toUpperCase()}</p>
           <div className="mt-5 p-4 rounded-lg text-left" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', fontSize: '13px', color: '#166534', lineHeight: '22px' }}>
-            Credit Sanction Register: Updated ✅<br />CS Team notified: Yes ✅<br />Farmer notification queued: Yes ✅<br />Recorded by: S. Nair (CFO) · 13-Oct-2025 · 10:22
+            {['Credit Sanction Register updated', 'CS Team notified', 'Farmer notification queued', 'Recorded by S. Nair (CFO)'].map(item => (
+              <div key={item} className="flex items-center gap-2 py-1"><CheckCircle size={14} />{item}</div>
+            ))}
           </div>
           <div className="flex gap-3 mt-6"><button onClick={() => onNavigate('sc-awaiting')} className="px-5 py-2.5 rounded-lg border border-[#EDEEF0]">Back to Approval Queue</button><button onClick={() => onNavigate('sc-register')} className="px-5 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#7C3AED', color: 'white' }}>View Sanction Register</button></div>
         </div>
@@ -73,7 +75,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
         <div className="mb-5 p-4 rounded-lg" style={{ backgroundColor: '#FEF3C7', borderLeft: '4px solid #D97706' }}>
           <div style={{ fontSize: '14px', fontWeight: 900, color: '#92400E' }}>Joint Approval Required — Amount Exceeds ₹5,00,000</div>
           <div className="grid grid-cols-3 gap-3 mt-3">
-            {['S. Nair · CFO ✅ Signed · 12-Oct-2025 · Recommended Approve', 'R. Deshmukh · Director ○ Awaiting — Notified 12-Oct-2025', 'V. Kulkarni · Director ○ Awaiting — Notified 12-Oct-2025'].map(item => <div key={item} className="p-2 rounded-lg" style={{ backgroundColor: 'white', fontSize: '12px', color: '#3D4450', fontWeight: 700 }}>{item}</div>)}
+            {['S. Nair · CFO · Signed · 12-Oct-2025', 'R. Deshmukh · Director · Awaiting', 'V. Kulkarni · Director · Awaiting'].map((item, i) => <div key={item} className="p-2 rounded-lg flex items-center gap-2" style={{ backgroundColor: 'white', fontSize: '12px', color: '#3D4450', fontWeight: 700 }}><span className="w-2 h-2 rounded-full" style={{ backgroundColor: i === 0 ? '#22C55E' : '#F59E0B' }} />{item}</div>)}
           </div>
           <div style={{ fontSize: '12px', color: '#92400E', marginTop: '8px' }}>Current status: 1 of 3 signatures obtained. Loan cannot be disbursed until all 3 are recorded.</div>
         </div>
@@ -118,7 +120,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
             <div className="col-span-2 p-3 rounded-lg" style={{ backgroundColor: '#F7F8FA', fontSize: '13px', color: '#3D4450', lineHeight: '20px' }}>{scReviewLoan.recommendationNote}</div>
           </Panel>
           <Panel title="Evidence">
-            {['7/12 Extract uploaded', 'Crop Plan uploaded', '6 months Bank Statement uploaded', 'PoA prepared by CS', 'No Director/Relative borrower'].map(item => <div key={item} className="p-3 border-b border-[#EDEEF0]" style={{ fontSize: '13px', color: '#3D4450' }}>✅ {item}</div>)}
+            {['7/12 Extract uploaded', 'Crop Plan uploaded', '6 months Bank Statement uploaded', 'PoA prepared by CS', 'No Director/Relative borrower'].map(item => <div key={item} className="p-3 border-b border-[#EDEEF0] flex items-center gap-2" style={{ fontSize: '13px', color: '#3D4450' }}><CheckCircle size={14} color="#22C55E" />{item}</div>)}
           </Panel>
         </div>
 

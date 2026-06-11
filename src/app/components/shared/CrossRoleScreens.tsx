@@ -15,20 +15,20 @@ function formatCurrency(n: number) {
 }
 
 const pageMeta: Record<string, { title: string; subtitle: string }> = {
-  'integration-overview': { title: 'Cross-Role Integration', subtitle: 'Shared handoffs, notifications, audit trail and missing screens' },
-  'credit-manual-entry': { title: 'Manual Loan Application Entry', subtitle: 'Credit Officer data-entry path for offline applications' },
-  'sc-final-signoff': { title: 'Final Checklist Sign-Off', subtitle: 'Second SC action after CS document preparation · SOP §4.13' },
-  'cs-new-loan': { title: 'Document Workspace — New Loan Initial State', subtitle: 'All document tabs start pending after SC approval' },
-  'cs-archive-file': { title: 'Post-Disbursement Archive', subtitle: 'Checklist complete with Finance sign-off; archive document file' },
-  'farmer-post-disbursement': { title: 'Active Loan — Disbursement Complete', subtitle: 'Farmer dashboard transition after Treasury confirms disbursement' },
-  'farmer-payment-processing': { title: 'Payment Processing', subtitle: 'Repayment submitted; SAP posting pending next working day' },
-  'farmer-fully-repaid': { title: 'Fully Repaid — Awaiting NOC', subtitle: 'Balance is zero; CS NOC workflow has been triggered' },
-  'farmer-noc-delivered': { title: 'NOC Delivered', subtitle: 'Loan closed and security return confirmed' },
-  'shared-director-case': { title: 'Director / Relative Special Case', subtitle: 'Reusable detection, GM upload and blocked director views' },
-  'shared-rate-change': { title: 'Interest Rate Change Broadcast', subtitle: 'Admin confirmation and cross-role propagation' },
-  'shared-s186-lock': { title: 's.186 Lending Lock', subtitle: 'System-wide lending suspension states' },
-  'shared-audit-trail': { title: 'Universal Audit Trail', subtitle: 'Full and farmer-safe audit views' },
-  'shared-notifications': { title: 'Unified Notification Matrix', subtitle: 'Every notification deep-links to the relevant entity' },
+  'integration-overview': { title: 'Cross-Role Integration', subtitle: 'Handoffs and audit trail' },
+  'credit-manual-entry': { title: 'Manual Loan Application Entry', subtitle: 'Offline applications' },
+  'sc-final-signoff': { title: 'Final Checklist Sign-Off', subtitle: 'Release to Treasury' },
+  'cs-new-loan': { title: 'Document Workspace', subtitle: 'New SC-approved loan' },
+  'cs-archive-file': { title: 'Post-Disbursement Archive', subtitle: 'Archive document file' },
+  'farmer-post-disbursement': { title: 'Active Loan', subtitle: 'Disbursement complete' },
+  'farmer-payment-processing': { title: 'Payment Processing', subtitle: 'SAP posting pending' },
+  'farmer-fully-repaid': { title: 'Fully Repaid', subtitle: 'Awaiting NOC' },
+  'farmer-noc-delivered': { title: 'NOC Delivered', subtitle: 'Loan closed' },
+  'shared-director-case': { title: 'Director / Relative Special Case', subtitle: 'GM approval path' },
+  'shared-rate-change': { title: 'Interest Rate Change', subtitle: 'Broadcast controls' },
+  'shared-s186-lock': { title: 's.186 Lending Lock', subtitle: 'Suspension states' },
+  'shared-audit-trail': { title: 'Universal Audit Trail', subtitle: 'Internal and farmer-safe' },
+  'shared-notifications': { title: 'Unified Notification Matrix', subtitle: 'Deep-link contract' },
 };
 
 export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProps) {
@@ -38,13 +38,11 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
     <div className="grid grid-cols-5 gap-5">
       <div className="col-span-3 bg-white rounded-lg p-5 border border-[#EDEEF0]">
         <h3 style={{ fontSize: 18, fontWeight: 900 }}>Create Application on Behalf of Farmer</h3>
-        <p style={{ fontSize: 13, color: '#6B7280', marginTop: 4 }}>Fields mirror the farmer application form. On submit, the same downstream workflow and reference number are generated.</p>
         <div className="grid grid-cols-2 gap-4 mt-5">
           {['Farmer full name', 'Folio number', 'Mobile number', 'Nominee name', 'Aadhaar', 'PAN', 'Village', 'Crop', 'Requested amount', 'Purpose'].map((field, i) => (
             <label key={field} style={{ fontSize: 12, color: '#3D4450', fontWeight: 800 }}>{field}<input className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB]" placeholder={i === 8 ? '₹' : field} style={{ height: 40, fontSize: 13 }} /></label>
           ))}
         </div>
-        <div className="p-3 rounded-lg mt-4" style={{ backgroundColor: '#E0F2FE', color: '#0E7490', fontSize: 13, fontWeight: 800 }}>On save: reference number issued, Credit inbox row status = New — Unreviewed, farmer notification generated.</div>
         <button className="mt-4 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white' }}>Create Application LO00000053</button>
       </div>
       <div className="col-span-2 space-y-4">
@@ -59,10 +57,9 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
       <div className="col-span-3 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
         <div className="p-5 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
           <h3 style={{ fontSize: 18, fontWeight: 900 }}>LO00000047 · Ramesh Patil · {formatCurrency(200000)}</h3>
-          <p style={{ fontSize: 13, color: '#6B7280' }}>CS signed checklist at 10 Jun 2026 · 16:05. Director sign-off releases file to Treasury.</p>
         </div>
         <div className="grid grid-cols-3 gap-3 p-5">
-          {Array.from({ length: 15 }).map((_, i) => <div key={i} className="p-3 rounded-lg" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', fontSize: 12, color: '#166534', fontWeight: 800 }}>✓ Checklist item {i + 1}</div>)}
+          {Array.from({ length: 15 }).map((_, i) => <button key={i} className="p-3 rounded-lg text-left clickable-card" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', fontSize: 12, color: '#166534', fontWeight: 800 }}>Checklist item {i + 1}</button>)}
         </div>
         <div className="p-5 border-t border-[#EDEEF0]">
           <button className="w-full py-3 rounded-lg font-semibold" style={{ backgroundColor: '#7C3AED', color: 'white' }}>Sign Checklist — Final Disbursement Approval</button>
@@ -75,8 +72,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
 
   const renderCsNewLoan = () => (
     <div className="space-y-5">
-      <div className="p-4 rounded-lg" style={{ backgroundColor: '#E0F2FE', borderLeft: '4px solid #0891B2', color: '#0E7490', fontSize: 13, fontWeight: 800 }}>Where to begin: Start with PoA → then Tri-Party Agreement → then SH-4/CDSL → Term Sheet → Loan Agreement → Bank Verification → Checklist.</div>
-      <div className="grid grid-cols-7 gap-3">{['PoA', 'Tri-Party', 'SH-4/CDSL', 'Term Sheet', 'Loan Agreement', 'Bank Verify', 'Checklist'].map((tab, i) => <div key={tab} className="bg-white rounded-lg p-4 border border-[#EDEEF0]"><div className="w-8 h-8 rounded-full flex items-center justify-center mb-3" style={{ backgroundColor: i === 0 ? '#1A3C2A' : '#EDEEF0', color: i === 0 ? 'white' : '#9EA8B3', fontWeight: 900 }}>{i + 1}</div><strong style={{ fontSize: 13 }}>{tab}</strong><div className="mt-2"><StatusBadge status={i === 0 ? 'Ready' : 'Not Started'} /></div></div>)}</div>
+      <div className="grid grid-cols-7 gap-3">{['PoA', 'Tri-Party', 'SH-4/CDSL', 'Term Sheet', 'Loan Agreement', 'Bank Verify', 'Checklist'].map((tab, i) => <button key={tab} onClick={() => onNavigate('cs-workspace')} className="bg-white rounded-lg p-4 border border-[#EDEEF0] text-left clickable-card"><div className="w-8 h-8 rounded-full flex items-center justify-center mb-3" style={{ backgroundColor: i === 0 ? '#1A3C2A' : '#EDEEF0', color: i === 0 ? 'white' : '#9EA8B3', fontWeight: 900 }}>{i + 1}</div><strong style={{ fontSize: 13 }}>{tab}</strong><div className="mt-2"><StatusBadge status={i === 0 ? 'Ready' : 'Not Started'} /></div></button>)}</div>
       <HandoffCard title="SC → CS Data Auto-Populated" from="SC approval" to="CS Workspace">Borrower details, address, folio, nominee, share type, approved amount, interest rate, tenure, subsidiary and &gt;₹5L signature flags are carried forward automatically.</HandoffCard>
     </div>
   );
@@ -85,8 +81,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
     <div className="grid grid-cols-5 gap-5">
       <div className="col-span-3 bg-white rounded-lg p-5 border border-[#EDEEF0]">
         <h3 style={{ fontSize: 18, fontWeight: 900 }}>LO000047 Disbursed — Archive Document File</h3>
-        <p style={{ fontSize: 13, color: '#6B7280', marginTop: 4 }}>Checklist now complete with CS + Credit Manager + SC + Finance signatures.</p>
-        {['Company Secretary signed · 10 Jun 09:00', 'Credit Manager signed · 10 Jun 09:15', 'SC Director signed · 10 Jun 16:30', 'Senior Manager Finance signed · 10 Jun 17:35'].map(row => <div key={row} className="p-3 mt-3 rounded-lg" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 13, fontWeight: 800 }}>✓ {row}</div>)}
+        {['Company Secretary signed · 10 Jun 09:00', 'Credit Manager signed · 10 Jun 09:15', 'SC Director signed · 10 Jun 16:30', 'Senior Manager Finance signed · 10 Jun 17:35'].map(row => <button key={row} onClick={() => onNavigate('shared-audit-trail')} className="w-full text-left p-3 mt-3 rounded-lg clickable-row" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 13, fontWeight: 800 }}>{row}</button>)}
         <button className="mt-5 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white' }}><Archive size={15} /> Archive Document File</button>
       </div>
       <HandoffCard title="Post-Disbursement Archive Trigger" from="Treasury" to="CS">CS receives: LO000047 disbursed — Checklist now complete with Finance sign-off. Archive document file.</HandoffCard>
@@ -110,7 +105,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
           <div className="mt-4 inline-flex px-3 py-1.5 rounded-full" style={{ backgroundColor: '#F59E0B', fontSize: 12, fontWeight: 800 }}>Repayment due: 31 Mar 2027</div>
         </div>
         <UniversalStageTracker currentStage={state.stage} />
-        <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><StatusBadge status={state.status} size="md" /><p style={{ fontSize: 13, color: '#3D4450', marginTop: 12 }}>Notification and SMS trigger are recorded in the shared notification contract.</p></div>
+        <button onClick={() => onNavigate('shared-notifications')} className="bg-white rounded-lg p-5 border border-[#EDEEF0] text-left clickable-card"><StatusBadge status={state.status} size="md" /><div style={{ fontSize: 13, color: '#3D4450', marginTop: 12 }}>Open notification record</div></button>
       </div>
     );
   };
@@ -126,8 +121,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
   const renderRateChange = () => (
     <div className="max-w-2xl bg-white rounded-lg p-5 border border-[#EDEEF0]">
       <h3 style={{ fontSize: 18, fontWeight: 900 }}>Confirm Interest Rate Change</h3>
-      <p style={{ fontSize: 13, color: '#3D4450', lineHeight: '22px', marginTop: 12 }}>Changing rate from 12% to 13% p.a. will affect 47 active loans effective 1 Jul 2026. Farmer notifications will be sent automatically. CS intimation letters must be prepared manually. Treasury accruals use the new rate from the effective date.</p>
-      <div className="grid grid-cols-3 gap-3 mt-4">{['Farmer SMS + app banner', 'CS calendar task', 'Credit register update'].map(x => <div key={x} className="p-3 rounded-lg" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 12, fontWeight: 800 }}>✓ {x}</div>)}</div>
+      <div className="grid grid-cols-3 gap-3 mt-4">{['Farmer SMS + app banner', 'CS calendar task', 'Credit register update'].map(x => <button key={x} onClick={() => onNavigate('shared-notifications')} className="p-3 rounded-lg text-left clickable-row" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 12, fontWeight: 800 }}>{x}</button>)}</div>
       <div className="flex gap-3 mt-5"><button className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Cancel</button><button className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white' }}>Confirm Rate Change</button></div>
     </div>
   );
@@ -143,7 +137,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
         ['Repayment → SAP', 'Payment processing state then confirmed balance'],
         ['Full repayment → NOC', 'NOC queue + farmer document delivery'],
         ['Director case', 'GM resolution and excluded director routing'],
-      ].map(([title, body]) => <HandoffCard key={title} title={title} from="Sender" to="Receiver">{body}</HandoffCard>)}</div>
+      ].map(([title, body]) => <button key={title} onClick={() => onNavigate('shared-audit-trail')} className="text-left"><HandoffCard title={title} from="Sender" to="Receiver">{body}</HandoffCard></button>)}</div>
       <UniversalStageTracker currentStage={5} />
       <div className="grid grid-cols-2 gap-5"><AuditTrailPanel /><div className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><h3 style={{ fontSize: 15, fontWeight: 900 }}>Critical Integration Rules</h3>{integrationRules.map(([id, text]) => <div key={id} className="py-2 border-b border-[#EDEEF0]" style={{ fontSize: 13 }}><strong style={{ fontFamily: 'Roboto Mono', color: '#1E88E5' }}>{id}</strong> · {text}</div>)}</div></div>
     </div>
@@ -151,7 +145,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
 
   const renderNotifications = () => (
     <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
-      <table className="w-full"><thead><tr>{['ID', 'Type', 'Priority', 'From', 'To', 'Loan', 'Message', 'CTA'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: '#9EA8B3', textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{crossRoleNotifications.map(n => <tr key={n.id} className="border-t border-[#EDEEF0]"><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', fontSize: 12 }}>{n.id}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.type}</td><td className="px-4 py-3"><StatusBadge status={n.priority === 'critical' ? 'High' : n.priority[0].toUpperCase() + n.priority.slice(1)} /></td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.fromRole}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.toRole}</td><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', color: '#1E88E5', fontSize: 12 }}>{n.loan}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.message}</td><td className="px-4 py-3"><button onClick={() => onNavigate(n.route)} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}>{n.cta}</button></td></tr>)}</tbody></table>
+      <div className="table-scroll"><table className="w-full"><thead><tr>{['ID', 'Type', 'Priority', 'From', 'To', 'Loan', 'Message', 'CTA'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: '#9EA8B3', textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{crossRoleNotifications.map(n => <tr key={n.id} onClick={() => onNavigate(n.route)} className="border-t border-[#EDEEF0] clickable-row"><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', fontSize: 12 }}>{n.id}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.type}</td><td className="px-4 py-3"><StatusBadge status={n.priority === 'critical' ? 'High' : n.priority[0].toUpperCase() + n.priority.slice(1)} /></td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.fromRole}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.toRole}</td><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', color: '#1E88E5', fontSize: 12 }}>{n.loan}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.message}</td><td className="px-4 py-3"><button onClick={(e) => { e.stopPropagation(); onNavigate(n.route); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}>{n.cta}</button></td></tr>)}</tbody></table></div>
     </div>
   );
 

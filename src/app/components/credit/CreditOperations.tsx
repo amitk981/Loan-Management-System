@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { AlertTriangle, Download, FileText, Mail, Search, Send, ShieldCheck } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
+import { WorkbenchTabs } from '../shared/WorkbenchTabs';
+import { creditIntakeTabs, creditWorkbenchTabs } from '../../data/roleNav';
 import { appraisalLoan, auditTrail, creditApplications, dpdRows, dpdSummary, interestInvoices, loanRegister, sanctionQueue } from '../../data/creditData';
 
 interface CreditOperationsProps {
@@ -10,22 +12,22 @@ interface CreditOperationsProps {
 }
 
 const pageCopy: Record<string, { title: string; subtitle: string }> = {
-  'credit-pending': { title: 'Under Review', subtitle: 'Applications waiting for appraisal note preparation' },
-  'credit-returned': { title: 'Pending Documents', subtitle: 'Applications blocked by missing KYC, bank, land, or crop documents' },
-  'credit-sc-queue': { title: 'Sanction Committee Queue', subtitle: 'Track SC decisions without approving from Credit Team' },
-  'credit-active-loans': { title: 'Live Loans', subtitle: 'Active portfolio under credit monitoring' },
-  'credit-repayments': { title: 'Repayments', subtitle: 'Repayment status and posting follow-up for active loans' },
-  'credit-dpd': { title: 'DPD Monitoring — Q1 FY 2025-26', subtitle: 'Bucketed overdue monitoring and CFO MIS workflow' },
-  'credit-register': { title: 'Loan Register', subtitle: 'Digital Loan Request Register, last updated today 11:42 AM' },
-  'credit-rejected': { title: 'Rejected Applications', subtitle: 'Rejection note composer and register records' },
-  'credit-exceptions': { title: 'Exception Register', subtitle: 'Immutable override and bypass records' },
-  'credit-mis': { title: 'Portfolio MIS', subtitle: 'Quarterly MIS pack, Section 186 and NBFC threshold monitoring' },
-  'credit-interest-invoices': { title: 'Interest Invoices — FY 2024-25', subtitle: 'Generate, send, and capitalise unpaid interest after 30 April' },
-  'credit-search-member': { title: 'Member Search', subtitle: 'Find borrower context and profile before appraisal' },
-  'credit-member-profile': { title: 'Member Profile', subtitle: 'Borrower sidebar details shown as a full profile' },
-  'credit-defaults': { title: 'Defaults & Recovery', subtitle: 'Default handling workflow per SOP Stage 6' },
-  'credit-analytics': { title: 'Portfolio Analytics', subtitle: 'Portfolio split, DPD trend, and concentration indicators' },
-  'credit-all-apps': { title: 'Sanction Committee Queue', subtitle: 'Track SC decisions without approving from Credit Team' },
+  'credit-pending': { title: 'Under Review', subtitle: 'Appraisal worklist' },
+  'credit-returned': { title: 'Pending Documents', subtitle: 'Incomplete borrower files' },
+  'credit-sc-queue': { title: 'Sanction Committee Queue', subtitle: 'Submitted applications' },
+  'credit-active-loans': { title: 'Active Loans', subtitle: 'Live portfolio with repayment status' },
+  'credit-repayments': { title: 'Repayment Follow-up', subtitle: 'SAP posting and balance updates' },
+  'credit-dpd': { title: 'DPD Monitoring', subtitle: 'Overdue buckets and MIS' },
+  'credit-register': { title: 'Loan Register', subtitle: 'Updated 11:42 AM' },
+  'credit-rejected': { title: 'Rejected Applications', subtitle: 'Rejection records' },
+  'credit-exceptions': { title: 'Exception Register', subtitle: 'Overrides and bypasses' },
+  'credit-mis': { title: 'Portfolio MIS', subtitle: 'Board and CFO packs' },
+  'credit-interest-invoices': { title: 'Interest Invoices', subtitle: 'FY 2024-25 batch' },
+  'credit-search-member': { title: 'Member Search', subtitle: 'Borrower context' },
+  'credit-member-profile': { title: 'Member Profile', subtitle: 'Borrower profile' },
+  'credit-defaults': { title: 'Defaults & Recovery', subtitle: 'Stage 6 workflow' },
+  'credit-analytics': { title: 'Portfolio Analytics', subtitle: 'Risk concentration' },
+  'credit-all-apps': { title: 'All Applications', subtitle: 'Complete application history' },
 };
 
 function formatCurrency(n: number) {
@@ -46,13 +48,13 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <DataCard title={activePage === 'credit-returned' ? 'Incomplete Files' : 'Appraisal Worklist'} action={<button onClick={() => onNavigate('credit-queue')} style={{ fontSize: '13px', color: '#0C5FA5', fontWeight: 800 }}>Open Intake</button>}>
         <SimpleTable headers={['Loan ID', 'Borrower', 'Requested', 'Purpose', 'TAT / Blocker', 'Action']}>
           {rows.map(row => (
-            <tr key={row.id} className="border-b border-[#E5E7EB]">
+            <tr key={row.id} onClick={() => onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review')} className="border-b border-[#E5E7EB] clickable-row">
               <Cell mono blue>{row.id}</Cell>
               <Cell><strong>{row.shortName}</strong><br /><span style={{ color: '#6B7280', fontSize: '12px' }}>{row.folio} · {row.village}</span></Cell>
               <Cell right mono>{formatCurrency(row.amount)}</Cell>
               <Cell>{row.purpose}</Cell>
               <Cell><StatusBadge status={row.status} /> <span style={{ marginLeft: '8px', fontSize: '12px', color: '#6B7280' }}>{row.blocker}</span></Cell>
-              <Cell><button onClick={() => onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review')} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 700 }}>{row.status === 'Incomplete' ? 'Request Docs' : 'Review'}</button></Cell>
+              <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 700 }}>{row.status === 'Incomplete' ? 'Request Docs' : 'Review'}</button></Cell>
             </tr>
           ))}
         </SimpleTable>
@@ -97,7 +99,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
     <DataCard title="Loan Register" action={<div className="flex items-center gap-2"><input placeholder="Search by LO# / Name / Village" className="px-3 rounded-md border border-[#D1D5DB]" style={{ height: '34px', fontSize: '13px' }} /><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Export ↓</button></div>}>
       <SimpleTable headers={['#', 'Loan ID', 'Borrower', 'Amount', 'Disbursed', 'Stage', 'DPD', 'Action']}>
         {loanRegister.map((row, i) => (
-          <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[#E5E7EB] hover:bg-[#FAFAF8] cursor-pointer">
+          <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[#E5E7EB] clickable-row">
             <Cell>{String(i + 1)}</Cell>
             <Cell mono blue>{row.id}</Cell>
             <Cell><strong>{row.borrower}</strong></Cell>
@@ -105,7 +107,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
             <Cell>{row.disbursed}</Cell>
             <Cell><StatusBadge status={row.stage} /></Cell>
             <Cell><span style={{ color: row.dpd > 90 ? '#C62828' : row.dpd > 0 ? '#F59E0B' : '#2E7D32', fontWeight: 900 }}>{row.dpd ? `${row.dpd} days` : '0'}</span></Cell>
-            <Cell><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Open Drawer</button></Cell>
+            <Cell><button onClick={(e) => { e.stopPropagation(); setSelectedLoan(row.id); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Open</button></Cell>
           </tr>
         ))}
       </SimpleTable>
@@ -127,7 +129,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <DataCard title="DPD Table: Filter 3+ Years" action={<button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate CFO MIS Report</button>}>
         <SimpleTable headers={['Borrower', 'Loan ID', 'Amount', 'DPD Days', 'Action Required']}>
           {dpdRows.map(row => (
-            <tr key={row.loan} className="border-b border-[#E5E7EB]">
+            <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[#E5E7EB] clickable-row">
               <Cell><strong>{row.borrower}</strong></Cell>
               <Cell mono blue>{row.loan}</Cell>
               <Cell right mono>{formatCurrency(row.amount)}</Cell>
@@ -154,7 +156,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <DataCard title="Interest Invoice Batch" action={<button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate All Invoices</button>}>
         <SimpleTable headers={['Borrower', 'Loan ID', 'Principal', 'Interest (yr)', 'Status', 'Action']}>
           {interestInvoices.map(row => (
-            <tr key={row.loan} className="border-b border-[#E5E7EB]">
+            <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[#E5E7EB] clickable-row">
               <Cell><strong>{row.borrower}</strong></Cell><Cell mono blue>{row.loan}</Cell><Cell right mono>{formatCurrency(row.principal)}</Cell><Cell right mono>{formatCurrency(row.interest)}<br /><span style={{ fontSize: '11px', color: '#6B7280' }}>(12% p.a.)</span></Cell><Cell><StatusBadge status={row.status} /></Cell><Cell><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: row.status === 'Unpaid' ? '#FEF3C7' : '#E8F1FA', color: row.status === 'Unpaid' ? '#92400E' : '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>{row.action}</button></Cell>
             </tr>
           ))}
@@ -191,12 +193,12 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <DataCard title={activePage === 'credit-exceptions' ? 'Exception Register' : 'Rejected Applications'}>
         <SimpleTable headers={activePage === 'credit-exceptions' ? ['Type', 'Loan ID', 'Justification', 'Approver Ref', 'Status'] : ['Loan ID', 'Borrower', 'Reason', 'Channel', 'Action']}>
           {(activePage === 'credit-exceptions' ? [
-            ['Calculation Override', 'LO00000083', 'Director-related borrower requires GM approval workflow and manual SC level override.', 'GM-RES-2025-02', 'Immutable'],
+            ['Calculation Override', 'LO00000083', 'Director borrower requires GM approval workflow.', 'GM-RES-2025-02', 'Immutable'],
             ['Bypass Check', 'LO00000051', 'Legacy loan imported with missing scanned cheque; physical custody verified.', 'CS-VERIFY-118', 'Annotated'],
           ] : [
             ['LO00000079', 'Suresh Bhagat', 'Purpose outside approved agriculture list', 'Email', 'Prepare Rejection Note'],
             ['LO00000072', 'Mohan Kale', 'KYC not completed after deficiency notice', 'Courier', 'View Register'],
-          ]).map(row => <tr key={row[1]} className="border-b border-[#E5E7EB]">{row.map((cell, i) => <Cell key={i}>{cell}</Cell>)}</tr>)}
+          ]).map(row => <tr key={row[1]} onClick={() => setSelectedLoan(row[1])} className="border-b border-[#E5E7EB] clickable-row">{row.map((cell, i) => <Cell key={i}>{cell}</Cell>)}</tr>)}
         </SimpleTable>
       </DataCard>
       <DataCard title="Audit Trail">
@@ -219,21 +221,43 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
   );
 
   const renderMis = () => (
-    <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-3 gap-5">
       {['Quarterly Portfolio MIS', 'Section 186 Limit Monitor', 'NBFC Threshold Monitor'].map((title, i) => (
-        <div key={title} className="bg-white rounded-lg p-5 border border-[#E5E7EB]">
+        <button key={title} onClick={() => onNavigate(i === 0 ? 'credit-mis' : 'shared-s186-lock')} className="bg-white rounded-lg p-5 border border-[#E5E7EB] text-left clickable-card">
           <h3 style={{ fontSize: '16px', fontWeight: 900 }}>{title}</h3>
           <div className="mt-4 h-3 rounded-full" style={{ backgroundColor: '#E5E7EB' }}><div className="h-full rounded-full" style={{ width: i === 0 ? '82%' : i === 1 ? '58%' : '40%', backgroundColor: i === 2 ? '#F59E0B' : '#2E7D32' }} /></div>
-          <p style={{ fontSize: '13px', color: '#3D4450', marginTop: '12px' }}>{i === 2 ? 'Alerts CFO at 40% threshold.' : 'Ready for CFO report export.'}</p>
-          <button className="mt-4 px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate</button>
-        </div>
+          <div style={{ fontSize: '13px', color: '#3D4450', marginTop: '12px' }}>{i === 2 ? '40% threshold watch' : 'Ready for export'}</div>
+          <span className="inline-flex mt-4 px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate</span>
+        </button>
       ))}
     </div>
   );
 
+  const renderActiveLoans = () => {
+    const activeRows = loanRegister.filter(row => row.stage === 'Active' || row.stage === 'Disbursed');
+    return (
+      <DataCard title="Active Loans" action={<button onClick={() => onNavigate('credit-dpd')} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Open DPD Monitor</button>}>
+        <SimpleTable headers={['Loan ID', 'Borrower', 'Sanctioned', 'Outstanding', 'DPD', 'Next Due', 'Action']}>
+          {activeRows.map(row => (
+            <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[#E5E7EB] clickable-row">
+              <Cell mono blue>{row.id}</Cell>
+              <Cell><strong>{row.borrower}</strong></Cell>
+              <Cell right mono>{formatCurrency(row.amount)}</Cell>
+              <Cell right mono>{formatCurrency(Math.round(row.amount * 0.72))}</Cell>
+              <Cell><span style={{ color: row.dpd > 90 ? '#C62828' : row.dpd > 0 ? '#F59E0B' : '#2E7D32', fontWeight: 900 }}>{row.dpd ? `${row.dpd} days` : 'Current'}</span></Cell>
+              <Cell>{row.disbursed}</Cell>
+              <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('member-loan-profile'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Profile</button></Cell>
+            </tr>
+          ))}
+        </SimpleTable>
+      </DataCard>
+    );
+  };
+
   const renderContent = () => {
-    if (activePage === 'credit-pending' || activePage === 'credit-returned') return renderApplications();
+    if (activePage === 'credit-pending' || activePage === 'credit-returned' || activePage === 'credit-queue') return renderApplications();
     if (activePage === 'credit-sc-queue' || activePage === 'credit-all-apps') return renderSanctionQueue();
+    if (activePage === 'credit-active-loans') return renderActiveLoans();
     if (activePage === 'credit-dpd' || activePage === 'credit-defaults' || activePage === 'credit-analytics') return renderDpd();
     if (activePage === 'credit-interest-invoices') return renderInvoices();
     if (activePage === 'credit-repayments') return renderSap();
@@ -243,6 +267,9 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
     return renderRegister();
   };
 
+  const showIntakeTabs = creditIntakeTabs.some(tab => tab.key === activePage);
+  const showWorkbenchTabs = creditWorkbenchTabs.some(tab => tab.key === activePage);
+
   return (
     <Shell
       activePage={activePage}
@@ -250,8 +277,14 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       breadcrumbs={['Credit Assessment', meta.title]}
       pageTitle={meta.title}
       pageSubtitle={meta.subtitle}
-      actions={<button onClick={() => onNavigate('credit-review')} className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}><ShieldCheck size={14} /> Open Appraisal Note</button>}
+      actions={<button onClick={() => onNavigate('credit-review')} className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}><ShieldCheck size={14} /> Open Appraisal Note</button>}
     >
+      {showIntakeTabs && (
+        <WorkbenchTabs tabs={creditIntakeTabs} activeKey={activePage} onChange={onNavigate} accent="#1A3C2A" />
+      )}
+      {showWorkbenchTabs && (
+        <WorkbenchTabs tabs={creditWorkbenchTabs} activeKey={activePage} onChange={onNavigate} accent="#1A3C2A" />
+      )}
       {renderContent()}
     </Shell>
   );
@@ -262,7 +295,7 @@ function DataCard({ title, action, children }: { title: string; action?: React.R
 }
 
 function SimpleTable({ headers, children }: { headers: string[]; children: React.ReactNode }) {
-  return <table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: '#6B7280', fontWeight: 900, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table>;
+  return <div className="table-scroll"><table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: '#6B7280', fontWeight: 900, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
 }
 
 function Cell({ children, mono, blue, right }: { children: React.ReactNode; mono?: boolean; blue?: boolean; right?: boolean }) {

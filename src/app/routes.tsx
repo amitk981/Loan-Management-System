@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { LoginPage } from './components/auth/LoginPage';
-import { MemberLoanProfile, NotificationsCenter } from './components/shared/UtilityScreens';
+import { MemberLoanProfile, NotificationsCenter, UserProfile } from './components/shared/UtilityScreens';
 import { CrossRoleScreens } from './components/shared/CrossRoleScreens';
 
 // Farmer
@@ -46,20 +46,21 @@ const defaultPages: Record<string, string> = {
   compliance: 'cs-dashboard',
   sanction: 'sc-dashboard',
   treasury: 'treasury-dashboard',
-  admin: 'admin-users',
+  admin: 'admin-portfolio',
 };
 
 const rolePages: Record<string, string[]> = {
   farmer: ['farmer-dashboard', 'farmer-apply', 'farmer-active-loans', 'farmer-loan-history', 'farmer-documents', 'farmer-repayment', 'farmer-support', 'farmer-noc'],
-  credit: ['credit-dashboard', 'credit-queue', 'credit-pending', 'credit-returned', 'credit-review', 'credit-sc-queue', 'credit-active-loans', 'credit-repayments', 'credit-dpd', 'credit-register', 'credit-rejected', 'credit-exceptions', 'credit-mis', 'credit-interest-invoices', 'credit-calculator', 'credit-search-member', 'credit-member-profile', 'credit-analytics', 'credit-defaults', 'credit-all-apps'],
+  credit: ['credit-dashboard', 'credit-queue', 'credit-pending', 'credit-returned', 'credit-review', 'credit-sc-queue', 'credit-active-loans', 'credit-repayments', 'credit-dpd', 'credit-register', 'credit-rejected', 'credit-exceptions', 'credit-mis', 'credit-interest-invoices', 'credit-calculator', 'credit-search-member', 'credit-member-profile', 'credit-analytics', 'credit-defaults', 'credit-all-apps', 'credit-manual-entry'],
   compliance: ['cs-dashboard', 'cs-queue', 'cs-workspace', 'cs-archive', 'cs-awaiting-prep', 'cs-awaiting-review', 'cs-signoff', 'cs-poa', 'cs-triparty', 'cs-sh4', 'cs-termsheet', 'cs-agreement', 'cs-kyc', 'cs-pending-kyc', 'cs-rekyc', 'cs-noc', 'cs-calendar', 'cs-cdsl', 'cs-security-return', 'cs-loan-register', 'cs-sanction-register', 'cs-exception-register', 'cs-grievance', 'cs-stamp', 'cs-poa-register', 'cs-reports'],
   sanction: ['sc-dashboard', 'sc-awaiting', 'sc-my-sign', 'sc-joint', 'sc-review', 'sc-special-cases', 'sc-returns', 'sc-register', 'sc-exceptions', 'sc-health', 'sc-exposure', 'sc-dpd', 'sc-board', 'sc-policy', 'sc-security-invocation', 'sc-default-escalations'],
   treasury: ['treasury-dashboard', 'treasury-pending', 'treasury-auth', 'treasury-today', 'treasury-sap-codes', 'treasury-sap-log', 'treasury-incoming', 'treasury-deductions', 'treasury-interest', 'treasury-reconciliation', 'treasury-ledger', 'treasury-exports', 'treasury-reports', 'treasury-disbursement'],
-  admin: ['admin-users', 'admin-portfolio', 'admin-audit', 'admin-config', 'admin-section186', 'admin-nbfc'],
+  admin: ['admin-users', 'admin-portfolio', 'admin-audit', 'admin-config', 'admin-section186', 'admin-nbfc', 'integration-overview'],
 };
 
 const utilityPages = [
   'notifications-center',
+  'user-profile',
   'member-loan-profile',
   'integration-overview',
   'credit-manual-entry',
@@ -116,7 +117,16 @@ function AppRoot() {
   const props = { onNavigate: navigate, activePage };
 
   if (activePage === 'notifications-center') return <NotificationsCenter {...props} />;
-  if (activePage === 'member-loan-profile') return <MemberLoanProfile {...props} />;
+  if (activePage === 'user-profile') return <UserProfile {...props} />;
+  if (activePage === 'member-loan-profile') {
+    if (user.role === 'farmer') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('page', 'user-profile');
+      window.history.replaceState({}, '', url);
+      return <UserProfile {...props} />;
+    }
+    return <MemberLoanProfile {...props} />;
+  }
   if (utilityPages.includes(activePage)) return <CrossRoleScreens {...props} />;
 
   // --- Farmer Screens ---

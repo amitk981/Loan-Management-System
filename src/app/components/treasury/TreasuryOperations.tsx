@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Banknote, Building, CheckCircle, Download, FileBarChart, Receipt, ShieldCheck, Upload } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
+import { WorkbenchTabs } from '../shared/WorkbenchTabs';
+import { treasuryDisbursementTabs, treasuryFinanceTabs, treasurySapTabs } from '../../data/roleNav';
 import { authRows, directRepayments, interestAccruals, reconciliationRows, sapCodeRequests, sapEntries, subsidiaryDeductions, treasuryQueue } from '../../data/treasuryData';
 
 interface TreasuryOperationsProps {
@@ -11,18 +13,18 @@ interface TreasuryOperationsProps {
 }
 
 const pageCopy: Record<string, { title: string; subtitle: string }> = {
-  'treasury-pending': { title: 'Pending Initiation', subtitle: 'Loans released by CS checklist and ready for payment initiation' },
-  'treasury-auth': { title: 'Pending Payment Authorizations', subtitle: '2 pending · ₹7,00,000 total · Finance Controller queue' },
-  'treasury-today': { title: 'Disbursed Today', subtitle: 'Completed payments with UTR and SAP journal references' },
-  'treasury-sap-codes': { title: 'SAP Customer Code Creation', subtitle: 'Requests from Credit Manager' },
-  'treasury-sap-log': { title: 'SAP Entries Log', subtitle: 'Audit log of disbursement, repayment, accrual and capitalization postings' },
-  'treasury-incoming': { title: 'Incoming Repayments — Direct', subtitle: 'Farmers repaying directly via RTGS/NEFT' },
-  'treasury-deductions': { title: 'Subsidiary Deductions — Repayment Receipts', subtitle: 'Via Sahyadri Farms Post Harvest Care Limited' },
-  'treasury-interest': { title: 'Interest Accrual Management', subtitle: 'Monthly accruals + year-end invoices + capitalization' },
-  'treasury-reconciliation': { title: 'Bank Reconciliation — RBL Bank Operating A/C', subtitle: 'Jun 1 – Jun 10, 2026' },
-  'treasury-ledger': { title: 'Ledger Summary', subtitle: 'Loan ledger, bank ledger and SAP posting control totals' },
-  'treasury-exports': { title: 'Export Centre', subtitle: 'CSV, PDF and board-pack exports for finance operations' },
-  'treasury-reports': { title: 'Financial Reports', subtitle: 'Portfolio, collections, SAP and accrual reporting pack' },
+  'treasury-pending': { title: 'Pending Initiation', subtitle: 'Ready for payment' },
+  'treasury-auth': { title: 'Pending Payment Authorizations', subtitle: '2 pending - ₹7,00,000' },
+  'treasury-today': { title: 'Disbursed Today', subtitle: 'UTR and SAP posted' },
+  'treasury-sap-codes': { title: 'SAP Customer Code Creation', subtitle: 'Credit requests' },
+  'treasury-sap-log': { title: 'SAP Entries Log', subtitle: 'Posting audit' },
+  'treasury-incoming': { title: 'Incoming Repayments', subtitle: 'Direct RTGS/NEFT' },
+  'treasury-deductions': { title: 'Subsidiary Deductions', subtitle: 'Repayment receipts' },
+  'treasury-interest': { title: 'Interest Accrual Management', subtitle: 'Accruals and invoices' },
+  'treasury-reconciliation': { title: 'Bank Reconciliation', subtitle: 'Jun 1-10, 2026' },
+  'treasury-ledger': { title: 'Ledger Summary', subtitle: 'Control totals' },
+  'treasury-exports': { title: 'Export Centre', subtitle: 'CSV and PDF exports' },
+  'treasury-reports': { title: 'Financial Reports', subtitle: 'Finance reporting pack' },
 };
 
 function formatCurrency(n: number, paise = false) {
@@ -36,6 +38,9 @@ function Metric({ label, value, note, color }: { label: string; value: string; n
 export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperationsProps) {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const meta = pageCopy[activePage] || pageCopy['treasury-pending'];
+  const showDisbursementTabs = treasuryDisbursementTabs.some(tab => tab.key === activePage);
+  const showFinanceTabs = treasuryFinanceTabs.some(tab => tab.key === activePage);
+  const showSapTabs = treasurySapTabs.some(tab => tab.key === activePage);
 
   const renderDisbursements = () => {
     if (activePage === 'treasury-auth') {
@@ -44,7 +49,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
           <div className="col-span-8 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
             <Header icon={<ShieldCheck size={16} />} title="Authorization Queue" action={<StatusBadge status="Pending Authorization" />} />
             <SimpleTable headers={['', 'Loan ID', 'Borrower', 'Amount', 'Mode', 'Initiated By', 'Initiated At', 'Waiting', 'Action']}>
-              {authRows.map(row => <tr key={row.loan} className="border-b border-[#EDEEF0] hover:bg-[#F7F8FA]"><Cell>{row.risk === 'red' ? '🔴' : '🟡'}</Cell><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell>{row.mode}</Cell><Cell>{row.by}</Cell><Cell>{row.at}</Cell><Cell><strong style={{ color: row.risk === 'red' ? '#EF4444' : '#D97706' }}>{row.waiting}</strong></Cell><Cell><button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 12, fontWeight: 800 }}>Review & Authorize</button></Cell></tr>)}
+              {authRows.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-disbursement')} className="border-b border-[#EDEEF0] clickable-row"><Cell><span className="inline-block w-2.5 h-2.5 rounded-full" style={{ backgroundColor: row.risk === 'red' ? '#EF4444' : '#F59E0B' }} /></Cell><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell>{row.mode}</Cell><Cell>{row.by}</Cell><Cell>{row.at}</Cell><Cell><strong style={{ color: row.risk === 'red' ? '#EF4444' : '#D97706' }}>{row.waiting}</strong></Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-disbursement'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 12, fontWeight: 800 }}>Review & Authorize</button></Cell></tr>)}
             </SimpleTable>
           </div>
           <div className="col-span-4 bg-white rounded-lg p-5 border border-[#EDEEF0]">
@@ -76,7 +81,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
         </div>
         <DataCard title="Disbursement Control Queue" action={<button onClick={() => onNavigate('treasury-disbursement')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 12, fontWeight: 800 }}>Process Selected</button>}>
           <SimpleTable headers={['Loan ID', 'Borrower', 'Amount', 'Stage', 'CS Sign', 'SAP Code', 'Waiting', 'Action']}>
-            {rows.map(row => <tr key={`${row.id}-${row.stage}`} className="border-b border-[#EDEEF0] hover:bg-[#F7F8FA]"><Cell mono blue>{row.id}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell><StatusBadge status={row.stage} /></Cell><Cell>{row.csSign}</Cell><Cell mono>{row.sapCode || 'Pending'}</Cell><Cell>{row.waiting}</Cell><Cell><button onClick={() => onNavigate(row.page)} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.sapCode ? '#0891B2' : '#EDEEF0', color: row.sapCode ? 'white' : '#6B7280', fontSize: 12, fontWeight: 800 }}>{row.action}</button></Cell></tr>)}
+            {rows.map(row => <tr key={`${row.id}-${row.stage}`} onClick={() => onNavigate(row.page)} className="border-b border-[#EDEEF0] clickable-row"><Cell mono blue>{row.id}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell><StatusBadge status={row.stage} /></Cell><Cell>{row.csSign}</Cell><Cell mono>{row.sapCode || 'Pending'}</Cell><Cell>{row.waiting}</Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate(row.page); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.sapCode ? '#0891B2' : '#EDEEF0', color: row.sapCode ? 'white' : '#6B7280', fontSize: 12, fontWeight: 800 }}>{row.action}</button></Cell></tr>)}
           </SimpleTable>
         </DataCard>
       </div>
@@ -89,7 +94,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
         <DataCard title="SAP Financial Entries" action={<div className="flex gap-2"><button className="px-3 py-1.5 rounded-lg border border-[#EDEEF0]">Export CSV</button><button className="px-3 py-1.5 rounded-lg border border-[#EDEEF0]">Export PDF</button></div>}>
           <div className="p-4 border-b border-[#EDEEF0] grid grid-cols-5 gap-2">{['Date range', 'Entry type', 'Loan ID', 'Farmer name', 'Posted by'].map(f => <input key={f} placeholder={f} className="px-3 rounded-lg border border-[#D1D5DB]" style={{ height: 36, fontSize: 12 }} />)}</div>
           <SimpleTable headers={['Date', 'SAP Doc No.', 'Loan ID', 'Borrower', 'Entry Type', 'Dr Account', 'Cr Account', 'Amount', 'Posted By', 'Status']}>
-            {sapEntries.map(row => <tr key={row.doc} className="border-b border-[#EDEEF0] hover:bg-[#F7F8FA]"><Cell>{row.date}</Cell><Cell mono>{row.doc}</Cell><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell>{row.type}</Cell><Cell>{row.dr}</Cell><Cell>{row.cr}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell>{row.by}</Cell><Cell><StatusBadge status={row.status} /></Cell></tr>)}
+            {sapEntries.map(row => <tr key={row.doc} onClick={() => onNavigate('treasury-sap-log')} className="border-b border-[#EDEEF0] clickable-row"><Cell>{row.date}</Cell><Cell mono>{row.doc}</Cell><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell>{row.type}</Cell><Cell>{row.dr}</Cell><Cell>{row.cr}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell>{row.by}</Cell><Cell><StatusBadge status={row.status} /></Cell></tr>)}
           </SimpleTable>
           <div className="m-4 rounded-lg p-4" style={{ backgroundColor: '#1A1A2E', color: 'white', fontFamily: 'Roboto Mono', fontSize: 12 }}>Expanded row: FB01 · Posting Date 10.06.2026 · Remarks: Loan disbursement — SFPCL Member Credit · View in SAP ↗</div>
         </DataCard>
@@ -107,7 +112,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
           <div className="p-3 rounded-lg mb-3" style={{ backgroundColor: '#FEF3C7', color: '#92400E', fontSize: 13, fontWeight: 800 }}>Duplicate check: No existing SAP customer ID found for PAN ABCPS1234F.</div>
           <button className="w-full py-3 rounded-lg font-semibold" style={{ backgroundColor: '#0891B2', color: 'white' }}>Create SAP Customer Code</button>
         </div>
-        <div className="col-span-6"><DataCard title="Recent SAP Code Creations"><SimpleTable headers={['Loan ID', 'Farmer Name', 'Aadhaar', 'PAN', 'SAP Code', 'Status']}>{sapCodeRequests.map(row => <tr key={row.loan} className="border-b border-[#EDEEF0]"><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono>{row.aadhaar}</Cell><Cell mono>{row.pan}</Cell><Cell mono>{row.code}</Cell><Cell><StatusBadge status={row.status} /></Cell></tr>)}</SimpleTable></DataCard></div>
+        <div className="col-span-6"><DataCard title="Recent SAP Code Creations"><SimpleTable headers={['Loan ID', 'Farmer Name', 'Aadhaar', 'PAN', 'SAP Code', 'Status']}>{sapCodeRequests.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-sap-log')} className="border-b border-[#EDEEF0] clickable-row"><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono>{row.aadhaar}</Cell><Cell mono>{row.pan}</Cell><Cell mono>{row.code}</Cell><Cell><StatusBadge status={row.status} /></Cell></tr>)}</SimpleTable></DataCard></div>
       </div>
     );
   };
@@ -117,7 +122,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
       return (
         <div className="space-y-5">
           <div className="p-4 rounded-lg" style={{ backgroundColor: '#F7F8FA', borderLeft: '4px solid #1A3C2A', fontSize: 13, color: '#3D4450' }}><strong>Tri-Party Repayment Flow:</strong> Farmer sells produce → Subsidiary deducts repayment → transfers to SFPCL → SFPCL posts to SAP. Amounts must match within ₹1 tolerance.</div>
-          <DataCard title="Subsidiary Deduction Queue"><SimpleTable headers={['Statement Date', 'Farmer Name', 'Loan ID', 'Subsidiary Ref', 'Gross Payment', 'Deduction', 'Net to Farmer', 'Received', 'Reconciled', 'Action']}>{subsidiaryDeductions.map(row => <tr key={row.ref} className="border-b border-[#EDEEF0]"><Cell>{row.date}</Cell><Cell>{row.borrower}</Cell><Cell mono blue>{row.loan}</Cell><Cell mono>{row.ref}</Cell><Cell mono right>{formatCurrency(row.gross)}</Cell><Cell mono right>{formatCurrency(row.deduction)}</Cell><Cell mono right>{formatCurrency(row.net)}</Cell><Cell>{row.received}</Cell><Cell><StatusBadge status={row.reconciled} /></Cell><Cell><button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.reconciled === 'Matched' ? '#EDEEF0' : '#0891B2', color: row.reconciled === 'Matched' ? '#3D4450' : 'white', fontSize: 12, fontWeight: 800 }}>{row.reconciled === 'Matched' ? 'View' : 'Reconcile'}</button></Cell></tr>)}</SimpleTable></DataCard>
+          <DataCard title="Subsidiary Deduction Queue"><SimpleTable headers={['Statement Date', 'Farmer Name', 'Loan ID', 'Subsidiary Ref', 'Gross Payment', 'Deduction', 'Net to Farmer', 'Received', 'Reconciled', 'Action']}>{subsidiaryDeductions.map(row => <tr key={row.ref} onClick={() => onNavigate('treasury-reconciliation')} className="border-b border-[#EDEEF0] clickable-row"><Cell>{row.date}</Cell><Cell>{row.borrower}</Cell><Cell mono blue>{row.loan}</Cell><Cell mono>{row.ref}</Cell><Cell mono right>{formatCurrency(row.gross)}</Cell><Cell mono right>{formatCurrency(row.deduction)}</Cell><Cell mono right>{formatCurrency(row.net)}</Cell><Cell>{row.received}</Cell><Cell><StatusBadge status={row.reconciled} /></Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-reconciliation'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.reconciled === 'Matched' ? '#EDEEF0' : '#0891B2', color: row.reconciled === 'Matched' ? '#3D4450' : 'white', fontSize: 12, fontWeight: 800 }}>{row.reconciled === 'Matched' ? 'View' : 'Reconcile'}</button></Cell></tr>)}</SimpleTable></DataCard>
         </div>
       );
     }
@@ -128,7 +133,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
         <div className="p-4 rounded-lg" style={{ backgroundColor: '#E0F2FE', borderLeft: '4px solid #0891B2', fontSize: 13, color: '#0E7490' }}>Repayment allocation is hardcoded: partial repayments apply to principal first, then interest. Full repayment triggers NOC workflow to Compliance.</div>
         <DataCard title="Awaiting SAP Entry" action={<button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 12, fontWeight: 800 }}>Post All to SAP</button>}>
           <SimpleTable headers={['Date', 'UTR No.', 'Farmer Name', 'Loan ID', 'Amount', 'Mode', 'Principal Adj.', 'Interest Adj.', 'Balance After', 'Action']}>
-            {directRepayments.map(row => <tr key={row.loan} className="border-b border-[#EDEEF0]" style={{ backgroundColor: row.status === 'UTR Missing' ? '#FEF2F2' : 'white' }}><Cell>{row.date}</Cell><Cell mono>{row.utr}</Cell><Cell>{row.borrower}</Cell><Cell mono blue>{row.loan}</Cell><Cell mono right>{formatCurrency(row.amount)}</Cell><Cell>{row.mode}</Cell><Cell mono right>{row.principal ? formatCurrency(row.principal) : '-'}</Cell><Cell mono right>{row.interest ? formatCurrency(row.interest) : '-'}</Cell><Cell mono right>{row.balance ? formatCurrency(row.balance) : '-'}</Cell><Cell><button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.status === 'UTR Missing' ? '#FEF3C7' : '#0891B2', color: row.status === 'UTR Missing' ? '#92400E' : 'white', fontSize: 12, fontWeight: 800 }}>{row.status === 'UTR Missing' ? 'Verify UTR' : 'Post to SAP'}</button></Cell></tr>)}
+            {directRepayments.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-sap-log')} className="border-b border-[#EDEEF0] clickable-row" style={{ backgroundColor: row.status === 'UTR Missing' ? '#FEF2F2' : 'white' }}><Cell>{row.date}</Cell><Cell mono>{row.utr}</Cell><Cell>{row.borrower}</Cell><Cell mono blue>{row.loan}</Cell><Cell mono right>{formatCurrency(row.amount)}</Cell><Cell>{row.mode}</Cell><Cell mono right>{row.principal ? formatCurrency(row.principal) : '-'}</Cell><Cell mono right>{row.interest ? formatCurrency(row.interest) : '-'}</Cell><Cell mono right>{row.balance ? formatCurrency(row.balance) : '-'}</Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-sap-log'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.status === 'UTR Missing' ? '#FEF3C7' : '#0891B2', color: row.status === 'UTR Missing' ? '#92400E' : 'white', fontSize: 12, fontWeight: 800 }}>{row.status === 'UTR Missing' ? 'Verify UTR' : 'Post to SAP'}</button></Cell></tr>)}
           </SimpleTable>
         </DataCard>
       </div>
@@ -139,7 +144,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
     <div className="space-y-5">
       <div className="rounded-lg p-4" style={{ backgroundColor: '#12151A', color: 'white', fontWeight: 900 }}>June 2026 — Accruing interest on 47 active loans · Total this month: ₹24,300</div>
       <DataCard title="Monthly Accruals" action={<button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#2D7A4F', color: 'white', fontSize: 12, fontWeight: 800 }}>Generate All June Accruals</button>}>
-        <SimpleTable headers={['Loan ID', 'Borrower', 'Principal O/S', 'Rate', 'Monthly Interest', 'Accrual Date', 'SAP Entry', 'Status']}>{interestAccruals.map(row => <tr key={row.loan} className="border-b border-[#EDEEF0]"><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.principal)}</Cell><Cell>{row.rate}</Cell><Cell mono right>{formatCurrency(row.interest)}</Cell><Cell>{row.date}</Cell><Cell mono>{row.sap}</Cell><Cell><StatusBadge status={row.status} /></Cell></tr>)}</SimpleTable>
+        <SimpleTable headers={['Loan ID', 'Borrower', 'Principal O/S', 'Rate', 'Monthly Interest', 'Accrual Date', 'SAP Entry', 'Status']}>{interestAccruals.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-sap-log')} className="border-b border-[#EDEEF0] clickable-row"><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.principal)}</Cell><Cell>{row.rate}</Cell><Cell mono right>{formatCurrency(row.interest)}</Cell><Cell>{row.date}</Cell><Cell mono>{row.sap}</Cell><Cell><StatusBadge status={row.status} /></Cell></tr>)}</SimpleTable>
       </DataCard>
       <div className="grid grid-cols-2 gap-5">
         <DataCard title="Year-End Interest Invoices"><SimpleTable headers={['Loan ID', 'Interest', 'Status', 'Due By', 'Action']}><tr><Cell mono blue>LO000031</Cell><Cell mono>₹17,100</Cell><Cell><StatusBadge status="Paid" /></Cell><Cell>30 Apr 2026</Cell><Cell>View Invoice</Cell></tr><tr style={{ backgroundColor: '#FEF2F2' }}><Cell mono blue>LO000022</Cell><Cell mono>₹9,600</Cell><Cell><StatusBadge status="Unpaid" /></Cell><Cell>30 Apr 2026</Cell><Cell>Capitalize →</Cell></tr></SimpleTable></DataCard>
@@ -151,14 +156,14 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
   const renderReconciliation = () => (
     <div className="space-y-5">
       <div className="grid grid-cols-3 gap-5"><Metric label="Bank Statement Total Credits" value="₹3,82,500" note="RBL statement credits" color="#22C55E" /><Metric label="SAP-Posted Total Credits" value="₹3,82,500" note="SAP receipts posted" color="#22C55E" /><Metric label="Unreconciled Items" value="1" note="₹10,000 likely LO000022" color="#EF4444" /></div>
-      <DataCard title="Matched and Unmatched Transactions"><SimpleTable headers={['Statement Date', 'Description', 'Statement Amount', 'SAP Entry', 'SAP Amount', 'Match', 'Action']}>{reconciliationRows.map(row => <tr key={row.desc} className="border-b border-[#EDEEF0]" style={{ backgroundColor: row.match ? '#F0FDF4' : '#FEF2F2' }}><Cell>{row.date}</Cell><Cell>{row.desc}</Cell><Cell mono right>{formatCurrency(row.statement)}</Cell><Cell mono>{row.sap}</Cell><Cell mono right>{row.sapAmount ? formatCurrency(row.sapAmount) : '-'}</Cell><Cell>{row.match ? '✓' : 'Unmatched'}</Cell><Cell>{row.match ? 'Matched' : <button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#EF4444', color: 'white', fontSize: 12, fontWeight: 800 }}>Match Manually</button>}</Cell></tr>)}</SimpleTable></DataCard>
+      <DataCard title="Matched and Unmatched Transactions"><SimpleTable headers={['Statement Date', 'Description', 'Statement Amount', 'SAP Entry', 'SAP Amount', 'Match', 'Action']}>{reconciliationRows.map(row => <tr key={row.desc} onClick={() => onNavigate('treasury-reconciliation')} className="border-b border-[#EDEEF0] clickable-row" style={{ backgroundColor: row.match ? '#F0FDF4' : '#FEF2F2' }}><Cell>{row.date}</Cell><Cell>{row.desc}</Cell><Cell mono right>{formatCurrency(row.statement)}</Cell><Cell mono>{row.sap}</Cell><Cell mono right>{row.sapAmount ? formatCurrency(row.sapAmount) : '-'}</Cell><Cell>{row.match ? 'Matched' : 'Unmatched'}</Cell><Cell>{row.match ? 'Matched' : <button onClick={(e) => e.stopPropagation()} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#EF4444', color: 'white', fontSize: 12, fontWeight: 800 }}>Match Manually</button>}</Cell></tr>)}</SimpleTable></DataCard>
     </div>
   );
 
   const renderReports = () => (
     <div className="space-y-5">
       <div className="grid grid-cols-4 gap-5"><Metric label="Total Disbursed" value="₹42.6L" note="Loan portfolio total" color="#0891B2" /><Metric label="Outstanding" value="₹38.4L" note="Principal outstanding" color="#1A3C2A" /><Metric label="Collection Efficiency" value="91%" note="Current FY" color="#22C55E" /><Metric label="SAP Open Items" value="3" note="Posting exceptions" color="#F59E0B" /></div>
-      <div className="grid grid-cols-3 gap-5">{['Bank Reconciliation Report', 'Ledger Summary', 'Disbursement Advice Export', 'SAP Posting Audit', 'Interest Accrual Pack', 'Subsidiary Deduction Report', 'Quarterly CFO MIS', 'Export Centre Bundle', 'NOC / Closure Register'].map(report => <div key={report} className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><FileBarChart size={18} color="#0891B2" /><h3 style={{ fontSize: 14, fontWeight: 900, marginTop: 12 }}>{report}</h3><p style={{ fontSize: 13, color: '#3D4450', minHeight: 40, marginTop: 8 }}>Finance-ready export with audit references, SAP status and transaction totals.</p><button className="mt-3 px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}><Download size={13} style={{ display: 'inline', marginRight: 6 }} />Generate</button></div>)}</div>
+      <div className="grid grid-cols-3 gap-5">{['Bank Reconciliation Report', 'Ledger Summary', 'Disbursement Advice Export', 'SAP Posting Audit', 'Interest Accrual Pack', 'Subsidiary Deduction Report', 'Quarterly CFO MIS', 'Export Centre Bundle', 'NOC / Closure Register'].map(report => <button key={report} onClick={() => onNavigate(report.includes('Reconciliation') ? 'treasury-reconciliation' : report.includes('Ledger') ? 'treasury-ledger' : 'treasury-exports')} className="bg-white rounded-lg p-5 border border-[#EDEEF0] text-left clickable-card"><FileBarChart size={18} color="#0891B2" /><h3 style={{ fontSize: 14, fontWeight: 900, marginTop: 12 }}>{report}</h3><div style={{ fontSize: 13, color: '#3D4450', minHeight: 40, marginTop: 8 }}>Audit refs, SAP status and totals.</div><span className="inline-flex mt-3 px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}><Download size={13} style={{ marginRight: 6 }} />Generate</span></button>)}</div>
     </div>
   );
 
@@ -180,6 +185,9 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
       pageSubtitle={meta.subtitle}
       actions={<button onClick={() => onNavigate('treasury-disbursement')} className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 14 }}><Banknote size={14} /> Open Disbursement Flow</button>}
     >
+      {showDisbursementTabs && <WorkbenchTabs tabs={treasuryDisbursementTabs} activeKey={activePage} onChange={onNavigate} accent="#0891B2" />}
+      {showSapTabs && <WorkbenchTabs tabs={treasurySapTabs} activeKey={activePage} onChange={onNavigate} accent="#0891B2" />}
+      {showFinanceTabs && <WorkbenchTabs tabs={treasuryFinanceTabs} activeKey={activePage} onChange={onNavigate} accent="#0891B2" />}
       {renderContent()}
     </Shell>
   );
@@ -194,7 +202,7 @@ function DataCard({ title, action, children }: { title: string; action?: ReactNo
 }
 
 function SimpleTable({ headers, children }: { headers: string[]; children: ReactNode }) {
-  return <table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: '#9EA8B3', fontWeight: 800, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table>;
+  return <div className="table-scroll"><table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: '#9EA8B3', fontWeight: 800, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
 }
 
 function Cell({ children, mono, blue, right }: { children: ReactNode; mono?: boolean; blue?: boolean; right?: boolean }) {
