@@ -1,0 +1,53 @@
+/* Global utility styles */
+
+/* Smooth scrollbars everywhere */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.12) transparent;
+}
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 3px; }
+*::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.24); }
+
+/* Focus visible ring for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #1A3C2A;
+  outline-offset: 2px;
+}
+
+/* Remove default focus outline */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Smooth transitions on interactive elements */
+button, a, input, select, textarea {
+  transition: all 0.15s ease;
+}
+
+/* Table improvements */
+table {
+  border-collapse: collapse;
+}
+th {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
+/* Remove default button styles */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+/* Selection color */
+::selection {
+  background-color: rgba(26, 60, 42, 0.15);
+  color: inherit;
+}

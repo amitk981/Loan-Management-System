@@ -1,0 +1,104 @@
+import { TrendingUp } from 'lucide-react';
+import { Shell } from '../layout/Shell';
+import { StatusBadge } from '../shared/StatusBadge';
+import { scAlerts, scApprovalQueue, scPortfolio, scProfile } from '../../data/sanctionData';
+
+interface SanctionDashboardProps {
+  onNavigate: (page: string) => void;
+  activePage: string;
+}
+
+function formatCurrency(n: number) {
+  return '₹' + n.toLocaleString('en-IN');
+}
+
+export function SanctionDashboard({ onNavigate, activePage }: SanctionDashboardProps) {
+  return (
+    <Shell
+      activePage={activePage}
+      onNavigate={onNavigate}
+      breadcrumbs={['Sanction Committee', 'Dashboard']}
+      pageTitle={`Good morning, ${scProfile.name}`}
+      pageSubtitle={`${scProfile.role} · Authority: ${scProfile.authority}`}
+      actions={<button onClick={() => onNavigate('sc-awaiting')} className="px-4 py-2.5 rounded-lg font-semibold hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: '#7C3AED', color: 'white', fontSize: '14px' }}>Review Now →</button>}
+    >
+      <div className="grid grid-cols-3 gap-5 mb-5">
+        {scAlerts.map(alert => (
+          <button key={alert.title} onClick={() => onNavigate(alert.page)} className="rounded-xl p-5 text-left clickable-card" style={{ backgroundColor: alert.bg, borderTop: `3px solid ${alert.color}`, borderLeft: '1px solid #EDEEF0', borderRight: '1px solid #EDEEF0', borderBottom: '1px solid #EDEEF0' }}>
+            <div style={{ fontSize: '12px', fontWeight: 800, color: alert.color, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{alert.title}</div>
+            <div style={{ fontSize: '36px', fontWeight: 900, color: alert.color, marginTop: '8px' }}>{alert.value}</div>
+            <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '4px' }}>{alert.note}</div>
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-4 gap-5 mb-5">
+        {[
+          ['Active Portfolio', formatCurrency(scPortfolio.activePortfolio), `${scPortfolio.activeLoans} loans`, '#7C3AED', 'sc-health'],
+          ['Sanctioned This Month', `${formatCurrency(scPortfolio.sanctionedThisMonth)}`, `${scPortfolio.sanctionedCount} loans`, '#22C55E', 'sc-register'],
+          ['Lending Capacity', `${formatCurrency(scPortfolio.lendingHeadroom)}`, `${scPortfolio.s186Used}% used`, '#F59E0B', 'sc-exposure'],
+          ['NPA Rate', scPortfolio.npaRate, scPortfolio.npaDelta, '#EF4444', 'sc-dpd'],
+        ].map(([label, value, note, color, page]) => (
+          <button key={label} onClick={() => onNavigate(page)} className="bg-white rounded-xl p-5 border border-[#EDEEF0] text-left clickable-card">
+            <div style={{ fontSize: '11px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}</div>
+            <div style={{ fontSize: label === 'Sanctioned This Month' ? '22px' : '26px', color, fontWeight: 800, fontFamily: 'Roboto Mono', marginTop: '8px' }}>{value}</div>
+            {label === 'Lending Capacity' && <div className="h-2 rounded-full mt-3 mb-2" style={{ backgroundColor: '#EDEEF0' }}><div className="h-full rounded-full transition-all" style={{ width: `${scPortfolio.s186Used}%`, backgroundColor: '#F59E0B' }} /></div>}
+            <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '4px' }}>{note}</div>
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-7 bg-white rounded-xl border border-[#EDEEF0] overflow-hidden">
+          <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>Approval Queue</h3>
+          </div>
+          {scApprovalQueue.map(item => {
+            const appraisalStatus = item.appraisal === 'Eligible' ? 'Approved' : 'Medium';
+            return (
+              <button key={item.id} onClick={() => onNavigate(item.page)} className="w-full px-5 py-4 flex items-center gap-4 text-left border-b border-[#EDEEF0] last:border-b-0 clickable-row">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: item.priority === '!' ? '#FEE2E2' : '#DBEAFE', color: item.priority === '!' ? '#EF4444' : '#1E88E5', fontWeight: 900 }}>{item.priority}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#7C3AED', fontWeight: 700 }}>{item.id}</span>
+                    <span style={{ fontSize: '14px', color: '#12151A', fontWeight: 700 }}>{item.borrower}</span>
+                    <span style={{ fontSize: '14px', fontFamily: 'Roboto Mono', color: '#12151A', fontWeight: 700 }}>{formatCurrency(item.amount)}</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-2 flex-wrap">
+                    <StatusBadge status={appraisalStatus} />
+                    <span className="px-2 py-0.5 rounded-full" style={{ backgroundColor: '#EDE9FE', color: '#7C3AED', fontSize: '11px', fontWeight: 700 }}>{item.authority}</span>
+                    <span style={{ fontSize: '12px', color: item.waiting.includes('2') ? '#EF4444' : '#F59E0B', fontWeight: 700 }}>⏱ {item.waiting}</span>
+                    {item.note && <span style={{ fontSize: '12px', color: '#D97706', fontWeight: 700 }}>⚠ {item.note}</span>}
+                  </div>
+                </div>
+                <span style={{ fontSize: '13px', color: '#7C3AED', fontWeight: 700 }}>Review →</span>
+              </button>
+            );
+          })}
+          <div className="p-4"><button onClick={() => onNavigate('sc-awaiting')} className="hover:text-[#5B21B6] transition-colors" style={{ fontSize: '13px', color: '#7C3AED', fontWeight: 700 }}>View All 7 →</button></div>
+        </div>
+
+        <div className="col-span-5 bg-white rounded-xl p-5 border border-[#EDEEF0]">
+          <div className="flex items-center gap-2 mb-4"><TrendingUp size={17} color="#7C3AED" /><h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>Risk Snapshot</h3></div>
+          {[
+            ['Current (0 DPD)', '127 loans', '86.4%', '#22C55E'],
+            ['1-2 yrs overdue', '12 loans', '8.2%', '#F59E0B'],
+            ['2-3 yrs overdue', '5 loans', '3.4%', '#E65100'],
+            ['3+ yrs overdue', '3 loans', '2.0%', '#EF4444'],
+          ].map(([label, count, pct, color]) => (
+            <button key={label} onClick={() => onNavigate('sc-dpd')} className="w-full mb-4 text-left clickable-row rounded-lg p-1">
+              <div className="flex items-center justify-between mb-1"><span style={{ fontSize: '13px', color: '#3D4450', fontWeight: 600 }}>{label}</span><span style={{ fontSize: '13px', color: '#12151A', fontWeight: 700 }}>{count} · {pct}</span></div>
+              <div className="h-2 rounded-full" style={{ backgroundColor: '#EDEEF0' }}><div className="h-full rounded-full transition-all" style={{ width: pct, backgroundColor: color }} /></div>
+            </button>
+          ))}
+          <div className="mt-4 pt-4 border-t border-[#EDEEF0]">
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#12151A', marginBottom: '8px' }}>Recent Decisions (7d)</div>
+            <div className="grid grid-cols-4 gap-2">
+              {['Approved: 14', 'Rejected: 2', 'Returned: 1', 'Avg TAT: 0.8d'].map(item => <div key={item} className="p-2 rounded-lg text-center" style={{ backgroundColor: '#F7F8FA', fontSize: '12px', color: '#3D4450', fontWeight: 700 }}>{item}</div>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Shell>
+  );
+}
