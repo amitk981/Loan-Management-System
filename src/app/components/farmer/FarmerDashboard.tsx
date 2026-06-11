@@ -46,6 +46,16 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       }
     >
       <div className="farmer-page">
+        <div className="mb-6 p-4 rounded-xl border border-[#BBF7D0] flex items-center justify-between" style={{ backgroundColor: '#F0FDF4' }}>
+          <div className="flex items-center gap-3">
+            <span className="w-8 h-8 rounded-full bg-[#22C55E] text-white flex items-center justify-center font-bold text-sm">✓</span>
+            <div>
+              <div style={{ fontSize: '14px', fontWeight: 700, color: '#166534' }}>Your loan is Active & in Good Standing</div>
+              <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px' }}>Next instalment of ₹19,500 is due by 31 Mar 2027.</div>
+            </div>
+          </div>
+          <button onClick={() => onNavigate('farmer-repayment')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#1A3C2A', fontSize: '13px', fontWeight: 700 }}>Pay Now</button>
+        </div>
         <section className="grid grid-cols-12 gap-5 mb-6">
           <button
             className="farmer-hero col-span-7 text-left p-7 relative overflow-hidden clickable-card"

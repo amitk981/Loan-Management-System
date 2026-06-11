@@ -47,6 +47,16 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
         </button>
       }
     >
+      <div className="mb-6 p-4 rounded-xl border border-[#FECACA] flex items-center justify-between" style={{ backgroundColor: '#FEF2F2' }}>
+        <div className="flex items-center gap-3">
+          <span className="w-8 h-8 rounded-full bg-[#EF4444] text-white flex items-center justify-center font-bold text-sm">!</span>
+          <div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#991B1B' }}>Appraisal Overdue: LO00000089 (Rajesh Patil)</div>
+            <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px' }}>This appraisal note is overdue by 1 day. Resolve this before processing new intakes.</div>
+          </div>
+        </div>
+        <button onClick={() => onNavigate('credit-review')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#EF4444', fontSize: '13px', fontWeight: 700 }}>Start Appraisal</button>
+      </div>
       <RoleCommandCenter
         title="Credit Workbench"
         focus="Clear the oldest appraisal first"

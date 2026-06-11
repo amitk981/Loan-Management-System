@@ -117,8 +117,8 @@ export const complianceRegisterTabs = [
 export const defaultExpandedGroups: Record<string, string[]> = {
   farmer: ['farmer-loans'],
   credit: ['credit-inbox', 'credit-portfolio'],
-  compliance: ['cs-doc-queue', 'cs-doc-templates'],
-  sanction: ['sc-decisions'],
+  compliance: ['cs-doc-queue', 'cs-kyc-group', 'cs-ops'],
+  sanction: ['sc-decisions', 'sc-oversight'],
   treasury: ['treasury-disburse', 'treasury-finance'],
   admin: [],
 };

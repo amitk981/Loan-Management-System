@@ -50,13 +50,12 @@ const creditNav: NavItem[] = [
     section: 'Intake',
     children: [
       { label: 'New Applications', key: 'credit-queue', badge: 12 },
-      { label: 'Pending Appraisal', key: 'credit-pending' },
       { label: 'Returned / Incomplete', key: 'credit-returned' },
       { label: 'SC Tracker', key: 'credit-sc-queue' },
+      { label: 'Manual Entry', key: 'credit-manual-entry' },
     ],
   },
   { icon: <FileCheck size={20} />, label: 'Appraisal Note', key: 'credit-review', section: 'Intake' },
-  { icon: <Plus size={20} />, label: 'Manual Entry', key: 'credit-manual-entry', section: 'Intake' },
   {
     icon: <BookOpen size={20} />,
     label: 'Loan Register',
@@ -66,15 +65,11 @@ const creditNav: NavItem[] = [
     children: [
       { label: 'Full Register', key: 'credit-register' },
       { label: 'Active Loans', key: 'credit-active-loans' },
-      { label: 'All Applications', key: 'credit-all-apps' },
-      { label: 'Repayments', key: 'credit-repayments' },
-      { label: 'Interest Invoices', key: 'credit-interest-invoices' },
+      { label: 'DPD Monitoring', key: 'credit-dpd' },
+      { label: 'Defaults & Recovery', key: 'credit-defaults' },
+      { label: 'MIS Reports', key: 'credit-mis' },
     ],
   },
-  { icon: <BarChart3 size={20} />, label: 'DPD Monitoring', key: 'credit-dpd', section: 'Portfolio' },
-  { icon: <AlertTriangle size={20} />, label: 'Defaults & Recovery', key: 'credit-defaults', section: 'Portfolio' },
-  { icon: <TrendingUp size={20} />, label: 'Portfolio Analytics', key: 'credit-analytics', section: 'Portfolio' },
-  { icon: <FileBarChart size={20} />, label: 'MIS Reports', key: 'credit-mis', section: 'Portfolio' },
   {
     icon: <Users size={20} />,
     label: 'Member Registry',
@@ -82,11 +77,10 @@ const creditNav: NavItem[] = [
     groupKey: 'credit-members',
     section: 'Tools',
     children: [
-      { label: 'Search Member', key: 'credit-search-member' },
-      { label: 'Member Profile', key: 'credit-member-profile' },
+      { label: 'Borrower Lookup', key: 'member-loan-profile' },
+      { label: 'Loan Calculator', key: 'credit-calculator' },
     ],
   },
-  { icon: <Calculator size={20} />, label: 'Loan Calculator', key: 'credit-calculator', section: 'Tools' },
 ];
 
 const complianceNav: NavItem[] = [
@@ -100,60 +94,36 @@ const complianceNav: NavItem[] = [
     section: 'Documents',
     children: [
       { label: 'All Pending', key: 'cs-queue', badge: 14 },
-      { label: 'Awaiting Preparation', key: 'cs-awaiting-prep' },
-      { label: 'Awaiting Review', key: 'cs-awaiting-review' },
-      { label: 'Awaiting CS Sign-off', key: 'cs-signoff', badge: 3 },
-    ],
-  },
-  {
-    icon: <PenTool size={20} />,
-    label: 'Document Workspace',
-    key: 'cs-workspace',
-    groupKey: 'cs-doc-templates',
-    section: 'Documents',
-    children: [
       { label: 'Workspace Hub', key: 'cs-workspace' },
-      { label: 'PoA Generator', key: 'cs-poa' },
-      { label: 'Tri-Party Agreement', key: 'cs-triparty' },
-      { label: 'SH-4 / CDSL', key: 'cs-sh4' },
-      { label: 'Term Sheet', key: 'cs-termsheet' },
-      { label: 'Loan Agreement', key: 'cs-agreement' },
     ],
   },
   {
     icon: <CheckSquare size={20} />,
-    label: 'KYC & CKYC',
+    label: 'KYC & CDSL Pledge',
     key: 'cs-kyc',
     groupKey: 'cs-kyc-group',
     badge: 9,
     section: 'Compliance',
     children: [
       { label: 'All Members', key: 'cs-kyc' },
-      { label: 'Pending KYC', key: 'cs-pending-kyc', badge: 4 },
-      { label: 'Re-KYC Due', key: 'cs-rekyc', badge: 9 },
+      { label: 'CDSL Pledge Tracker', key: 'cs-cdsl' },
     ],
   },
-  { icon: <Landmark size={20} />, label: 'CDSL Pledge Tracker', key: 'cs-cdsl', section: 'Compliance' },
-  { icon: <FileText size={20} />, label: 'NOC Management', key: 'cs-noc', badge: 2, section: 'Compliance' },
-  { icon: <Calendar size={20} />, label: 'Compliance Calendar', key: 'cs-calendar', badge: 3, section: 'Compliance' },
-  { icon: <ShieldCheck size={20} />, label: 'Security Return', key: 'cs-security-return', section: 'Compliance' },
   {
-    icon: <BookOpen size={20} />,
-    label: 'Registers & Reports',
-    key: 'cs-loan-register',
-    groupKey: 'cs-registers',
-    section: 'Registers',
+    icon: <Scale size={20} />,
+    label: 'CS Operations',
+    key: 'cs-noc',
+    groupKey: 'cs-ops',
+    section: 'Compliance',
     children: [
-      { label: 'Loan Register', key: 'cs-loan-register' },
-      { label: 'Sanction Register', key: 'cs-sanction-register' },
+      { label: 'NOC Management', key: 'cs-noc', badge: 2 },
+      { label: 'Compliance Calendar', key: 'cs-calendar', badge: 3 },
+      { label: 'Security Return Log', key: 'cs-security-return' },
       { label: 'Stamp Duty Register', key: 'cs-stamp' },
-      { label: 'PoA Register', key: 'cs-poa-register' },
-      { label: 'Exception Register', key: 'cs-exception-register' },
       { label: 'Grievance Register', key: 'cs-grievance' },
-      { label: 'Document Archive', key: 'cs-archive' },
-      { label: 'Compliance Reports', key: 'cs-reports' },
     ],
   },
+  { icon: <BookOpen size={20} />, label: 'Registers & Reports', key: 'cs-loan-register', section: 'Registers' },
 ];
 
 const sanctionNav: NavItem[] = [
@@ -174,13 +144,31 @@ const sanctionNav: NavItem[] = [
       { label: 'Final Sign-off', key: 'sc-final-signoff', badge: 2 },
     ],
   },
-  { icon: <BookOpen size={20} />, label: 'Sanction Register', key: 'sc-register', section: 'Decisions' },
-  { icon: <AlertTriangle size={20} />, label: 'Exception Register', key: 'sc-exceptions', section: 'Decisions' },
-  { icon: <TrendingUp size={20} />, label: 'Portfolio Health', key: 'sc-health', section: 'Oversight' },
-  { icon: <Scale size={20} />, label: 'Exposure & Limits', key: 'sc-exposure', section: 'Oversight' },
-  { icon: <BarChart3 size={20} />, label: 'DPD Summary', key: 'sc-dpd', section: 'Oversight' },
-  { icon: <ShieldCheck size={20} />, label: 'Recovery Actions', key: 'sc-default-escalations', section: 'Oversight' },
-  { icon: <Archive size={20} />, label: 'Board Minutes', key: 'sc-board', section: 'Governance' },
+  {
+    icon: <BookOpen size={20} />,
+    label: 'Registers',
+    key: 'sc-register',
+    groupKey: 'sc-governance',
+    section: 'Decisions',
+    children: [
+      { label: 'Sanction Register', key: 'sc-register' },
+      { label: 'Exception Register', key: 'sc-exceptions' },
+      { label: 'Board Minutes', key: 'sc-board' },
+    ],
+  },
+  {
+    icon: <TrendingUp size={20} />,
+    label: 'Oversight',
+    key: 'sc-health',
+    groupKey: 'sc-oversight',
+    section: 'Oversight',
+    children: [
+      { label: 'Portfolio Health', key: 'sc-health' },
+      { label: 'Exposure & Limits', key: 'sc-exposure' },
+      { label: 'DPD Summary', key: 'sc-dpd' },
+      { label: 'Recovery Actions', key: 'sc-default-escalations' },
+    ],
+  },
   { icon: <Settings size={20} />, label: 'Policy Settings', key: 'sc-policy', section: 'Governance' },
 ];
 
@@ -209,11 +197,12 @@ const treasuryNav: NavItem[] = [
     children: [
       { label: 'Customer Codes', key: 'treasury-sap-codes' },
       { label: 'SAP Entries Log', key: 'treasury-sap-log' },
+      { label: 'Ledger Summary', key: 'treasury-ledger' },
     ],
   },
   {
     icon: <Receipt size={20} />,
-    label: 'Repayments',
+    label: 'Repayments & Finance',
     key: 'treasury-incoming',
     groupKey: 'treasury-finance',
     section: 'Finance',
@@ -224,9 +213,17 @@ const treasuryNav: NavItem[] = [
       { label: 'Reconciliation', key: 'treasury-reconciliation' },
     ],
   },
-  { icon: <BookOpen size={20} />, label: 'Ledger Summary', key: 'treasury-ledger', section: 'Reporting' },
-  { icon: <FileBarChart size={20} />, label: 'Financial Reports', key: 'treasury-reports', section: 'Reporting' },
-  { icon: <Download size={20} />, label: 'Export Centre', key: 'treasury-exports', section: 'Reporting' },
+  {
+    icon: <FileBarChart size={20} />,
+    label: 'Reporting',
+    key: 'treasury-reports',
+    groupKey: 'treasury-reporting',
+    section: 'Reporting',
+    children: [
+      { label: 'Financial Reports', key: 'treasury-reports' },
+      { label: 'Export Centre', key: 'treasury-exports' },
+    ],
+  },
 ];
 
 const adminNav: NavItem[] = [

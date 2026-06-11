@@ -28,6 +28,16 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
         </div>
       }
     >
+      <div className="mb-6 p-4 rounded-xl border border-[#BAE6FD] flex items-center justify-between" style={{ backgroundColor: '#F0F9FF' }}>
+        <div className="flex items-center gap-3">
+          <span className="w-8 h-8 rounded-full bg-[#0284C7] text-white flex items-center justify-center font-bold text-sm">ℹ</span>
+          <div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#0369A1' }}>Disbursement Queue: 2 Files Ready for Payment</div>
+            <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px' }}>1 file is blocked due to missing SAP Customer Code. Process pending codes first.</div>
+          </div>
+        </div>
+        <button onClick={() => onNavigate('treasury-sap-codes')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#0891B2', fontSize: '13px', fontWeight: 700 }}>Create SAP Codes</button>
+      </div>
       <RoleCommandCenter
         title="Treasury Console"
         focus="Process payment files without SAP gaps"

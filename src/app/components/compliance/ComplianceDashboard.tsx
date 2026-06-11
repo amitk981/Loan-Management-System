@@ -22,6 +22,16 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
       pageTitle="CS Dashboard"
       pageSubtitle={`${greeting}, ${user?.name || 'Company Secretary'} · ${user?.roleLabel || 'Compliance'}`}
     >
+      <div className="mb-6 p-4 rounded-xl border border-[#FDE68A] flex items-center justify-between" style={{ backgroundColor: '#FFFBEB' }}>
+        <div className="flex items-center gap-3">
+          <span className="w-8 h-8 rounded-full bg-[#F59E0B] text-white flex items-center justify-center font-bold text-sm">!</span>
+          <div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400E' }}>14 Files Pending Documentation</div>
+            <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px' }}>Next priority: Notarise PoA and Loan Agreement for Ramesh Patil (LO00000047).</div>
+          </div>
+        </div>
+        <button onClick={() => onNavigate('cs-workspace')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#1A3C2A', fontSize: '13px', fontWeight: 700 }}>Open Workspace</button>
+      </div>
       <RoleCommandCenter
         title="CS Workbench"
         focus="Finish documents blocking disbursement"

@@ -28,6 +28,16 @@ export function SanctionDashboard({ onNavigate, activePage }: SanctionDashboardP
       pageSubtitle={`${user?.roleLabel || 'Sanction Committee'} · Review authority up to ₹5,00,000`}
       actions={<button onClick={() => onNavigate('sc-awaiting')} className="px-4 py-2.5 rounded-lg font-semibold hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: '#7C3AED', color: 'white', fontSize: '14px' }}>Review Now →</button>}
     >
+      <div className="mb-6 p-4 rounded-xl border border-[#DDD6FE] flex items-center justify-between" style={{ backgroundColor: '#F5F3FF' }}>
+        <div className="flex items-center gap-3">
+          <span className="w-8 h-8 rounded-full bg-[#7C3AED] text-white flex items-center justify-center font-bold text-sm">✓</span>
+          <div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#5B21B6' }}>7 Applications Awaiting Scrutiny Decision</div>
+            <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px' }}>CFO signature pending on 5 cases. Permissible lending headroom is ₹1.93 Crore (48% utilized).</div>
+          </div>
+        </div>
+        <button onClick={() => onNavigate('sc-awaiting')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#7C3AED', fontSize: '13px', fontWeight: 700 }}>Start Scrutiny</button>
+      </div>
       <RoleCommandCenter
         title="Decision Room"
         focus="Review applications waiting for your signature"
