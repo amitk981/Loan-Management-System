@@ -4,6 +4,7 @@ import { Shell } from '../layout/Shell';
 import { AppModal } from '../shared/AppModal';
 import { StatusBadge } from '../shared/StatusBadge';
 import { appraisalLoan } from '../../data/creditData';
+import { DirectorCaseBanner } from '../shared/CrossRoleComponents';
 
 interface ApplicationReviewProps {
   onNavigate: (page: string) => void;
@@ -28,6 +29,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
   const landLimit = landAcres * appraisalLoan.scaleOfFinance;
   const eligible = Math.min(shareLimit, landLimit);
   const exceeds = requested > eligible;
+  const isDirectorCase = appraisalLoan.borrower.includes('Ganesh') || appraisalLoan.borrower.includes('Director');
 
   if (submitted) {
     return (
@@ -38,7 +40,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
           </div>
           <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#12151A' }}>Appraisal Note Submitted</h2>
           <p style={{ fontSize: '14px', color: '#6B7280', marginTop: '6px' }}>{appraisalLoan.id} is now Submitted to SC. Appraisal note locked, timestamp appended, and Days Waiting counter reset from this stage-entry time.</p>
-          <button onClick={() => onNavigate('credit-sc-queue')} className="mt-6 px-5 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>Open Sanction Committee Queue</button>
+          <button onClick={() => onNavigate('credit-sc-queue')} className="mt-6 px-5 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Open Sanction Committee Queue</button>
         </div>
       </Shell>
     );
@@ -53,6 +55,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
       pageSubtitle={appraisalLoan.due}
       actions={<StatusBadge status="Under Assessment" size="md" />}
     >
+      {isDirectorCase && <div className="mb-5"><DirectorCaseBanner /></div>}
       <div className="mb-5 h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#FEF3C7' }}>
         <div className="h-full" style={{ width: '62%', backgroundColor: '#F59E0B' }} />
       </div>
@@ -83,7 +86,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
             <Metric label="Limit (land)" value={formatCurrency(landLimit)} color="#0C5FA5" />
             <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: '#F0F7F2', border: '2px solid #3D7A4F' }}>
               <div style={{ fontSize: '11px', color: '#2E7D32', fontWeight: 900 }}>ELIGIBLE LIMIT</div>
-              <div style={{ fontSize: '28px', color: '#1A3C2B', fontWeight: 900, fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
+              <div style={{ fontSize: '28px', color: '#1A3C2A', fontWeight: 900, fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
               <div style={{ fontSize: '11px', color: '#6B7280' }}>Lower of share and land limits</div>
             </div>
           </div>
@@ -171,15 +174,16 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
                 <label style={{ fontSize: '13px', color: '#3D4450', fontWeight: 800 }}>Remarks for SC</label>
                 <textarea value={recommendation} onChange={e => setRecommendation(e.target.value)} className="w-full mt-2 p-3 rounded-lg border border-[#D1D5DB]" rows={5} />
               </div>
-              <div className="flex justify-end">
-                <button onClick={() => setShowSubmit(true)} className="px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}><Send size={15} /> Submit to Sanction Committee</button>
+              <div className="flex justify-end gap-3">
+                <button className="px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 border border-[#E5E7EB]" style={{ color: '#991B1B', fontSize: '14px' }}>Prepare Rejection Note</button>
+                <button onClick={() => setShowSubmit(true)} className="px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}><Send size={15} /> Submit to Sanction Committee</button>
               </div>
             </div>
           )}
 
           <div className="flex items-center justify-between mt-8 pt-5 border-t border-[#E5E7EB]">
             <button onClick={() => step > 1 ? setStep(step - 1) : onNavigate('credit-queue')} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>{step > 1 ? 'Previous' : 'Back to Intake'}</button>
-            {step < 4 && <button onClick={() => setStep(step + 1)} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>Next →</button>}
+            {step < 4 && <button onClick={() => setStep(step + 1)} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Next →</button>}
           </div>
         </div>
       </div>
@@ -190,7 +194,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
           subtitle="The appraisal note will be locked and cannot be edited after submission."
           icon={<ShieldCheck size={18} />}
           onClose={() => setShowSubmit(false)}
-          footer={<><button onClick={() => setShowSubmit(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowSubmit(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>Confirm</button></>}
+          footer={<><button onClick={() => setShowSubmit(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowSubmit(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Confirm</button></>}
         >
           <div className="flex gap-3 p-3 rounded-lg" style={{ backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '13px', lineHeight: '20px' }}>
             <AlertTriangle size={16} /> Confirming will move the Credit inbox row to Submitted to SC and append Submitted by: Amit Kulkarni with the current timestamp.
@@ -222,5 +226,5 @@ function Metric({ label, value, color = '#12151A' }: { label: string; value: str
 }
 
 function AmountBox({ label, value, note, highlight }: { label: string; value: number; note: string; highlight?: boolean }) {
-  return <div className="p-4 rounded-lg" style={{ backgroundColor: highlight ? '#F0F7F2' : '#FAFAF8', border: `1px solid ${highlight ? '#3D7A4F' : '#E5E7EB'}` }}><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</div><div style={{ fontSize: '22px', color: highlight ? '#1A3C2B' : '#0C5FA5', fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{formatCurrency(value)}</div><div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>{note}</div></div>;
+  return <div className="p-4 rounded-lg" style={{ backgroundColor: highlight ? '#F0F7F2' : '#FAFAF8', border: `1px solid ${highlight ? '#3D7A4F' : '#E5E7EB'}` }}><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</div><div style={{ fontSize: '22px', color: highlight ? '#1A3C2A' : '#0C5FA5', fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{formatCurrency(value)}</div><div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>{note}</div></div>;
 }

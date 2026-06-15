@@ -26,6 +26,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
   const [remarks, setRemarks] = useState(`Loan disbursement — SFPCL Member Credit — Ref: ${disbursementLoan.id}`);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [sapConfirmed, setSapConfirmed] = useState(false);
+  const [gatesPassed, setGatesPassed] = useState(false); // Simulation toggle
   const mode = disbursementLoan.amount <= 200000 ? 'NEFT' : 'RTGS';
 
   const handleOtp = (i: number, val: string) => {
@@ -56,18 +57,39 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
 
       {step === 1 && (
         <div className="grid grid-cols-5 gap-5">
-          <div className="col-span-3 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
-            <div className="px-5 py-4 border-b border-[#EDEEF0]"><h3 style={{ fontSize: 18, fontWeight: 900 }}>Pre-Disbursement Verification</h3><p style={{ fontSize: 13, color: '#6B7280' }}><span style={{ fontFamily: 'Roboto Mono', color: '#0891B2' }}>{disbursementLoan.id}</span> · {disbursementLoan.borrower}</p></div>
-            <div className="p-5 space-y-3">
-              {preflightGates.map(([label, note, link], i) => (
-                <div key={label} className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: i === 4 ? '#FFFBEB' : '#F0FDF4', borderLeft: `3px solid ${i === 4 ? '#F59E0B' : '#22C55E'}` }}>
-                  <CheckCircle size={22} style={{ color: i === 4 ? '#D97706' : '#22C55E' }} />
-                  <div className="flex-1"><div style={{ fontSize: 14, color: '#12151A', fontWeight: 800 }}>{label}</div><div style={{ fontSize: 12, color: '#6B7280' }}>{note}</div></div>
-                  <button style={{ fontSize: 12, color: '#0891B2', fontWeight: 800 }}>{link}</button>
+          <div className="col-span-3 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden flex flex-col">
+            <div className="px-5 py-4 border-b border-[#EDEEF0] flex items-center justify-between">
+              <div><h3 style={{ fontSize: 18, fontWeight: 900 }}>Pre-Disbursement Verification</h3><p style={{ fontSize: 13, color: '#6B7280' }}><span style={{ fontFamily: 'Roboto Mono', color: '#0891B2' }}>{disbursementLoan.id}</span> · {disbursementLoan.borrower}</p></div>
+              <label className="flex items-center gap-2 cursor-pointer bg-[#F7F8FA] px-3 py-1.5 rounded-lg border border-[#EDEEF0]">
+                <input type="checkbox" checked={gatesPassed} onChange={e => setGatesPassed(e.target.checked)} style={{ accentColor: '#22C55E' }} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#3D4450' }}>Simulate Gates Passed</span>
+              </label>
+            </div>
+            
+            {!gatesPassed && (
+              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#FEF2F2', borderBottom: '1px solid #FECACA' }}>
+                <XCircle size={24} style={{ color: '#EF4444' }} />
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 900, color: '#991B1B' }}>Disbursement Blocked — Gate Failure</div>
+                  <div style={{ fontSize: 13, color: '#991B1B', marginTop: 2 }}>One or more pre-flight gates have failed. Resolve exceptions before proceeding.</div>
                 </div>
-              ))}
-              <div className="p-3 rounded-lg" style={{ backgroundColor: '#FEF2F2', color: '#991B1B', fontSize: 13, fontWeight: 800 }}>All 5 gates must show verified before payment initiation is enabled.</div>
-              <button onClick={() => setStep(2)} className="w-full py-3 rounded-lg font-semibold" style={{ backgroundColor: '#0891B2', color: 'white' }}>Proceed to Beneficiary Verification →</button>
+              </div>
+            )}
+
+            <div className="p-5 space-y-3 flex-1">
+              {preflightGates.map(([label, note, link], i) => {
+                const isFailedGate = i === 4 && !gatesPassed;
+                return (
+                  <div key={label} className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: isFailedGate ? '#FFFBEB' : '#F0FDF4', borderLeft: `3px solid ${isFailedGate ? '#F59E0B' : '#22C55E'}` }}>
+                    <CheckCircle size={22} style={{ color: isFailedGate ? '#D97706' : '#22C55E' }} />
+                    <div className="flex-1"><div style={{ fontSize: 14, color: '#12151A', fontWeight: 800 }}>{label}</div><div style={{ fontSize: 12, color: '#6B7280' }}>{isFailedGate ? 'Pending CS final sign-off' : note}</div></div>
+                    <button style={{ fontSize: 12, color: '#0891B2', fontWeight: 800 }}>{link}</button>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="p-5 border-t border-[#EDEEF0] bg-[#F7F8FA]">
+              <button disabled={!gatesPassed} onClick={() => setStep(2)} className="w-full py-3 rounded-lg font-semibold transition-all" style={{ backgroundColor: gatesPassed ? '#0891B2' : '#9EA8B3', color: 'white', cursor: gatesPassed ? 'pointer' : 'not-allowed' }}>{gatesPassed ? 'Proceed to Beneficiary Verification →' : 'Blocked — Resolve Gates First'}</button>
             </div>
           </div>
           <LoanSummary />
@@ -104,7 +126,17 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
           <div className="col-span-6 bg-white rounded-lg p-5 border border-[#EDEEF0]">
             <h3 style={{ fontSize: 18, fontWeight: 900 }}>Initiate Payment</h3><p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>Initiated by: Sr. Manager – Finance · Maker role</p>
             <Field label="Disbursement Amount" value={formatCurrency(disbursementLoan.amount, true)} note="Sanctioned by CFO + Director — cannot be edited" mono large />
-            <div className="mb-4"><label style={{ fontSize: 13, fontWeight: 800 }}>Payment Mode</label><div className="grid grid-cols-2 gap-3 mt-2">{['NEFT', 'RTGS'].map(m => <div key={m} className="p-4 rounded-lg border-2" style={{ borderColor: mode === m ? '#0891B2' : '#EDEEF0', backgroundColor: mode === m ? '#E0F2FE' : 'white' }}><strong>{m}</strong><div style={{ fontSize: 12, color: '#6B7280' }}>{m === 'NEFT' ? 'Typically 2-4 hrs' : 'Same day'}</div></div>)}</div></div>
+            <div className="mb-4">
+              <label style={{ fontSize: 13, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 6 }}>Payment Mode <span className="px-2 py-0.5 rounded-full" style={{ backgroundColor: '#F3F4F6', color: '#6B7280', fontSize: 10 }}>Auto-selected</span></label>
+              <div className="grid grid-cols-2 gap-3 mt-2" title="Payment mode is auto-selected based on loan amount (NEFT for ≤₹2L, RTGS for >₹2L)">
+                {['NEFT', 'RTGS'].map(m => (
+                  <div key={m} className="p-4 rounded-lg border-2 relative overflow-hidden" style={{ borderColor: mode === m ? '#0891B2' : '#EDEEF0', backgroundColor: mode === m ? '#E0F2FE' : '#F7F8FA', opacity: mode === m ? 1 : 0.6, cursor: 'not-allowed' }}>
+                    <strong>{m}</strong>
+                    <div style={{ fontSize: 12, color: '#6B7280' }}>{m === 'NEFT' ? 'Typically 2-4 hrs' : 'Same day'}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
             <div className="mb-4"><label style={{ fontSize: 13, fontWeight: 800 }}>Transaction Remarks</label><input value={remarks} onChange={e => setRemarks(e.target.value.slice(0, 100))} className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB]" style={{ height: 42 }} /><div style={{ fontSize: 11, color: '#6B7280', textAlign: 'right' }}>{remarks.length}/100</div></div>
             <Field label="Initiation Date & Time" value="10 Jun 2026 · 10:15 AM" />
             <div className="p-3 rounded-lg mb-4" style={{ backgroundColor: '#E0F2FE', color: '#0E7490', fontSize: 13, fontWeight: 800 }}>Chief Financial Controller authorization required</div>

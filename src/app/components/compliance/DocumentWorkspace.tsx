@@ -186,12 +186,18 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  if (tab.id === 'agreement' && !termSheetAuthorityComplete) return;
+                  setActiveTab(tab.id);
+                }}
                 className="flex flex-col items-center flex-shrink-0 px-3 py-2 rounded-xl transition-all"
                 style={{
                   backgroundColor: activeTab === tab.id ? '#1A3C2A' : '#F7F8FA',
                   border: activeTab === tab.id ? 'none' : '1px solid #EDEEF0',
+                  opacity: tab.id === 'agreement' && !termSheetAuthorityComplete ? 0.5 : 1,
+                  cursor: tab.id === 'agreement' && !termSheetAuthorityComplete ? 'not-allowed' : 'pointer'
                 }}
+                title={tab.id === 'agreement' && !termSheetAuthorityComplete ? 'Locked until Term Sheet authority signatures are complete' : ''}
               >
                 <span style={{ fontSize: '12px', fontWeight: activeTab === tab.id ? 600 : 400, color: activeTab === tab.id ? 'white' : '#3D4450' }}>
                   {tab.shortLabel}
@@ -580,18 +586,51 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                     </div>
                   </div>
                 )}
-                <button
-                  disabled={!canSubmit}
-                  className="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all"
-                  style={{
-                    backgroundColor: canSubmit ? '#1A3C2A' : '#9EA8B3',
-                    color: 'white',
-                    fontSize: '15px',
-                    cursor: canSubmit ? 'pointer' : 'not-allowed',
-                  }}
-                >
-                  Release Complete File to Treasury →
-                </button>
+                {(() => {
+                  const [isHolding, setIsHolding] = useState(false);
+                  const [holdProgress, setHoldProgress] = useState(0);
+
+                  useEffect(() => {
+                    let interval: any;
+                    if (isHolding && canSubmit) {
+                      interval = setInterval(() => {
+                        setHoldProgress(p => {
+                          if (p >= 100) {
+                            clearInterval(interval);
+                            onNavigate('cs-queue');
+                            return 100;
+                          }
+                          return p + 5; // 2 seconds to 100
+                        });
+                      }, 100);
+                    } else {
+                      setHoldProgress(0);
+                    }
+                    return () => clearInterval(interval);
+                  }, [isHolding, canSubmit]);
+
+                  return (
+                    <button
+                      disabled={!canSubmit}
+                      onMouseDown={() => setIsHolding(true)}
+                      onMouseUp={() => setIsHolding(false)}
+                      onMouseLeave={() => setIsHolding(false)}
+                      className="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all relative overflow-hidden"
+                      style={{
+                        backgroundColor: canSubmit ? '#1A3C2A' : '#9EA8B3',
+                        color: 'white',
+                        fontSize: '15px',
+                        cursor: canSubmit ? 'pointer' : 'not-allowed',
+                      }}
+                    >
+                      {/* Hold progress bar background */}
+                      <div className="absolute top-0 left-0 h-full" style={{ width: `${holdProgress}%`, backgroundColor: 'rgba(255,255,255,0.2)', transition: 'width 0.1s linear' }} />
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        {holdProgress > 0 && holdProgress < 100 ? 'Keep holding...' : 'Hold to Release Complete File to Treasury →'}
+                      </span>
+                    </button>
+                  );
+                })()}
                 {!canSubmit && (
                   <p style={{ fontSize: '12px', color: '#9EA8B3', textAlign: 'center', marginTop: '6px' }}>
                     {!allDocsChecked ? `${15 - checkedCount} documents still pending` : !legalDocsExecuted ? 'Stamping and notarisation still pending' : !termSheetAuthorityComplete ? 'Term Sheet CFO / Director signatures pending' : !witnessConfirmed ? 'Witness signature capture pending' : !bankGateReady ? 'Bank verification letter pending' : 'All four signatures required before treasury release'}

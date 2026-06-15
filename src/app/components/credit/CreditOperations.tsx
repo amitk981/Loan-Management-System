@@ -54,7 +54,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
               <Cell right mono>{formatCurrency(row.amount)}</Cell>
               <Cell>{row.purpose}</Cell>
               <Cell><StatusBadge status={row.status} /> <span style={{ marginLeft: '8px', fontSize: '12px', color: '#6B7280' }}>{row.blocker}</span></Cell>
-              <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 700 }}>{row.status === 'Incomplete' ? 'Request Docs' : 'Review'}</button></Cell>
+              <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '12px', fontWeight: 700 }}>{row.status === 'Incomplete' ? 'Request Docs' : 'Review'}</button></Cell>
             </tr>
           ))}
         </SimpleTable>
@@ -88,7 +88,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
             <Info label="Approved Amount" value={selected.status === 'Approved' ? formatCurrency(selected.amount) : '-'} mono />
             <Info label="CSR Entry" value={selected.csr || 'Pending'} mono />
           </div>
-          {selected.status === 'Approved' && <button className="mt-4 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>Proceed to Documentation Stage →</button>}
+          {selected.status === 'Approved' && <button className="mt-4 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Proceed to Documentation Stage →</button>}
           {selected.status === 'Rejected' && <button className="mt-4 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#C62828', color: 'white', fontSize: '14px' }}>Prepare Rejection Note →</button>}
         </div>
       </div>
@@ -126,7 +126,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
           </div>
         ))}
       </div>
-      <DataCard title="DPD Table: Filter 3+ Years" action={<button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate CFO MIS Report</button>}>
+      <DataCard title="DPD Table: Filter 3+ Years" action={<button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate CFO MIS Report</button>}>
         <SimpleTable headers={['Borrower', 'Loan ID', 'Amount', 'DPD Days', 'Action Required']}>
           {dpdRows.map(row => (
             <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[#E5E7EB] clickable-row">
@@ -145,7 +145,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
           <div key={item} className="flex items-center gap-3 py-2"><span style={{ color: i < 4 ? '#2E7D32' : '#C62828', fontWeight: 900 }}>{i < 4 ? '✓' : '✕'}</span><span style={{ fontSize: '13px', color: '#3D4450' }}>{item}</span></div>
         ))}
         <textarea className="w-full mt-3 p-3 rounded-lg border border-[#D1D5DB]" rows={5} defaultValue="Auto-draft note for non-payment: Narayan Patil, LO00000018, sanctioned ₹1,20,000, DPD 1247 days. Crop failure recorded; extension expired. Recommendation: submit to SC for action approval and review SH-4 / undated cheque invocation." />
-        <button className="mt-3 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>Submit to Sanction Committee for action approval</button>
+        <button className="mt-3 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Submit to Sanction Committee for action approval</button>
       </div>
     </div>
   );
@@ -153,7 +153,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
   const renderInvoices = () => (
     <div className="space-y-5">
       <div className="grid grid-cols-4 gap-4">{[['Generated', '89'], ['Sent', '76'], ['Paid', '61'], ['Unpaid post-30 Apr', '15']].map(([l, v]) => <Info key={l} label={l} value={v} />)}</div>
-      <DataCard title="Interest Invoice Batch" action={<button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate All Invoices</button>}>
+      <DataCard title="Interest Invoice Batch" action={<button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate All Invoices</button>}>
         <SimpleTable headers={['Borrower', 'Loan ID', 'Principal', 'Interest (yr)', 'Status', 'Action']}>
           {interestInvoices.map(row => (
             <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[#E5E7EB] clickable-row">
@@ -184,7 +184,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <div className="mt-5 p-4 rounded-lg" style={{ backgroundColor: '#FAFAF8', border: '1px solid #E5E7EB', fontSize: '13px', color: '#3D4450', lineHeight: '22px' }}>
         Send to: Sr. Manager - Finance (Rohan Mehta) &lt;rmehta@sahyadrifarms.com&gt;<br />Cc: Credit Manager (auto)<br />Format: Excel attachment (Annexure I template) + email body
       </div>
-      <div className="mt-5 flex gap-3"><button className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]">Preview Email</button><button className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2B', color: 'white' }}>Send Request →</button></div>
+      <div className="mt-5 flex gap-3"><button className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]">Preview Email</button><button className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white' }}>Send Request →</button></div>
     </div>
   );
 
@@ -227,7 +227,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
           <h3 style={{ fontSize: '16px', fontWeight: 900 }}>{title}</h3>
           <div className="mt-4 h-3 rounded-full" style={{ backgroundColor: '#E5E7EB' }}><div className="h-full rounded-full" style={{ width: i === 0 ? '82%' : i === 1 ? '58%' : '40%', backgroundColor: i === 2 ? '#F59E0B' : '#2E7D32' }} /></div>
           <div style={{ fontSize: '13px', color: '#3D4450', marginTop: '12px' }}>{i === 2 ? '40% threshold watch' : 'Ready for export'}</div>
-          <span className="inline-flex mt-4 px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate</span>
+          <span className="inline-flex mt-4 px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate</span>
         </button>
       ))}
     </div>

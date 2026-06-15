@@ -42,7 +42,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
       pageTitle="New Applications"
       pageSubtitle="Intake and appraisal assignment"
       actions={
-        <button onClick={() => onNavigate('credit-manual-entry')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>
+        <button onClick={() => onNavigate('credit-manual-entry')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>
           <Plus size={15} /> Add Manual
         </button>
       }
@@ -68,7 +68,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               </div>
               <div className="flex gap-2 flex-wrap">
                 {(['All', 'Today', 'Incomplete', 'Assigned to me'] as const).map(item => (
-                  <button key={item} onClick={() => setFilter(item)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: filter === item ? '#1A3C2B' : 'white', color: filter === item ? 'white' : '#3D4450', border: '1px solid #E5E7EB', fontSize: '12px', fontWeight: 700 }}>
+                  <button key={item} onClick={() => setFilter(item)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: filter === item ? '#1A3C2A' : 'white', color: filter === item ? 'white' : '#3D4450', border: '1px solid #E5E7EB', fontSize: '12px', fontWeight: 700 }}>
                     {item}
                   </button>
                 ))}
@@ -144,7 +144,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
             <div className="flex gap-3 border-t border-[#E5E7EB] pt-5">
               <button onClick={() => setShowNotice(true)} disabled={missingDocs.length === 0} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: missingDocs.length ? '#FEF3C7' : '#F3F4F6', color: missingDocs.length ? '#92400E' : '#9CA3AF', fontSize: '13px' }}>Send Deficiency Notice</button>
               <button disabled={!canAssign} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#E8F1FA' : '#F3F4F6', color: canAssign ? '#0C5FA5' : '#9CA3AF', fontSize: '13px' }}>Mark Complete</button>
-              <button onClick={() => onNavigate('credit-review')} disabled={!canAssign} className="ml-auto px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#1A3C2B' : '#9CA3AF', color: 'white', fontSize: '13px' }}>Assign to Appraisal →</button>
+              <button onClick={() => onNavigate('credit-review')} disabled={!canAssign} className="ml-auto px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#1A3C2A' : '#9CA3AF', color: 'white', fontSize: '13px' }}>Assign to Appraisal →</button>
             </div>
           </div>
         </div>
@@ -156,11 +156,11 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
           subtitle={`${selected.id} · ${missingDocs.map(doc => doc.name).join(', ') || 'No missing mandatory items'}`}
           icon={<Send size={18} />}
           onClose={() => setShowNotice(false)}
-          footer={<><button onClick={() => setShowNotice(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setNoticeSent(true); setShowNotice(false); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>Preview → Send</button></>}
+          footer={<><button onClick={() => setShowNotice(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setNoticeSent(true); setShowNotice(false); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Preview → Send</button></>}
         >
           <div className="space-y-4">
             <div className="flex gap-2">
-              {(['English', 'Marathi'] as const).map(lang => <button key={lang} onClick={() => setNoticeLang(lang)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: noticeLang === lang ? '#1A3C2B' : '#F3F4F6', color: noticeLang === lang ? 'white' : '#3D4450', fontSize: '12px', fontWeight: 700 }}>{lang}</button>)}
+              {(['English', 'Marathi'] as const).map(lang => <button key={lang} onClick={() => setNoticeLang(lang)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: noticeLang === lang ? '#1A3C2A' : '#F3F4F6', color: noticeLang === lang ? 'white' : '#3D4450', fontSize: '12px', fontWeight: 700 }}>{lang}</button>)}
             </div>
             <textarea rows={7} className="w-full p-3 rounded-lg border border-[#D1D5DB]" style={{ fontSize: '13px', color: '#12151A', lineHeight: '20px' }} defaultValue={noticeLang === 'English' ? `Dear ${selected.shortName}, your loan application ${selected.id} is missing: ${missingDocs.map(doc => doc.name).join(', ')}. Please upload the document to continue processing.` : `${selected.shortName}, आपल्या ${selected.id} कर्ज अर्जासाठी ${missingDocs.map(doc => doc.name).join(', ')} आवश्यक आहे. कृपया कागदपत्र अपलोड करा.`} />
           </div>

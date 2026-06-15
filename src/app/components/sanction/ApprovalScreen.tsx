@@ -5,6 +5,7 @@ import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { AppModal } from '../shared/AppModal';
 import { scReviewLoan, scScrutinyItems } from '../../data/sanctionData';
+import { DirectorCaseBanner } from '../shared/CrossRoleComponents';
 
 interface ApprovalScreenProps {
   onNavigate: (page: string) => void;
@@ -36,6 +37,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
   const amountError = !isJoint && amountNum > scReviewLoan.amount;
   const commentsRequired = decision === 'reject' || decision === 'return';
   const canSubmit = allScrutinyDone && !!decision && registerChecked && !amountError && (!commentsRequired || comments.trim().length > 0);
+  const isDirectorCase = scReviewLoan.borrower.includes('Ganesh') || scReviewLoan.borrower.includes('Vijay') || scReviewLoan.borrower.includes('Director');
 
   useEffect(() => {
     if (!showConfirm) return;
@@ -71,6 +73,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
       pageSubtitle={`Submitted by: ${scReviewLoan.submittedBy} · ${scReviewLoan.submittedDate} · ${scReviewLoan.submittedAgo}`}
       actions={<div className="flex gap-2"><button onClick={() => onNavigate('sc-awaiting')} className="px-3 py-2 rounded-lg border border-[#EDEEF0] flex items-center gap-1.5" style={{ fontSize: '13px' }}><ArrowLeft size={14} /> Back</button><button className="px-3 py-2 rounded-lg border border-[#EDEEF0] flex items-center gap-1.5" style={{ fontSize: '13px' }}><Printer size={14} /> Print</button></div>}
     >
+      {isDirectorCase && <div className="mb-5"><DirectorCaseBanner /></div>}
       {isJoint && (
         <div className="mb-5 p-4 rounded-lg" style={{ backgroundColor: '#FEF3C7', borderLeft: '4px solid #D97706' }}>
           <div style={{ fontSize: '14px', fontWeight: 900, color: '#92400E' }}>Joint Approval Required — Amount Exceeds ₹5,00,000</div>

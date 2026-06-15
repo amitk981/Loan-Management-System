@@ -42,7 +42,7 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
       pageTitle={`${greeting}, ${user?.name || 'Credit Manager'}`}
       pageSubtitle={user?.roleLabel || 'Credit Assessment'}
       actions={
-        <button onClick={() => onNavigate('credit-queue')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2 hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: '#1A3C2B', color: 'white', fontSize: '14px' }}>
+        <button onClick={() => onNavigate('credit-queue')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2 hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>
           New Applications <ArrowRight size={15} />
         </button>
       }

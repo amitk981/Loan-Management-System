@@ -52,27 +52,88 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
     </div>
   );
 
-  const renderScSignoff = () => (
-    <div className="grid grid-cols-5 gap-5">
-      <div className="col-span-3 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
-        <div className="p-5 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
-          <h3 style={{ fontSize: 18, fontWeight: 900 }}>LO00000047 · Ramesh Patil · {formatCurrency(200000)}</h3>
+  const renderScSignoff = () => {
+    const checklistItems = [
+      'Appraisal Note Approved', 'Term Sheet Signed', 'Loan Agreement Executed', 'Demand Promissory Note',
+      'Hypothecation Deed', 'SH-4 Transfer Form (Blank)', 'Blank Security Cheque', 'Power of Attorney (Notarized)',
+      'Borrower KYC (PAN/Aadhaar)', 'Bank Verification (Penny Drop)', 'Land Extract (7/12 & 8A)',
+      'NOC from existing lenders', 'Guarantor signatures (if any)', 'CIBIL / Default check refresh', 'CS Sign-off Certificate'
+    ];
+    return (
+      <div className="grid grid-cols-5 gap-5">
+        <div className="col-span-3 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
+          <div className="p-5 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
+            <div className="flex justify-between items-center">
+               <h3 style={{ fontSize: 18, fontWeight: 900 }}>Final Pre-Disbursement Sign-off</h3>
+               <StatusBadge status="Awaiting SC Final" size="md" />
+            </div>
+            <p style={{ fontSize: 14, color: '#3D4450', marginTop: 4 }}><strong>LO00000047</strong> · Ramesh Patil · {formatCurrency(200000)}</p>
+          </div>
+          <div className="p-5">
+            <h4 style={{ fontSize: 14, fontWeight: 800, marginBottom: 12 }}>Document Checklist Verified by CS</h4>
+            <div className="grid grid-cols-2 gap-3">
+              {checklistItems.map((item, i) => (
+                <div key={i} className="p-3 rounded-lg flex items-start gap-2" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', fontSize: 12, color: '#166534', fontWeight: 700 }}>
+                  <CheckCircle size={14} style={{ flexShrink: 0, marginTop: 2 }} />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="p-5 border-t border-[#EDEEF0]">
+            <label className="flex items-start gap-2 mb-4">
+               <input type="checkbox" style={{ accentColor: '#7C3AED', marginTop: 3 }} />
+               <span style={{ fontSize: 13, color: '#3D4450' }}>I confirm that the above document file is complete and legally executed. I authorize the release of {formatCurrency(200000)} to the Treasury queue.</span>
+            </label>
+            <button className="w-full py-3 rounded-lg font-semibold flex justify-center items-center gap-2" style={{ backgroundColor: '#7C3AED', color: 'white' }}>
+               <FileText size={16} /> Sign Checklist & Release to Treasury
+            </button>
+            <div className="mt-3 p-3 rounded-lg flex items-center gap-2" style={{ backgroundColor: '#E0F2FE', color: '#0E7490', fontSize: 12, fontWeight: 800 }}>
+               <Send size={14} /> After signing: File released to Treasury. Senior Manager – Finance notified.
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-3 gap-3 p-5">
-          {Array.from({ length: 15 }).map((_, i) => <button key={i} className="p-3 rounded-lg text-left clickable-card" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', fontSize: 12, color: '#166534', fontWeight: 800 }}>Checklist item {i + 1}</button>)}
-        </div>
-        <div className="p-5 border-t border-[#EDEEF0]">
-          <button className="w-full py-3 rounded-lg font-semibold" style={{ backgroundColor: '#7C3AED', color: 'white' }}>Sign Checklist — Final Disbursement Approval</button>
-          <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 13, fontWeight: 800 }}>After signing: File released to Treasury. Senior Manager – Finance notified.</div>
+        <div className="col-span-2 space-y-4">
+          <HandoffCard title="Second SC Touchpoint" from="CS" to="SC Director → Treasury">This happens after CS document preparation, not during appraisal review. Routing: CS submits → SC Director signs → Treasury receives file.</HandoffCard>
+          <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]">
+            <h4 style={{ fontSize: 14, fontWeight: 900, marginBottom: 12 }}>Signatory Details</h4>
+            <div className="space-y-3">
+               <div><div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>Authority</div><div style={{ fontSize: 13, fontWeight: 700 }}>S. Nair (CFO)</div></div>
+               <div><div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>IP Address</div><div style={{ fontSize: 13, fontFamily: 'Roboto Mono' }}>192.168.1.44</div></div>
+               <div><div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>Timestamp</div><div style={{ fontSize: 13 }}>Current Time</div></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="col-span-2"><HandoffCard title="Second SC Touchpoint" from="CS" to="SC Director → Treasury">This happens after CS document preparation, not during appraisal review. Routing: CS submits → SC Director signs → Treasury receives file.</HandoffCard></div>
-    </div>
-  );
+    );
+  };
 
   const renderCsNewLoan = () => (
     <div className="space-y-5">
-      <div className="grid grid-cols-7 gap-3">{['PoA', 'Tri-Party', 'SH-4/CDSL', 'Term Sheet', 'Loan Agreement', 'Bank Verify', 'Checklist'].map((tab, i) => <button key={tab} onClick={() => onNavigate('cs-workspace')} className="bg-white rounded-lg p-4 border border-[#EDEEF0] text-left clickable-card"><div className="w-8 h-8 rounded-full flex items-center justify-center mb-3" style={{ backgroundColor: i === 0 ? '#1A3C2A' : '#EDEEF0', color: i === 0 ? 'white' : '#9EA8B3', fontWeight: 900 }}>{i + 1}</div><strong style={{ fontSize: 13 }}>{tab}</strong><div className="mt-2"><StatusBadge status={i === 0 ? 'Ready' : 'Not Started'} /></div></button>)}</div>
+      <div className="bg-white rounded-lg p-8 border border-[#EDEEF0] text-center max-w-3xl mx-auto mt-8">
+        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#F0FDF4', color: '#166534' }}>
+          <FileText size={32} />
+        </div>
+        <h2 style={{ fontSize: 24, fontWeight: 900, marginBottom: 12 }}>New Document File Generated</h2>
+        <p style={{ fontSize: 15, color: '#6B7280', marginBottom: 24, lineHeight: '24px' }}>
+          SC has sanctioned <strong>₹2,00,000</strong> for <strong>Ramesh Patil</strong> (LO00000047).<br />
+          Data has been securely imported from the sanctioned application. You can now begin generating the legal documents.
+        </p>
+
+        <div className="text-left bg-[#F7F8FA] rounded-lg p-5 mb-6 border border-[#EDEEF0]">
+          <h4 style={{ fontSize: 13, fontWeight: 800, marginBottom: 12, textTransform: 'uppercase', color: '#6B7280' }}>Recommended Workflow Sequence</h4>
+          <div className="space-y-3">
+             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#1A3C2A] text-white flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>1</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Generate Core Legal Documents</div><div style={{ fontSize: 13, color: '#6B7280' }}>Print Power of Attorney, Term Sheet, and Tri-Party Agreement for signatures.</div></div></div>
+             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#EDEEF0] text-[#6B7280] flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>2</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Lock Term Sheet</div><div style={{ fontSize: 13, color: '#6B7280' }}>Once Term Sheet is signed by Borrower & SC Director, the system unlocks the Loan Agreement.</div></div></div>
+             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#EDEEF0] text-[#6B7280] flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>3</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Final Checklist & Sign-off</div><div style={{ fontSize: 13, color: '#6B7280' }}>Upload executed copies, complete the 15-point checklist, and release file to Treasury.</div></div></div>
+          </div>
+        </div>
+
+        <button onClick={() => onNavigate('cs-workspace')} className="px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 mx-auto transition-all hover:opacity-90" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: 15 }}>
+          Open Workspace & Generate Docs →
+        </button>
+      </div>
+
       <HandoffCard title="SC → CS Data Auto-Populated" from="SC approval" to="CS Workspace">Borrower details, address, folio, nominee, share type, approved amount, interest rate, tenure, subsidiary and &gt;₹5L signature flags are carried forward automatically.</HandoffCard>
     </div>
   );
@@ -89,23 +150,42 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
   );
 
   const renderFarmerStates = () => {
-    const stateMap: Record<string, { stage: number; balance: string; title: string; note: string; status: string }> = {
-      'farmer-post-disbursement': { stage: 5, balance: '₹2,00,000', title: 'Active Loan', note: 'Your loan of ₹2,00,000 has been disbursed to SBI account XXXX-4821. Repayment begins 31 Mar 2027.', status: 'Active' },
-      'farmer-payment-processing': { stage: 6, balance: '₹1,17,500 (payment processing)', title: 'Payment Processing', note: 'Payment submitted. Balance updates after Treasury posts SAP entry next working day.', status: 'Processing' },
-      'farmer-fully-repaid': { stage: 6, balance: '₹0', title: 'Fully Repaid — NOC Pending', note: 'Full repayment confirmed. CS has been notified to issue NOC.', status: 'Fully Repaid' },
-      'farmer-noc-delivered': { stage: 6, balance: '₹0', title: 'Closed — NOC Issued', note: 'NOC delivered to My Documents. SH-4 and security cheque return confirmation recorded.', status: 'Closed — NOC Issued' },
+    const stateMap: Record<string, { stage: number; balance: string; title: string; note: string; status: string; actions: string[] }> = {
+      'farmer-post-disbursement': { stage: 5, balance: '₹2,00,000', title: 'Active Loan', note: 'Your loan of ₹2,00,000 has been disbursed to SBI account XXXX-4821. Repayment begins 31 Mar 2027.', status: 'Active', actions: ['Make Payment', 'View Statement'] },
+      'farmer-payment-processing': { stage: 6, balance: '₹1,17,500', title: 'Payment Processing', note: 'Payment submitted. Balance updates after Treasury posts SAP entry next working day.', status: 'Processing', actions: ['View Receipt'] },
+      'farmer-fully-repaid': { stage: 6, balance: '₹0', title: 'Fully Repaid — NOC Pending', note: 'Full repayment confirmed. CS has been notified to issue NOC.', status: 'Fully Repaid', actions: ['View Statement'] },
+      'farmer-noc-delivered': { stage: 6, balance: '₹0', title: 'Closed — NOC Issued', note: 'NOC delivered to My Documents. SH-4 and security cheque return confirmation recorded.', status: 'Closed — NOC Issued', actions: ['Download NOC', 'View Statement'] },
     };
     const state = stateMap[activePage];
     return (
-      <div className="space-y-5">
-        <div className="rounded-lg p-6 text-white" style={{ background: 'linear-gradient(135deg, #1A3C2A, #2D7A4F)' }}>
-          <div style={{ fontSize: 12, opacity: 0.75 }}>{state.title}</div>
-          <div style={{ fontSize: 34, fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: 8 }}>{state.balance}</div>
-          <div style={{ fontSize: 14, marginTop: 8 }}>{state.note}</div>
-          <div className="mt-4 inline-flex px-3 py-1.5 rounded-full" style={{ backgroundColor: '#F59E0B', fontSize: 12, fontWeight: 800 }}>Repayment due: 31 Mar 2027</div>
+      <div className="space-y-5 max-w-md mx-auto mt-8">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#EDEEF0]">
+          <div className="p-6 text-white" style={{ background: state.status.includes('Closed') || state.status.includes('Repaid') ? 'linear-gradient(135deg, #047857, #10B981)' : state.status === 'Processing' ? 'linear-gradient(135deg, #0F766E, #0D9488)' : 'linear-gradient(135deg, #1A3C2A, #2D7A4F)' }}>
+            <div className="flex justify-between items-start">
+               <div style={{ fontSize: 13, opacity: 0.9, fontWeight: 700 }}>{state.title}</div>
+               <div className="px-2 py-1 rounded-full bg-white/20" style={{ fontSize: 11, fontWeight: 800 }}>LO00000047</div>
+            </div>
+            <div style={{ fontSize: 42, fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: 12, marginBottom: 4 }}>{state.balance}</div>
+            <div style={{ fontSize: 13, opacity: 0.9 }}>Outstanding Principal</div>
+            
+            <div className="mt-6 pt-5 border-t border-white/20">
+              <div style={{ fontSize: 14, lineHeight: '22px' }}>{state.note}</div>
+              {state.status === 'Active' && <div className="mt-3 inline-flex px-3 py-1.5 rounded-full bg-[#F59E0B] text-white" style={{ fontSize: 12, fontWeight: 800 }}>Repayment due: 31 Mar 2027</div>}
+            </div>
+          </div>
+          
+          <div className="p-4 bg-[#F7F8FA]">
+             <div className="grid grid-cols-2 gap-3">
+               {state.actions.map((action, i) => (
+                 <button key={action} className="py-2.5 rounded-xl font-semibold transition-all hover:opacity-90" style={{ backgroundColor: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? '#1A3C2A' : 'white', color: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? 'white' : '#3D4450', border: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? 'none' : '1px solid #EDEEF0', fontSize: 13, boxShadow: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? '0 4px 6px -1px rgba(26, 60, 42, 0.1)' : 'none' }}>
+                   {action}
+                 </button>
+               ))}
+             </div>
+          </div>
         </div>
         <UniversalStageTracker currentStage={state.stage} />
-        <button onClick={() => onNavigate('shared-notifications')} className="bg-white rounded-lg p-5 border border-[#EDEEF0] text-left clickable-card"><StatusBadge status={state.status} size="md" /><div style={{ fontSize: 13, color: '#3D4450', marginTop: 12 }}>Open notification record</div></button>
+        <button onClick={() => onNavigate('shared-notifications')} className="w-full bg-white rounded-xl p-4 border border-[#EDEEF0] text-left clickable-card flex justify-between items-center"><StatusBadge status={state.status} size="md" /><span style={{ fontSize: 13, color: '#0C5FA5', fontWeight: 800 }}>View Notification →</span></button>
       </div>
     );
   };
