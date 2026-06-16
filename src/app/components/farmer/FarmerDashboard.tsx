@@ -3,6 +3,7 @@ import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { LoanTracker } from '../shared/LoanTracker';
 import { farmerDocuments, farmerEligibility, farmerLoan, farmerNotifications, farmerProfile, farmerTransactions } from '../../data/farmerData';
+import { formatCurrency } from '../../lib/format';
 
 interface FarmerDashboardProps {
   onNavigate: (page: string) => void;
@@ -19,8 +20,6 @@ const notifIcons: Record<string, { icon: JSX.Element; bg: string; color: string;
 };
 
 export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps) {
-  const formatCurrency = (n: number) =>
-    '\u20b9' + n.toLocaleString('en-IN');
 
   const repaidPct = Math.round((farmerLoan.totalRepaid / farmerLoan.sanctionedAmount) * 100);
 

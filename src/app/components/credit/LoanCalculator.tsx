@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Calculator, RefreshCw } from 'lucide-react';
 import { Shell } from '../layout/Shell';
+import { formatCurrency } from '../../lib/format';
 
 interface LoanCalculatorProps {
   onNavigate: (page: string) => void;
@@ -19,7 +20,6 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
   const limitingMethod = method1 <= method2 ? 'Method 1 (Shareholding-based)' : 'Method 2 (Land-based)';
   const isMethod1Limiting = method1 <= method2;
 
-  const formatCurrency = (n: number) => '₹' + n.toLocaleString('en-IN');
 
   const reset = () => { setShares(0); setLandAcres(0); };
 

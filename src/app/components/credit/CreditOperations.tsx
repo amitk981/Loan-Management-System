@@ -5,6 +5,7 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { WorkbenchTabs } from '../shared/WorkbenchTabs';
 import { creditIntakeTabs, creditWorkbenchTabs } from '../../data/roleNav';
 import { appraisalLoan, auditTrail, creditApplications, dpdRows, dpdSummary, interestInvoices, loanRegister, sanctionQueue } from '../../data/creditData';
+import { formatCurrency } from '../../lib/format';
 
 interface CreditOperationsProps {
   onNavigate: (page: string) => void;
@@ -30,9 +31,6 @@ const pageCopy: Record<string, { title: string; subtitle: string }> = {
   'credit-all-apps': { title: 'All Applications', subtitle: 'Complete application history' },
 };
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function CreditOperations({ onNavigate, activePage }: CreditOperationsProps) {
   const [selectedSc, setSelectedSc] = useState('LO00000085');

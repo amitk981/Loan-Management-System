@@ -6,6 +6,7 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { WorkbenchTabs } from '../shared/WorkbenchTabs';
 import { sanctionPortfolioTabs, sanctionWorkbenchTabs } from '../../data/roleNav';
 import { defaultEscalation, sanctionRegister, scApprovalQueue, scExceptions, scPortfolio, specialCase } from '../../data/sanctionData';
+import { formatCurrency } from '../../lib/format';
 
 interface SanctionOperationsProps {
   onNavigate: (page: string) => void;
@@ -28,9 +29,6 @@ const pageCopy: Record<string, { title: string; subtitle: string }> = {
   'sc-policy': { title: 'Policy Settings', subtitle: 'Authority matrix' },
 };
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function SanctionOperations({ onNavigate, activePage }: SanctionOperationsProps) {
   const [queueFilter, setQueueFilter] = useState('All');

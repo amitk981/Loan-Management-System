@@ -4,15 +4,13 @@ import { Shell } from '../layout/Shell';
 import { StatusBadge } from './StatusBadge';
 import { AuditTrailPanel, DirectorCaseBanner, DocumentLinkList, HandoffCard, RoleAccessNote, S186LockBanner, UniversalStageTracker } from './CrossRoleComponents';
 import { crossRoleNotifications, integrationRules } from '../../data/crossRoleData';
+import { formatCurrency } from '../../lib/format';
 
 interface CrossRoleScreenProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 const pageMeta: Record<string, { title: string; subtitle: string }> = {
   'integration-overview': { title: 'Cross-Role Integration', subtitle: 'Handoffs and audit trail' },

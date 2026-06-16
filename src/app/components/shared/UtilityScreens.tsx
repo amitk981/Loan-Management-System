@@ -5,15 +5,13 @@ import { AuditTrailPanel, RoleAccessNote, UniversalStageTracker } from './CrossR
 import { mockDocuments, mockLoans, mockNotifications, mockRepayments } from '../../data/mockData';
 import { crossRoleNotifications } from '../../data/crossRoleData';
 import { useAuth, UserRole } from '../../context/AuthContext';
+import { formatCurrency } from '../../lib/format';
 
 interface UtilityScreenProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function NotificationsCenter({ onNavigate, activePage }: UtilityScreenProps) {
   return (

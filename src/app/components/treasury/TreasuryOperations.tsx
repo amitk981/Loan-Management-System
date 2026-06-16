@@ -6,6 +6,7 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { WorkbenchTabs } from '../shared/WorkbenchTabs';
 import { treasuryDisbursementTabs, treasuryFinanceTabs, treasurySapTabs } from '../../data/roleNav';
 import { authRows, directRepayments, interestAccruals, reconciliationRows, sapCodeRequests, sapEntries, subsidiaryDeductions, treasuryQueue } from '../../data/treasuryData';
+import { formatCurrency } from '../../lib/format';
 
 interface TreasuryOperationsProps {
   onNavigate: (page: string) => void;
@@ -27,9 +28,6 @@ const pageCopy: Record<string, { title: string; subtitle: string }> = {
   'treasury-reports': { title: 'Financial Reports', subtitle: 'Finance reporting pack' },
 };
 
-function formatCurrency(n: number, paise = false) {
-  return '₹' + n.toLocaleString('en-IN') + (paise ? '.00' : '');
-}
 
 function Metric({ label, value, note, color }: { label: string; value: string; note: string; color: string }) {
   return <div className="bg-white rounded-lg p-4 border border-[#EDEEF0]"><div style={{ fontSize: 12, color: '#9EA8B3', fontWeight: 800 }}>{label}</div><div style={{ fontSize: 25, color, fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: 4 }}>{value}</div><div style={{ fontSize: 12, color: '#3D4450', marginTop: 4 }}>{note}</div></div>;

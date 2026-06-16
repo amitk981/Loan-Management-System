@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Check, CheckCircle, Eye, Lock, Send, XCircle } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { disbursementLoan, preflightGates } from '../../data/treasuryData';
+import { formatCurrency } from '../../lib/format';
 
 interface DisbursementScreenProps {
   onNavigate: (page: string) => void;
@@ -17,9 +18,6 @@ const steps = [
   ['Complete', 'Done'],
 ];
 
-function formatCurrency(n: number, paise = false) {
-  return '₹' + n.toLocaleString('en-IN') + (paise ? '.00' : '');
-}
 
 export function DisbursementScreen({ onNavigate, activePage }: DisbursementScreenProps) {
   const [step, setStep] = useState(1);
