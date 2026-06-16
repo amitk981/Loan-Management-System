@@ -5,6 +5,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { LoginPage } from './components/auth/LoginPage';
 import { MemberLoanProfile, NotificationsCenter, UserProfile } from './components/shared/UtilityScreens';
 import { CrossRoleScreens } from './components/shared/CrossRoleScreens';
+import { LoanFile } from './components/shared/LoanFile';
 
 // Farmer
 import { FarmerDashboard } from './components/farmer/FarmerDashboard';
@@ -62,6 +63,7 @@ const utilityPages = [
   'notifications-center',
   'user-profile',
   'member-loan-profile',
+  'loan-file',
   'integration-overview',
   'credit-manual-entry',
   'sc-final-signoff',
@@ -127,6 +129,7 @@ function AppRoot() {
     }
     return <MemberLoanProfile {...props} />;
   }
+  if (activePage === 'loan-file') return <LoanFile {...props} />;
   if (utilityPages.includes(activePage)) return <CrossRoleScreens {...props} />;
 
   // --- Farmer Screens ---

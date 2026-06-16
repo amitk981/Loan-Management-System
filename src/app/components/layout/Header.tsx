@@ -97,6 +97,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
 
   const searchResults = [
     ...(roleSearchItems[user?.role || 'farmer'] || roleSearchItems.farmer),
+    ...(user?.role !== 'farmer' ? [{ label: 'Loan File', meta: 'Shared loan file — all 6 stages in one place', page: 'loan-file' }] : []),
     ...(user?.role !== 'farmer' ? [{ label: 'Borrower Lookup', meta: 'Search member and loan context', page: 'member-loan-profile' }] : []),
     { label: profileLabel, meta: user?.role === 'farmer' ? 'Your membership and loan details' : 'Your role scope and quick actions', page: profilePage },
     { label: 'Notifications', meta: 'Role alerts and pending tasks', page: 'notifications-center' },
