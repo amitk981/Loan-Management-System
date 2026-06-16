@@ -105,7 +105,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
             <Cell>{row.disbursed}</Cell>
             <Cell><StatusBadge status={row.stage} /></Cell>
             <Cell><span style={{ color: row.dpd > 90 ? '#C62828' : row.dpd > 0 ? '#F59E0B' : '#2E7D32', fontWeight: 700 }}>{row.dpd ? `${row.dpd} days` : '0'}</span></Cell>
-            <Cell><button onClick={(e) => { e.stopPropagation(); setSelectedLoan(row.id); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#1E88E5', fontSize: '12px', fontWeight: 800 }}>Open</button></Cell>
+            <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('loan-file'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#1E88E5', fontSize: '12px', fontWeight: 800 }}>Open File</button></Cell>
           </tr>
         ))}
       </SimpleTable>
