@@ -1,11 +1,6 @@
-export const loanStages = [
-  'Application Submitted',
-  'Credit Assessment',
-  'Sanction Approved',
-  'Documentation',
-  'Disbursed',
-  'Closed',
-];
+// Single source for the 6 SOP stage labels lives in lib/loanState (the state machine).
+import { STAGES } from '../lib/loanState';
+export const loanStages = STAGES;
 
 export const auditTrailEvents = [
   ['10 Jun 2026 · 09:12', 'Farmer', 'Ramesh Patil', 'Stage 1', 'Application submitted', 'LO00000047', 'Reference issued and visible to Credit Team'],
