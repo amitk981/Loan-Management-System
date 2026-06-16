@@ -82,16 +82,16 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
           </div>
           {actionQueue.map(item => (
             <button key={item.loan} onClick={() => onNavigate(item.page)} className="w-full px-5 py-4 flex items-center gap-4 text-left border-b border-[#E5E7EB] last:border-b-0 clickable-row">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${item.color}18`, color: item.color, fontWeight: 900 }}>{item.icon}</div>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${item.color}18`, color: item.color, fontWeight: 700 }}>{item.icon}</div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#0C5FA5', fontWeight: 700 }}>{item.loan}</span>
+                  <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#1E88E5', fontWeight: 700 }}>{item.loan}</span>
                   <span style={{ fontSize: '14px', color: '#12151A', fontWeight: 600 }}>{item.name}</span>
                   <StatusBadge status={item.status} />
                 </div>
                 <div className="truncate" style={{ fontSize: '12px', color: '#6B7280', marginTop: '3px' }}>{item.note}</div>
               </div>
-              <span style={{ fontSize: '12px', color: '#0C5FA5', fontWeight: 700 }}>Open →</span>
+              <span style={{ fontSize: '12px', color: '#1E88E5', fontWeight: 700 }}>Open →</span>
             </button>
           ))}
         </div>
@@ -117,7 +117,7 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
       <div className="bg-white rounded-xl p-5 border border-[#E5E7EB]">
         <div className="flex items-center justify-between mb-4">
           <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>Portfolio Health</h3>
-          <button onClick={() => onNavigate('credit-dpd')} className="hover:text-[#0A4A85] transition-colors" style={{ fontSize: '13px', color: '#0C5FA5', fontWeight: 700 }}>DPD Monitoring →</button>
+          <button onClick={() => onNavigate('credit-dpd')} className="hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: '#1E88E5', fontWeight: 700 }}>DPD Monitoring →</button>
         </div>
         <div className="grid grid-cols-4 gap-4 mb-4">
           {dpdData.map(d => (

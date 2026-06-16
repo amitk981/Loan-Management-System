@@ -59,7 +59,7 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
             const color = row.icon === '!' ? '#EF4444' : row.icon === '✓' ? '#22C55E' : '#1E88E5';
             return (
               <button key={row.loan} onClick={() => onNavigate(row.page)} className="w-full px-5 py-4 flex items-center gap-4 text-left border-b border-[#EDEEF0] last:border-b-0 clickable-row">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}18`, color, fontWeight: 900 }}>{row.icon}</div>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}18`, color, fontWeight: 700 }}>{row.icon}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#1E88E5', fontWeight: 700 }}>{row.loan}</span>

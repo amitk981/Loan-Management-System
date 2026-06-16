@@ -35,7 +35,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
   const renderManualEntry = () => (
     <div className="grid grid-cols-5 gap-5">
       <div className="col-span-3 bg-white rounded-lg p-5 border border-[#EDEEF0]">
-        <h3 style={{ fontSize: 18, fontWeight: 900 }}>Create Application on Behalf of Farmer</h3>
+        <h3 style={{ fontSize: 18, fontWeight: 700 }}>Create Application on Behalf of Farmer</h3>
         <div className="grid grid-cols-2 gap-4 mt-5">
           {['Farmer full name', 'Folio number', 'Mobile number', 'Nominee name', 'Aadhaar', 'PAN', 'Village', 'Crop', 'Requested amount', 'Purpose'].map((field, i) => (
             <label key={field} style={{ fontSize: 12, color: '#3D4450', fontWeight: 800 }}>{field}<input className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB]" placeholder={i === 8 ? '₹' : field} style={{ height: 40, fontSize: 13 }} /></label>
@@ -62,7 +62,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
         <div className="col-span-3 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
           <div className="p-5 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
             <div className="flex justify-between items-center">
-               <h3 style={{ fontSize: 18, fontWeight: 900 }}>Final Pre-Disbursement Sign-off</h3>
+               <h3 style={{ fontSize: 18, fontWeight: 700 }}>Final Pre-Disbursement Sign-off</h3>
                <StatusBadge status="Awaiting SC Final" size="md" />
             </div>
             <p style={{ fontSize: 14, color: '#3D4450', marginTop: 4 }}><strong>LO00000047</strong> · Ramesh Patil · {formatCurrency(200000)}</p>
@@ -94,7 +94,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
         <div className="col-span-2 space-y-4">
           <HandoffCard title="Second SC Touchpoint" from="CS" to="SC Director → Treasury">This happens after CS document preparation, not during appraisal review. Routing: CS submits → SC Director signs → Treasury receives file.</HandoffCard>
           <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]">
-            <h4 style={{ fontSize: 14, fontWeight: 900, marginBottom: 12 }}>Signatory Details</h4>
+            <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Signatory Details</h4>
             <div className="space-y-3">
                <div><div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>Authority</div><div style={{ fontSize: 13, fontWeight: 700 }}>S. Nair (CFO)</div></div>
                <div><div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>IP Address</div><div style={{ fontSize: 13, fontFamily: 'Roboto Mono' }}>192.168.1.44</div></div>
@@ -112,7 +112,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
         <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#F0FDF4', color: '#166534' }}>
           <FileText size={32} />
         </div>
-        <h2 style={{ fontSize: 24, fontWeight: 900, marginBottom: 12 }}>New Document File Generated</h2>
+        <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 12 }}>New Document File Generated</h2>
         <p style={{ fontSize: 15, color: '#6B7280', marginBottom: 24, lineHeight: '24px' }}>
           SC has sanctioned <strong>₹2,00,000</strong> for <strong>Ramesh Patil</strong> (LO00000047).<br />
           Data has been securely imported from the sanctioned application. You can now begin generating the legal documents.
@@ -139,7 +139,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
   const renderCsArchive = () => (
     <div className="grid grid-cols-5 gap-5">
       <div className="col-span-3 bg-white rounded-lg p-5 border border-[#EDEEF0]">
-        <h3 style={{ fontSize: 18, fontWeight: 900 }}>LO000047 Disbursed — Archive Document File</h3>
+        <h3 style={{ fontSize: 18, fontWeight: 700 }}>LO000047 Disbursed — Archive Document File</h3>
         {['Company Secretary signed · 10 Jun 09:00', 'Credit Manager signed · 10 Jun 09:15', 'SC Director signed · 10 Jun 16:30', 'Senior Manager Finance signed · 10 Jun 17:35'].map(row => <button key={row} onClick={() => onNavigate('shared-audit-trail')} className="w-full text-left p-3 mt-3 rounded-lg clickable-row" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 13, fontWeight: 800 }}>{row}</button>)}
         <button className="mt-5 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white' }}><Archive size={15} /> Archive Document File</button>
       </div>
@@ -163,7 +163,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
                <div style={{ fontSize: 13, opacity: 0.9, fontWeight: 700 }}>{state.title}</div>
                <div className="px-2 py-1 rounded-full bg-white/20" style={{ fontSize: 11, fontWeight: 800 }}>LO00000047</div>
             </div>
-            <div style={{ fontSize: 42, fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: 12, marginBottom: 4 }}>{state.balance}</div>
+            <div style={{ fontSize: 42, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 12, marginBottom: 4 }}>{state.balance}</div>
             <div style={{ fontSize: 13, opacity: 0.9 }}>Outstanding Principal</div>
             
             <div className="mt-6 pt-5 border-t border-white/20">
@@ -183,7 +183,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
           </div>
         </div>
         <UniversalStageTracker currentStage={state.stage} />
-        <button onClick={() => onNavigate('shared-notifications')} className="w-full bg-white rounded-xl p-4 border border-[#EDEEF0] text-left clickable-card flex justify-between items-center"><StatusBadge status={state.status} size="md" /><span style={{ fontSize: 13, color: '#0C5FA5', fontWeight: 800 }}>View Notification →</span></button>
+        <button onClick={() => onNavigate('shared-notifications')} className="w-full bg-white rounded-xl p-4 border border-[#EDEEF0] text-left clickable-card flex justify-between items-center"><StatusBadge status={state.status} size="md" /><span style={{ fontSize: 13, color: '#1E88E5', fontWeight: 800 }}>View Notification →</span></button>
       </div>
     );
   };
@@ -191,14 +191,14 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
   const renderDirectorCase = () => (
     <div className="grid grid-cols-3 gap-5">
       <DirectorCaseBanner />
-      <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><h3 style={{ fontWeight: 900 }}>GM Resolution Upload</h3><button className="mt-4 w-full py-3 rounded-lg border-2 border-dashed border-[#D1D5DB] flex items-center justify-center gap-2"><Upload size={15} /> Upload Resolution PDF</button><textarea className="w-full mt-3 p-3 rounded-lg border border-[#D1D5DB]" rows={3} placeholder="Resolution reference and meeting date" /></div>
+      <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><h3 style={{ fontWeight: 700 }}>GM Resolution Upload</h3><button className="mt-4 w-full py-3 rounded-lg border-2 border-dashed border-[#D1D5DB] flex items-center justify-center gap-2"><Upload size={15} /> Upload Resolution PDF</button><textarea className="w-full mt-3 p-3 rounded-lg border border-[#D1D5DB]" rows={3} placeholder="Resolution reference and meeting date" /></div>
       <DirectorCaseBanner blocked />
     </div>
   );
 
   const renderRateChange = () => (
     <div className="max-w-2xl bg-white rounded-lg p-5 border border-[#EDEEF0]">
-      <h3 style={{ fontSize: 18, fontWeight: 900 }}>Confirm Interest Rate Change</h3>
+      <h3 style={{ fontSize: 18, fontWeight: 700 }}>Confirm Interest Rate Change</h3>
       <div className="grid grid-cols-3 gap-3 mt-4">{['Farmer SMS + app banner', 'CS calendar task', 'Credit register update'].map(x => <button key={x} onClick={() => onNavigate('shared-notifications')} className="p-3 rounded-lg text-left clickable-row" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 12, fontWeight: 800 }}>{x}</button>)}</div>
       <div className="flex gap-3 mt-5"><button className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Cancel</button><button className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white' }}>Confirm Rate Change</button></div>
     </div>
@@ -217,7 +217,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
         ['Director case', 'GM resolution and excluded director routing'],
       ].map(([title, body]) => <button key={title} onClick={() => onNavigate('shared-audit-trail')} className="text-left"><HandoffCard title={title} from="Sender" to="Receiver">{body}</HandoffCard></button>)}</div>
       <UniversalStageTracker currentStage={5} />
-      <div className="grid grid-cols-2 gap-5"><AuditTrailPanel /><div className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><h3 style={{ fontSize: 15, fontWeight: 900 }}>Critical Integration Rules</h3>{integrationRules.map(([id, text]) => <div key={id} className="py-2 border-b border-[#EDEEF0]" style={{ fontSize: 13 }}><strong style={{ fontFamily: 'Roboto Mono', color: '#1E88E5' }}>{id}</strong> · {text}</div>)}</div></div>
+      <div className="grid grid-cols-2 gap-5"><AuditTrailPanel /><div className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><h3 style={{ fontSize: 15, fontWeight: 700 }}>Critical Integration Rules</h3>{integrationRules.map(([id, text]) => <div key={id} className="py-2 border-b border-[#EDEEF0]" style={{ fontSize: 13 }}><strong style={{ fontFamily: 'Roboto Mono', color: '#1E88E5' }}>{id}</strong> · {text}</div>)}</div></div>
     </div>
   );
 

@@ -47,7 +47,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
           <div>
             <div className="flex items-center gap-2 mb-3" style={{ color: primaryTone.fg }}>
               {icon || <ShieldCheck size={18} />}
-              <span style={{ fontSize: 12, fontWeight: 900, textTransform: 'uppercase' }}>{title}</span>
+              <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase' }}>{title}</span>
             </div>
             <h2 style={{ fontSize: 20, lineHeight: '28px', fontWeight: 800, color: '#12151A' }}>{focus}</h2>
             <div style={{ fontSize: 13, lineHeight: '20px', color: '#3D4450', marginTop: 8 }}>{primaryAction.detail}</div>
@@ -64,7 +64,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
               return (
                 <div key={metric.label} className="p-3 rounded-xl" style={{ backgroundColor: '#F7F8FA', border: '1px solid #EDEEF0' }}>
                   <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>{metric.label}</div>
-                  <div style={{ fontSize: 19, color: metricTone.fg, fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: 4 }}>{metric.value}</div>
+                  <div style={{ fontSize: 19, color: metricTone.fg, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{metric.value}</div>
                 </div>
               );
             })}
@@ -81,7 +81,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <div style={{ fontSize: 13, color: actionTone.fg, fontWeight: 900 }}>{action.label}</div>
+                      <div style={{ fontSize: 13, color: actionTone.fg, fontWeight: 700 }}>{action.label}</div>
                       <div style={{ fontSize: 12, color: '#3D4450', lineHeight: '18px', marginTop: 3 }}>{action.detail}</div>
                     </div>
                     {action.badge && (

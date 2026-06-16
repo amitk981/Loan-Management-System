@@ -49,7 +49,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
       <Shell activePage={activePage} onNavigate={onNavigate} breadcrumbs={['Sanction Committee', 'Decision Recorded']}>
         <div className="flex flex-col items-center justify-center min-h-80 text-center">
           <CheckCircle size={64} style={{ color: '#22C55E', marginBottom: '16px' }} />
-          <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#12151A' }}>Decision Recorded</h2>
+          <h2 style={{ fontSize: '24px', fontWeight: 700, color: '#12151A' }}>Decision Recorded</h2>
           <p style={{ fontSize: '14px', color: '#6B7280', marginTop: '8px' }}>{scReviewLoan.id} · {formatCurrency(amountNum)} · {decision.toUpperCase()}</p>
           <div className="mt-5 p-4 rounded-lg text-left" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', fontSize: '13px', color: '#166534', lineHeight: '22px' }}>
             {['Credit Sanction Register updated', 'CS Team notified', 'Farmer notification queued', 'Recorded by S. Nair (CFO)'].map(item => (
@@ -74,7 +74,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
       {isDirectorCase && <div className="mb-5"><DirectorCaseBanner /></div>}
       {isJoint && (
         <div className="mb-5 p-4 rounded-lg" style={{ backgroundColor: '#FEF3C7', borderLeft: '4px solid #D97706' }}>
-          <div style={{ fontSize: '14px', fontWeight: 900, color: '#92400E' }}>Joint Approval Required — Amount Exceeds ₹5,00,000</div>
+          <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400E' }}>Joint Approval Required — Amount Exceeds ₹5,00,000</div>
           <div className="grid grid-cols-3 gap-3 mt-3">
             {['S. Nair · CFO · Signed · 12-Oct-2025', 'R. Deshmukh · Director · Awaiting', 'V. Kulkarni · Director · Awaiting'].map((item, i) => <div key={item} className="p-2 rounded-lg flex items-center gap-2" style={{ backgroundColor: 'white', fontSize: '12px', color: '#3D4450', fontWeight: 700 }}><span className="w-2 h-2 rounded-full" style={{ backgroundColor: i === 0 ? '#22C55E' : '#F59E0B' }} />{item}</div>)}
           </div>
@@ -100,7 +100,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
             <Info label="Method 1" value={`${scReviewLoan.shares} shares × 30% × ₹2,000 = ${formatCurrency(shareLimit)}`} mono />
             <Info label="Method 2" value={`${scReviewLoan.landAcres} acres × ₹20,000 = ${formatCurrency(landLimit)}`} mono />
             <div className="col-span-2 p-4 rounded-lg" style={{ backgroundColor: '#E8F5E9', border: '1px solid #BBF7D0' }}>
-              <div style={{ fontSize: '12px', color: '#2D7A4F', fontWeight: 900 }}>Eligible Limit: {formatCurrency(eligibleLimit)}</div>
+              <div style={{ fontSize: '12px', color: '#2D7A4F', fontWeight: 700 }}>Eligible Limit: {formatCurrency(eligibleLimit)}</div>
               <div style={{ fontSize: '13px', color: '#3D4450', marginTop: '4px' }}>Requested Amount: {formatCurrency(scReviewLoan.amount)} ← AT LIMIT</div>
             </div>
           </Panel>
@@ -128,7 +128,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
         <div className="col-span-3">
           <div className="bg-white rounded-lg border border-[#EDEEF0] sticky top-4 overflow-hidden" style={{ borderLeft: '4px solid #7C3AED' }}>
             <div className="p-4 border-b border-[#EDEEF0]">
-              <div style={{ fontSize: '15px', fontWeight: 900, color: '#12151A' }}>Decision Panel</div>
+              <div style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>Decision Panel</div>
               <div className="mt-2 space-y-2">
                 {(isJoint ? ['S. Nair · CFO · Signed', 'R. Deshmukh · Director · Pending', 'V. Kulkarni · Director · Pending'] : ['S. Nair · CFO · You', 'R. Deshmukh · Director · Pending']).map((sig, i) => (
                   <div key={sig} className="px-2 py-1 rounded-full inline-flex mr-1" style={{ backgroundColor: i === 0 ? '#DCFCE7' : '#FEF3C7', color: i === 0 ? '#166534' : '#92400E', fontSize: '11px', fontWeight: 800 }}>{sig}</div>
@@ -136,7 +136,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
               </div>
             </div>
             <div className="p-4">
-              <div style={{ fontSize: '13px', fontWeight: 900, color: '#12151A', marginBottom: '10px' }}>7-Point Scrutiny Checklist</div>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: '#12151A', marginBottom: '10px' }}>7-Point Scrutiny Checklist</div>
               {scScrutinyItems.map(([label, note], i) => (
                 <label key={label} className="block p-2 rounded-lg mb-2 cursor-pointer" style={{ backgroundColor: scrutiny[i] ? '#F0FDF4' : 'white', border: '1px solid #EDEEF0' }}>
                   <div className="flex items-start gap-2">
@@ -154,7 +154,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
                   { id: 'reject' as const, label: 'Reject', icon: <XCircle size={18} />, bg: '#7F1D1D' },
                   { id: 'return' as const, label: 'Return for Clarification', icon: <RotateCcw size={18} />, bg: '#1E3A5F' },
                 ].map(item => (
-                  <button key={item.id} disabled={!allScrutinyDone} onClick={() => setDecision(item.id)} className="w-full px-3 py-3 rounded-lg flex items-center gap-2" style={{ backgroundColor: allScrutinyDone ? item.bg : '#EDEEF0', color: allScrutinyDone ? 'white' : '#9EA8B3', opacity: decision && decision !== item.id ? 0.45 : 1, transform: decision === item.id ? 'scale(1.02)' : 'scale(1)', fontSize: '13px', fontWeight: 900, cursor: allScrutinyDone ? 'pointer' : 'not-allowed' }}>{item.icon}{item.label}</button>
+                  <button key={item.id} disabled={!allScrutinyDone} onClick={() => setDecision(item.id)} className="w-full px-3 py-3 rounded-lg flex items-center gap-2" style={{ backgroundColor: allScrutinyDone ? item.bg : '#EDEEF0', color: allScrutinyDone ? 'white' : '#9EA8B3', opacity: decision && decision !== item.id ? 0.45 : 1, transform: decision === item.id ? 'scale(1.02)' : 'scale(1)', fontSize: '13px', fontWeight: 700, cursor: allScrutinyDone ? 'pointer' : 'not-allowed' }}>{item.icon}{item.label}</button>
                 ))}
               </div>
 
@@ -179,7 +179,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
 }
 
 function Panel({ title, children }: { title: string; children: ReactNode }) {
-  return <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden"><div className="px-4 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA', fontSize: '14px', fontWeight: 900, color: '#12151A' }}>{title}</div><div className="grid grid-cols-2 gap-0">{children}</div></div>;
+  return <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden"><div className="px-4 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA', fontSize: '14px', fontWeight: 700, color: '#12151A' }}>{title}</div><div className="grid grid-cols-2 gap-0">{children}</div></div>;
 }
 
 function Info({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
