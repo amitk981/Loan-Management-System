@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { AlertTriangle, Check, Clock, FileText, ShieldAlert } from 'lucide-react';
+import { Check, Clock, FileText } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { GateBanner } from './GateBanner';
 import { auditTrailEvents, loanStages } from '../../data/crossRoleData';
 
 export function UniversalStageTracker({ currentStage = 5, compact = false }: { currentStage?: number; compact?: boolean }) {
@@ -51,27 +52,34 @@ export function AuditTrailPanel({ farmerSafe = false }: { farmerSafe?: boolean }
 }
 
 export function DirectorCaseBanner({ blocked = false }: { blocked?: boolean }) {
+  // SOP gate #1 (related-party): director/relative borrower needs GM approval (Sec 378ZK).
   return (
-    <div className="rounded-lg p-4 border" style={{ backgroundColor: 'var(--warning-50)', borderColor: 'var(--warning-500)', color: 'var(--warning-700)' }}>
-      <div className="flex gap-3">
-        <ShieldAlert size={20} />
-        <div className="flex-1">
-          <div style={{ fontSize: 14, fontWeight: 700 }}>{blocked ? 'Access Excluded — Director / Relative Borrower' : 'SPECIAL CASE — DIRECTOR / RELATIVE BORROWER'}</div>
-          <p style={{ fontSize: 13, lineHeight: '20px', marginTop: 4 }}>{blocked ? 'You are excluded from reviewing this loan per Section 378ZK. Contact the CFO.' : 'This applicant is identified as a relative of R. Deshmukh. Per Section 378ZK, GM approval is required before sanction.'}</p>
-          {!blocked && <div className="flex gap-2 mt-3"><button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: 12, fontWeight: 700 }}>Upload GM Resolution</button><button className="px-3 py-1.5 rounded-lg border border-[var(--warning-500)]" style={{ fontSize: 12, fontWeight: 700 }}>Mark GM Pending</button></div>}
-        </div>
-      </div>
-    </div>
+    <GateBanner
+      variant={blocked ? 'blocked' : 'warning'}
+      title={blocked ? 'Access excluded — Director / Relative borrower' : 'Special case — Director / Relative borrower'}
+      detail={blocked
+        ? 'You are excluded from reviewing this loan per Section 378ZK. Contact the CFO.'
+        : 'This applicant is a relative of R. Deshmukh. Per Section 378ZK, General-Meeting approval is required before sanction.'}
+      action={blocked ? undefined : { label: 'Upload GM Resolution', onClick: () => {} }}
+      secondaryAction={blocked ? undefined : { label: 'Mark GM Pending', onClick: () => {} }}
+    />
   );
 }
 
 export function S186LockBanner({ audience }: { audience: 'sc' | 'credit' | 'farmer' }) {
-  const text = audience === 'sc'
-    ? 'LENDING SUSPENDED — s.186 limit reached. New loans cannot be sanctioned until Board passes a special resolution or exposure reduces.'
+  // SOP gate (s.186): lending cap reached → block new sanctions without board special resolution.
+  const detail = audience === 'sc'
+    ? 'New loans cannot be sanctioned until the Board passes a special resolution or exposure reduces.'
     : audience === 'credit'
-      ? 'New loan approvals are suspended — s.186 statutory limit reached. Existing applications in queue are paused. Contact CFO.'
-      : 'Your application is received and placed in a hold queue while a regulatory compliance matter is being processed.';
-  return <div className="rounded-lg p-4 flex gap-3" style={{ backgroundColor: audience === 'farmer' ? 'var(--warning-100)' : 'var(--error-50)', color: audience === 'farmer' ? 'var(--warning-700)' : 'var(--error-900)', border: `1px solid ${audience === 'farmer' ? 'var(--warning-200)' : 'var(--error-200)'}` }}><AlertTriangle size={20} /><strong style={{ fontSize: 13 }}>{text}</strong></div>;
+      ? 'New loan approvals are suspended — existing applications in queue are paused. Contact the CFO.'
+      : 'Your application is received and placed in a hold queue while a regulatory compliance matter is processed.';
+  return (
+    <GateBanner
+      variant={audience === 'farmer' ? 'warning' : 'blocked'}
+      title={audience === 'farmer' ? 'Application on hold' : 'Lending suspended — s.186 limit reached'}
+      detail={detail}
+    />
+  );
 }
 
 export function HandoffCard({ title, from, to, children, action }: { title: string; from: string; to: string; children: ReactNode; action?: ReactNode }) {
