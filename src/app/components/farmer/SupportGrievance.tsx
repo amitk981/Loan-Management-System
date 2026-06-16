@@ -79,7 +79,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
         <div className="col-span-2 bg-white rounded-2xl p-5 border border-[#EDEEF0]">
           <div className="flex items-center gap-2 mb-4">
             <FileText size={18} style={{ color: 'var(--brand-primary)' }} />
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Raise a Grievance</h3>
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Raise a Grievance</h3>
           </div>
 
           <div className="space-y-4">
@@ -116,7 +116,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
             <button
               onClick={() => description.trim() && setSubmitted(true)}
               disabled={!description.trim()}
-              className="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2"
               style={{ backgroundColor: description.trim() ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: description.trim() ? 'pointer' : 'not-allowed' }}
             >
               <Send size={14} /> Submit Grievance
@@ -126,7 +126,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
 
         <div id="grievance-tickets" className="col-span-3 bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden table-scroll">
           <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: 'var(--neutral-100)' }}>
-            <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)' }}>My Grievance Tickets</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)' }}>My Grievance Tickets</h3>
           </div>
           <table className="w-full">
             <thead>
@@ -144,7 +144,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
                   <td className="px-4" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--neutral-700)' }}>{row.loan}</td>
                   <td className="px-4" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{row.date}</td>
                   <td className="px-4"><StatusBadge status={row.status} /></td>
-                  <td className="px-4" style={{ fontSize: '12px', color: row.status === 'Open' ? 'var(--gold-500)' : 'var(--success-500)', fontWeight: 600 }}>{row.tat}</td>
+                  <td className="px-4" style={{ fontSize: '12px', color: row.status === 'Open' ? 'var(--gold-500)' : 'var(--success-500)', fontWeight: 500 }}>{row.tat}</td>
                 </tr>
               ))}
             </tbody>
@@ -154,7 +154,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
 
       <div className="mt-5 bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden">
         <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: 'var(--neutral-100)' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)' }}>Common Questions</h3>
+          <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)' }}>Common Questions</h3>
         </div>
         {[
           { q: 'How do I know if my repayment was posted?', a: 'Open My Loans → Repayment. Bank-confirmed payments appear as Paid after Treasury posts the SAP entry, normally by the next working day.' },
@@ -163,7 +163,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
         ].map((item, i) => (
           <div key={item.q} className="border-b border-[#EDEEF0] last:border-b-0">
             <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)} className="w-full px-5 py-4 flex items-center justify-between text-left">
-              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--neutral-900)' }}>{item.q}</span>
+              <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>{item.q}</span>
               <ChevronDown size={16} style={{ color: 'var(--neutral-400)', transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 150ms ease' }} />
             </button>
             {openFaq === i && <div className="px-5 pb-4" style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>{item.a}</div>}

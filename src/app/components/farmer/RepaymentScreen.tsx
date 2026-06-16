@@ -47,7 +47,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
           <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--neutral-900)', marginBottom: '8px' }}>Payment Confirmation Received</h2>
           <p style={{ fontSize: '14px', color: 'var(--neutral-400)' }}>SFPCL will verify and post this payment to loan {farmerLoan.id} within 1 working day.</p>
           <button
-            className="mt-6 px-6 py-2.5 rounded-xl font-semibold"
+            className="mt-6 px-6 py-2.5 rounded-xl font-medium"
             style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}
             onClick={() => onNavigate('farmer-dashboard')}
           >
@@ -69,7 +69,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
       <div className="farmer-page grid grid-cols-12 gap-6 items-start">
         <div className="col-span-8">
         <div className="farmer-hero p-6 mb-6">
-          <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', fontWeight: 600, marginBottom: '6px' }}>TOTAL OUTSTANDING</div>
+          <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', fontWeight: 500, marginBottom: '6px' }}>TOTAL OUTSTANDING</div>
           <div style={{ fontSize: '40px', fontWeight: 700, color: 'white', fontFamily: 'Roboto Mono' }}>{formatCurrency(farmerLoan.outstandingBalance)}</div>
           <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', marginTop: '4px' }}>
             Principal: {formatCurrency(farmerLoan.outstandingPrincipal)} + Interest: {formatCurrency(farmerLoan.outstandingInterest)}
@@ -87,7 +87,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
         </div>
 
         <div className="farmer-panel p-5 mb-5">
-          <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '12px' }}>Payment Method</h3>
+          <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Payment Method</h3>
           <div className="grid grid-cols-2 gap-3">
             {[
               { id: 'direct' as const, label: 'Direct Transfer', subtitle: 'NEFT / RTGS to SFPCL account', icon: <Landmark size={20} /> },
@@ -109,13 +109,13 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
 
         {method === 'direct' && (
           <div className="farmer-panel p-5 mb-5">
-            <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '12px' }}>SFPCL Bank Details</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>SFPCL Bank Details</h3>
             <div className="space-y-3">
               {bankDetails.map(detail => (
                 <div key={detail.key} className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)' }}>
                   <div>
-                    <div style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 600 }}>{detail.label}</div>
-                    <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontFamily: detail.key === 'acc' || detail.key === 'ifsc' ? 'Roboto Mono' : 'inherit', fontWeight: 600 }}>{detail.value}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 500 }}>{detail.label}</div>
+                    <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontFamily: detail.key === 'acc' || detail.key === 'ifsc' ? 'Roboto Mono' : 'inherit', fontWeight: 500 }}>{detail.value}</div>
                   </div>
                   <button onClick={() => copyToClipboard(detail.value, detail.key)} className="p-2 rounded-lg hover:bg-[#EDEEF0] transition-all">
                     {copied === detail.key ? <CheckCircle size={14} style={{ color: 'var(--success-500)' }} /> : <Copy size={14} style={{ color: 'var(--neutral-400)' }} />}
@@ -127,14 +127,14 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
         )}
 
         <div className="farmer-panel p-5 mb-5">
-          <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '12px' }}>Payment Details</h3>
+          <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Payment Details</h3>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-700)' }}>Amount</label>
+              <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Amount</label>
               <input value={amount} onChange={e => setAmount(e.target.value)} type="number" className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A]" style={{ height: '48px', fontSize: '22px', fontFamily: 'Roboto Mono', fontWeight: 700, color: 'var(--neutral-900)' }} />
             </div>
             <div>
-              <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-700)' }}>UTR / Reference</label>
+              <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>UTR / Reference</label>
               <input value={utr} onChange={e => setUtr(e.target.value)} disabled={method === 'subsidiary'} placeholder={method === 'subsidiary' ? 'Generated by subsidiary posting' : 'Enter UTR number'} className="w-full px-4 rounded-xl border border-[#D1D5DB] disabled:bg-[#F7F8FA]" style={{ height: '48px', fontSize: '14px', fontFamily: 'Roboto Mono', color: 'var(--neutral-900)' }} />
             </div>
           </div>
@@ -174,7 +174,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
         <button
           onClick={() => setShowConfirm(true)}
           disabled={!canSubmit}
-          className="w-full py-3 rounded-xl font-semibold transition-all hover:opacity-90"
+          className="w-full py-3 rounded-xl font-medium transition-all hover:opacity-90"
           style={{ backgroundColor: canSubmit ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '15px', cursor: canSubmit ? 'pointer' : 'not-allowed' }}
         >
           Review Payment Confirmation
@@ -193,12 +193,12 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
             ].map(([label, value]) => (
               <div key={label} className="flex items-center justify-between gap-3 py-2 border-b border-[#E4E7EC] last:border-b-0">
                 <span style={{ fontSize: '12px', color: '#667085', fontWeight: 700 }}>{label}</span>
-                <span style={{ fontSize: '13px', color: '#111827', fontWeight: 850, textAlign: 'right', fontFamily: label === 'Amount' || label === 'Principal' || label === 'Interest' ? 'Roboto Mono' : 'inherit' }}>{value}</span>
+                <span style={{ fontSize: '13px', color: '#111827', fontWeight: 700, textAlign: 'right', fontFamily: label === 'Amount' || label === 'Principal' || label === 'Interest' ? 'Roboto Mono' : 'inherit' }}>{value}</span>
               </div>
             ))}
           </div>
           <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: canSubmit ? 'var(--success-50)' : '#FFF7ED', border: `1px solid ${canSubmit ? 'var(--success-200)' : '#FED7AA'}` }}>
-            <div style={{ fontSize: '13px', fontWeight: 850, color: canSubmit ? 'var(--success-700)' : '#9A3412' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: canSubmit ? 'var(--success-700)' : '#9A3412' }}>
               {canSubmit ? 'Ready to review' : 'Reference needed'}
             </div>
             <div style={{ fontSize: '12px', color: '#667085', lineHeight: '18px', marginTop: '5px' }}>
@@ -217,7 +217,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
           footer={
             <>
               <button onClick={() => setShowConfirm(false)} className="px-4 py-2.5 rounded-xl border border-[#EDEEF0]" style={{ fontSize: '14px' }}>Edit</button>
-              <button onClick={() => { setShowConfirm(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Submit</button>
+              <button onClick={() => { setShowConfirm(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Submit</button>
             </>
           }
         >

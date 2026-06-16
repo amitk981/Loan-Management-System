@@ -44,24 +44,24 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
           <div className="flex items-center justify-between mb-4">
             <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--neutral-900)' }}>October 2025</h3>
             <div className="flex rounded-lg border border-[#EDEEF0] overflow-hidden">
-              {(['Month View', 'Quarter View', 'Year View'] as const).map(label => <button key={label} onClick={() => setCalendarView(label)} className="px-3 py-1.5" style={{ backgroundColor: calendarView === label ? 'var(--brand-primary)' : 'white', color: calendarView === label ? 'white' : 'var(--neutral-700)', fontSize: '12px', fontWeight: 800 }}>{label}</button>)}
+              {(['Month View', 'Quarter View', 'Year View'] as const).map(label => <button key={label} onClick={() => setCalendarView(label)} className="px-3 py-1.5" style={{ backgroundColor: calendarView === label ? 'var(--brand-primary)' : 'white', color: calendarView === label ? 'white' : 'var(--neutral-700)', fontSize: '12px', fontWeight: 700 }}>{label}</button>)}
             </div>
           </div>
           <div className="grid grid-cols-7 gap-1">
-            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => <div key={d} className="text-center py-2" style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 800 }}>{d}</div>)}
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => <div key={d} className="text-center py-2" style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 700 }}>{d}</div>)}
             {Array.from({ length: 35 }, (_, i) => i < 2 ? null : i - 1).map((day, i) => {
               const marker = day === 15 ? '🔴' : day === 22 || day === 31 ? '🟡' : day === 28 ? '🟢' : '';
-              return <button key={i} disabled={!day} onClick={() => day && setSelectedDay(day)} className="rounded-lg p-2 min-h-16 text-left" style={{ border: selectedDay === day ? '2px solid #1A3C2A' : '1px solid #EDEEF0', backgroundColor: day ? 'white' : 'var(--neutral-100)' }}><div style={{ fontSize: '13px', fontWeight: 800, color: 'var(--neutral-700)' }}>{day || ''} {marker}</div></button>;
+              return <button key={i} disabled={!day} onClick={() => day && setSelectedDay(day)} className="rounded-lg p-2 min-h-16 text-left" style={{ border: selectedDay === day ? '2px solid #1A3C2A' : '1px solid #EDEEF0', backgroundColor: day ? 'white' : 'var(--neutral-100)' }}><div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-700)' }}>{day || ''} {marker}</div></button>;
             })}
           </div>
           <div className="mt-3" style={{ fontSize: '12px', color: 'var(--neutral-500)' }}>🔴 Overdue / Critical · 🟡 Upcoming within 14 days · 🟢 Completed · 🔵 Scheduled</div>
         </div>
         <div className="col-span-5 bg-white rounded-lg p-5 border border-[#EDEEF0]">
-          <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 800 }}>Selected: Oct {selectedDay}</div>
+          <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>Selected: Oct {selectedDay}</div>
           <h3 style={{ fontSize: '20px', color: 'var(--brand-primary)', fontWeight: 700, marginTop: '10px' }}>Maharashtra Stamp Act</h3>
           <p style={{ fontSize: '14px', color: 'var(--neutral-700)', lineHeight: '22px', marginTop: '8px' }}>Annual Declaration</p>
           <InfoGrid rows={[['Statute', 'Maharashtra Stamp Act, 1958'], ['Owner', 'Company Secretary'], ['Evidence Required', 'Annual declaration + stamp register'], ['Frequency', 'Annual'], ['Status', 'Due in 3 days']]} />
-          <div className="mt-5 flex gap-3"><button className="px-3 py-2 rounded-lg border border-[#EDEEF0]">Upload Evidence</button><button className="px-3 py-2 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Mark Complete</button></div>
+          <div className="mt-5 flex gap-3"><button className="px-3 py-2 rounded-lg border border-[#EDEEF0]">Upload Evidence</button><button className="px-3 py-2 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Mark Complete</button></div>
         </div>
       </div>
       <DataCard title="Compliance Table">
@@ -87,19 +87,19 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
             <Checklist title="Pre-NOC Checklist" items={['Full principal repaid', 'All interest invoices settled', 'No outstanding dues', 'SAP balance = ₹0']} done />
             <div className="p-4 rounded-lg" style={{ backgroundColor: '#FDFAF4', border: '1px solid #EDEEF0' }}>
               <h4 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--brand-primary)', marginBottom: '10px' }}>Security Return</h4>
-              {['SH-4 Form returned to borrower', 'Blank-dated cheque returned', 'CDSL Unpledge initiated (if D-MAT)'].map(item => <div key={item} className="flex items-center justify-between py-2"><span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>□ {item}</span><button className="px-2 py-1 rounded-md" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-primary)', fontSize: '11px', fontWeight: 800 }}>Mark Returned</button></div>)}
+              {['SH-4 Form returned to borrower', 'Blank-dated cheque returned', 'CDSL Unpledge initiated (if D-MAT)'].map(item => <div key={item} className="flex items-center justify-between py-2"><span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>□ {item}</span><button className="px-2 py-1 rounded-md" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-primary)', fontSize: '11px', fontWeight: 700 }}>Mark Returned</button></div>)}
             </div>
           </div>
           <div className="mt-5 p-4 rounded-lg" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
             <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)', marginBottom: '10px' }}>NOC Document</div>
-            <button onClick={() => setShowNoc(true)} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Generate NOC →</button>
+            <button onClick={() => setShowNoc(true)} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Generate NOC →</button>
           </div>
         </div>
       ))}
       <DataCard title="Recently Issued NOCs">
         <div className="p-4 space-y-2">{nocQueue.slice(1).map(row => <button key={row.loan} onClick={() => onNavigate('cs-archive')} className="w-full text-left p-3 rounded-lg clickable-row" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{row.loan} · {row.borrower} · NOC issued {row.repaid}</button>)}</div>
       </DataCard>
-      {showNoc && <AppModal title="No-Objection Certificate" subtitle="Preview before issuing and archiving" icon={<FileText size={18} />} onClose={() => setShowNoc(false)} footer={<><button onClick={() => setShowNoc(false)} className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Download PDF</button><button onClick={() => setShowNoc(false)} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Send to Borrower & Archive</button></>}>
+      {showNoc && <AppModal title="No-Objection Certificate" subtitle="Preview before issuing and archiving" icon={<FileText size={18} />} onClose={() => setShowNoc(false)} footer={<><button onClick={() => setShowNoc(false)} className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Download PDF</button><button onClick={() => setShowNoc(false)} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Send to Borrower & Archive</button></>}>
         <div style={{ fontFamily: 'Georgia, serif', fontSize: '13px', color: 'var(--neutral-900)', lineHeight: '22px', backgroundColor: '#FDFAF4', padding: '18px', border: '1px solid #EDEEF0' }}>
           <strong>NO-OBJECTION CERTIFICATE</strong><br /><br />Date: 11-Oct-2025<br /><br />To,<br />Shri. Rajesh Patil<br />Village: Peth, Nashik<br /><br />Ref: Loan No. LO00000082 | Amount: ₹80,000<br />Disbursed: 15-Oct-2024 | Repaid: 11-Oct-2025<br /><br />This is to certify that the above loan has been fully repaid. SFPCL has no further claim against you in respect of this loan. The Share Transfer Form (SH-4) and undated cheque held as security are hereby returned.<br /><br />Sd/-<br />Anjali Mehta<br />Company Secretary, SFPCL
         </div>
@@ -108,7 +108,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
   );
 
   const renderStamp = () => (
-    <DataCard title="Stamp Inventory Summary: Total purchased FY25-26: 284 · Used: 271 · Balance: 13" action={<button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 800 }}>+ Record New Stamp Purchase</button>}>
+    <DataCard title="Stamp Inventory Summary: Total purchased FY25-26: 284 · Used: 271 · Balance: 13" action={<button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 700 }}>+ Record New Stamp Purchase</button>}>
       <SimpleTable headers={['Loan ID', 'Instrument', 'Stamp Val.', 'Affixed On', 'By', 'Status']}>
         {stampRows.map(row => <tr key={`${row[0]}-${row[1]}`} onClick={() => onNavigate('cs-stamp')} className="border-b border-[#EDEEF0] clickable-row">{row.slice(0, 5).map((cell, i) => <Cell key={i} mono={i === 0 || i === 2}>{cell}</Cell>)}<Cell><StatusBadge status={row[5]} /></Cell></tr>)}
       </SimpleTable>
@@ -116,7 +116,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
   );
 
   const renderGrievance = () => (
-    <DataCard title="Grievance Register" action={<div className="flex items-center gap-2"><button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-primary)', fontSize: '12px', fontWeight: 800 }}>+ New Grievance</button><button className="px-3 py-1.5 rounded-lg border border-[#EDEEF0]" style={{ fontSize: '12px' }}>Export</button></div>}>
+    <DataCard title="Grievance Register" action={<div className="flex items-center gap-2"><button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-primary)', fontSize: '12px', fontWeight: 700 }}>+ New Grievance</button><button className="px-3 py-1.5 rounded-lg border border-[#EDEEF0]" style={{ fontSize: '12px' }}>Export</button></div>}>
       <SimpleTable headers={['Ref', 'Description', 'Received', 'Status', 'TAT']}>
         {grievanceRegister.map(row => <tr key={row.ref} onClick={() => onNavigate('cs-grievance')} className="border-b border-[#EDEEF0] clickable-row"><Cell mono>{row.ref}</Cell><Cell>{row.description}</Cell><Cell>{row.received}</Cell><Cell><StatusBadge status={row.status} /></Cell><Cell>{row.tat}</Cell></tr>)}
       </SimpleTable>
@@ -137,14 +137,14 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
           <FileText size={18} color="var(--brand-primary)" />
           <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)', marginTop: '12px' }}>{title}</h3>
           <div style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px', marginTop: '8px' }}>{note}</div>
-          <span className="inline-flex mt-4 px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-primary)', fontSize: '12px', fontWeight: 800 }}><Download size={13} style={{ marginRight: 6 }} />Generate</span>
+          <span className="inline-flex mt-4 px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-primary)', fontSize: '12px', fontWeight: 700 }}><Download size={13} style={{ marginRight: 6 }} />Generate</span>
         </button>
       ))}
     </div>
   );
 
   const renderCdsl = () => (
-    <DataCard title="CDSL Pledge Lifecycle" action={<button onClick={() => onNavigate('cs-workspace')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 800 }}>Open SH-4 Tab</button>}>
+    <DataCard title="CDSL Pledge Lifecycle" action={<button onClick={() => onNavigate('cs-workspace')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 700 }}>Open SH-4 Tab</button>}>
       <SimpleTable headers={['Loan ID', 'Borrower', 'PSN', 'Stage', 'DP Status', 'Action']}>
         {[
           ['LO00000047', 'Ramesh Patil', 'PSN-88421', 'Active', 'Pledgee DP Accepted', 'Initiate URF on repayment'],
@@ -161,7 +161,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
   );
 
   const renderSecurityReturn = () => (
-    <DataCard title="Security Return Log" action={<button onClick={() => onNavigate('cs-noc')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 800 }}>Open NOC Queue</button>}>
+    <DataCard title="Security Return Log" action={<button onClick={() => onNavigate('cs-noc')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 700 }}>Open NOC Queue</button>}>
       <SimpleTable headers={['Loan ID', 'Borrower', 'SH-4', 'Blank Cheque', 'CDSL URF', 'Returned On', 'Status']}>
         {[
           ['LO00000082', 'Rajesh Patil', 'Returned', 'Returned', 'N/A', '11-Oct-2025', 'Complete'],
@@ -188,7 +188,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
   };
 
   return (
-    <Shell activePage={activePage} onNavigate={onNavigate} breadcrumbs={['Compliance', meta.title]} pageTitle={meta.title} pageSubtitle={meta.subtitle} actions={<button onClick={() => onNavigate('cs-workspace')} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Open Document Workspace</button>}>
+    <Shell activePage={activePage} onNavigate={onNavigate} breadcrumbs={['Compliance', meta.title]} pageTitle={meta.title} pageSubtitle={meta.subtitle} actions={<button onClick={() => onNavigate('cs-workspace')} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Open Document Workspace</button>}>
       {showQueueTabs && <WorkbenchTabs tabs={complianceQueueTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />}
       {showRegisterTabs && <WorkbenchTabs tabs={complianceRegisterTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />}
       {renderContent()}
@@ -201,15 +201,15 @@ function DataCard({ title, action, children }: { title: string; action?: React.R
 }
 
 function SimpleTable({ headers, children }: { headers: string[]; children: React.ReactNode }) {
-  return <div className="table-scroll"><table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 800, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
+  return <div className="table-scroll"><table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 700, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
 }
 
 function Cell({ children, mono }: { children: React.ReactNode; mono?: boolean }) {
-  return <td className="px-4 py-3" style={{ fontSize: '13px', color: 'var(--neutral-700)', fontFamily: mono ? 'Roboto Mono' : 'inherit', fontWeight: mono ? 800 : 500 }}>{children}</td>;
+  return <td className="px-4 py-3" style={{ fontSize: '13px', color: 'var(--neutral-700)', fontFamily: mono ? 'Roboto Mono' : 'inherit', fontWeight: mono ? 700 : 500 }}>{children}</td>;
 }
 
 function InfoGrid({ rows }: { rows: string[][] }) {
-  return <div className="grid grid-cols-2 gap-3 mt-4">{rows.map(([label, value]) => <div key={label} className="p-3 rounded-lg" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}><div style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 800 }}>{label}</div><div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '4px' }}>{value}</div></div>)}</div>;
+  return <div className="grid grid-cols-2 gap-3 mt-4">{rows.map(([label, value]) => <div key={label} className="p-3 rounded-lg" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}><div style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 700 }}>{label}</div><div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '4px' }}>{value}</div></div>)}</div>;
 }
 
 function Checklist({ title, items, done }: { title: string; items: string[]; done?: boolean }) {

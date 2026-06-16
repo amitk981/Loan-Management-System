@@ -321,7 +321,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                   </span>
                   {!collapsed && (
                     <>
-                      <span className="sidebar-label flex-1 text-left truncate" style={{ fontSize: '13.5px', fontWeight: isActive ? 600 : 400, lineHeight: '20px' }}>
+                      <span className="sidebar-label flex-1 text-left truncate" style={{ fontSize: '13.5px', fontWeight: isActive ? 500 : 400, lineHeight: '20px' }}>
                         {itemLabel}
                       </span>
                       {item.badge ? (
@@ -368,7 +368,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                         style={{
                           fontSize: '12.5px',
                           color: isChildActive ? 'white' : 'rgba(255,255,255,0.52)',
-                          fontWeight: isChildActive ? 600 : 400,
+                          fontWeight: isChildActive ? 500 : 400,
                           backgroundColor: isChildActive ? 'rgba(45,122,79,0.35)' : 'transparent',
                           borderLeft: isChildActive ? `2px solid ${accent}` : '2px solid transparent',
                         }}
@@ -378,7 +378,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                       >
                         <span className="truncate">{childLabel}</span>
                         {child.badge ? (
-                          <span className="min-w-4 h-4 px-1 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--error-500)', color: 'white', fontSize: '9px', fontWeight: 800 }}>
+                          <span className="min-w-4 h-4 px-1 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--error-500)', color: 'white', fontSize: '9px', fontWeight: 700 }}>
                             {child.badge}
                           </span>
                         ) : null}
@@ -410,13 +410,13 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
             style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
           >
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-medium flex-shrink-0"
               style={{ backgroundColor: accent, boxShadow: `0 0 0 2px rgba(255,255,255,0.2)` }}
             >
               {user?.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <div style={{ fontSize: '12px', fontWeight: 600, color: 'white', lineHeight: '16px' }} className="truncate">
+              <div style={{ fontSize: '12px', fontWeight: 500, color: 'white', lineHeight: '16px' }} className="truncate">
                 {user?.name}
               </div>
               <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', lineHeight: '14px' }} className="truncate">

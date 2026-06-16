@@ -45,7 +45,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       pageSubtitle={`Member since ${farmerProfile.memberSince} · Folio ${farmerProfile.folioNo}`}
       actions={
         <button
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold transition-all hover:shadow-md active:scale-[0.98]"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all hover:shadow-md active:scale-[0.98]"
           style={{
             backgroundColor: kycExpired ? 'var(--neutral-400)' : hasActiveDefault ? 'var(--neutral-400)' : 'var(--brand-primary)',
             color: 'white',
@@ -110,14 +110,14 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
               <div className="relative z-10 flex flex-col h-full min-h-[250px]">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <div style={{ fontSize: '12px', fontWeight: 800, color: 'rgba(255,255,255,0.68)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>New Application</div>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(255,255,255,0.68)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>New Application</div>
                     <div style={{ fontSize: '15px', color: 'rgba(255,255,255,0.88)', fontFamily: 'Roboto Mono', marginTop: '4px' }}>LO00000053</div>
                   </div>
                   <StatusBadge status="Under Processing" />
                 </div>
                 <div className="mt-auto">
                   <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.66)', fontWeight: 700 }}>Amount Requested</div>
-                  <div style={{ fontSize: '48px', lineHeight: '58px', fontWeight: 850, color: 'white', letterSpacing: '0' }}>₹1,50,000</div>
+                  <div style={{ fontSize: '48px', lineHeight: '58px', fontWeight: 700, color: 'white', letterSpacing: '0' }}>₹1,50,000</div>
                   {/* Animated processing indicator */}
                   <div className="flex items-center gap-2 mt-3">
                     <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.72)' }}>Being reviewed by Credit Team</span>
@@ -131,7 +131,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                     <button
                       onClick={() => onNavigate('farmer-active-loans')}
                       className="px-5 py-2.5 rounded-xl"
-                      style={{ backgroundColor: 'white', color: '#374151', fontSize: '14px', fontWeight: 850 }}
+                      style={{ backgroundColor: 'white', color: '#374151', fontSize: '14px', fontWeight: 700 }}
                     >
                       Track Status
                     </button>
@@ -152,16 +152,16 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
               <div className="relative z-10 flex flex-col h-full min-h-[250px]">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <div style={{ fontSize: '12px', fontWeight: 800, color: 'rgba(255,255,255,0.68)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Active Loan</div>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(255,255,255,0.68)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Active Loan</div>
                     <div style={{ fontSize: '15px', color: 'rgba(255,255,255,0.88)', fontFamily: 'Roboto Mono', marginTop: '4px' }}>{farmerLoan.id}</div>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'var(--warning-500)', color: 'white', fontSize: '12px', fontWeight: 800 }}>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'var(--warning-500)', color: 'white', fontSize: '12px', fontWeight: 700 }}>
                     <Clock size={13} /> Due {farmerLoan.nextDueDate}
                   </span>
                 </div>
                 <div className="mt-auto">
                   <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.66)', fontWeight: 700 }}>Outstanding balance</div>
-                  <div style={{ fontSize: '48px', lineHeight: '58px', fontWeight: 850, color: 'white', letterSpacing: '0' }}>{formatCurrency(farmerLoan.outstandingBalance)}</div>
+                  <div style={{ fontSize: '48px', lineHeight: '58px', fontWeight: 700, color: 'white', letterSpacing: '0' }}>{formatCurrency(farmerLoan.outstandingBalance)}</div>
                   <div className="w-full max-w-xl h-2 rounded-full mt-4" style={{ backgroundColor: 'rgba(255,255,255,0.18)' }}>
                     <div className="h-full rounded-full" style={{ width: `${repaidPct}%`, backgroundColor: 'white' }} />
                   </div>
@@ -173,7 +173,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                     <button
                       onClick={(e) => { e.stopPropagation(); onNavigate('farmer-repayment'); }}
                       className="px-5 py-2.5 rounded-xl"
-                      style={{ backgroundColor: 'white', color: '#16452F', fontSize: '14px', fontWeight: 850 }}
+                      style={{ backgroundColor: 'white', color: '#16452F', fontSize: '14px', fontWeight: 700 }}
                     >
                       Pay instalment
                     </button>
@@ -188,7 +188,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
             <div className="flex items-center justify-between mb-4">
               <div>
                 <div className="farmer-kicker">Borrower Command</div>
-                <h2 style={{ fontSize: '20px', fontWeight: 850, color: '#111827', marginTop: '4px' }}>What you can do now</h2>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#111827', marginTop: '4px' }}>What you can do now</h2>
               </div>
               <StatusBadge status="Good Standing" />
             </div>
@@ -203,7 +203,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${item.color}15`, color: item.color }}>
                     {item.icon}
                   </div>
-                  <div style={{ fontSize: '14px', fontWeight: 850, color: '#111827' }}>{item.label}</div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#111827' }}>{item.label}</div>
                   <div style={{ fontSize: '12px', color: '#667085', marginTop: '4px', lineHeight: '17px' }}>{item.detail}</div>
                 </button>
               ))}
@@ -214,7 +214,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       {/* Loan Journey Tracker */}
       <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-[#EDEEF0]">
         <div className="flex items-center justify-between mb-6">
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Loan Journey</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Loan Journey</h3>
           <button
             onClick={() => onNavigate('farmer-active-loans')}
             className="flex items-center gap-1 transition-colors hover:text-[#1565C0]"
@@ -235,7 +235,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
         {/* Recent Transactions */}
         <div className="col-span-3 bg-white rounded-2xl p-5 shadow-sm border border-[#EDEEF0]">
           <div className="flex items-center justify-between mb-4">
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Recent Transactions</h3>
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Recent Transactions</h3>
             <button onClick={() => onNavigate('farmer-repayment')} className="flex items-center gap-1 hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
           </div>
           <div className="table-scroll">
@@ -265,7 +265,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
         {/* My Documents */}
         <div className="col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-[#EDEEF0]">
           <div className="flex items-center justify-between mb-4">
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Documents</h3>
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Documents</h3>
             <button onClick={() => onNavigate('farmer-documents')} className="flex items-center gap-1 hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
           </div>
           <div className="space-y-1">
@@ -294,7 +294,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       {/* Notifications */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#EDEEF0]">
         <div className="flex items-center justify-between mb-4">
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Recent Alerts</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Recent Alerts</h3>
           <button onClick={() => onNavigate('notifications-center')} className="flex items-center gap-1 hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
         </div>
         <div className="space-y-1">
@@ -310,7 +310,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                   {nIcon.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="truncate" style={{ fontSize: '14px', fontWeight: n.read ? 400 : 600, color: n.read ? 'var(--neutral-400)' : 'var(--neutral-900)' }}>{n.title}</div>
+                  <div className="truncate" style={{ fontSize: '14px', fontWeight: n.read ? 400 : 500, color: n.read ? 'var(--neutral-400)' : 'var(--neutral-900)' }}>{n.title}</div>
                 </div>
                 <span style={{ fontSize: '11px', color: 'var(--neutral-400)', whiteSpace: 'nowrap' }}>{n.time}</span>
               </button>

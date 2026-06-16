@@ -109,7 +109,7 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
               <div
                 style={{
                   fontSize: '12px',
-                  fontWeight: isCurrent ? 600 : 400,
+                  fontWeight: isCurrent ? 500 : 400,
                   color: isDone ? 'var(--success-700)' : isCurrent ? 'var(--brand-primary)' : 'var(--neutral-400)',
                   lineHeight: '18px',
                 }}
@@ -124,7 +124,7 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
               {isCurrent && (
                 <div
                   className="mt-1 px-2 py-0.5 rounded-full inline-flex"
-                  style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '10px', fontWeight: 600 }}
+                  style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '10px', fontWeight: 500 }}
                 >
                   Current
                 </div>

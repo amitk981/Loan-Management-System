@@ -103,7 +103,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               Back to Dashboard
             </button>
             <button
-              className="px-5 py-2.5 rounded-xl font-semibold transition-all hover:opacity-90"
+              className="px-5 py-2.5 rounded-xl font-medium transition-all hover:opacity-90"
               style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}
               onClick={() => onNavigate('farmer-active-loans')}
             >
@@ -155,11 +155,11 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                     className="w-full flex items-center gap-3 rounded-xl p-3 text-left"
                     style={{ backgroundColor: isActive ? 'var(--brand-light)' : 'transparent', border: `1px solid ${isActive ? '#B7E4C7' : 'transparent'}` }}
                   >
-                    <span className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: complete || isActive ? '#16452F' : '#EEF2F6', color: complete || isActive ? 'white' : '#98A2B3', fontSize: '13px', fontWeight: 800 }}>
+                    <span className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: complete || isActive ? '#16452F' : '#EEF2F6', color: complete || isActive ? 'white' : '#98A2B3', fontSize: '13px', fontWeight: 700 }}>
                       {complete ? <Check size={15} /> : s.id}
                     </span>
                     <span>
-                      <span style={{ display: 'block', fontSize: '14px', fontWeight: 850, color: isActive ? '#16452F' : '#111827' }}>{s.label}</span>
+                      <span style={{ display: 'block', fontSize: '14px', fontWeight: 700, color: isActive ? '#16452F' : '#111827' }}>{s.label}</span>
                       <span style={{ display: 'block', fontSize: '12px', color: '#667085', marginTop: '2px' }}>
                         {complete ? 'Completed' : isActive ? 'Current section' : 'Not started'}
                       </span>
@@ -169,7 +169,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               })}
             </div>
             <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: '#F8FAFC', border: '1px solid #E4E7EC' }}>
-              <div style={{ fontSize: '13px', fontWeight: 850, color: '#111827' }}>Current blocker</div>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>Current blocker</div>
               <div style={{ fontSize: '12px', color: '#667085', lineHeight: '18px', marginTop: '5px' }}>
                 {step === 1 && !nomineeAdult ? 'Confirm nominee is 18+.' : step === 5 && !canSubmitApplication ? 'Finish documents, declarations, and amount checks.' : 'No blocker on this step.'}
               </div>
@@ -180,7 +180,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
         {/* Step 1: Basic Details */}
         {step === 1 && (
           <div className="farmer-panel p-7">
-            <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '4px' }}>Tell us about yourself</h2>
+            <h2 style={{ fontSize: '20px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '4px' }}>Tell us about yourself</h2>
             <p style={{ fontSize: '14px', color: 'var(--neutral-400)', marginBottom: '24px' }}>Step 1 of 5 — Basic personal details</p>
 
             <div className="grid grid-cols-2 gap-5">
@@ -234,7 +234,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             {/* Nominee Section */}
             <div className="mt-6 pt-5 border-t border-[#EDEEF0]">
               <div className="flex items-center justify-between mb-4">
-                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Nominee Details</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Nominee Details</h3>
                 <span className="px-2 py-1 rounded-lg text-xs font-medium" style={{ backgroundColor: 'var(--warning-100)', color: 'var(--warning-500)' }}>Required by SOP</span>
               </div>
               <div className="grid grid-cols-2 gap-5">
@@ -273,7 +273,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   <div style={{ fontSize: '13px', color: rekycRequested ? 'var(--warning-700)' : 'var(--success-700)', lineHeight: '20px' }}>
                     {rekycRequested ? 'Compliance will refresh your KYC before the Credit Team starts assessment.' : 'PAN, Aadhaar, and member records are available. You can still request a KYC refresh if details have changed.'}
                   </div>
-                  <button onClick={() => setRekycRequested(true)} className="mt-3 px-4 py-2 rounded-lg font-semibold" style={{ backgroundColor: rekycRequested ? 'var(--warning-500)' : 'var(--brand-primary)', color: 'white', fontSize: '12px' }}>
+                  <button onClick={() => setRekycRequested(true)} className="mt-3 px-4 py-2 rounded-lg font-medium" style={{ backgroundColor: rekycRequested ? 'var(--warning-500)' : 'var(--brand-primary)', color: 'white', fontSize: '12px' }}>
                     {rekycRequested ? 'Request Sent' : 'Request KYC Update'}
                   </button>
                 </div>
@@ -285,7 +285,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
         {/* Step 2: Shareholding */}
         {step === 2 && (
           <div className="farmer-panel p-7">
-            <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '4px' }}>Shareholding & Loan Limit</h2>
+            <h2 style={{ fontSize: '20px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '4px' }}>Shareholding & Loan Limit</h2>
             <p style={{ fontSize: '14px', color: 'var(--neutral-400)', marginBottom: '24px' }}>Step 2 of 5 — Your shareholding details and eligibility</p>
 
             {/* Shareholding Info */}
@@ -297,7 +297,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               ].map((item, i) => (
                 <div key={i} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
                   <div style={{ fontSize: '11px', fontWeight: 500, color: 'var(--neutral-400)', marginBottom: '4px' }}>{item.label}</div>
-                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', fontFamily: item.mono ? 'Roboto Mono' : 'inherit' }}>{item.value}</div>
+                  <div style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', fontFamily: item.mono ? 'Roboto Mono' : 'inherit' }}>{item.value}</div>
                 </div>
               ))}
             </div>
@@ -306,11 +306,11 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             <div className="rounded-2xl p-5 mb-6" style={{ backgroundColor: 'var(--brand-light)', border: '1px solid #C6E8D0' }}>
               <div className="flex items-center gap-2 mb-4">
                 <Calculator size={18} style={{ color: 'var(--brand-secondary)' }} />
-                <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--brand-primary)' }}>Loan Limit Calculator</h3>
+                <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--brand-primary)' }}>Loan Limit Calculator</h3>
               </div>
               <div className="grid grid-cols-2 gap-5">
                 <div className="bg-white rounded-xl p-4">
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--brand-primary)', marginBottom: '12px' }}>Method 1: Shareholding-Based</div>
+                  <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--brand-primary)', marginBottom: '12px' }}>Method 1: Shareholding-Based</div>
                   <div className="flex items-center gap-2 mb-3">
                     <input
                       type="number"
@@ -327,7 +327,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '4px' }}>Based on AGM 2024 valuation</div>
                 </div>
                 <div className="bg-white rounded-xl p-4">
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--brand-primary)', marginBottom: '12px' }}>Method 2: Agricultural Land-Based</div>
+                  <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--brand-primary)', marginBottom: '12px' }}>Method 2: Agricultural Land-Based</div>
                   <div className="flex items-center gap-2 mb-3">
                     <input
                       type="number"
@@ -388,7 +388,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               <div className="col-span-2">
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Purpose Declaration</label>
                 <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #BBF7D0' }}>
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--success-700)', marginBottom: '4px' }}>Controlled SOP purpose selected</div>
+                  <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--success-700)', marginBottom: '4px' }}>Controlled SOP purpose selected</div>
                   <div style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>
                     This application will be processed under the selected category: <strong>{purpose}</strong>. Free-text purposes are disabled to keep the loan file aligned with the approved agriculture-purpose list.
                   </div>
@@ -401,7 +401,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
         {/* Step 3: Land & Crop */}
         {step === 3 && (
           <div className="farmer-panel p-7">
-            <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '4px' }}>Agricultural Profile</h2>
+            <h2 style={{ fontSize: '20px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '4px' }}>Agricultural Profile</h2>
             <p style={{ fontSize: '14px', color: 'var(--neutral-400)', marginBottom: '24px' }}>Step 3 of 5 — Land, crop, and bank details</p>
 
             {/* Upload zones */}
@@ -430,7 +430,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             {/* Land Parcels Table */}
             <div className="mt-5 pt-5 border-t border-[#EDEEF0]">
               <div className="flex items-center justify-between mb-3">
-                <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)' }}>Land Parcels</h3>
+                <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)' }}>Land Parcels</h3>
                 <button onClick={addLandParcel} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-secondary)', fontSize: '13px', fontWeight: 500 }}>
                   <Plus size={14} /> Add Land Parcel
                 </button>
@@ -475,7 +475,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
 
             {/* Bank Details */}
             <div className="mt-5 pt-5 border-t border-[#EDEEF0]">
-              <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '16px' }}>Bank Account Details</h3>
+              <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '16px' }}>Bank Account Details</h3>
               <div className="grid grid-cols-2 gap-4">
                 {['Account Holder Name', 'Bank Name', 'Account Number', 'IFSC Code', 'Branch Name'].map((label, i) => (
                   <div key={i}>
@@ -498,10 +498,10 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
         {/* Step 4: KYC */}
         {step === 4 && (
           <div className="farmer-panel p-7">
-            <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '4px' }}>Identity Verification</h2>
+            <h2 style={{ fontSize: '20px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '4px' }}>Identity Verification</h2>
             <p style={{ fontSize: '14px', color: 'var(--neutral-400)', marginBottom: '24px' }}>Step 4 of 5 — KYC documents and declarations</p>
 
-            <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '12px' }}>Applicant KYC</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Applicant KYC</h3>
             <div className="grid grid-cols-2 gap-4 mb-6">
                 {[
                 { label: 'PAN Card', note: 'JPG/PDF · Max 5MB · Self-attested copy required', required: true, doc: 'PAN Card' },
@@ -524,7 +524,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               ))}
             </div>
 
-            <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '12px' }}>Nominee KYC</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Nominee KYC</h3>
             <div className="grid grid-cols-2 gap-4 mb-6">
               {['PAN Card (Nominee)', 'Aadhaar Card (Nominee)', 'Passport Photo (Nominee)'].map((label, i) => (
                 <div key={i}>
@@ -538,7 +538,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             </div>
 
             <div className="pt-5 border-t border-[#EDEEF0]">
-              <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '12px' }}>Declarations</h3>
+              <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Declarations</h3>
               <div className="space-y-3">
                 {[
                   { key: 'd1' as const, text: 'I declare that I am not a wilful defaulter and have no pending dues with any financial institution.' },
@@ -564,7 +564,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
         {/* Step 5: Review & Submit */}
         {step === 5 && (
           <div className="farmer-panel p-7">
-            <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '4px' }}>Review & Submit</h2>
+            <h2 style={{ fontSize: '20px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '4px' }}>Review & Submit</h2>
             <p style={{ fontSize: '14px', color: 'var(--neutral-400)', marginBottom: '24px' }}>Step 5 of 5 — Review all details before submitting</p>
 
             {/* Loan Summary Card */}
@@ -581,7 +581,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                 </div>
                 <div>
                   <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)' }}>Purpose</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'white' }}>{purpose}</div>
+                  <div style={{ fontSize: '16px', fontWeight: 500, color: 'white' }}>{purpose}</div>
                 </div>
               </div>
             </div>
@@ -595,7 +595,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             ].map((section, i) => (
               <div key={i} className="mb-3 p-4 rounded-xl border border-[#EDEEF0] flex items-center justify-between">
                 <div>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--neutral-900)' }}>{section.title}</div>
+                  <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>{section.title}</div>
                   <div style={{ fontSize: '13px', color: 'var(--neutral-400)', marginTop: '2px' }}>{section.content}</div>
                 </div>
                 <button onClick={() => setStep(section.editStep)} style={{ fontSize: '13px', color: 'var(--brand-accent)', fontWeight: 700 }}>Edit</button>
@@ -604,7 +604,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
 
             {/* Document Checklist */}
             <div className="mt-5 pt-5 border-t border-[#EDEEF0]">
-              <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '12px' }}>Document Checklist</h3>
+              <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Document Checklist</h3>
               <div className="grid grid-cols-2 gap-2">
                 {reviewDocs.map((doc, i) => (
                   <button
@@ -643,7 +643,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
 
             <button
               onClick={handleSubmit}
-              className="w-full mt-5 py-3 rounded-xl font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2"
+              className="w-full mt-5 py-3 rounded-xl font-medium transition-all hover:opacity-90 flex items-center justify-center gap-2"
               disabled={!canSubmitApplication}
               style={{ backgroundColor: canSubmitApplication ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '15px', cursor: canSubmitApplication ? 'pointer' : 'not-allowed' }}
             >
@@ -665,7 +665,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             <button
               onClick={() => setStep(step + 1)}
               disabled={step === 1 && !nomineeAdult}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold transition-all hover:opacity-90"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all hover:opacity-90"
               style={{ backgroundColor: step === 1 && !nomineeAdult ? 'var(--neutral-400)' : 'var(--brand-primary)', color: 'white', fontSize: '14px', cursor: step === 1 && !nomineeAdult ? 'not-allowed' : 'pointer' }}
             >
               Next: {steps[step].label} <ChevronRight size={16} />

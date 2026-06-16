@@ -46,7 +46,7 @@ export function NotificationsCenter({ onNavigate, activePage }: UtilityScreenPro
               <div style={{ fontSize: '13px', color: 'var(--neutral-700)', marginTop: '2px' }}>{item.detail}</div>
               <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '6px' }}>{item.fromRole} → {item.toRole} · {item.priority}</div>
             </div>
-            <span className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--info-50)', color: 'var(--accent-treasury)', fontSize: '12px', fontWeight: 800 }}>{item.cta}</span>
+            <span className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--info-50)', color: 'var(--accent-treasury)', fontSize: '12px', fontWeight: 700 }}>{item.cta}</span>
           </button>
         ))}
       </div>
@@ -76,7 +76,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
                 {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </div>
               <div>
-                <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 800 }}>{user.name}</div>
+                <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 700 }}>{user.name}</div>
                 <div style={{ fontSize: 13, color: 'var(--neutral-500)', marginTop: 2 }}>{user.roleLabel}</div>
               </div>
             </div>
@@ -88,7 +88,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
               ['Shares Held', `${loan.shares}`],
             ].map(([label, value]) => (
               <div key={label} className="py-3 border-b border-[#EDEEF0] last:border-0">
-                <div style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 800, textTransform: 'uppercase' }}>{label}</div>
+                <div style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 700, textTransform: 'uppercase' }}>{label}</div>
                 <div style={{ fontSize: 13, color: 'var(--neutral-900)', fontWeight: 700, marginTop: 4 }}>{value}</div>
               </div>
             ))}
@@ -96,7 +96,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
           <div className="col-span-3 space-y-5">
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
               <div style={{ fontSize: 12, color: 'var(--brand-accent)', fontWeight: 700, textTransform: 'uppercase' }}>Active Loan</div>
-              <div style={{ fontSize: 20, color: 'var(--neutral-900)', fontWeight: 800, marginTop: 6, fontFamily: 'Roboto Mono' }}>{loan.id}</div>
+              <div style={{ fontSize: 20, color: 'var(--neutral-900)', fontWeight: 700, marginTop: 6, fontFamily: 'Roboto Mono' }}>{loan.id}</div>
               <div className="grid grid-cols-3 gap-3 mt-5">
                 {[
                   ['Outstanding', formatCurrency(loan.outstandingPrincipal + loan.outstandingInterest)],
@@ -104,7 +104,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
                   ['Status', loan.status],
                 ].map(([label, value]) => (
                   <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
-                    <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>{label}</div>
+                    <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div>
                     <div style={{ fontSize: 16, color: 'var(--neutral-900)', fontWeight: 700, fontFamily: label !== 'Status' ? 'Roboto Mono' : 'inherit', marginTop: 4 }}>{value}</div>
                   </div>
                 ))}
@@ -117,7 +117,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
                 { label: 'My documents', page: 'farmer-documents', note: 'Agreements, invoices and forms' },
               ].map(item => (
                 <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-2xl p-4 border border-[#EDEEF0] text-left clickable-card">
-                  <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 800 }}>{item.label}</div>
+                  <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 700 }}>{item.label}</div>
                   <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
                 </button>
               ))}
@@ -204,7 +204,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
                 {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </div>
               <div>
-                <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 800 }}>{user.name}</div>
+                <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 700 }}>{user.name}</div>
                 <div style={{ fontSize: 13, color: 'var(--neutral-500)', marginTop: 2 }}>{user.roleLabel}</div>
               </div>
             </div>
@@ -215,7 +215,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
               ['Access Scope', meta.scope],
             ].map(([label, value]) => (
               <div key={label} className="py-3 border-b border-[#EDEEF0] last:border-0">
-                <div style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 800, textTransform: 'uppercase' }}>{label}</div>
+                <div style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 700, textTransform: 'uppercase' }}>{label}</div>
                 <div style={{ fontSize: 13, color: 'var(--neutral-900)', fontWeight: 700, marginTop: 4, lineHeight: '20px' }}>{value}</div>
               </div>
             ))}
@@ -224,11 +224,11 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
           <div className="col-span-3 space-y-5">
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
               <div style={{ fontSize: 12, color: 'var(--brand-primary)', fontWeight: 700, textTransform: 'uppercase' }}>Role Focus</div>
-              <div style={{ fontSize: 20, color: 'var(--neutral-900)', fontWeight: 800, marginTop: 6 }}>{meta.focus}</div>
+              <div style={{ fontSize: 20, color: 'var(--neutral-900)', fontWeight: 700, marginTop: 6 }}>{meta.focus}</div>
               <div className="grid grid-cols-3 gap-3 mt-5">
                 {meta.metrics.map(([label, value]) => (
                   <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
-                    <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>{label}</div>
+                    <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div>
                     <div style={{ fontSize: 22, color: 'var(--brand-primary)', fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{value}</div>
                   </div>
                 ))}
@@ -238,7 +238,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
             <div className="grid grid-cols-3 gap-3">
               {meta.pages.map(item => (
                 <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-2xl p-4 border border-[#EDEEF0] text-left clickable-card">
-                  <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 800 }}>{item.label}</div>
+                  <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 700 }}>{item.label}</div>
                   <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
                 </button>
               ))}
@@ -376,7 +376,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
       pageSubtitle={`${farmer.name} · ${farmer.folioNo} · Active Loan: ${loan.id}`}
       actions={
         <div className="flex gap-2">
-          <button onClick={() => onNavigate('shared-audit-trail')} className="px-3 py-2 rounded-lg border border-[#EDEEF0] hover:bg-[#F7F8FA]" style={{ fontSize: '13px', fontWeight: 800 }}>
+          <button onClick={() => onNavigate('shared-audit-trail')} className="px-3 py-2 rounded-lg border border-[#EDEEF0] hover:bg-[#F7F8FA]" style={{ fontSize: '13px', fontWeight: 700 }}>
             View Audit Log
           </button>
           <StatusBadge status={farmer.status} size="md" />
@@ -413,7 +413,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                         setShowDropdown(false);
                       }}
                       className="w-full text-left px-4 py-2.5 hover:bg-[#F7F8FA] transition-colors border-b border-[#EDEEF0] last:border-0"
-                      style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600 }}
+                      style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 500 }}
                     >
                       {name} · Folio {mockFarmers[name as keyof typeof mockFarmers].folioNo}
                     </button>
@@ -427,7 +427,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
           {showDropdown && (
             <button
               onClick={() => setShowDropdown(false)}
-              className="px-3 py-2 rounded-lg border border-[#EDEEF0] text-xs font-semibold"
+              className="px-3 py-2 rounded-lg border border-[#EDEEF0] text-xs font-medium"
             >
               Cancel
             </button>
@@ -457,7 +457,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
             ].map(([label, value]) => (
               <div key={label} className="flex items-center justify-between py-2.5 border-b border-[#EDEEF0] last:border-0">
                 <span style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 500 }}>{label}</span>
-                <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600 }}>{value}</span>
+                <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 500 }}>{value}</span>
               </div>
             ))}
           </div>
@@ -495,7 +495,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className="flex-1 py-3 text-center border-b-2 font-semibold transition-all hover:bg-white/50"
+                    className="flex-1 py-3 text-center border-b-2 font-medium transition-all hover:bg-white/50"
                     style={{
                       fontSize: '12.5px',
                       color: isActive ? 'var(--brand-primary)' : 'var(--neutral-500)',
@@ -556,7 +556,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                       <tbody>
                         {farmer.loans.map(lh => (
                           <tr key={lh.id} className="border-b border-[#EDEEF0] last:border-0 hover:bg-[#F7F8FA]">
-                            <td className="py-2.5 text-sm font-semibold text-[#1E88E5] font-mono">{lh.id}</td>
+                            <td className="py-2.5 text-sm font-medium text-[#1E88E5] font-mono">{lh.id}</td>
                             <td className="py-2.5 text-sm text-right font-mono">{formatCurrency(lh.amount)}</td>
                             <td className="py-2.5 text-sm"><StatusBadge status={lh.status} /></td>
                             <td className="py-2.5 text-sm text-right font-mono" style={{ color: lh.dpd > 0 ? 'var(--error-500)' : 'var(--success-500)' }}>{lh.dpd} d</td>
@@ -573,7 +573,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                 <div className="space-y-3">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="text-sm font-bold uppercase tracking-wider text-[#9EA8B3]">KYC Documents Checklist</h4>
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706]">Re-KYC: {farmer.reKycDue}</span>
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706]">Re-KYC: {farmer.reKycDue}</span>
                   </div>
                   {[
                     ['PAN Card', 'Verified ✓', 'AABCG1234D'],
@@ -616,7 +616,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
               <Download size={14} /> Export Member Profile
             </button>
             {farmer.activeLoan.dpd > 90 && (
-              <button onClick={() => onNavigate('credit-defaults')} className="px-4 py-2.5 rounded-xl bg-[#EF4444] text-white font-semibold flex items-center gap-2 hover:bg-[#DC2626] transition-colors" style={{ fontSize: '13px' }}>
+              <button onClick={() => onNavigate('credit-defaults')} className="px-4 py-2.5 rounded-xl bg-[#EF4444] text-white font-medium flex items-center gap-2 hover:bg-[#DC2626] transition-colors" style={{ fontSize: '13px' }}>
                 Initiate Recovery Action
               </button>
             )}
@@ -632,7 +632,7 @@ function InfoField({ label, value, mono }: { label: string; value: string; mono?
   return (
     <div className="p-3 bg-[#F7F8FA] rounded-xl border border-[#EDEEF0]">
       <div className="text-xs font-bold text-[#9EA8B3] uppercase tracking-wider">{label}</div>
-      <div className="text-sm font-semibold text-[#12151A] mt-1" style={{ fontFamily: mono ? 'Roboto Mono, monospace' : 'inherit' }}>{value}</div>
+      <div className="text-sm font-medium text-[#12151A] mt-1" style={{ fontFamily: mono ? 'Roboto Mono, monospace' : 'inherit' }}>{value}</div>
     </div>
   );
 }

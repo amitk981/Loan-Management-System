@@ -57,7 +57,7 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
               >
                 <div className="flex items-center gap-2">
                   <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: mine ? 'rgba(255,255,255,0.22)' : '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>{stage}</span>
-                  <span style={{ fontSize: '13px', fontWeight: 600 }}>{label}</span>
+                  <span style={{ fontSize: '13px', fontWeight: 500 }}>{label}</span>
                 </div>
                 <span style={{ fontSize: '12px', fontWeight: 700, opacity: 0.8 }}>{cards.length}</span>
               </div>
@@ -72,10 +72,10 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
                     className="w-full text-left bg-white rounded-lg p-3 border border-[#EDEEF0] clickable-card"
                   >
                     <div className="flex items-center justify-between mb-1.5">
-                      <span style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 600 }}>{c.id}</span>
+                      <span style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 500 }}>{c.id}</span>
                       <StatusBadge status={c.status} />
                     </div>
-                    <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-900)' }}>{c.borrower}</div>
+                    <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>{c.borrower}</div>
                     <div style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--neutral-700)', marginTop: '2px' }}>{formatCurrency(c.amount)}</div>
                   </button>
                 ))}

@@ -67,13 +67,13 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
         <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
           <div className="flex items-center gap-4">
             <div>
-              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Requested</div>
+              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Requested</div>
               <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--neutral-900)', fontFamily: 'Roboto Mono', lineHeight: '34px' }}>{formatCurrency(loan.requested)}</div>
             </div>
             <div className="h-10 w-px" style={{ backgroundColor: 'var(--neutral-200)' }} />
             <div>
-              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Eligible limit</div>
-              <div style={{ fontSize: '16px', fontWeight: 600, color: overLimit ? '#B42318' : 'var(--success-700)', fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
+              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Eligible limit</div>
+              <div style={{ fontSize: '16px', fontWeight: 500, color: overLimit ? '#B42318' : 'var(--success-700)', fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ function Row({ label, value, mono }: { label: string; value: string; mono?: bool
   return (
     <div className="flex justify-between gap-4 py-2.5 border-b border-[#EDEEF0] last:border-0">
       <span style={{ fontSize: '13px', color: 'var(--neutral-500)' }}>{label}</span>
-      <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600, fontFamily: mono ? 'Roboto Mono' : 'inherit', textAlign: 'right' }}>{value}</span>
+      <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 500, fontFamily: mono ? 'Roboto Mono' : 'inherit', textAlign: 'right' }}>{value}</span>
     </div>
   );
 }
@@ -153,7 +153,7 @@ function ApplicationTab({ loan }: { loan: typeof appraisalLoan }) {
         <div className="space-y-2">
           {kyc.map(d => (
             <div key={d} className="flex items-center justify-between p-2.5 rounded-lg" style={{ backgroundColor: 'var(--success-50)' }}>
-              <span className="flex items-center gap-2" style={{ fontSize: '13px', color: 'var(--success-700)', fontWeight: 600 }}><Check size={15} /> {d}</span>
+              <span className="flex items-center gap-2" style={{ fontSize: '13px', color: 'var(--success-700)', fontWeight: 500 }}><Check size={15} /> {d}</span>
               <StatusBadge status="Verified" />
             </div>
           ))}
@@ -192,7 +192,7 @@ function AppraisalTab({ loan, shareLimit, landLimit, eligible, editable, onNavig
         </div>
         <Row label="Risk rating" value={loan.risk} />
         {editable && (
-          <button onClick={() => onNavigate('credit-review')} className="mt-3 w-full py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
+          <button onClick={() => onNavigate('credit-review')} className="mt-3 w-full py-2.5 rounded-lg font-medium flex items-center justify-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
             Open full appraisal note <ArrowRight size={15} />
           </button>
         )}
@@ -212,7 +212,7 @@ function SignatureLadder({ authority }: { authority: string }) {
     <div className="space-y-2">
       {sigs.map(s => (
         <div key={s.who} className="flex items-center justify-between p-3 rounded-lg" style={{ backgroundColor: s.state === 'Signed' ? 'var(--success-50)' : '#FFFBEB' }}>
-          <span className="flex items-center gap-2" style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-900)' }}>
+          <span className="flex items-center gap-2" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>
             {s.state === 'Signed' ? <Check size={15} style={{ color: 'var(--success-500)' }} /> : <Lock size={15} style={{ color: 'var(--gold-500)' }} />} {s.who}
           </span>
           <StatusBadge status={s.state === 'Signed' ? 'Verified' : 'Awaiting Signature'} />
@@ -240,8 +240,8 @@ function SanctionTab({ authority, editable }: { authority: string; editable: boo
         <SignatureLadder authority={authority} />
         {editable && (
           <div className="flex gap-2 mt-4">
-            <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Approve</button>
-            <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontSize: '14px' }}>Reject with reason</button>
+            <button className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Approve</button>
+            <button className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontSize: '14px' }}>Reject with reason</button>
           </div>
         )}
         <p style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '10px', lineHeight: '18px' }}>Decision is recorded in the Credit Sanction Register (Annexure K). For loans above ₹5L the first signature locks "pending 2nd director".</p>
@@ -256,7 +256,7 @@ function DocStateCard({ name, state, note }: { name: string; state: string; note
       <div className="flex items-center gap-2.5">
         <FileText size={16} style={{ color: 'var(--brand-primary)' }} />
         <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-900)' }}>{name}</div>
+          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>{name}</div>
           <div style={{ fontSize: '11px', color: 'var(--neutral-400)' }}>{note}</div>
         </div>
       </div>
