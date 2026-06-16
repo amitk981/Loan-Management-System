@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(brew install *)",
+      "Bash(which pdftoppm *)",
+      "Bash(python3 -c \"import pypdf; print\\('pypdf ok'\\)\")",
+      "Bash(python3 -c \"import fitz; print\\('pymupdf ok'\\)\")",
+      "Bash(python3 -c \"import pdfplumber; print\\('pdfplumber ok'\\)\")",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(mkdir -p .claude/skills)",
+      "Bash(rm -rf .claude/skills/vibe-check)",
+      "Bash(cp -R /tmp/vibe-check .claude/skills/vibe-check)",
+      "Bash(rm -rf .claude/skills/vibe-check/.git)",
+      "mcp__visualize__read_me",
+      "mcp__visualize__show_widget",
+      "Bash(python3 -c \"import json,sys; print\\(json.load\\(sys.stdin\\).get\\('scripts'\\)\\)\")",
+      "Bash(sed -n '15,18p' src/app/components/credit/ApplicationQueue.tsx)",
+      "Bash(sed -n '30,34p' src/app/components/treasury/TreasuryOperations.tsx)",
+      "Bash(sed -n '22,24p' src/app/components/farmer/FarmerDashboard.tsx)",
+      "Bash(ls src/app/lib)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git -c user.name=\"Claude\" -c user.email=\"noreply@anthropic.com\" commit -q -m \"Snapshot: working prototype before enhancement pass\")"
+    ]
+  }
+}
