@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Check, CheckCircle, Eye, Lock, Send, XCircle } from 'lucide-react';
 import { Shell } from '../layout/Shell';
+import { GateBanner } from '../shared/GateBanner';
 import { disbursementLoan, preflightGates } from '../../data/treasuryData';
 import { formatCurrency } from '../../lib/format';
 
@@ -65,12 +66,13 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
             </div>
             
             {!gatesPassed && (
-              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#FEF2F2', borderBottom: '1px solid #FECACA' }}>
-                <XCircle size={24} style={{ color: '#EF4444' }} />
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: '#991B1B' }}>Disbursement Blocked — Gate Failure</div>
-                  <div style={{ fontSize: 13, color: '#991B1B', marginTop: 2 }}>One or more pre-flight gates have failed. Resolve exceptions before proceeding.</div>
-                </div>
+              <div className="p-4" style={{ borderBottom: '1px solid #FECACA' }}>
+                <GateBanner
+                  variant="blocked"
+                  title="Disbursement blocked — Checklist not fully signed"
+                  detail="SOP §4.13 / §5.3: funds cannot move until the Checklist carries all four signatures (CS, Credit Manager, Sanction Committee, Sr. Manager–Finance) and stamping is complete. Resolve the pending gate below to proceed."
+                  action={{ label: 'Open Checklist', onClick: () => onNavigate('cs-signoff') }}
+                />
               </div>
             )}
 
