@@ -20,12 +20,12 @@ interface RoleCommandCenterProps {
 }
 
 const tones = {
-  green: { bg: 'var(--brand-light)', fg: 'var(--brand-primary)', border: '#BBF7D0' },
-  blue: { bg: 'var(--info-100)', fg: '#1E40AF', border: '#BFDBFE' },
-  purple: { bg: '#EDE9FE', fg: '#7C3AED', border: '#DDD6FE' },
-  cyan: { bg: '#E0F2FE', fg: '#0891B2', border: '#BAE6FD' },
-  amber: { bg: 'var(--warning-100)', fg: '#92400E', border: '#FDE68A' },
-  red: { bg: 'var(--error-100)', fg: '#991B1B', border: '#FECACA' },
+  green: { bg: 'var(--brand-light)', fg: 'var(--brand-primary)', border: 'var(--success-200)' },
+  blue: { bg: 'var(--info-100)', fg: 'var(--info-900)', border: '#BFDBFE' },
+  purple: { bg: '#EDE9FE', fg: 'var(--accent-sanction)', border: '#DDD6FE' },
+  cyan: { bg: 'var(--info-50)', fg: 'var(--accent-treasury)', border: '#BAE6FD' },
+  amber: { bg: 'var(--warning-100)', fg: 'var(--warning-700)', border: 'var(--warning-200)' },
+  red: { bg: 'var(--error-100)', fg: 'var(--error-900)', border: '#FECACA' },
   neutral: { bg: 'var(--neutral-100)', fg: 'var(--neutral-700)', border: 'var(--neutral-200)' },
 };
 
@@ -63,7 +63,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
               const metricTone = toneFor(metric.tone || 'neutral');
               return (
                 <div key={metric.label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
-                  <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>{metric.label}</div>
+                  <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>{metric.label}</div>
                   <div style={{ fontSize: 19, color: metricTone.fg, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{metric.value}</div>
                 </div>
               );

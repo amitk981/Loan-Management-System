@@ -40,16 +40,16 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
       pageSubtitle="Grievances and support"
     >
       {submitted && (
-        <div className="mb-5 p-4 rounded-2xl" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
-          <div style={{ fontSize: '14px', fontWeight: 700, color: '#166534' }}>Grievance submitted: GRV-2025-0047</div>
+        <div className="mb-5 p-4 rounded-2xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #BBF7D0' }}>
+          <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--success-700)' }}>Grievance submitted: GRV-2025-0047</div>
           <div style={{ fontSize: '13px', color: 'var(--neutral-700)', marginTop: '4px' }}>The Company Secretary support desk will respond through {contactPreference} within the SLA.</div>
         </div>
       )}
 
       {supportAction && (
         <div className="mb-5 p-4 rounded-2xl flex items-center justify-between gap-3" style={{ backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE' }}>
-          <div style={{ fontSize: '13px', color: '#1E40AF', fontWeight: 700 }}>{supportAction}</div>
-          <button onClick={() => setSupportAction('')} style={{ fontSize: '12px', color: '#1E40AF', fontWeight: 700 }}>Dismiss</button>
+          <div style={{ fontSize: '13px', color: 'var(--info-900)', fontWeight: 700 }}>{supportAction}</div>
+          <button onClick={() => setSupportAction('')} style={{ fontSize: '12px', color: 'var(--info-900)', fontWeight: 700 }}>Dismiss</button>
         </div>
       )}
 
@@ -107,9 +107,9 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
               <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Description</label>
               <textarea value={description} onChange={e => setDescription(e.target.value)} rows={5} className="w-full px-4 py-3 rounded-xl border border-[#D1D5DB] focus:outline-none resize-none" style={{ fontSize: '14px', color: 'var(--neutral-900)' }} placeholder="Describe the issue in your own words..." />
             </div>
-            <button type="button" onClick={() => setAttachmentAdded(true)} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 text-left hover:bg-[#F0FDF4]" style={{ borderColor: attachmentAdded ? 'var(--success-500)' : 'var(--neutral-300)', backgroundColor: attachmentAdded ? '#F0FDF4' : '#FAFAFA' }}>
+            <button type="button" onClick={() => setAttachmentAdded(true)} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 text-left hover:bg-[#F0FDF4]" style={{ borderColor: attachmentAdded ? 'var(--success-500)' : 'var(--neutral-300)', backgroundColor: attachmentAdded ? 'var(--success-50)' : '#FAFAFA' }}>
               <Upload size={18} style={{ color: attachmentAdded ? 'var(--success-500)' : 'var(--neutral-400)' }} />
-              <span style={{ fontSize: '13px', color: attachmentAdded ? '#166534' : 'var(--neutral-700)', fontWeight: attachmentAdded ? 700 : 400 }}>
+              <span style={{ fontSize: '13px', color: attachmentAdded ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: attachmentAdded ? 700 : 400 }}>
                 {attachmentAdded ? 'Supporting document attached' : 'Attach supporting receipt, message, or document'}
               </span>
             </button>

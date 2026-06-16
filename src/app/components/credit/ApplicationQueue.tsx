@@ -47,21 +47,21 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
     >
       <WorkbenchTabs tabs={creditIntakeTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />
       {noticeSent && (
-        <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', color: '#166534', fontSize: '13px', fontWeight: 700 }}>
+        <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #BBF7D0', color: 'var(--success-700)', fontSize: '13px', fontWeight: 700 }}>
           Deficiency notice sent for {selected.id}. Status logged as Notified — awaiting resubmission.
         </div>
       )}
-      <div className="mb-4 p-3 rounded-lg flex items-center justify-between" style={{ backgroundColor: '#E0F2FE', border: '1px solid #BAE6FD', color: '#0E7490', fontSize: '13px', fontWeight: 800 }}>
+      <div className="mb-4 p-3 rounded-lg flex items-center justify-between" style={{ backgroundColor: 'var(--info-50)', border: '1px solid #BAE6FD', color: '#0E7490', fontSize: '13px', fontWeight: 800 }}>
         <span>{filtered.length} applications in view</span>
-        <button onClick={() => onNavigate('credit-manual-entry')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: '12px' }}>Open Manual Entry</button>
+        <button onClick={() => onNavigate('credit-manual-entry')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--accent-treasury)', color: 'white', fontSize: '12px' }}>Open Manual Entry</button>
       </div>
 
       <div className="bg-white rounded-lg border border-[#E5E7EB] overflow-hidden">
         <div className="grid grid-cols-12 min-h-[680px]">
           <div className="col-span-4 border-r border-[#E5E7EB]">
-            <div className="p-4 border-b border-[#E5E7EB]" style={{ backgroundColor: '#FAFAF8' }}>
+            <div className="p-4 border-b border-[#E5E7EB]" style={{ backgroundColor: 'var(--neutral-150)' }}>
               <div className="relative mb-3">
-                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#6B7280' }} />
+                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--neutral-500)' }} />
                 <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name / ID / village" className="w-full pl-9 pr-3 rounded-md border border-[#D1D5DB]" style={{ height: '38px', fontSize: '13px' }} />
               </div>
               <div className="flex gap-2 flex-wrap">
@@ -80,18 +80,18 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
                     <StatusBadge status={app.status} />
                   </div>
                   <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 800, marginTop: '6px' }}>{app.shortName}</div>
-                  <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '3px' }}>{app.village} · {formatCurrency(app.amount)} req.</div>
-                  <div style={{ fontSize: '12px', color: app.status === 'Overdue' ? '#C62828' : '#6B7280', marginTop: '6px', fontWeight: 700 }}>{app.blocker} · {app.submittedAgo}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '3px' }}>{app.village} · {formatCurrency(app.amount)} req.</div>
+                  <div style={{ fontSize: '12px', color: app.status === 'Overdue' ? 'var(--error-700)' : 'var(--neutral-500)', marginTop: '6px', fontWeight: 700 }}>{app.blocker} · {app.submittedAgo}</div>
                 </button>
               ))}
             </div>
           </div>
 
           <div className="col-span-8 p-5 overflow-y-auto">
-            <div className="rounded-lg p-4 mb-5" style={{ backgroundColor: '#FAFAF8', border: '1px solid #E5E7EB' }}>
+            <div className="rounded-lg p-4 mb-5" style={{ backgroundColor: 'var(--neutral-150)', border: '1px solid #E5E7EB' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 700 }}>APPLICATION</div>
+                  <div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>APPLICATION</div>
                   <div style={{ fontSize: '22px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{selected.id}</div>
                 </div>
                 <StatusBadge status={selected.status === 'Incomplete' ? `Incomplete — ${selected.blocker}` : selected.status} size="md" />
@@ -122,14 +122,14 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
             <Section title="KYC Document Checklist">
               <div className="space-y-2">
                 {selected.documents.map(doc => {
-                  const stateColor = doc.state === 'Complete' ? '#2E7D32' : doc.state === 'Missing' ? '#C62828' : 'var(--warning-500)';
+                  const stateColor = doc.state === 'Complete' ? 'var(--success-600)' : doc.state === 'Missing' ? 'var(--error-700)' : 'var(--warning-500)';
                   const icon = doc.state === 'Complete' ? <Check size={15} /> : doc.state === 'Missing' ? <X size={15} /> : <Clock size={15} />;
                   return (
                     <button key={doc.name} onClick={() => doc.state === 'Missing' && setShowNotice(true)} className="w-full flex items-center gap-3 p-3 rounded-lg text-left action-surface" style={{ backgroundColor: `${stateColor}10`, border: `1px solid ${stateColor}22` }}>
                       <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: `${stateColor}18`, color: stateColor }}>{icon}</div>
                       <div className="flex-1">
                         <div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 800 }}>{doc.name}</div>
-                        <div style={{ fontSize: '12px', color: '#6B7280' }}>{doc.detail}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--neutral-500)' }}>{doc.detail}</div>
                       </div>
                       <StatusBadge status={doc.state} />
                       {doc.state === 'Missing' && <span style={{ fontSize: '12px', color: 'var(--brand-accent)', fontWeight: 800 }}>Request</span>}
@@ -140,7 +140,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
             </Section>
 
             <div className="flex gap-3 border-t border-[#E5E7EB] pt-5">
-              <button onClick={() => setShowNotice(true)} disabled={missingDocs.length === 0} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: missingDocs.length ? 'var(--warning-100)' : '#F3F4F6', color: missingDocs.length ? '#92400E' : '#9CA3AF', fontSize: '13px' }}>Send Deficiency Notice</button>
+              <button onClick={() => setShowNotice(true)} disabled={missingDocs.length === 0} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: missingDocs.length ? 'var(--warning-100)' : '#F3F4F6', color: missingDocs.length ? 'var(--warning-700)' : '#9CA3AF', fontSize: '13px' }}>Send Deficiency Notice</button>
               <button disabled={!canAssign} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#E8F1FA' : '#F3F4F6', color: canAssign ? 'var(--brand-accent)' : '#9CA3AF', fontSize: '13px' }}>Mark Complete</button>
               <button onClick={() => onNavigate('credit-review')} disabled={!canAssign} className="ml-auto px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? 'var(--brand-primary)' : '#9CA3AF', color: 'white', fontSize: '13px' }}>Assign to Appraisal →</button>
             </div>
@@ -182,7 +182,7 @@ function InfoGrid({ items }: { items: string[][] }) {
     <div className="grid grid-cols-2">
       {items.map(([label, value]) => (
         <div key={label} className="grid grid-cols-2 border-b border-r border-[#E5E7EB] last:border-b-0">
-          <div className="p-3" style={{ backgroundColor: '#FAFAF8', fontSize: '12px', color: '#6B7280', fontWeight: 700 }}>{label}</div>
+          <div className="p-3" style={{ backgroundColor: 'var(--neutral-150)', fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div>
           <div className="p-3" style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: label.includes('Amount') || label.includes('Folio') || label.includes('Mobile') ? 'Roboto Mono' : 'inherit' }}>{value}</div>
         </div>
       ))}

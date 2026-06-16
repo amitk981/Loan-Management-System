@@ -28,7 +28,7 @@ function DocCard({ doc, onOpen }: { doc: typeof farmerDocuments[number]; onOpen:
       <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)', marginTop: '12px', minHeight: '38px' }}>{doc.name}</div>
       <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>{doc.date === '—' ? 'Not generated yet' : `Generated ${doc.date}`}</div>
       {doc.redacted && (
-        <div className="mt-3 p-2 rounded-lg" style={{ backgroundColor: 'var(--warning-100)', color: '#92400E', fontSize: '11px', lineHeight: '16px' }}>
+        <div className="mt-3 p-2 rounded-lg" style={{ backgroundColor: 'var(--warning-100)', color: 'var(--warning-700)', fontSize: '11px', lineHeight: '16px' }}>
           Summary view only. Risk details redacted per SOP.
         </div>
       )}
@@ -102,7 +102,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
               <FileCheck size={42} />
             </div>
             <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--neutral-900)', marginTop: '24px' }}>Loan Repaid</h2>
-            <div className="mt-6 p-5 rounded-2xl text-left" style={{ backgroundColor: '#F0FDF4', border: '1px solid #22C55E' }}>
+            <div className="mt-6 p-5 rounded-2xl text-left" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #22C55E' }}>
               <div className="grid grid-cols-2 gap-4">
                 {[
                   ['Loan ID', farmerLoan.id],
@@ -111,7 +111,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
                   ['Closed on', '15 Jan 2026'],
                 ].map(([label, value]) => (
                   <div key={label}>
-                    <div style={{ fontSize: '11px', color: '#166534', fontWeight: 700, textTransform: 'uppercase' }}>{label}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--success-700)', fontWeight: 700, textTransform: 'uppercase' }}>{label}</div>
                     <div style={{ fontSize: '16px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '4px', fontFamily: label === 'Loan ID' || label === 'Total Paid' ? 'Roboto Mono' : 'inherit' }}>{value}</div>
                   </div>
                 ))}
@@ -120,7 +120,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
             <div className="mt-5 text-left">
               <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)', marginBottom: '8px' }}>The following have been returned to you:</div>
               {['SH-4 Form (returned by CS team)', 'Blank-dated Cheque (returned by CS team)'].map(item => (
-                <button key={item} onClick={() => onNavigate('farmer-documents')} className="w-full text-left p-2 rounded-lg clickable-row" style={{ fontSize: '14px', color: '#166534', marginTop: '6px' }}>{item}</button>
+                <button key={item} onClick={() => onNavigate('farmer-documents')} className="w-full text-left p-2 rounded-lg clickable-row" style={{ fontSize: '14px', color: 'var(--success-700)', marginTop: '6px' }}>{item}</button>
               ))}
             </div>
             <div className="mt-7 flex items-center justify-center gap-3">
@@ -204,7 +204,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
           </button>
         </div>
         {visibleDocuments.length === 0 && (
-          <div className="mt-5 p-5 rounded-2xl text-center" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0', color: '#6B7280', fontSize: '13px' }}>
+          <div className="mt-5 p-5 rounded-2xl text-center" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0', color: 'var(--neutral-500)', fontSize: '13px' }}>
             No documents match this search.
           </div>
         )}
@@ -319,7 +319,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
           </div>
           {farmerTimeline.map((item, i) => (
             <button key={`${item.date}-${item.action}`} onClick={() => item.doc && setActiveTab('documents')} className="w-full flex gap-4 pb-5 text-left">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: i < 5 ? 'var(--success-100)' : 'var(--info-100)', color: i < 5 ? '#166534' : '#1E40AF' }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: i < 5 ? 'var(--success-100)' : 'var(--info-100)', color: i < 5 ? 'var(--success-700)' : 'var(--info-900)' }}>
                 {i < 5 ? <FileCheck size={15} /> : <Banknote size={15} />}
               </div>
               <div className="flex-1 rounded-xl border border-[#EDEEF0] p-4">

@@ -38,7 +38,7 @@ export function AuditTrailPanel({ farmerSafe = false }: { farmerSafe?: boolean }
     <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
       <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}>
         <h3 style={{ fontSize: 15, fontWeight: 700 }}>Universal Loan Audit Trail</h3>
-        <span style={{ fontSize: 12, color: '#6B7280' }}>{farmerSafe ? 'Farmer-safe view' : 'Full internal view'}</span>
+        <span style={{ fontSize: 12, color: 'var(--neutral-500)' }}>{farmerSafe ? 'Farmer-safe view' : 'Full internal view'}</span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
@@ -52,7 +52,7 @@ export function AuditTrailPanel({ farmerSafe = false }: { farmerSafe?: boolean }
 
 export function DirectorCaseBanner({ blocked = false }: { blocked?: boolean }) {
   return (
-    <div className="rounded-lg p-4 border" style={{ backgroundColor: '#FFFBEB', borderColor: 'var(--warning-500)', color: '#92400E' }}>
+    <div className="rounded-lg p-4 border" style={{ backgroundColor: '#FFFBEB', borderColor: 'var(--warning-500)', color: 'var(--warning-700)' }}>
       <div className="flex gap-3">
         <ShieldAlert size={20} />
         <div className="flex-1">
@@ -71,15 +71,15 @@ export function S186LockBanner({ audience }: { audience: 'sc' | 'credit' | 'farm
     : audience === 'credit'
       ? 'New loan approvals are suspended — s.186 statutory limit reached. Existing applications in queue are paused. Contact CFO.'
       : 'Your application is received and placed in a hold queue while a regulatory compliance matter is being processed.';
-  return <div className="rounded-lg p-4 flex gap-3" style={{ backgroundColor: audience === 'farmer' ? 'var(--warning-100)' : '#FEF2F2', color: audience === 'farmer' ? '#92400E' : '#991B1B', border: `1px solid ${audience === 'farmer' ? '#FDE68A' : '#FECACA'}` }}><AlertTriangle size={20} /><strong style={{ fontSize: 13 }}>{text}</strong></div>;
+  return <div className="rounded-lg p-4 flex gap-3" style={{ backgroundColor: audience === 'farmer' ? 'var(--warning-100)' : '#FEF2F2', color: audience === 'farmer' ? 'var(--warning-700)' : 'var(--error-900)', border: `1px solid ${audience === 'farmer' ? 'var(--warning-200)' : '#FECACA'}` }}><AlertTriangle size={20} /><strong style={{ fontSize: 13 }}>{text}</strong></div>;
 }
 
 export function HandoffCard({ title, from, to, children, action }: { title: string; from: string; to: string; children: ReactNode; action?: ReactNode }) {
   return (
     <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]">
       <div className="flex items-start justify-between gap-3">
-        <div><h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</h3><div style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>{from} → {to}</div></div>
-        <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: '#E0F2FE', color: '#0891B2' }}><Clock size={16} /></div>
+        <div><h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</h3><div style={{ fontSize: 12, color: 'var(--neutral-500)', marginTop: 4 }}>{from} → {to}</div></div>
+        <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--info-50)', color: 'var(--accent-treasury)' }}><Clock size={16} /></div>
       </div>
       <div style={{ fontSize: 13, color: 'var(--neutral-700)', lineHeight: '21px', marginTop: 12 }}>{children}</div>
       {action && <div className="mt-4">{action}</div>}
@@ -93,7 +93,7 @@ export function DocumentLinkList() {
       {['CS-signed checklist PDF', 'Credit appraisal note summary', 'Sanction register entry', '15-item document index', 'SAP customer code log entry'].map(item => (
         <button key={item} className="w-full flex items-center justify-between p-3 rounded-lg border border-[#EDEEF0] hover:bg-[#F7F8FA]">
           <span className="flex items-center gap-2" style={{ fontSize: 13, fontWeight: 800, color: 'var(--neutral-700)' }}><FileText size={14} />{item}</span>
-          <span style={{ fontSize: 12, color: '#0891B2', fontWeight: 700 }}>View →</span>
+          <span style={{ fontSize: 12, color: 'var(--accent-treasury)', fontWeight: 700 }}>View →</span>
         </button>
       ))}
     </div>

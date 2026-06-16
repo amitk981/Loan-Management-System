@@ -97,7 +97,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
                 key={m.id}
                 onClick={() => setMethod(m.id)}
                 className="p-4 rounded-xl border-2 text-left transition-all"
-                style={{ borderColor: method === m.id ? 'var(--brand-primary)' : 'var(--neutral-200)', backgroundColor: method === m.id ? '#F0FDF4' : 'white' }}
+                style={{ borderColor: method === m.id ? 'var(--brand-primary)' : 'var(--neutral-200)', backgroundColor: method === m.id ? 'var(--success-50)' : 'white' }}
               >
                 <div style={{ color: 'var(--brand-primary)', marginBottom: '8px' }}>{m.icon}</div>
                 <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)' }}>{m.label}</div>
@@ -147,7 +147,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
           </div>
           <div className="p-3 rounded-xl flex items-start gap-2 mb-4" style={{ backgroundColor: 'var(--info-100)', border: '1px solid #BFDBFE' }}>
             <Info size={14} style={{ color: 'var(--info-500)', marginTop: '2px', flexShrink: 0 }} />
-            <p style={{ fontSize: '12px', color: '#1E40AF', lineHeight: '18px' }}>Payments are allocated first to principal, then to interest. This preview updates as you edit the amount.</p>
+            <p style={{ fontSize: '12px', color: 'var(--info-900)', lineHeight: '18px' }}>Payments are allocated first to principal, then to interest. This preview updates as you edit the amount.</p>
           </div>
           <div className="grid grid-cols-3 gap-3">
             {[
@@ -162,9 +162,9 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
             ))}
           </div>
           {method === 'direct' && (
-            <button type="button" onClick={() => setReceiptUploaded(true)} className="w-full mt-4 border-2 border-dashed rounded-xl p-4 flex items-center gap-2 text-left hover:bg-[#F0FDF4]" style={{ borderColor: receiptUploaded ? 'var(--success-500)' : 'var(--neutral-300)', backgroundColor: receiptUploaded ? '#F0FDF4' : '#FAFAFA' }}>
+            <button type="button" onClick={() => setReceiptUploaded(true)} className="w-full mt-4 border-2 border-dashed rounded-xl p-4 flex items-center gap-2 text-left hover:bg-[#F0FDF4]" style={{ borderColor: receiptUploaded ? 'var(--success-500)' : 'var(--neutral-300)', backgroundColor: receiptUploaded ? 'var(--success-50)' : '#FAFAFA' }}>
               {receiptUploaded ? <CheckCircle size={18} style={{ color: 'var(--success-500)' }} /> : <Upload size={18} style={{ color: 'var(--neutral-400)' }} />}
-              <span style={{ fontSize: '13px', color: receiptUploaded ? '#166534' : 'var(--neutral-700)', fontWeight: receiptUploaded ? 700 : 400 }}>
+              <span style={{ fontSize: '13px', color: receiptUploaded ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: receiptUploaded ? 700 : 400 }}>
                 {receiptUploaded ? 'Receipt attached for verification' : 'Upload UTR screenshot or payment receipt'}
               </span>
             </button>
@@ -197,8 +197,8 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
               </div>
             ))}
           </div>
-          <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: canSubmit ? '#F0FDF4' : '#FFF7ED', border: `1px solid ${canSubmit ? '#BBF7D0' : '#FED7AA'}` }}>
-            <div style={{ fontSize: '13px', fontWeight: 850, color: canSubmit ? '#166534' : '#9A3412' }}>
+          <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: canSubmit ? 'var(--success-50)' : '#FFF7ED', border: `1px solid ${canSubmit ? 'var(--success-200)' : '#FED7AA'}` }}>
+            <div style={{ fontSize: '13px', fontWeight: 850, color: canSubmit ? 'var(--success-700)' : '#9A3412' }}>
               {canSubmit ? 'Ready to review' : 'Reference needed'}
             </div>
             <div style={{ fontSize: '12px', color: '#667085', lineHeight: '18px', marginTop: '5px' }}>

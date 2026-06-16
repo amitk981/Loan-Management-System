@@ -27,7 +27,7 @@ export function NotificationsCenter({ onNavigate, activePage }: UtilityScreenPro
           ['Unread', '7', 'var(--error-500)', 'notifications-center'],
           ['Credit Tasks', '2', 'var(--brand-primary)', 'shared-notifications'],
           ['Compliance Tasks', '3', 'var(--brand-secondary)', 'shared-notifications'],
-          ['Treasury Tasks', '2', '#0891B2', 'shared-notifications'],
+          ['Treasury Tasks', '2', 'var(--accent-treasury)', 'shared-notifications'],
         ].map(([label, value, color, page]) => (
           <button key={label} onClick={() => onNavigate(page)} className="bg-white rounded-2xl p-4 border border-[#EDEEF0] text-left clickable-card">
             <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>{label}</div>
@@ -46,7 +46,7 @@ export function NotificationsCenter({ onNavigate, activePage }: UtilityScreenPro
               <div style={{ fontSize: '13px', color: 'var(--neutral-700)', marginTop: '2px' }}>{item.detail}</div>
               <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '6px' }}>{item.fromRole} → {item.toRole} · {item.priority}</div>
             </div>
-            <span className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: '12px', fontWeight: 800 }}>{item.cta}</span>
+            <span className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--info-50)', color: 'var(--accent-treasury)', fontSize: '12px', fontWeight: 800 }}>{item.cta}</span>
           </button>
         ))}
       </div>
@@ -77,7 +77,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
               </div>
               <div>
                 <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 800 }}>{user.name}</div>
-                <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>{user.roleLabel}</div>
+                <div style={{ fontSize: 13, color: 'var(--neutral-500)', marginTop: 2 }}>{user.roleLabel}</div>
               </div>
             </div>
             {[
@@ -104,7 +104,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
                   ['Status', loan.status],
                 ].map(([label, value]) => (
                   <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
-                    <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>{label}</div>
+                    <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>{label}</div>
                     <div style={{ fontSize: 16, color: 'var(--neutral-900)', fontWeight: 700, fontFamily: label !== 'Status' ? 'Roboto Mono' : 'inherit', marginTop: 4 }}>{value}</div>
                   </div>
                 ))}
@@ -205,7 +205,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
               </div>
               <div>
                 <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 800 }}>{user.name}</div>
-                <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>{user.roleLabel}</div>
+                <div style={{ fontSize: 13, color: 'var(--neutral-500)', marginTop: 2 }}>{user.roleLabel}</div>
               </div>
             </div>
             {[
@@ -228,7 +228,7 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
               <div className="grid grid-cols-3 gap-3 mt-5">
                 {meta.metrics.map(([label, value]) => (
                   <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
-                    <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>{label}</div>
+                    <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>{label}</div>
                     <div style={{ fontSize: 22, color: 'var(--brand-primary)', fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{value}</div>
                   </div>
                 ))}
@@ -498,7 +498,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                     className="flex-1 py-3 text-center border-b-2 font-semibold transition-all hover:bg-white/50"
                     style={{
                       fontSize: '12.5px',
-                      color: isActive ? 'var(--brand-primary)' : '#6B7280',
+                      color: isActive ? 'var(--brand-primary)' : 'var(--neutral-500)',
                       borderColor: isActive ? 'var(--brand-primary)' : 'transparent',
                     }}
                   >
@@ -595,7 +595,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
               {activeTab === 'compliance-notes' && (
                 <div className="space-y-4">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-[#9EA8B3] mb-2">Internal CS Compliance Notes</h4>
-                  <div className="p-4 rounded-xl border-2" style={{ borderColor: farmer.activeLoan.dpd > 0 ? 'var(--error-100)' : '#BBF7D0', backgroundColor: farmer.activeLoan.dpd > 0 ? '#FEF2F2' : '#F0FDF4' }}>
+                  <div className="p-4 rounded-xl border-2" style={{ borderColor: farmer.activeLoan.dpd > 0 ? 'var(--error-100)' : 'var(--success-200)', backgroundColor: farmer.activeLoan.dpd > 0 ? '#FEF2F2' : 'var(--success-50)' }}>
                     <div className="flex items-start gap-2">
                       <ShieldAlert size={16} className="mt-0.5" style={{ color: farmer.activeLoan.dpd > 0 ? 'var(--error-500)' : 'var(--success-500)' }} />
                       <div className="text-sm text-[#3D4450] leading-relaxed">

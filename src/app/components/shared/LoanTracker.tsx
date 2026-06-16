@@ -110,7 +110,7 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
                 style={{
                   fontSize: '12px',
                   fontWeight: isCurrent ? 600 : 400,
-                  color: isDone ? '#166534' : isCurrent ? 'var(--brand-primary)' : 'var(--neutral-400)',
+                  color: isDone ? 'var(--success-700)' : isCurrent ? 'var(--brand-primary)' : 'var(--neutral-400)',
                   lineHeight: '18px',
                 }}
               >

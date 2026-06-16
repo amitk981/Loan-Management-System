@@ -12,12 +12,12 @@ interface FarmerDashboardProps {
 }
 
 const notifIcons: Record<string, { icon: JSX.Element; bg: string; color: string; page: string }> = {
-  repayment: { icon: <BadgeIndianRupee size={15} />, bg: 'var(--warning-100)', color: '#92400E', page: 'farmer-repayment' },
-  approval: { icon: <CheckCircle2 size={15} />, bg: 'var(--success-100)', color: '#166534', page: 'farmer-active-loans' },
-  document: { icon: <FileText size={15} />, bg: 'var(--info-100)', color: '#1E40AF', page: 'farmer-documents' },
-  overdue: { icon: <AlertCircle size={15} />, bg: 'var(--error-100)', color: '#991B1B', page: 'farmer-repayment' },
-  info: { icon: <Info size={15} />, bg: 'var(--info-100)', color: '#1E40AF', page: 'notifications-center' },
-  kyc: { icon: <IdCard size={15} />, bg: 'var(--warning-100)', color: '#92400E', page: 'farmer-apply' },
+  repayment: { icon: <BadgeIndianRupee size={15} />, bg: 'var(--warning-100)', color: 'var(--warning-700)', page: 'farmer-repayment' },
+  approval: { icon: <CheckCircle2 size={15} />, bg: 'var(--success-100)', color: 'var(--success-700)', page: 'farmer-active-loans' },
+  document: { icon: <FileText size={15} />, bg: 'var(--info-100)', color: 'var(--info-900)', page: 'farmer-documents' },
+  overdue: { icon: <AlertCircle size={15} />, bg: 'var(--error-100)', color: 'var(--error-900)', page: 'farmer-repayment' },
+  info: { icon: <Info size={15} />, bg: 'var(--info-100)', color: 'var(--info-900)', page: 'notifications-center' },
+  kyc: { icon: <IdCard size={15} />, bg: 'var(--warning-100)', color: 'var(--warning-700)', page: 'farmer-apply' },
 };
 
 export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps) {
@@ -85,11 +85,11 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
             detail="You have an active default on LO000022. No new loan can be disbursed to a borrower with an existing default (SOP §6). Contact your Credit Manager before applying."
           />
         )}
-        <div className="mb-6 p-4 rounded-xl border border-[#BBF7D0] flex items-center justify-between" style={{ backgroundColor: '#F0FDF4' }}>
+        <div className="mb-6 p-4 rounded-xl border border-[#BBF7D0] flex items-center justify-between" style={{ backgroundColor: 'var(--success-50)' }}>
           <div className="flex items-center gap-3">
             <span className="w-8 h-8 rounded-full bg-[#22C55E] text-white flex items-center justify-center font-bold text-sm">✓</span>
             <div>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: '#166534' }}>Your loan is Active & in Good Standing</div>
+              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--success-700)' }}>Your loan is Active & in Good Standing</div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>Next instalment of ₹19,500 is due by 31 Mar 2027.</div>
             </div>
           </div>
@@ -196,7 +196,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
               {[
                 { label: 'Track loan', detail: 'Stage, schedule, timeline', icon: <Clock size={18} />, page: 'farmer-active-loans', color: '#1E6CEB' },
                 { label: 'Download files', detail: 'Agreement, invoices, forms', icon: <FileText size={18} />, page: 'farmer-documents', color: '#286C4B' },
-                { label: 'Apply again', detail: `${formatCurrency(farmerEligibility.eligible)} eligible limit`, icon: <TrendingUp size={18} />, page: 'farmer-apply', color: '#7C3AED' },
+                { label: 'Apply again', detail: `${formatCurrency(farmerEligibility.eligible)} eligible limit`, icon: <TrendingUp size={18} />, page: 'farmer-apply', color: 'var(--accent-sanction)' },
                 { label: 'Ask for help', detail: 'Raise or track a ticket', icon: <Bell size={18} />, page: 'farmer-support', color: 'var(--gold-500)' },
               ].map(item => (
                 <button key={item.label} onClick={() => onNavigate(item.page)} className="farmer-panel-tight p-4 text-left clickable-card" style={{ minHeight: '122px' }}>

@@ -73,11 +73,11 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
             <div className="h-10 w-px" style={{ backgroundColor: 'var(--neutral-200)' }} />
             <div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Eligible limit</div>
-              <div style={{ fontSize: '16px', fontWeight: 600, color: overLimit ? '#B42318' : '#166534', fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
+              <div style={{ fontSize: '16px', fontWeight: 600, color: overLimit ? '#B42318' : 'var(--success-700)', fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1.5 rounded-full" style={{ backgroundColor: authority.includes('2') ? '#F3E8FF' : '#E8F1FA', color: authority.includes('2') ? '#7C3AED' : '#1565C0', fontSize: '12px', fontWeight: 700 }}>{authority}</span>
+            <span className="px-3 py-1.5 rounded-full" style={{ backgroundColor: authority.includes('2') ? '#F3E8FF' : '#E8F1FA', color: authority.includes('2') ? 'var(--accent-sanction)' : '#1565C0', fontSize: '12px', fontWeight: 700 }}>{authority}</span>
             <StatusBadge status="Under Assessment" size="md" />
           </div>
         </div>
@@ -130,7 +130,7 @@ function Card({ title, children, action }: { title: string; children: React.Reac
 function Row({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
     <div className="flex justify-between gap-4 py-2.5 border-b border-[#EDEEF0] last:border-0">
-      <span style={{ fontSize: '13px', color: '#6B7280' }}>{label}</span>
+      <span style={{ fontSize: '13px', color: 'var(--neutral-500)' }}>{label}</span>
       <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600, fontFamily: mono ? 'Roboto Mono' : 'inherit', textAlign: 'right' }}>{value}</span>
     </div>
   );
@@ -152,8 +152,8 @@ function ApplicationTab({ loan }: { loan: typeof appraisalLoan }) {
       <Card title="KYC pack">
         <div className="space-y-2">
           {kyc.map(d => (
-            <div key={d} className="flex items-center justify-between p-2.5 rounded-lg" style={{ backgroundColor: '#F0FDF4' }}>
-              <span className="flex items-center gap-2" style={{ fontSize: '13px', color: '#166534', fontWeight: 600 }}><Check size={15} /> {d}</span>
+            <div key={d} className="flex items-center justify-between p-2.5 rounded-lg" style={{ backgroundColor: 'var(--success-50)' }}>
+              <span className="flex items-center gap-2" style={{ fontSize: '13px', color: 'var(--success-700)', fontWeight: 600 }}><Check size={15} /> {d}</span>
               <StatusBadge status="Verified" />
             </div>
           ))}
@@ -211,7 +211,7 @@ function SignatureLadder({ authority }: { authority: string }) {
   return (
     <div className="space-y-2">
       {sigs.map(s => (
-        <div key={s.who} className="flex items-center justify-between p-3 rounded-lg" style={{ backgroundColor: s.state === 'Signed' ? '#F0FDF4' : '#FFFBEB' }}>
+        <div key={s.who} className="flex items-center justify-between p-3 rounded-lg" style={{ backgroundColor: s.state === 'Signed' ? 'var(--success-50)' : '#FFFBEB' }}>
           <span className="flex items-center gap-2" style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-900)' }}>
             {s.state === 'Signed' ? <Check size={15} style={{ color: 'var(--success-500)' }} /> : <Lock size={15} style={{ color: 'var(--gold-500)' }} />} {s.who}
           </span>
@@ -241,10 +241,10 @@ function SanctionTab({ authority, editable }: { authority: string; editable: boo
         {editable && (
           <div className="flex gap-2 mt-4">
             <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Approve</button>
-            <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--error-100)', color: '#991B1B', fontSize: '14px' }}>Reject with reason</button>
+            <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontSize: '14px' }}>Reject with reason</button>
           </div>
         )}
-        <p style={{ fontSize: '12px', color: '#6B7280', marginTop: '10px', lineHeight: '18px' }}>Decision is recorded in the Credit Sanction Register (Annexure K). For loans above ₹5L the first signature locks "pending 2nd director".</p>
+        <p style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '10px', lineHeight: '18px' }}>Decision is recorded in the Credit Sanction Register (Annexure K). For loans above ₹5L the first signature locks "pending 2nd director".</p>
       </Card>
     </div>
   );
@@ -297,12 +297,12 @@ function DisbursementTab({ editable, onNavigate }: { editable: boolean; onNaviga
         <Card title="SAP customer code (Annexure I)">
           <Row label="Status" value="Not yet created" />
           <Row label="Customer ID" value="— (created on approval)" mono />
-          <p style={{ fontSize: '12px', color: '#6B7280', marginTop: '10px' }}>New code only on first loan; existing borrowers reuse their Customer ID.</p>
+          <p style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '10px' }}>New code only on first loan; existing borrowers reuse their Customer ID.</p>
         </Card>
         <Card title="Bank details (match cancelled cheque)">
           <Row label="Account holder" value="—" />
           <Row label="Account / IFSC" value="Pending verification" mono />
-          <p style={{ fontSize: '12px', color: '#6B7280', marginTop: '10px' }}>Entered details are shown side-by-side with the cancelled cheque before transfer. Two-step: Sr. Manager–Finance initiates → CFC authorises.</p>
+          <p style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '10px' }}>Entered details are shown side-by-side with the cancelled cheque before transfer. Two-step: Sr. Manager–Finance initiates → CFC authorises.</p>
         </Card>
       </div>
     </div>
@@ -316,13 +316,13 @@ function RepaymentTab() {
         <Row label="Tenure" value="Long term" />
         <Row label="Next due" value="—" />
         <Row label="DPD bucket" value="Current" />
-        <p style={{ fontSize: '12px', color: '#6B7280', marginTop: '10px' }}>Partial repayments apply to principal first. Unpaid interest at 30 April is capitalised into principal (SOP §6).</p>
+        <p style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '10px' }}>Partial repayments apply to principal first. Unpaid interest at 30 April is capitalised into principal (SOP §6).</p>
       </Card>
       <Card title="Default ladder (SOP §6.2)">
         <div className="space-y-2">
           {['Miss → +3-month grace', 'Assess intentional / non-intentional', 'Non-intentional → +1-year extension', 'Still unpaid → Note for Non-Payment', 'SC + Board → SH-4 / cheque invocation'].map((s, i) => (
             <div key={s} className="flex items-center gap-2.5" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>
-              <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--neutral-200)', fontSize: '11px', fontWeight: 700, color: '#6B7280' }}>{i + 1}</span>
+              <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--neutral-200)', fontSize: '11px', fontWeight: 700, color: 'var(--neutral-500)' }}>{i + 1}</span>
               {s}
             </div>
           ))}

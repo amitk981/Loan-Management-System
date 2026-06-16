@@ -41,7 +41,7 @@ export function WorkbenchTabs({ tabs, activeKey, onChange, accent = 'var(--brand
                 className="px-1.5 py-0.5 rounded-full"
                 style={{
                   backgroundColor: isActive ? 'rgba(255,255,255,0.22)' : 'var(--error-100)',
-                  color: isActive ? 'white' : '#991B1B',
+                  color: isActive ? 'white' : 'var(--error-900)',
                   fontSize: '10px',
                   fontWeight: 800,
                 }}

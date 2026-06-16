@@ -40,7 +40,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
 
           <div className="grid grid-cols-2 gap-6">
             {/* Method 1 */}
-            <div className="p-5 rounded-2xl" style={{ backgroundColor: '#F0FDF4', border: '1px solid #DCFCE7' }}>
+            <div className="p-5 rounded-2xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #DCFCE7' }}>
               <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--brand-primary)', marginBottom: '16px' }}>
                 Method 1: Shareholding-Based
               </div>
@@ -79,7 +79,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
 
             {/* Method 2 */}
             <div className="p-5 rounded-2xl" style={{ backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE' }}>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E40AF', marginBottom: '16px' }}>
+              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--info-900)', marginBottom: '16px' }}>
                 Method 2: Agricultural Land-Based
               </div>
               <div className="mb-4">
@@ -109,7 +109,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
                 </div>
               </div>
               {!isMethod1Limiting && (
-                <div className="mt-4 p-3 rounded-xl flex items-center gap-2" style={{ backgroundColor: '#1E40AF', color: 'white' }}>
+                <div className="mt-4 p-3 rounded-xl flex items-center gap-2" style={{ backgroundColor: 'var(--info-900)', color: 'white' }}>
                   <span style={{ fontSize: '18px' }}>→</span>
                   <span style={{ fontSize: '12px', fontWeight: 700 }}>Limiting method used for eligible amount</span>
                 </div>
@@ -165,8 +165,8 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
         </div>
 
         <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid #FDE68A' }}>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#92400E', marginBottom: '4px' }}>⚠️ Configurable Parameters (Super Admin only)</div>
-          <div style={{ fontSize: '12px', color: '#92400E', lineHeight: '20px' }}>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--warning-700)', marginBottom: '4px' }}>⚠️ Configurable Parameters (Super Admin only)</div>
+          <div style={{ fontSize: '12px', color: 'var(--warning-700)', lineHeight: '20px' }}>
             Share valuation: ₹{shareValuation}/share (Board approved, AGM 2024) · Scale of Finance: ₹{scaleOfFinance.toLocaleString('en-IN')}/acre (FY 2025-26) · Pledge %: 30% of NAV
           </div>
         </div>

@@ -45,8 +45,8 @@ const checklistItems = [
 const signatureBlocks = [
   { role: 'Company Secretary', note: 'All documents verified & attached', color: 'var(--brand-primary)' },
   { role: 'Credit Manager', note: 'Loan limits reviewed & confirmed', color: 'var(--brand-secondary)' },
-  { role: 'Sanction Committee Member', note: 'Final approval as per authority matrix', color: '#7C3AED' },
-  { role: 'Senior Manager – Finance', note: 'Loan disbursed to applicant\'s account', color: '#0891B2' },
+  { role: 'Sanction Committee Member', note: 'Final approval as per authority matrix', color: 'var(--accent-sanction)' },
+  { role: 'Senior Manager – Finance', note: 'Loan disbursed to applicant\'s account', color: 'var(--accent-treasury)' },
 ];
 
 export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceProps) {
@@ -152,16 +152,16 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           { label: 'Loan Agreement', value: agreementStamped && agreementNotarised ? 'Ready' : 'Blocked', ready: agreementStamped && agreementNotarised, note: '₹500 stamp + notary' },
           { label: 'Signatures', value: `${Object.values(signatures).filter(Boolean).length}/4`, ready: allSignaturesDone, note: 'CS → Credit → Sanction → Finance' },
         ].map(item => (
-          <button key={item.label} onClick={() => setActiveTab(item.label === 'Documents' || item.label === 'Signatures' ? 'checklist' : item.label === 'PoA Execution' ? 'poa' : 'agreement')} className="rounded-xl p-4 border text-left clickable-card" style={{ backgroundColor: item.ready ? '#F0FDF4' : '#FFFBEB', borderColor: item.ready ? '#BBF7D0' : '#FDE68A' }}>
+          <button key={item.label} onClick={() => setActiveTab(item.label === 'Documents' || item.label === 'Signatures' ? 'checklist' : item.label === 'PoA Execution' ? 'poa' : 'agreement')} className="rounded-xl p-4 border text-left clickable-card" style={{ backgroundColor: item.ready ? 'var(--success-50)' : '#FFFBEB', borderColor: item.ready ? 'var(--success-200)' : 'var(--warning-200)' }}>
             <div style={{ fontSize: '11px', color: item.ready ? '#16A34A' : '#B45309', fontWeight: 700, textTransform: 'uppercase' }}>{item.label}</div>
-            <div style={{ fontSize: '20px', color: item.ready ? '#166534' : '#92400E', fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
+            <div style={{ fontSize: '20px', color: item.ready ? 'var(--success-700)' : 'var(--warning-700)', fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
             <div style={{ fontSize: '12px', color: item.ready ? 'var(--success-500)' : '#B45309', marginTop: '2px' }}>{item.note}</div>
           </button>
         ))}
       </div>
 
-      <div className="rounded-xl p-4 mb-5 border border-[#EDEEF0]" style={{ backgroundColor: '#F0FDF4' }}>
-        <div style={{ fontSize: '13px', color: '#166534', fontWeight: 800 }}>
+      <div className="rounded-xl p-4 mb-5 border border-[#EDEEF0]" style={{ backgroundColor: 'var(--success-50)' }}>
+        <div style={{ fontSize: '13px', color: 'var(--success-700)', fontWeight: 800 }}>
           Start here: PoA → Tri-Party → SH-4/CDSL → Term Sheet → Loan Agreement → Bank Verification → Checklist
         </div>
         <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '6px' }}>
@@ -251,15 +251,15 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                 ))}
               </div>
               <div className="p-3 rounded-xl mb-4 flex items-center gap-2" style={{ backgroundColor: 'var(--warning-100)' }}>
-                <AlertTriangle size={15} color="#92400E" />
-                <span style={{ fontSize: '13px', color: '#92400E' }}>₹500 stamp paper required for PoA execution</span>
+                <AlertTriangle size={15} color="var(--warning-700)" />
+                <span style={{ fontSize: '13px', color: 'var(--warning-700)' }}>₹500 stamp paper required for PoA execution</span>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {[
                   { label: 'Stamp duty paid', checked: poaStamped, onChange: setPoaStamped },
                   { label: 'Notarised copy received', checked: poaNotarised, onChange: setPoaNotarised },
                 ].map(item => (
-                  <label key={item.label} className="flex items-center justify-between p-3 rounded-xl border cursor-pointer" style={{ borderColor: item.checked ? '#BBF7D0' : 'var(--neutral-200)', backgroundColor: item.checked ? '#F0FDF4' : '#FFFFFF' }}>
+                  <label key={item.label} className="flex items-center justify-between p-3 rounded-xl border cursor-pointer" style={{ borderColor: item.checked ? 'var(--success-200)' : 'var(--neutral-200)', backgroundColor: item.checked ? 'var(--success-50)' : '#FFFFFF' }}>
                     <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{item.label}</span>
                     <input type="checkbox" checked={item.checked} onChange={e => item.onChange(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
                   </label>
@@ -328,7 +328,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                 ))}
               </div>
               <div className="mt-4 p-3 rounded-xl" style={{ backgroundColor: 'var(--info-100)' }}>
-                <span style={{ fontSize: '12px', color: '#1E40AF' }}>Term Sheet authority gate: {loan.sanctionedAmount > 500000 ? 'CFO + exactly 2 Directors required' : 'CFO + 1 Director required'}</span>
+                <span style={{ fontSize: '12px', color: 'var(--info-900)' }}>Term Sheet authority gate: {loan.sanctionedAmount > 500000 ? 'CFO + exactly 2 Directors required' : 'CFO + 1 Director required'}</span>
               </div>
               <div className="grid grid-cols-3 gap-3 mt-4">
                 {[
@@ -336,7 +336,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { key: 'director1' as const, label: 'Director 1 Signature', required: true },
                   { key: 'director2' as const, label: 'Director 2 Signature', required: loan.sanctionedAmount > 500000 },
                 ].map(item => (
-                  <label key={item.key} className="p-3 rounded-xl border cursor-pointer" style={{ backgroundColor: termSheetSignatures[item.key] ? '#F0FDF4' : item.required ? '#FFFBEB' : 'var(--neutral-100)', borderColor: termSheetSignatures[item.key] ? '#BBF7D0' : 'var(--neutral-200)' }}>
+                  <label key={item.key} className="p-3 rounded-xl border cursor-pointer" style={{ backgroundColor: termSheetSignatures[item.key] ? 'var(--success-50)' : item.required ? '#FFFBEB' : 'var(--neutral-100)', borderColor: termSheetSignatures[item.key] ? 'var(--success-200)' : 'var(--neutral-200)' }}>
                     <div className="flex items-center justify-between">
                       <span style={{ fontSize: '12px', color: 'var(--neutral-700)', fontWeight: 600 }}>{item.label}</span>
                       <input
@@ -380,8 +380,8 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   </div>
                 ))}
               </div>
-              <div className="p-3 rounded-xl mb-4" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
-                <div style={{ fontSize: '13px', color: '#166534', fontWeight: 700 }}>Deduction consent captured for subsidiary-mediated repayments.</div>
+              <div className="p-3 rounded-xl mb-4" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #BBF7D0' }}>
+                <div style={{ fontSize: '13px', color: 'var(--success-700)', fontWeight: 700 }}>Deduction consent captured for subsidiary-mediated repayments.</div>
               </div>
               <button className="px-4 py-2.5 rounded-xl font-semibold flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
                 <FileText size={14} /> Generate Tri-Party PDF
@@ -422,7 +422,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                       </div>
                     ))}
                   </div>
-                  <label className="flex items-center justify-between p-3 rounded-xl border" style={{ borderColor: witnessConfirmed ? '#BBF7D0' : '#FDE68A', backgroundColor: witnessConfirmed ? '#F0FDF4' : '#FFFBEB' }}>
+                  <label className="flex items-center justify-between p-3 rounded-xl border" style={{ borderColor: witnessConfirmed ? 'var(--success-200)' : 'var(--warning-200)', backgroundColor: witnessConfirmed ? 'var(--success-50)' : '#FFFBEB' }}>
                     <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>Witness is an existing SFPCL shareholder and has signed SH-4</span>
                     <input type="checkbox" checked={witnessConfirmed} onChange={e => setWitnessConfirmed(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
                   </label>
@@ -453,7 +453,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                 <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Bank Verification Letter</h3>
                 <StatusBadge status={bankSignatureMismatch ? 'Pending' : 'Verified'} />
               </div>
-              <label className="flex items-center justify-between p-3 rounded-xl border mb-4" style={{ backgroundColor: bankSignatureMismatch ? '#FFFBEB' : '#F0FDF4', borderColor: bankSignatureMismatch ? '#FDE68A' : '#BBF7D0' }}>
+              <label className="flex items-center justify-between p-3 rounded-xl border mb-4" style={{ backgroundColor: bankSignatureMismatch ? '#FFFBEB' : 'var(--success-50)', borderColor: bankSignatureMismatch ? 'var(--warning-200)' : 'var(--success-200)' }}>
                 <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>Signature mismatch raised on cancelled cheque</span>
                 <input type="checkbox" checked={bankSignatureMismatch} onChange={e => setBankSignatureMismatch(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
               </label>
@@ -472,13 +472,13 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                       </div>
                     ))}
                   </div>
-                  <label className="flex items-center justify-between p-3 rounded-xl border" style={{ borderColor: bankLetterReady ? '#BBF7D0' : 'var(--neutral-200)', backgroundColor: bankLetterReady ? '#F0FDF4' : 'white' }}>
+                  <label className="flex items-center justify-between p-3 rounded-xl border" style={{ borderColor: bankLetterReady ? 'var(--success-200)' : 'var(--neutral-200)', backgroundColor: bankLetterReady ? 'var(--success-50)' : 'white' }}>
                     <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Stamped bank letter received and uploaded</span>
                     <input type="checkbox" checked={bankLetterReady} onChange={e => setBankLetterReady(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
                   </label>
                 </div>
               ) : (
-                <div className="p-4 rounded-xl" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', color: '#166534', fontSize: '13px', fontWeight: 700 }}>
+                <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #BBF7D0', color: 'var(--success-700)', fontSize: '13px', fontWeight: 700 }}>
                   Bank verification letter is not required because no signature mismatch is flagged.
                 </div>
               )}
@@ -581,7 +581,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                 {!canSubmit && (
                   <div className="mb-3 p-3 rounded-xl flex gap-2" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid #FDE68A' }}>
                     <AlertTriangle size={14} style={{ color: 'var(--warning-500)', marginTop: '2px' }} />
-                    <div style={{ fontSize: '12px', color: '#92400E', lineHeight: '18px' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--warning-700)', lineHeight: '18px' }}>
                       Disbursement is blocked until every document is verified, PoA and Loan Agreement are stamped/notarised, Term Sheet authority signatures are complete, witness signatures are captured, bank verification is cleared, and all four checklist signatures are complete.
                     </div>
                   </div>
@@ -658,7 +658,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                 ))}
               </div>
               <div className="p-3 rounded-xl mb-4" style={{ backgroundColor: 'var(--warning-100)' }}>
-                <div style={{ fontSize: '13px', color: '#92400E', fontWeight: 600 }}>Hard gate: ₹500 stamp paper and notarisation are mandatory before checklist sign-off.</div>
+                <div style={{ fontSize: '13px', color: 'var(--warning-700)', fontWeight: 600 }}>Hard gate: ₹500 stamp paper and notarisation are mandatory before checklist sign-off.</div>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {[
@@ -666,7 +666,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { label: 'Notarised agreement uploaded', checked: agreementNotarised, onChange: setAgreementNotarised },
                   { label: 'Witness signature captured and shareholder folio validated', checked: witnessConfirmed, onChange: setWitnessConfirmed },
                 ].map(item => (
-                  <label key={item.label} className="flex items-center justify-between p-3 rounded-xl border cursor-pointer" style={{ borderColor: item.checked ? '#BBF7D0' : 'var(--neutral-200)', backgroundColor: item.checked ? '#F0FDF4' : '#FFFFFF' }}>
+                  <label key={item.label} className="flex items-center justify-between p-3 rounded-xl border cursor-pointer" style={{ borderColor: item.checked ? 'var(--success-200)' : 'var(--neutral-200)', backgroundColor: item.checked ? 'var(--success-50)' : '#FFFFFF' }}>
                     <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{item.label}</span>
                     <input type="checkbox" checked={item.checked} onChange={e => item.onChange(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
                   </label>

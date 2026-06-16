@@ -18,10 +18,10 @@ interface GateBannerProps {
 }
 
 const styles: Record<GateVariant, { bg: string; border: string; fg: string; icon: ReactNode; btn: string }> = {
-  blocked: { bg: '#FEF2F2', border: '#FECACA', fg: '#991B1B', icon: <AlertOctagon size={18} />, btn: 'var(--error-500)' },
-  warning: { bg: '#FFFBEB', border: '#FDE68A', fg: '#92400E', icon: <AlertTriangle size={18} />, btn: 'var(--gold-500)' },
-  info: { bg: '#EFF6FF', border: '#BFDBFE', fg: '#1E40AF', icon: <Info size={18} />, btn: 'var(--brand-accent)' },
-  ok: { bg: '#F0FDF4', border: '#BBF7D0', fg: '#166534', icon: <CheckCircle2 size={18} />, btn: 'var(--brand-primary)' },
+  blocked: { bg: '#FEF2F2', border: '#FECACA', fg: 'var(--error-900)', icon: <AlertOctagon size={18} />, btn: 'var(--error-500)' },
+  warning: { bg: '#FFFBEB', border: 'var(--warning-200)', fg: 'var(--warning-700)', icon: <AlertTriangle size={18} />, btn: 'var(--gold-500)' },
+  info: { bg: '#EFF6FF', border: '#BFDBFE', fg: 'var(--info-900)', icon: <Info size={18} />, btn: 'var(--brand-accent)' },
+  ok: { bg: 'var(--success-50)', border: 'var(--success-200)', fg: 'var(--success-700)', icon: <CheckCircle2 size={18} />, btn: 'var(--brand-primary)' },
 };
 
 export function GateBanner({ variant, title, detail, action, className = '' }: GateBannerProps) {

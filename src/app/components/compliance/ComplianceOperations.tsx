@@ -54,7 +54,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
               return <button key={i} disabled={!day} onClick={() => day && setSelectedDay(day)} className="rounded-lg p-2 min-h-16 text-left" style={{ border: selectedDay === day ? '2px solid #1A3C2A' : '1px solid #EDEEF0', backgroundColor: day ? 'white' : 'var(--neutral-100)' }}><div style={{ fontSize: '13px', fontWeight: 800, color: 'var(--neutral-700)' }}>{day || ''} {marker}</div></button>;
             })}
           </div>
-          <div className="mt-3" style={{ fontSize: '12px', color: '#6B7280' }}>🔴 Overdue / Critical · 🟡 Upcoming within 14 days · 🟢 Completed · 🔵 Scheduled</div>
+          <div className="mt-3" style={{ fontSize: '12px', color: 'var(--neutral-500)' }}>🔴 Overdue / Critical · 🟡 Upcoming within 14 days · 🟢 Completed · 🔵 Scheduled</div>
         </div>
         <div className="col-span-5 bg-white rounded-lg p-5 border border-[#EDEEF0]">
           <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 800 }}>Selected: Oct {selectedDay}</div>
@@ -79,7 +79,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
           <div className="flex items-start justify-between">
             <div>
               <div style={{ fontSize: '18px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 700 }}>{row.loan} · {row.borrower} · {formatCurrency(row.amount)} · Repaid: {row.repaid}</div>
-              <div style={{ fontSize: '13px', color: '#6B7280', marginTop: '8px' }}>Repayment confirmed by: {row.finance} · SAP confirmed ✅</div>
+              <div style={{ fontSize: '13px', color: 'var(--neutral-500)', marginTop: '8px' }}>Repayment confirmed by: {row.finance} · SAP confirmed ✅</div>
             </div>
             <StatusBadge status={row.status} size="md" />
           </div>

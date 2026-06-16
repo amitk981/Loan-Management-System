@@ -34,8 +34,8 @@ function RoleLineArt({ color }: { color: string }) {
       <rect x="178" y="58" width="58" height="86" rx="12" fill="none" stroke={color} strokeWidth="4" />
       <path d="M192 82h30M192 100h30M192 118h18" stroke={color} strokeWidth="4" strokeLinecap="round" />
       <path d="M113 156c20-18 52-18 74 0M132 66c18-18 42-18 60 0" stroke="rgba(255,255,255,0.45)" strokeWidth="3" strokeLinecap="round" fill="none" />
-      <circle cx="232" cy="162" r="20" fill="none" stroke="#FDE68A" strokeWidth="4" />
-      <path d="M223 162h18M232 153v18" stroke="#FDE68A" strokeWidth="4" strokeLinecap="round" />
+      <circle cx="232" cy="162" r="20" fill="none" stroke="var(--warning-200)" strokeWidth="4" />
+      <path d="M223 162h18M232 153v18" stroke="var(--warning-200)" strokeWidth="4" strokeLinecap="round" />
     </svg>
   );
 }

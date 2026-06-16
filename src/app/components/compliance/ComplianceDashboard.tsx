@@ -26,7 +26,7 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
         <div className="flex items-center gap-3">
           <span className="w-8 h-8 rounded-full bg-[#F59E0B] text-white flex items-center justify-center font-bold text-sm">!</span>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400E' }}>14 Files Pending Documentation</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--warning-700)' }}>14 Files Pending Documentation</div>
             <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>Next priority: Notarise PoA and Loan Agreement for Ramesh Patil (LO00000047).</div>
           </div>
         </div>
@@ -80,7 +80,7 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
           </div>
           <div className="p-4 space-y-3">
             {csDeadlines.map(item => (
-              <button key={item.date} onClick={() => onNavigate('cs-calendar')} className="w-full p-3 rounded-lg flex gap-3 text-left clickable-row" style={{ backgroundColor: item.severity === 'Critical' ? '#FEF2F2' : item.severity === 'Scheduled' ? '#F0FDF4' : '#FFFBEB', border: '1px solid #EDEEF0' }}>
+              <button key={item.date} onClick={() => onNavigate('cs-calendar')} className="w-full p-3 rounded-lg flex gap-3 text-left clickable-row" style={{ backgroundColor: item.severity === 'Critical' ? '#FEF2F2' : item.severity === 'Scheduled' ? 'var(--success-50)' : '#FFFBEB', border: '1px solid #EDEEF0' }}>
                 <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5" style={{ backgroundColor: item.severity === 'Critical' ? 'var(--error-500)' : item.severity === 'Scheduled' ? 'var(--success-500)' : 'var(--warning-500)' }} />
                 <div className="flex-1">
                   <div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700 }}>{item.date} — {item.title}</div>
