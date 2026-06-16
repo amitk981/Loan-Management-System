@@ -31,14 +31,22 @@ Custom URL-param router (`?page=`) — no real nested routes yet.
 - `src/styles/theme.css` — **design tokens (the intended source of truth)**
 - `Docs/SFPCL_LoanPlatform_Figma_DesignBrief.md` — the documented design system
 
-## Known tangles (see the audit doc for the plan to fix them)
-- **Route bloat:** ~91 page keys; Credit 21 / Compliance 26 / Sanction 16. Many map to one
-  mega-component (`CreditOperations` renders 16 "pages"). Goal: task-first IA, ≤5 nav items/role.
-- **Two design languages:** soft farmer surface vs dense back-office; tokens bypassed.
-- **`formatCurrency` is redefined in 18 files** → should be one shared util.
-- **1,481 inline `style={{}}` blocks, 2,517 hardcoded hex** → migrate to `theme.css` tokens.
-- **102× `fontWeight: 900`** and two blues (`#1E88E5` vs `#0C5FA5`) → ≤3 weights, one accent.
-- No real Loan File object yet → the fix is one shared, tabbed Loan File all roles open.
+## Enhancement pass — done (branch `enhance/vibe-check-pass`)
+- ✅ **`formatCurrency` centralised** → `src/app/lib/format.ts` (was 18 copies).
+- ✅ **One accent:** retired the second blue `#0C5FA5` → `#1E88E5`; mapped 102× `fontWeight:900` → 700.
+- ✅ **Calmer sidebar:** `defaultExpandedGroups` opens only the primary task-group per role.
+- ✅ **`GateBanner`** (`shared/GateBanner.tsx`) — the SOP "blocked because X → do Y" pattern; wired into the disbursement gate.
+- ✅ **One dashboard focus:** removed the Credit dashboard's duplicate red banner.
+- ✅ **Shared Loan File** (`shared/LoanFile.tsx`, route `loan-file`) — one object, role-gated tabs
+  for the 6 stages; reachable via global search + Credit register "Open File".
+
+## Known tangles still open (see the audit doc §G for the full plan)
+- **Route bloat:** ~91 page keys; many map to one mega-component (`CreditOperations` renders
+  16 "pages"). Next: migrate their content into Loan File tabs / a tabbed Registers hub.
+- **Inline styling:** ~1,400 `style={{}}` blocks / ~2,500 hex literals → migrate to `theme.css` tokens.
+- **Pre-existing bug:** `FarmerDashboard` hero is a `<button>` containing nested `<button>`s
+  (invalid DOM nesting warning) → make the outer element a clickable `<div role="button">`.
+- Build gate: `npx vite build` must stay green (no `tsc` in the project).
 
 ## Conventions to hold (so the AI stays a help, not a hazard)
 - One home per job: shared `formatCurrency`, one `StatusBadge` driven by a status enum.
