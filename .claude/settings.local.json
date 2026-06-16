@@ -27,7 +27,8 @@
       "Bash(git -c user.name=Claude -c user.email=noreply@anthropic.com commit -q -m 'Add reusable GateBanner; calmer default sidebar *)",
       "Bash(git -c user.name=Claude -c user.email=noreply@anthropic.com commit -q -m 'Credit dashboard: one focus, not two *)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(git -c user.name=Claude -c user.email=noreply@anthropic.com commit -q -m 'Update project map + add preview launch config *)"
+      "Bash(git -c user.name=Claude -c user.email=noreply@anthropic.com commit -q -m 'Update project map + add preview launch config *)",
+      "Bash(git -c user.name=Claude -c user.email=noreply@anthropic.com commit -q -m 'Centralize loan state machine + tone-driven StatusBadge; fix nested-button a11y *)"
     ]
   }
 }
