@@ -3,6 +3,7 @@ import { AlertTriangle, Check, Send, ShieldCheck } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { AppModal } from '../shared/AppModal';
 import { StatusBadge } from '../shared/StatusBadge';
+import { GateBanner } from '../shared/GateBanner';
 import { appraisalLoan } from '../../data/creditData';
 import { DirectorCaseBanner } from '../shared/CrossRoleComponents';
 import { formatCurrency } from '../../lib/format';
@@ -125,13 +126,20 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
                 <AmountBox label="Land-based limit" value={landLimit} note={`${landAcres} acres × ₹20k`} />
                 <AmountBox label="Final eligible amount" value={eligible} note="Lower of two" highlight />
               </div>
-              <div className="p-4 rounded-lg" style={{ backgroundColor: exceeds ? '#FEF2F2' : '#F0FDF4', border: `1px solid ${exceeds ? '#FECACA' : '#BBF7D0'}` }}>
-                <div style={{ fontSize: '13px', color: exceeds ? '#C62828' : '#166534', fontWeight: 700 }}>{exceeds ? `Requested exceeds eligible by ${formatCurrency(requested - eligible)}` : 'Requested amount is within eligible limit'}</div>
+              <div>
+                {exceeds ? (
+                  <GateBanner
+                    variant="warning"
+                    title={`Requested exceeds eligible limit by ${formatCurrency(requested - eligible)}`}
+                    detail={`Over-limit cases need CFO + 2 Directors and a mandatory Exception Register entry (Authority Matrix, SOP §2.2). Amount will be revised to ${formatCurrency(eligible)} at sanction unless an exception is recorded.`}
+                  />
+                ) : (
+                  <GateBanner variant="ok" title="Requested amount is within eligible limit" detail="Standard authority applies for this loan amount." />
+                )}
                 <div className="mt-3 flex items-center gap-3">
                   <input type="number" value={requested} onChange={e => setRequested(Number(e.target.value) || 0)} className="px-3 rounded-md border border-[#D1D5DB]" style={{ height: '40px', fontFamily: 'Roboto Mono', fontSize: '15px' }} />
                   <span style={{ fontSize: '13px', color: '#3D4450' }}>Requested amount</span>
                 </div>
-                {exceeds && <div style={{ fontSize: '12px', color: '#C62828', marginTop: '8px' }}>Amount will be revised to {formatCurrency(eligible)} at sanction.</div>}
               </div>
             </div>
           )}
