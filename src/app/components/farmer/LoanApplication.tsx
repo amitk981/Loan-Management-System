@@ -256,21 +256,21 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   </div>
                 ))}
               </div>
-              <label className="flex items-start gap-2 mt-3 p-3 rounded-xl" style={{ backgroundColor: nomineeAdult ? '#F0FDF4' : 'var(--warning-100)', border: `1px solid ${nomineeAdult ? '#BBF7D0' : '#FDE68A'}` }}>
+              <label className="flex items-start gap-2 mt-3 p-3 rounded-xl" style={{ backgroundColor: nomineeAdult ? 'var(--success-50)' : 'var(--warning-100)', border: `1px solid ${nomineeAdult ? 'var(--success-200)' : 'var(--warning-200)'}` }}>
                 <input type="checkbox" checked={nomineeAdult} onChange={e => setNomineeAdult(e.target.checked)} className="mt-0.5" style={{ accentColor: 'var(--brand-primary)' }} />
-                <span style={{ fontSize: '12px', color: nomineeAdult ? '#166534' : '#92400E', lineHeight: '18px' }}>I confirm nominee age is 18+ and supporting KYC evidence is available. Nominee minors are blocked by SOP.</span>
+                <span style={{ fontSize: '12px', color: nomineeAdult ? 'var(--success-700)' : 'var(--warning-700)', lineHeight: '18px' }}>I confirm nominee age is 18+ and supporting KYC evidence is available. Nominee minors are blocked by SOP.</span>
               </label>
             </div>
             
             {/* KYC Status */}
             <div className="mt-6 pt-5 border-t border-[#EDEEF0]">
-              <div className="p-4 rounded-xl flex gap-3" style={{ backgroundColor: rekycRequested ? 'var(--warning-100)' : '#F0FDF4', border: `1px solid ${rekycRequested ? '#FDE68A' : '#BBF7D0'}` }}>
-                <ShieldCheck size={24} style={{ color: rekycRequested ? '#92400E' : '#166534', flexShrink: 0 }} />
+              <div className="p-4 rounded-xl flex gap-3" style={{ backgroundColor: rekycRequested ? 'var(--warning-100)' : 'var(--success-50)', border: `1px solid ${rekycRequested ? 'var(--warning-200)' : 'var(--success-200)'}` }}>
+                <ShieldCheck size={24} style={{ color: rekycRequested ? 'var(--warning-700)' : 'var(--success-700)', flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: '14px', fontWeight: 700, color: rekycRequested ? '#92400E' : '#166534', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: rekycRequested ? 'var(--warning-700)' : 'var(--success-700)', marginBottom: '4px' }}>
                     {rekycRequested ? 'Re-KYC request sent' : 'KYC active for this application'}
                   </div>
-                  <div style={{ fontSize: '13px', color: rekycRequested ? '#92400E' : '#166534', lineHeight: '20px' }}>
+                  <div style={{ fontSize: '13px', color: rekycRequested ? 'var(--warning-700)' : 'var(--success-700)', lineHeight: '20px' }}>
                     {rekycRequested ? 'Compliance will refresh your KYC before the Credit Team starts assessment.' : 'PAN, Aadhaar, and member records are available. You can still request a KYC refresh if details have changed.'}
                   </div>
                   <button onClick={() => setRekycRequested(true)} className="mt-3 px-4 py-2 rounded-lg font-semibold" style={{ backgroundColor: rekycRequested ? 'var(--warning-500)' : 'var(--brand-primary)', color: 'white', fontSize: '12px' }}>
@@ -387,8 +387,8 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               </div>
               <div className="col-span-2">
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Purpose Declaration</label>
-                <div className="p-4 rounded-xl" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: '#166534', marginBottom: '4px' }}>Controlled SOP purpose selected</div>
+                <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #BBF7D0' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--success-700)', marginBottom: '4px' }}>Controlled SOP purpose selected</div>
                   <div style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>
                     This application will be processed under the selected category: <strong>{purpose}</strong>. Free-text purposes are disabled to keep the loan file aligned with the approved agriculture-purpose list.
                   </div>
@@ -616,7 +616,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                       setReviewDocs(updated);
                     }}
                     className="flex items-center gap-2 p-2 rounded-lg text-left"
-                    style={{ backgroundColor: doc.uploaded ? '#F0FDF4' : '#FEF2F2' }}
+                    style={{ backgroundColor: doc.uploaded ? 'var(--success-50)' : '#FEF2F2' }}
                   >
                     {doc.uploaded ? <FileCheck size={16} style={{ color: 'var(--success-500)' }} /> : <Upload size={16} style={{ color: 'var(--error-500)' }} />}
                     <span style={{ fontSize: '13px', color: doc.uploaded ? 'var(--brand-primary)' : 'var(--error-500)' }}>{doc.name}</span>
@@ -625,12 +625,12 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               </div>
             </div>
 
-            <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: canSubmitApplication ? '#F0FDF4' : 'var(--warning-100)', border: `1px solid ${canSubmitApplication ? '#BBF7D0' : '#FDE68A'}` }}>
-              <div style={{ fontSize: '13px', fontWeight: 700, color: canSubmitApplication ? '#166534' : '#92400E', marginBottom: '4px' }}>
+            <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: canSubmitApplication ? 'var(--success-50)' : 'var(--warning-100)', border: `1px solid ${canSubmitApplication ? 'var(--success-200)' : 'var(--warning-200)'}` }}>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: canSubmitApplication ? 'var(--success-700)' : 'var(--warning-700)', marginBottom: '4px' }}>
                 {canSubmitApplication ? 'Ready for submission' : 'Submission blocked by SOP checks'}
               </div>
               {!canSubmitApplication && (
-                <div style={{ fontSize: '12px', color: '#92400E', lineHeight: '18px', marginBottom: '8px' }}>
+                <div style={{ fontSize: '12px', color: 'var(--warning-700)', lineHeight: '18px', marginBottom: '8px' }}>
                   {!amountWithinLimit && 'Enter a requested amount within the calculated eligible limit. '}
                   {!allDeclarationsChecked && 'Complete all mandatory declarations. '}
                   {missingDocs.length > 0 && `Upload required documents: ${missingDocs.map(d => d.name).join(', ')}.`}

@@ -71,7 +71,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
             <h4 style={{ fontSize: 14, fontWeight: 800, marginBottom: 12 }}>Document Checklist Verified by CS</h4>
             <div className="grid grid-cols-2 gap-3">
               {checklistItems.map((item, i) => (
-                <div key={i} className="p-3 rounded-lg flex items-start gap-2" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', fontSize: 12, color: '#166534', fontWeight: 700 }}>
+                <div key={i} className="p-3 rounded-lg flex items-start gap-2" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #BBF7D0', fontSize: 12, color: 'var(--success-700)', fontWeight: 700 }}>
                   <CheckCircle size={14} style={{ flexShrink: 0, marginTop: 2 }} />
                   <span>{item}</span>
                 </div>
@@ -80,13 +80,13 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
           </div>
           <div className="p-5 border-t border-[#EDEEF0]">
             <label className="flex items-start gap-2 mb-4">
-               <input type="checkbox" style={{ accentColor: '#7C3AED', marginTop: 3 }} />
+               <input type="checkbox" style={{ accentColor: 'var(--accent-sanction)', marginTop: 3 }} />
                <span style={{ fontSize: 13, color: 'var(--neutral-700)' }}>I confirm that the above document file is complete and legally executed. I authorize the release of {formatCurrency(200000)} to the Treasury queue.</span>
             </label>
-            <button className="w-full py-3 rounded-lg font-semibold flex justify-center items-center gap-2" style={{ backgroundColor: '#7C3AED', color: 'white' }}>
+            <button className="w-full py-3 rounded-lg font-semibold flex justify-center items-center gap-2" style={{ backgroundColor: 'var(--accent-sanction)', color: 'white' }}>
                <FileText size={16} /> Sign Checklist & Release to Treasury
             </button>
-            <div className="mt-3 p-3 rounded-lg flex items-center gap-2" style={{ backgroundColor: '#E0F2FE', color: '#0E7490', fontSize: 12, fontWeight: 800 }}>
+            <div className="mt-3 p-3 rounded-lg flex items-center gap-2" style={{ backgroundColor: 'var(--info-50)', color: '#0E7490', fontSize: 12, fontWeight: 800 }}>
                <Send size={14} /> After signing: File released to Treasury. Senior Manager – Finance notified.
             </div>
           </div>
@@ -96,9 +96,9 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
           <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]">
             <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Signatory Details</h4>
             <div className="space-y-3">
-               <div><div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>Authority</div><div style={{ fontSize: 13, fontWeight: 700 }}>S. Nair (CFO)</div></div>
-               <div><div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>IP Address</div><div style={{ fontSize: 13, fontFamily: 'Roboto Mono' }}>192.168.1.44</div></div>
-               <div><div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>Timestamp</div><div style={{ fontSize: 13 }}>Current Time</div></div>
+               <div><div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>Authority</div><div style={{ fontSize: 13, fontWeight: 700 }}>S. Nair (CFO)</div></div>
+               <div><div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>IP Address</div><div style={{ fontSize: 13, fontFamily: 'Roboto Mono' }}>192.168.1.44</div></div>
+               <div><div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>Timestamp</div><div style={{ fontSize: 13 }}>Current Time</div></div>
             </div>
           </div>
         </div>
@@ -109,21 +109,21 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
   const renderCsNewLoan = () => (
     <div className="space-y-5">
       <div className="bg-white rounded-lg p-8 border border-[#EDEEF0] text-center max-w-3xl mx-auto mt-8">
-        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#F0FDF4', color: '#166534' }}>
+        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: 'var(--success-50)', color: 'var(--success-700)' }}>
           <FileText size={32} />
         </div>
         <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 12 }}>New Document File Generated</h2>
-        <p style={{ fontSize: 15, color: '#6B7280', marginBottom: 24, lineHeight: '24px' }}>
+        <p style={{ fontSize: 15, color: 'var(--neutral-500)', marginBottom: 24, lineHeight: '24px' }}>
           SC has sanctioned <strong>₹2,00,000</strong> for <strong>Ramesh Patil</strong> (LO00000047).<br />
           Data has been securely imported from the sanctioned application. You can now begin generating the legal documents.
         </p>
 
         <div className="text-left bg-[#F7F8FA] rounded-lg p-5 mb-6 border border-[#EDEEF0]">
-          <h4 style={{ fontSize: 13, fontWeight: 800, marginBottom: 12, textTransform: 'uppercase', color: '#6B7280' }}>Recommended Workflow Sequence</h4>
+          <h4 style={{ fontSize: 13, fontWeight: 800, marginBottom: 12, textTransform: 'uppercase', color: 'var(--neutral-500)' }}>Recommended Workflow Sequence</h4>
           <div className="space-y-3">
-             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#1A3C2A] text-white flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>1</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Generate Core Legal Documents</div><div style={{ fontSize: 13, color: '#6B7280' }}>Print Power of Attorney, Term Sheet, and Tri-Party Agreement for signatures.</div></div></div>
-             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#EDEEF0] text-[#6B7280] flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>2</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Lock Term Sheet</div><div style={{ fontSize: 13, color: '#6B7280' }}>Once Term Sheet is signed by Borrower & SC Director, the system unlocks the Loan Agreement.</div></div></div>
-             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#EDEEF0] text-[#6B7280] flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>3</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Final Checklist & Sign-off</div><div style={{ fontSize: 13, color: '#6B7280' }}>Upload executed copies, complete the 15-point checklist, and release file to Treasury.</div></div></div>
+             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#1A3C2A] text-white flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>1</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Generate Core Legal Documents</div><div style={{ fontSize: 13, color: 'var(--neutral-500)' }}>Print Power of Attorney, Term Sheet, and Tri-Party Agreement for signatures.</div></div></div>
+             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#EDEEF0] text-[#6B7280] flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>2</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Lock Term Sheet</div><div style={{ fontSize: 13, color: 'var(--neutral-500)' }}>Once Term Sheet is signed by Borrower & SC Director, the system unlocks the Loan Agreement.</div></div></div>
+             <div className="flex gap-3"><div className="w-6 h-6 rounded-full bg-[#EDEEF0] text-[#6B7280] flex items-center justify-center flex-shrink-0" style={{ fontSize: 11, fontWeight: 800 }}>3</div><div><div style={{ fontSize: 14, fontWeight: 800 }}>Final Checklist & Sign-off</div><div style={{ fontSize: 13, color: 'var(--neutral-500)' }}>Upload executed copies, complete the 15-point checklist, and release file to Treasury.</div></div></div>
           </div>
         </div>
 
@@ -140,7 +140,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
     <div className="grid grid-cols-5 gap-5">
       <div className="col-span-3 bg-white rounded-lg p-5 border border-[#EDEEF0]">
         <h3 style={{ fontSize: 18, fontWeight: 700 }}>LO000047 Disbursed — Archive Document File</h3>
-        {['Company Secretary signed · 10 Jun 09:00', 'Credit Manager signed · 10 Jun 09:15', 'SC Director signed · 10 Jun 16:30', 'Senior Manager Finance signed · 10 Jun 17:35'].map(row => <button key={row} onClick={() => onNavigate('shared-audit-trail')} className="w-full text-left p-3 mt-3 rounded-lg clickable-row" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 13, fontWeight: 800 }}>{row}</button>)}
+        {['Company Secretary signed · 10 Jun 09:00', 'Credit Manager signed · 10 Jun 09:15', 'SC Director signed · 10 Jun 16:30', 'Senior Manager Finance signed · 10 Jun 17:35'].map(row => <button key={row} onClick={() => onNavigate('shared-audit-trail')} className="w-full text-left p-3 mt-3 rounded-lg clickable-row" style={{ backgroundColor: 'var(--success-50)', color: 'var(--success-700)', fontSize: 13, fontWeight: 800 }}>{row}</button>)}
         <button className="mt-5 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}><Archive size={15} /> Archive Document File</button>
       </div>
       <HandoffCard title="Post-Disbursement Archive Trigger" from="Treasury" to="CS">CS receives: LO000047 disbursed — Checklist now complete with Finance sign-off. Archive document file.</HandoffCard>
@@ -199,7 +199,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
   const renderRateChange = () => (
     <div className="max-w-2xl bg-white rounded-lg p-5 border border-[#EDEEF0]">
       <h3 style={{ fontSize: 18, fontWeight: 700 }}>Confirm Interest Rate Change</h3>
-      <div className="grid grid-cols-3 gap-3 mt-4">{['Farmer SMS + app banner', 'CS calendar task', 'Credit register update'].map(x => <button key={x} onClick={() => onNavigate('shared-notifications')} className="p-3 rounded-lg text-left clickable-row" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 12, fontWeight: 800 }}>{x}</button>)}</div>
+      <div className="grid grid-cols-3 gap-3 mt-4">{['Farmer SMS + app banner', 'CS calendar task', 'Credit register update'].map(x => <button key={x} onClick={() => onNavigate('shared-notifications')} className="p-3 rounded-lg text-left clickable-row" style={{ backgroundColor: 'var(--success-50)', color: 'var(--success-700)', fontSize: 12, fontWeight: 800 }}>{x}</button>)}</div>
       <div className="flex gap-3 mt-5"><button className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Cancel</button><button className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Confirm Rate Change</button></div>
     </div>
   );
@@ -223,7 +223,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
 
   const renderNotifications = () => (
     <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
-      <div className="table-scroll"><table className="w-full"><thead><tr>{['ID', 'Type', 'Priority', 'From', 'To', 'Loan', 'Message', 'CTA'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: 'var(--neutral-400)', textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{crossRoleNotifications.map(n => <tr key={n.id} onClick={() => onNavigate(n.route)} className="border-t border-[#EDEEF0] clickable-row"><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', fontSize: 12 }}>{n.id}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.type}</td><td className="px-4 py-3"><StatusBadge status={n.priority === 'critical' ? 'High' : n.priority[0].toUpperCase() + n.priority.slice(1)} /></td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.fromRole}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.toRole}</td><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontSize: 12 }}>{n.loan}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.message}</td><td className="px-4 py-3"><button onClick={(e) => { e.stopPropagation(); onNavigate(n.route); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}>{n.cta}</button></td></tr>)}</tbody></table></div>
+      <div className="table-scroll"><table className="w-full"><thead><tr>{['ID', 'Type', 'Priority', 'From', 'To', 'Loan', 'Message', 'CTA'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: 'var(--neutral-400)', textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{crossRoleNotifications.map(n => <tr key={n.id} onClick={() => onNavigate(n.route)} className="border-t border-[#EDEEF0] clickable-row"><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', fontSize: 12 }}>{n.id}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.type}</td><td className="px-4 py-3"><StatusBadge status={n.priority === 'critical' ? 'High' : n.priority[0].toUpperCase() + n.priority.slice(1)} /></td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.fromRole}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.toRole}</td><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontSize: 12 }}>{n.loan}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.message}</td><td className="px-4 py-3"><button onClick={(e) => { e.stopPropagation(); onNavigate(n.route); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--info-50)', color: 'var(--accent-treasury)', fontSize: 12, fontWeight: 800 }}>{n.cta}</button></td></tr>)}</tbody></table></div>
     </div>
   );
 

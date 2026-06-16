@@ -10,15 +10,15 @@ interface CreditDashboardProps {
 }
 
 const actionQueue = [
-  { icon: '!', loan: 'LO00000089', name: 'Rajesh Patil', note: 'Appraisal Note overdue 1d', status: 'Overdue', page: 'credit-review', color: '#C62828' },
+  { icon: '!', loan: 'LO00000089', name: 'Rajesh Patil', note: 'Appraisal Note overdue 1d', status: 'Overdue', page: 'credit-review', color: 'var(--error-700)' },
   { icon: '→', loan: 'LO00000091', name: 'Priya Shinde', note: 'Docs incomplete — PAN missing', status: 'Incomplete', page: 'credit-queue', color: '#1565C0' },
   { icon: '→', loan: 'LO00000086', name: 'Narayan FPC', note: 'Sent to SC — awaiting decision', status: 'Awaiting SC Approval', page: 'credit-sc-queue', color: '#1565C0' },
-  { icon: '✓', loan: 'LO00000082', name: 'Disbursed', note: 'Update loan register', status: 'Disbursed', page: 'credit-register', color: '#2E7D32' },
+  { icon: '✓', loan: 'LO00000082', name: 'Disbursed', note: 'Update loan register', status: 'Disbursed', page: 'credit-register', color: 'var(--success-600)' },
 ];
 
 const alerts = [
   { title: 'TAT Breach', body: 'LO00000076 — Appraisal due 2 days ago', color: '#E65100', page: 'credit-review' },
-  { title: 'Default Flag', body: 'LO00000051 — Principal overdue 94 days', color: '#C62828', page: 'credit-dpd' },
+  { title: 'Default Flag', body: 'LO00000051 — Principal overdue 94 days', color: 'var(--error-700)', page: 'credit-dpd' },
   { title: 'Re-KYC Due', body: '14 members — KYC expiring in 30d', color: 'var(--warning-500)', page: 'credit-all-apps' },
 ];
 
@@ -70,7 +70,7 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
 
       <div className="grid grid-cols-11 gap-5 mb-5">
         <div className="col-span-6 bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
-          <div className="px-5 py-3 border-b border-[#E5E7EB]" style={{ backgroundColor: '#FAFAF8' }}>
+          <div className="px-5 py-3 border-b border-[#E5E7EB]" style={{ backgroundColor: 'var(--neutral-150)' }}>
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Action Queue</h3>
           </div>
           {actionQueue.map(item => (
@@ -82,7 +82,7 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
                   <span style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 600 }}>{item.name}</span>
                   <StatusBadge status={item.status} />
                 </div>
-                <div className="truncate" style={{ fontSize: '12px', color: '#6B7280', marginTop: '3px' }}>{item.note}</div>
+                <div className="truncate" style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '3px' }}>{item.note}</div>
               </div>
               <span style={{ fontSize: '12px', color: 'var(--brand-accent)', fontWeight: 700 }}>Open →</span>
             </button>
@@ -90,7 +90,7 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
         </div>
 
         <div className="col-span-5 bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
-          <div className="px-5 py-3 border-b border-[#E5E7EB]" style={{ backgroundColor: '#FAFAF8' }}>
+          <div className="px-5 py-3 border-b border-[#E5E7EB]" style={{ backgroundColor: 'var(--neutral-150)' }}>
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Alerts</h3>
           </div>
           <div className="p-4 space-y-3">
@@ -114,9 +114,9 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
         </div>
         <div className="grid grid-cols-4 gap-4 mb-4">
           {dpdData.map(d => (
-            <button key={d.label} onClick={() => onNavigate('credit-dpd')} className="p-3 rounded-lg text-left clickable-row" style={{ backgroundColor: '#FAFAF8' }}>
+            <button key={d.label} onClick={() => onNavigate('credit-dpd')} className="p-3 rounded-lg text-left clickable-row" style={{ backgroundColor: 'var(--neutral-150)' }}>
               <div className="flex items-center justify-between mb-2">
-                <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>{d.label}</span>
+                <span style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 600 }}>{d.label}</span>
                 <span style={{ fontSize: '18px', color: d.color, fontWeight: 800 }}>{d.count}</span>
               </div>
               <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--neutral-200)' }}>
@@ -128,8 +128,8 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
         <div className="flex items-center gap-6" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>
           <span>Outstanding: <strong style={{ fontFamily: 'Roboto Mono' }}>₹1,84,20,000</strong></span>
           <span>Avg Loan: <strong style={{ fontFamily: 'Roboto Mono' }}>₹1,25,306</strong></span>
-          <span>NPA: <strong style={{ color: '#C62828' }}>1.4%</strong></span>
-          <span className="ml-auto flex items-center gap-1" style={{ color: '#2E7D32', fontWeight: 700 }}><Check size={14} /> Synced 11:42 AM</span>
+          <span>NPA: <strong style={{ color: 'var(--error-700)' }}>1.4%</strong></span>
+          <span className="ml-auto flex items-center gap-1" style={{ color: 'var(--success-600)', fontWeight: 700 }}><Check size={14} /> Synced 11:42 AM</span>
         </div>
       </div>
     </Shell>

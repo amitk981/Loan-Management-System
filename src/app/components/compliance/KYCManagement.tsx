@@ -39,13 +39,13 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
       <WorkbenchTabs tabs={complianceKycTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />
       <div className="bg-white rounded-lg p-4 border border-[#EDEEF0] mb-4">
         <div className="flex flex-wrap gap-2 mb-3">
-          <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800, alignSelf: 'center' }}>Status:</span>
+          <span style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 800, alignSelf: 'center' }}>Status:</span>
           {(['All', 'Overdue', '<30 days', '30-60 days', '>60 days', 'Current'] as const).map(item => (
             <button key={item} onClick={() => setStatus(item)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: status === item ? 'var(--brand-primary)' : 'var(--neutral-100)', color: status === item ? 'white' : 'var(--neutral-700)', fontSize: '12px', fontWeight: 800 }}>{item}</button>
           ))}
         </div>
         <div className="flex flex-wrap gap-2 items-center">
-          <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>Type:</span>
+          <span style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 800 }}>Type:</span>
           {(['All', 'Individual', 'FPC'] as const).map(item => (
             <button key={item} onClick={() => setType(item)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: type === item ? 'var(--brand-accent)' : 'var(--neutral-100)', color: type === item ? 'white' : 'var(--neutral-700)', fontSize: '12px', fontWeight: 800 }}>{item}</button>
           ))}
@@ -64,7 +64,7 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
           ['Current (>60 days)', '739', 'var(--success-500)', 'Current'],
         ].map(([label, value, color, nextStatus]) => (
           <button key={label} onClick={() => setStatus(nextStatus as typeof status)} className="bg-white rounded-lg p-4 border border-[#EDEEF0] text-left clickable-card">
-            <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</div>
+            <div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 800 }}>{label}</div>
             <div style={{ fontSize: '26px', color, fontWeight: 700, marginTop: '5px' }}>{value}</div>
           </button>
         ))}

@@ -28,7 +28,7 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
       <div className="grid grid-cols-4 gap-5 mb-5">
         {[
           ['Total Sanctioned', formatCurrency(totalDisbursed), 'var(--brand-primary)', 'admin-portfolio'],
-          ['Outstanding', formatCurrency(totalOutstanding), '#0891B2', 'admin-portfolio'],
+          ['Outstanding', formatCurrency(totalOutstanding), 'var(--accent-treasury)', 'admin-portfolio'],
           ['Collection Efficiency', '82%', 'var(--success-500)', 'admin-portfolio'],
           ['Defaults', defaults.toString(), 'var(--error-500)', 'shared-audit-trail'],
         ].map(([label, value, color, page]) => (
@@ -254,8 +254,8 @@ export function AuditLog({ onNavigate, activePage }: AdminScreensProps) {
       <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden">
         <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: 'var(--warning-100)' }}>
           <div className="flex items-center gap-2">
-            <ShieldCheck size={14} style={{ color: '#92400E' }} />
-            <span style={{ fontSize: '13px', color: '#92400E', fontWeight: 600 }}>Immutable Audit Log</span>
+            <ShieldCheck size={14} style={{ color: 'var(--warning-700)' }} />
+            <span style={{ fontSize: '13px', color: 'var(--warning-700)', fontWeight: 600 }}>Immutable Audit Log</span>
           </div>
         </div>
         <div className="table-scroll"><table className="w-full">
@@ -319,7 +319,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
         <div className="grid grid-cols-4 gap-5 mb-5">
           {[
             ['Board Approved Limit', '₹1.80 Cr', 'var(--brand-primary)'],
-            ['Current Exposure', '₹1.12 Cr', '#0891B2'],
+            ['Current Exposure', '₹1.12 Cr', 'var(--accent-treasury)'],
             ['Headroom', '₹68.0L', 'var(--success-500)'],
             ['Usage', '62%', 'var(--warning-500)'],
           ].map(([label, value, color]) => (
@@ -531,7 +531,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
               ))}
             </div>
             <div className="mt-3 p-3 rounded-xl" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid #FDE68A' }}>
-              <div style={{ fontSize: '12px', color: '#92400E', fontWeight: 700 }}>Quarterly certification pending</div>
+              <div style={{ fontSize: '12px', color: 'var(--warning-700)', fontWeight: 700 }}>Quarterly certification pending</div>
               <div style={{ fontSize: '12px', color: '#B45309', marginTop: '2px' }}>Alert CFO if either ratio approaches 45%.</div>
             </div>
           </div>
@@ -562,9 +562,9 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
             <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>SOP Compliance Matrix</h3>
           </div>
           <div className="mb-4 p-4 rounded-xl flex items-start gap-3" style={{ backgroundColor: '#FEF2F2', border: '1px solid #FECACA' }}>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--error-100)', color: '#991B1B', fontWeight: 800 }}>!</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontWeight: 800 }}>!</div>
             <div>
-              <div style={{ fontSize: '13px', color: '#991B1B', fontWeight: 700 }}>Annual money-lending exemption confirmation is pending</div>
+              <div style={{ fontSize: '13px', color: 'var(--error-900)', fontWeight: 700 }}>Annual money-lending exemption confirmation is pending</div>
               <div style={{ fontSize: '12px', color: '#7F1D1D', marginTop: '3px', lineHeight: '18px' }}>
                 New application acceptance remains locked until CS uploads the Maharashtra money-lending exemption certificate and Admin marks the annual control confirmed.
               </div>
@@ -624,7 +624,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
         <div className="p-4 rounded-xl flex items-start gap-3" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid #FDE68A' }}>
           <span style={{ fontSize: '16px' }}>⚠️</span>
           <div>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: '#92400E' }}>Changes require Board authorization</div>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--warning-700)' }}>Changes require Board authorization</div>
             <div style={{ fontSize: '12px', color: '#B45309', marginTop: '2px' }}>All parameter changes are logged in the audit trail and require CFO approval before taking effect.</div>
           </div>
         </div>

@@ -25,6 +25,21 @@
   --info-100: #DBEAFE;
   --info-500: #3B82F6;
   --gold-500: #D97706;
+  /* Extended semantic shades (status text/backgrounds, role accents) */
+  --neutral-150: #FAFAF8;
+  --neutral-500: #6B7280;
+  --success-50: #F0FDF4;
+  --success-200: #BBF7D0;
+  --success-600: #2E7D32;
+  --success-700: #166534;
+  --warning-200: #FDE68A;
+  --warning-700: #92400E;
+  --error-700: #C62828;
+  --error-900: #991B1B;
+  --info-50: #E0F2FE;
+  --info-900: #1E40AF;
+  --accent-treasury: #0891B2;
+  --accent-sanction: #7C3AED;
 
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;

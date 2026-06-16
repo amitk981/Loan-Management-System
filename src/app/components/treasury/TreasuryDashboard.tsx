@@ -21,7 +21,7 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
       pageSubtitle={`Today: ${treasuryProfile.today}`}
       actions={
         <div className="flex items-center gap-2">
-          <button onClick={() => onNavigate('treasury-disbursement')} className="px-4 py-2.5 rounded-lg font-semibold hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: '14px' }}>+ Initiate Disbursement</button>
+          <button onClick={() => onNavigate('treasury-disbursement')} className="px-4 py-2.5 rounded-lg font-semibold hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: 'var(--accent-treasury)', color: 'white', fontSize: '14px' }}>+ Initiate Disbursement</button>
           <button aria-label="Refresh" className="w-10 h-10 rounded-lg border border-[#EDEEF0] flex items-center justify-center hover:bg-[#F7F8FA] transition-colors"><RefreshCw size={16} /></button>
         </div>
       }
@@ -34,7 +34,7 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
             <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>1 file is blocked due to missing SAP Customer Code. Process pending codes first.</div>
           </div>
         </div>
-        <button onClick={() => onNavigate('treasury-sap-codes')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#0891B2', fontSize: '13px', fontWeight: 700 }}>Create SAP Codes</button>
+        <button onClick={() => onNavigate('treasury-sap-codes')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: 'var(--accent-treasury)', fontSize: '13px', fontWeight: 700 }}>Create SAP Codes</button>
       </div>
       <RoleCommandCenter
         title="Treasury Console"
@@ -57,7 +57,7 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
       <div className="bg-white rounded-xl border border-[#EDEEF0] overflow-hidden mb-5">
         <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}>
           <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Disbursement Queue</h3>
-          <button onClick={() => onNavigate('treasury-pending')} className="hover:text-[#067a96] transition-colors" style={{ fontSize: '13px', color: '#0891B2', fontWeight: 700 }}>View All</button>
+          <button onClick={() => onNavigate('treasury-pending')} className="hover:text-[#067a96] transition-colors" style={{ fontSize: '13px', color: 'var(--accent-treasury)', fontWeight: 700 }}>View All</button>
         </div>
         <div className="table-scroll">
           <table className="w-full">
@@ -73,8 +73,8 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
                   <td className="px-4"><StatusBadge status={row.stage} /></td>
                   <td className="px-4" style={{ color: row.csSign === '✓' ? 'var(--success-500)' : 'var(--gold-500)', fontWeight: 800 }}>{row.csSign}</td>
                   <td className="px-4" style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: row.sapCode ? 'var(--neutral-900)' : 'var(--gold-500)' }}>{row.sapCode || '—'}</td>
-                  <td className="px-4" style={{ fontSize: '12px', color: row.risk === 'red' ? 'var(--error-500)' : row.risk === 'amber' ? 'var(--gold-500)' : '#166534', fontWeight: 700 }}>{row.waiting}</td>
-                  <td className="px-4"><button onClick={(e) => { e.stopPropagation(); onNavigate(row.page); }} className="px-3 py-1.5 rounded-lg transition-all hover:shadow-sm active:scale-95" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: '12px', fontWeight: 700 }}>{row.action} →</button></td>
+                  <td className="px-4" style={{ fontSize: '12px', color: row.risk === 'red' ? 'var(--error-500)' : row.risk === 'amber' ? 'var(--gold-500)' : 'var(--success-700)', fontWeight: 700 }}>{row.waiting}</td>
+                  <td className="px-4"><button onClick={(e) => { e.stopPropagation(); onNavigate(row.page); }} className="px-3 py-1.5 rounded-lg transition-all hover:shadow-sm active:scale-95" style={{ backgroundColor: 'var(--info-50)', color: 'var(--accent-treasury)', fontSize: '12px', fontWeight: 700 }}>{row.action} →</button></td>
                 </tr>
               ))}
             </tbody>

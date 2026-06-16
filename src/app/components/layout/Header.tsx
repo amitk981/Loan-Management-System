@@ -110,8 +110,8 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
     farmer: 'var(--brand-accent)',
     credit: 'var(--brand-secondary)',
     compliance: 'var(--brand-primary)',
-    sanction: '#7C3AED',
-    treasury: '#0891B2',
+    sanction: 'var(--accent-sanction)',
+    treasury: 'var(--accent-treasury)',
     admin: 'var(--neutral-700)',
   };
 
@@ -199,7 +199,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
                     className="w-full text-left px-4 py-3 border-b border-[#EDEEF0] hover:bg-[#F7F8FA]"
                   >
                     <div style={{ fontSize: 13, color: 'var(--neutral-900)', fontWeight: 700 }}>{item.label}</div>
-                    <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>{item.meta}</div>
+                    <div style={{ fontSize: 12, color: 'var(--neutral-500)', marginTop: 2 }}>{item.meta}</div>
                   </button>
                 ))}
               </div>
