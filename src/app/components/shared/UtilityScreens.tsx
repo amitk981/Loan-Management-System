@@ -24,13 +24,13 @@ export function NotificationsCenter({ onNavigate, activePage }: UtilityScreenPro
     >
       <div className="grid grid-cols-4 gap-5 mb-5">
         {[
-          ['Unread', '7', '#EF4444', 'notifications-center'],
-          ['Credit Tasks', '2', '#1A3C2A', 'shared-notifications'],
-          ['Compliance Tasks', '3', '#2D7A4F', 'shared-notifications'],
+          ['Unread', '7', 'var(--error-500)', 'notifications-center'],
+          ['Credit Tasks', '2', 'var(--brand-primary)', 'shared-notifications'],
+          ['Compliance Tasks', '3', 'var(--brand-secondary)', 'shared-notifications'],
           ['Treasury Tasks', '2', '#0891B2', 'shared-notifications'],
         ].map(([label, value, color, page]) => (
           <button key={label} onClick={() => onNavigate(page)} className="bg-white rounded-2xl p-4 border border-[#EDEEF0] text-left clickable-card">
-            <div style={{ fontSize: '12px', color: '#9EA8B3', fontWeight: 700 }}>{label}</div>
+            <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>{label}</div>
             <div style={{ fontSize: '28px', color, fontWeight: 700, fontFamily: 'Roboto Mono' }}>{value}</div>
           </button>
         ))}
@@ -38,13 +38,13 @@ export function NotificationsCenter({ onNavigate, activePage }: UtilityScreenPro
       <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden">
         {crossRoleNotifications.map(item => (
           <button key={item.id} onClick={() => onNavigate(item.route)} className="w-full px-5 py-4 border-b border-[#EDEEF0] last:border-b-0 flex items-start gap-3 text-left clickable-row">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: '#DBEAFE' }}>
-              <Bell size={16} style={{ color: '#1E88E5' }} />
+            <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--info-100)' }}>
+              <Bell size={16} style={{ color: 'var(--brand-accent)' }} />
             </div>
             <div className="flex-1">
-              <div style={{ fontSize: '14px', color: '#12151A', fontWeight: 700 }}>{item.message}</div>
-              <div style={{ fontSize: '13px', color: '#3D4450', marginTop: '2px' }}>{item.detail}</div>
-              <div style={{ fontSize: '11px', color: '#9EA8B3', marginTop: '6px' }}>{item.fromRole} → {item.toRole} · {item.priority}</div>
+              <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 700 }}>{item.message}</div>
+              <div style={{ fontSize: '13px', color: 'var(--neutral-700)', marginTop: '2px' }}>{item.detail}</div>
+              <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '6px' }}>{item.fromRole} → {item.toRole} · {item.priority}</div>
             </div>
             <span className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: '12px', fontWeight: 800 }}>{item.cta}</span>
           </button>
@@ -72,11 +72,11 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
         <div className="grid grid-cols-5 gap-5">
           <div className="col-span-2 bg-white rounded-2xl p-5 border border-[#EDEEF0]">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: '#1E88E5', fontSize: 18, fontWeight: 700 }}>
+              <div className="w-14 h-14 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: 'var(--brand-accent)', fontSize: 18, fontWeight: 700 }}>
                 {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </div>
               <div>
-                <div style={{ fontSize: 18, color: '#12151A', fontWeight: 800 }}>{user.name}</div>
+                <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 800 }}>{user.name}</div>
                 <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>{user.roleLabel}</div>
               </div>
             </div>
@@ -88,24 +88,24 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
               ['Shares Held', `${loan.shares}`],
             ].map(([label, value]) => (
               <div key={label} className="py-3 border-b border-[#EDEEF0] last:border-0">
-                <div style={{ fontSize: 11, color: '#9EA8B3', fontWeight: 800, textTransform: 'uppercase' }}>{label}</div>
-                <div style={{ fontSize: 13, color: '#12151A', fontWeight: 700, marginTop: 4 }}>{value}</div>
+                <div style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 800, textTransform: 'uppercase' }}>{label}</div>
+                <div style={{ fontSize: 13, color: 'var(--neutral-900)', fontWeight: 700, marginTop: 4 }}>{value}</div>
               </div>
             ))}
           </div>
           <div className="col-span-3 space-y-5">
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-              <div style={{ fontSize: 12, color: '#1E88E5', fontWeight: 700, textTransform: 'uppercase' }}>Active Loan</div>
-              <div style={{ fontSize: 20, color: '#12151A', fontWeight: 800, marginTop: 6, fontFamily: 'Roboto Mono' }}>{loan.id}</div>
+              <div style={{ fontSize: 12, color: 'var(--brand-accent)', fontWeight: 700, textTransform: 'uppercase' }}>Active Loan</div>
+              <div style={{ fontSize: 20, color: 'var(--neutral-900)', fontWeight: 800, marginTop: 6, fontFamily: 'Roboto Mono' }}>{loan.id}</div>
               <div className="grid grid-cols-3 gap-3 mt-5">
                 {[
                   ['Outstanding', formatCurrency(loan.outstandingPrincipal + loan.outstandingInterest)],
                   ['Sanctioned', formatCurrency(loan.sanctionedAmount)],
                   ['Status', loan.status],
                 ].map(([label, value]) => (
-                  <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: '#F7F8FA', border: '1px solid #EDEEF0' }}>
+                  <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
                     <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>{label}</div>
-                    <div style={{ fontSize: 16, color: '#12151A', fontWeight: 700, fontFamily: label !== 'Status' ? 'Roboto Mono' : 'inherit', marginTop: 4 }}>{value}</div>
+                    <div style={{ fontSize: 16, color: 'var(--neutral-900)', fontWeight: 700, fontFamily: label !== 'Status' ? 'Roboto Mono' : 'inherit', marginTop: 4 }}>{value}</div>
                   </div>
                 ))}
               </div>
@@ -117,8 +117,8 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
                 { label: 'My documents', page: 'farmer-documents', note: 'Agreements, invoices and forms' },
               ].map(item => (
                 <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-2xl p-4 border border-[#EDEEF0] text-left clickable-card">
-                  <div style={{ fontSize: 14, color: '#12151A', fontWeight: 800 }}>{item.label}</div>
-                  <div style={{ fontSize: 12, color: '#3D4450', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
+                  <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 800 }}>{item.label}</div>
+                  <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
                 </button>
               ))}
             </div>
@@ -200,11 +200,11 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
         <div className="grid grid-cols-5 gap-5">
           <div className="col-span-2 bg-white rounded-2xl p-5 border border-[#EDEEF0]">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: '#1A3C2A', fontSize: 18, fontWeight: 700 }}>
+              <div className="w-14 h-14 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: 'var(--brand-primary)', fontSize: 18, fontWeight: 700 }}>
                 {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </div>
               <div>
-                <div style={{ fontSize: 18, color: '#12151A', fontWeight: 800 }}>{user.name}</div>
+                <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 800 }}>{user.name}</div>
                 <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>{user.roleLabel}</div>
               </div>
             </div>
@@ -215,21 +215,21 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
               ['Access Scope', meta.scope],
             ].map(([label, value]) => (
               <div key={label} className="py-3 border-b border-[#EDEEF0] last:border-0">
-                <div style={{ fontSize: 11, color: '#9EA8B3', fontWeight: 800, textTransform: 'uppercase' }}>{label}</div>
-                <div style={{ fontSize: 13, color: '#12151A', fontWeight: 700, marginTop: 4, lineHeight: '20px' }}>{value}</div>
+                <div style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 800, textTransform: 'uppercase' }}>{label}</div>
+                <div style={{ fontSize: 13, color: 'var(--neutral-900)', fontWeight: 700, marginTop: 4, lineHeight: '20px' }}>{value}</div>
               </div>
             ))}
           </div>
 
           <div className="col-span-3 space-y-5">
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-              <div style={{ fontSize: 12, color: '#1A3C2A', fontWeight: 700, textTransform: 'uppercase' }}>Role Focus</div>
-              <div style={{ fontSize: 20, color: '#12151A', fontWeight: 800, marginTop: 6 }}>{meta.focus}</div>
+              <div style={{ fontSize: 12, color: 'var(--brand-primary)', fontWeight: 700, textTransform: 'uppercase' }}>Role Focus</div>
+              <div style={{ fontSize: 20, color: 'var(--neutral-900)', fontWeight: 800, marginTop: 6 }}>{meta.focus}</div>
               <div className="grid grid-cols-3 gap-3 mt-5">
                 {meta.metrics.map(([label, value]) => (
-                  <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: '#F7F8FA', border: '1px solid #EDEEF0' }}>
+                  <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
                     <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>{label}</div>
-                    <div style={{ fontSize: 22, color: '#1A3C2A', fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{value}</div>
+                    <div style={{ fontSize: 22, color: 'var(--brand-primary)', fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{value}</div>
                   </div>
                 ))}
               </div>
@@ -238,8 +238,8 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
             <div className="grid grid-cols-3 gap-3">
               {meta.pages.map(item => (
                 <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-2xl p-4 border border-[#EDEEF0] text-left clickable-card">
-                  <div style={{ fontSize: 14, color: '#12151A', fontWeight: 800 }}>{item.label}</div>
-                  <div style={{ fontSize: 12, color: '#3D4450', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
+                  <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 800 }}>{item.label}</div>
+                  <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
                 </button>
               ))}
             </div>
@@ -413,7 +413,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                         setShowDropdown(false);
                       }}
                       className="w-full text-left px-4 py-2.5 hover:bg-[#F7F8FA] transition-colors border-b border-[#EDEEF0] last:border-0"
-                      style={{ fontSize: '13px', color: '#12151A', fontWeight: 600 }}
+                      style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600 }}
                     >
                       {name} · Folio {mockFarmers[name as keyof typeof mockFarmers].folioNo}
                     </button>
@@ -444,8 +444,8 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                 {farmer.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
               </div>
               <div>
-                <div style={{ fontSize: '18px', fontWeight: 700, color: '#12151A' }}>{farmer.name}</div>
-                <div style={{ fontSize: '13px', color: '#9EA8B3' }}>{farmer.village} · Shareholder</div>
+                <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--neutral-900)' }}>{farmer.name}</div>
+                <div style={{ fontSize: '13px', color: 'var(--neutral-400)' }}>{farmer.village} · Shareholder</div>
               </div>
             </div>
             {[
@@ -456,14 +456,14 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
               ['Nominee', farmer.nominee],
             ].map(([label, value]) => (
               <div key={label} className="flex items-center justify-between py-2.5 border-b border-[#EDEEF0] last:border-0">
-                <span style={{ fontSize: '12px', color: '#9EA8B3', fontWeight: 500 }}>{label}</span>
-                <span style={{ fontSize: '13px', color: '#12151A', fontWeight: 600 }}>{value}</span>
+                <span style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 500 }}>{label}</span>
+                <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600 }}>{value}</span>
               </div>
             ))}
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0] shadow-sm">
-            <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A', marginBottom: '12px' }}>Eligibility Limits</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)', marginBottom: '12px' }}>Eligibility Limits</h3>
             {[
               ['Shareholding-based Limit', formatCurrency(farmer.shares * 200)],
               ['Land Scale of Finance Limit', formatCurrency(farmer.landArea.includes('3.5') ? 350000 : farmer.landArea.includes('2.0') ? 200000 : 180000)],
@@ -471,8 +471,8 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
               ['Current Outstanding', formatCurrency(loan.outstandingPrincipal + loan.outstandingInterest)],
             ].map(([label, value]) => (
               <div key={label} className="flex items-center justify-between py-2 border-b border-[#EDEEF0] last:border-0">
-                <span style={{ fontSize: '12px', color: '#9EA8B3' }}>{label}</span>
-                <span style={{ fontSize: '13px', color: '#12151A', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{value}</span>
+                <span style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>{label}</span>
+                <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{value}</span>
               </div>
             ))}
           </div>
@@ -498,8 +498,8 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                     className="flex-1 py-3 text-center border-b-2 font-semibold transition-all hover:bg-white/50"
                     style={{
                       fontSize: '12.5px',
-                      color: isActive ? '#1A3C2A' : '#6B7280',
-                      borderColor: isActive ? '#1A3C2A' : 'transparent',
+                      color: isActive ? 'var(--brand-primary)' : '#6B7280',
+                      borderColor: isActive ? 'var(--brand-primary)' : 'transparent',
                     }}
                   >
                     {tab.label}
@@ -559,7 +559,7 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
                             <td className="py-2.5 text-sm font-semibold text-[#1E88E5] font-mono">{lh.id}</td>
                             <td className="py-2.5 text-sm text-right font-mono">{formatCurrency(lh.amount)}</td>
                             <td className="py-2.5 text-sm"><StatusBadge status={lh.status} /></td>
-                            <td className="py-2.5 text-sm text-right font-mono" style={{ color: lh.dpd > 0 ? '#EF4444' : '#22C55E' }}>{lh.dpd} d</td>
+                            <td className="py-2.5 text-sm text-right font-mono" style={{ color: lh.dpd > 0 ? 'var(--error-500)' : 'var(--success-500)' }}>{lh.dpd} d</td>
                             <td className="py-2.5 text-sm text-[#3D4450]">{lh.date}</td>
                           </tr>
                         ))}
@@ -595,9 +595,9 @@ export function MemberLoanProfile({ onNavigate, activePage }: UtilityScreenProps
               {activeTab === 'compliance-notes' && (
                 <div className="space-y-4">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-[#9EA8B3] mb-2">Internal CS Compliance Notes</h4>
-                  <div className="p-4 rounded-xl border-2" style={{ borderColor: farmer.activeLoan.dpd > 0 ? '#FEE2E2' : '#BBF7D0', backgroundColor: farmer.activeLoan.dpd > 0 ? '#FEF2F2' : '#F0FDF4' }}>
+                  <div className="p-4 rounded-xl border-2" style={{ borderColor: farmer.activeLoan.dpd > 0 ? 'var(--error-100)' : '#BBF7D0', backgroundColor: farmer.activeLoan.dpd > 0 ? '#FEF2F2' : '#F0FDF4' }}>
                     <div className="flex items-start gap-2">
-                      <ShieldAlert size={16} className="mt-0.5" style={{ color: farmer.activeLoan.dpd > 0 ? '#EF4444' : '#22C55E' }} />
+                      <ShieldAlert size={16} className="mt-0.5" style={{ color: farmer.activeLoan.dpd > 0 ? 'var(--error-500)' : 'var(--success-500)' }} />
                       <div className="text-sm text-[#3D4450] leading-relaxed">
                         {farmer.complianceNotes}
                       </div>

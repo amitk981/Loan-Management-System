@@ -53,7 +53,7 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
             <div key={label} className="flex-shrink-0" style={{ width: '260px' }}>
               <div
                 className="rounded-t-xl px-4 py-3 flex items-center justify-between"
-                style={{ backgroundColor: mine ? '#1A3C2A' : '#EDEEF0', color: mine ? 'white' : '#3D4450' }}
+                style={{ backgroundColor: mine ? 'var(--brand-primary)' : 'var(--neutral-200)', color: mine ? 'white' : 'var(--neutral-700)' }}
               >
                 <div className="flex items-center gap-2">
                   <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: mine ? 'rgba(255,255,255,0.22)' : '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>{stage}</span>
@@ -61,9 +61,9 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
                 </div>
                 <span style={{ fontSize: '12px', fontWeight: 700, opacity: 0.8 }}>{cards.length}</span>
               </div>
-              <div className="rounded-b-xl p-2 space-y-2 min-h-[120px]" style={{ backgroundColor: '#F7F8FA', border: '1px solid #EDEEF0', borderTop: 'none' }}>
+              <div className="rounded-b-xl p-2 space-y-2 min-h-[120px]" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0', borderTop: 'none' }}>
                 {cards.length === 0 && (
-                  <div className="text-center py-6" style={{ fontSize: '12px', color: '#9EA8B3' }}>No loans</div>
+                  <div className="text-center py-6" style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>No loans</div>
                 )}
                 {cards.map(c => (
                   <button
@@ -72,11 +72,11 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
                     className="w-full text-left bg-white rounded-lg p-3 border border-[#EDEEF0] clickable-card"
                   >
                     <div className="flex items-center justify-between mb-1.5">
-                      <span style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: '#1E88E5', fontWeight: 600 }}>{c.id}</span>
+                      <span style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 600 }}>{c.id}</span>
                       <StatusBadge status={c.status} />
                     </div>
-                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#12151A' }}>{c.borrower}</div>
-                    <div style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#3D4450', marginTop: '2px' }}>{formatCurrency(c.amount)}</div>
+                    <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-900)' }}>{c.borrower}</div>
+                    <div style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--neutral-700)', marginTop: '2px' }}>{formatCurrency(c.amount)}</div>
                   </button>
                 ))}
               </div>

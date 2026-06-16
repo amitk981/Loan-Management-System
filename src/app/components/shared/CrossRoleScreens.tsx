@@ -38,10 +38,10 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
         <h3 style={{ fontSize: 18, fontWeight: 700 }}>Create Application on Behalf of Farmer</h3>
         <div className="grid grid-cols-2 gap-4 mt-5">
           {['Farmer full name', 'Folio number', 'Mobile number', 'Nominee name', 'Aadhaar', 'PAN', 'Village', 'Crop', 'Requested amount', 'Purpose'].map((field, i) => (
-            <label key={field} style={{ fontSize: 12, color: '#3D4450', fontWeight: 800 }}>{field}<input className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB]" placeholder={i === 8 ? '₹' : field} style={{ height: 40, fontSize: 13 }} /></label>
+            <label key={field} style={{ fontSize: 12, color: 'var(--neutral-700)', fontWeight: 800 }}>{field}<input className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB]" placeholder={i === 8 ? '₹' : field} style={{ height: 40, fontSize: 13 }} /></label>
           ))}
         </div>
-        <button className="mt-4 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white' }}>Create Application LO00000053</button>
+        <button className="mt-4 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Create Application LO00000053</button>
       </div>
       <div className="col-span-2 space-y-4">
         <HandoffCard title="Offline Application Handoff" from="Credit Officer" to="Credit Inbox">Physical office applications must enter the same digital pipeline as farmer-submitted applications.</HandoffCard>
@@ -60,12 +60,12 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
     return (
       <div className="grid grid-cols-5 gap-5">
         <div className="col-span-3 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
-          <div className="p-5 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
+          <div className="p-5 border-b border-[#EDEEF0]" style={{ backgroundColor: 'var(--neutral-100)' }}>
             <div className="flex justify-between items-center">
                <h3 style={{ fontSize: 18, fontWeight: 700 }}>Final Pre-Disbursement Sign-off</h3>
                <StatusBadge status="Awaiting SC Final" size="md" />
             </div>
-            <p style={{ fontSize: 14, color: '#3D4450', marginTop: 4 }}><strong>LO00000047</strong> · Ramesh Patil · {formatCurrency(200000)}</p>
+            <p style={{ fontSize: 14, color: 'var(--neutral-700)', marginTop: 4 }}><strong>LO00000047</strong> · Ramesh Patil · {formatCurrency(200000)}</p>
           </div>
           <div className="p-5">
             <h4 style={{ fontSize: 14, fontWeight: 800, marginBottom: 12 }}>Document Checklist Verified by CS</h4>
@@ -81,7 +81,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
           <div className="p-5 border-t border-[#EDEEF0]">
             <label className="flex items-start gap-2 mb-4">
                <input type="checkbox" style={{ accentColor: '#7C3AED', marginTop: 3 }} />
-               <span style={{ fontSize: 13, color: '#3D4450' }}>I confirm that the above document file is complete and legally executed. I authorize the release of {formatCurrency(200000)} to the Treasury queue.</span>
+               <span style={{ fontSize: 13, color: 'var(--neutral-700)' }}>I confirm that the above document file is complete and legally executed. I authorize the release of {formatCurrency(200000)} to the Treasury queue.</span>
             </label>
             <button className="w-full py-3 rounded-lg font-semibold flex justify-center items-center gap-2" style={{ backgroundColor: '#7C3AED', color: 'white' }}>
                <FileText size={16} /> Sign Checklist & Release to Treasury
@@ -127,7 +127,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
           </div>
         </div>
 
-        <button onClick={() => onNavigate('cs-workspace')} className="px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 mx-auto transition-all hover:opacity-90" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: 15 }}>
+        <button onClick={() => onNavigate('cs-workspace')} className="px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 mx-auto transition-all hover:opacity-90" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: 15 }}>
           Open Workspace & Generate Docs →
         </button>
       </div>
@@ -141,7 +141,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
       <div className="col-span-3 bg-white rounded-lg p-5 border border-[#EDEEF0]">
         <h3 style={{ fontSize: 18, fontWeight: 700 }}>LO000047 Disbursed — Archive Document File</h3>
         {['Company Secretary signed · 10 Jun 09:00', 'Credit Manager signed · 10 Jun 09:15', 'SC Director signed · 10 Jun 16:30', 'Senior Manager Finance signed · 10 Jun 17:35'].map(row => <button key={row} onClick={() => onNavigate('shared-audit-trail')} className="w-full text-left p-3 mt-3 rounded-lg clickable-row" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 13, fontWeight: 800 }}>{row}</button>)}
-        <button className="mt-5 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white' }}><Archive size={15} /> Archive Document File</button>
+        <button className="mt-5 px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}><Archive size={15} /> Archive Document File</button>
       </div>
       <HandoffCard title="Post-Disbursement Archive Trigger" from="Treasury" to="CS">CS receives: LO000047 disbursed — Checklist now complete with Finance sign-off. Archive document file.</HandoffCard>
     </div>
@@ -175,7 +175,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
           <div className="p-4 bg-[#F7F8FA]">
              <div className="grid grid-cols-2 gap-3">
                {state.actions.map((action, i) => (
-                 <button key={action} className="py-2.5 rounded-xl font-semibold transition-all hover:opacity-90" style={{ backgroundColor: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? '#1A3C2A' : 'white', color: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? 'white' : '#3D4450', border: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? 'none' : '1px solid #EDEEF0', fontSize: 13, boxShadow: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? '0 4px 6px -1px rgba(26, 60, 42, 0.1)' : 'none' }}>
+                 <button key={action} className="py-2.5 rounded-xl font-semibold transition-all hover:opacity-90" style={{ backgroundColor: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? 'var(--brand-primary)' : 'white', color: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? 'white' : 'var(--neutral-700)', border: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? 'none' : '1px solid #EDEEF0', fontSize: 13, boxShadow: i === 0 && (state.status === 'Active' || action === 'Download NOC') ? '0 4px 6px -1px rgba(26, 60, 42, 0.1)' : 'none' }}>
                    {action}
                  </button>
                ))}
@@ -183,7 +183,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
           </div>
         </div>
         <UniversalStageTracker currentStage={state.stage} />
-        <button onClick={() => onNavigate('shared-notifications')} className="w-full bg-white rounded-xl p-4 border border-[#EDEEF0] text-left clickable-card flex justify-between items-center"><StatusBadge status={state.status} size="md" /><span style={{ fontSize: 13, color: '#1E88E5', fontWeight: 800 }}>View Notification →</span></button>
+        <button onClick={() => onNavigate('shared-notifications')} className="w-full bg-white rounded-xl p-4 border border-[#EDEEF0] text-left clickable-card flex justify-between items-center"><StatusBadge status={state.status} size="md" /><span style={{ fontSize: 13, color: 'var(--brand-accent)', fontWeight: 800 }}>View Notification →</span></button>
       </div>
     );
   };
@@ -200,7 +200,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
     <div className="max-w-2xl bg-white rounded-lg p-5 border border-[#EDEEF0]">
       <h3 style={{ fontSize: 18, fontWeight: 700 }}>Confirm Interest Rate Change</h3>
       <div className="grid grid-cols-3 gap-3 mt-4">{['Farmer SMS + app banner', 'CS calendar task', 'Credit register update'].map(x => <button key={x} onClick={() => onNavigate('shared-notifications')} className="p-3 rounded-lg text-left clickable-row" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: 12, fontWeight: 800 }}>{x}</button>)}</div>
-      <div className="flex gap-3 mt-5"><button className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Cancel</button><button className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white' }}>Confirm Rate Change</button></div>
+      <div className="flex gap-3 mt-5"><button className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Cancel</button><button className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Confirm Rate Change</button></div>
     </div>
   );
 
@@ -217,13 +217,13 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
         ['Director case', 'GM resolution and excluded director routing'],
       ].map(([title, body]) => <button key={title} onClick={() => onNavigate('shared-audit-trail')} className="text-left"><HandoffCard title={title} from="Sender" to="Receiver">{body}</HandoffCard></button>)}</div>
       <UniversalStageTracker currentStage={5} />
-      <div className="grid grid-cols-2 gap-5"><AuditTrailPanel /><div className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><h3 style={{ fontSize: 15, fontWeight: 700 }}>Critical Integration Rules</h3>{integrationRules.map(([id, text]) => <div key={id} className="py-2 border-b border-[#EDEEF0]" style={{ fontSize: 13 }}><strong style={{ fontFamily: 'Roboto Mono', color: '#1E88E5' }}>{id}</strong> · {text}</div>)}</div></div>
+      <div className="grid grid-cols-2 gap-5"><AuditTrailPanel /><div className="bg-white rounded-lg p-5 border border-[#EDEEF0]"><h3 style={{ fontSize: 15, fontWeight: 700 }}>Critical Integration Rules</h3>{integrationRules.map(([id, text]) => <div key={id} className="py-2 border-b border-[#EDEEF0]" style={{ fontSize: 13 }}><strong style={{ fontFamily: 'Roboto Mono', color: 'var(--brand-accent)' }}>{id}</strong> · {text}</div>)}</div></div>
     </div>
   );
 
   const renderNotifications = () => (
     <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
-      <div className="table-scroll"><table className="w-full"><thead><tr>{['ID', 'Type', 'Priority', 'From', 'To', 'Loan', 'Message', 'CTA'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: '#9EA8B3', textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{crossRoleNotifications.map(n => <tr key={n.id} onClick={() => onNavigate(n.route)} className="border-t border-[#EDEEF0] clickable-row"><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', fontSize: 12 }}>{n.id}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.type}</td><td className="px-4 py-3"><StatusBadge status={n.priority === 'critical' ? 'High' : n.priority[0].toUpperCase() + n.priority.slice(1)} /></td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.fromRole}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.toRole}</td><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', color: '#1E88E5', fontSize: 12 }}>{n.loan}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.message}</td><td className="px-4 py-3"><button onClick={(e) => { e.stopPropagation(); onNavigate(n.route); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}>{n.cta}</button></td></tr>)}</tbody></table></div>
+      <div className="table-scroll"><table className="w-full"><thead><tr>{['ID', 'Type', 'Priority', 'From', 'To', 'Loan', 'Message', 'CTA'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: 'var(--neutral-400)', textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{crossRoleNotifications.map(n => <tr key={n.id} onClick={() => onNavigate(n.route)} className="border-t border-[#EDEEF0] clickable-row"><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', fontSize: 12 }}>{n.id}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.type}</td><td className="px-4 py-3"><StatusBadge status={n.priority === 'critical' ? 'High' : n.priority[0].toUpperCase() + n.priority.slice(1)} /></td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.fromRole}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.toRole}</td><td className="px-4 py-3" style={{ fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontSize: 12 }}>{n.loan}</td><td className="px-4 py-3" style={{ fontSize: 12 }}>{n.message}</td><td className="px-4 py-3"><button onClick={(e) => { e.stopPropagation(); onNavigate(n.route); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}>{n.cta}</button></td></tr>)}</tbody></table></div>
     </div>
   );
 
@@ -242,7 +242,7 @@ export function CrossRoleScreens({ onNavigate, activePage }: CrossRoleScreenProp
   };
 
   return (
-    <Shell activePage={activePage} onNavigate={onNavigate} breadcrumbs={['Cross-Role Integration', meta.title]} pageTitle={meta.title} pageSubtitle={meta.subtitle} actions={<button onClick={() => onNavigate('integration-overview')} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: 14 }}><FileText size={15} style={{ display: 'inline', marginRight: 6 }} />Integration Map</button>}>
+    <Shell activePage={activePage} onNavigate={onNavigate} breadcrumbs={['Cross-Role Integration', meta.title]} pageTitle={meta.title} pageSubtitle={meta.subtitle} actions={<button onClick={() => onNavigate('integration-overview')} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: 14 }}><FileText size={15} style={{ display: 'inline', marginRight: 6 }} />Integration Map</button>}>
       <div className="mb-5"><RoleAccessNote /></div>
       {renderContent()}
     </Shell>

@@ -21,7 +21,7 @@ const roleIllustrations: Record<UserRole, { title: string; subtitle: string; acc
   compliance: { title: 'Compliance Portal', subtitle: 'Manage documents, KYC, compliance calendar, and NOC issuance.', accent: '#DDF5E6' },
   sanction: { title: 'Sanction Committee', subtitle: 'Review and approve loan applications with complete audit trail.', accent: '#E9D5FF' },
   treasury: { title: 'Finance & Treasury', subtitle: 'Initiate disbursements, manage SAP entries, track repayments.', accent: '#CFFAFE' },
-  admin: { title: 'System Administration', subtitle: 'Manage users, roles, audit logs, and system configuration.', accent: '#EDEEF0' },
+  admin: { title: 'System Administration', subtitle: 'Manage users, roles, audit logs, and system configuration.', accent: 'var(--neutral-200)' },
 };
 
 function RoleLineArt({ color }: { color: string }) {
@@ -156,11 +156,11 @@ export function LoginPage() {
       {/* Left Panel */}
       <div
         className="hidden lg:flex lg:w-1/2 flex-col items-center justify-between py-12 px-10"
-        style={{ backgroundColor: '#1A3C2A' }}
+        style={{ backgroundColor: 'var(--brand-primary)' }}
       >
         <div className="w-full flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-lg" style={{ backgroundColor: '#1E88E5' }}>W</div>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-lg" style={{ backgroundColor: 'var(--brand-accent)' }}>W</div>
             <span style={{ fontSize: '20px', fontWeight: 700, color: 'white', letterSpacing: '-0.3px' }}>WhatsLoan</span>
           </div>
           <div className="flex items-center gap-2">
@@ -217,23 +217,23 @@ export function LoginPage() {
           <div className="flex justify-end mb-6">
             <div className="flex items-center rounded-lg border border-[#EDEEF0] overflow-hidden">
               {['English', 'मराठी', 'हिंदी'].map((l, i) => (
-                <button key={i} className="px-3 py-1.5" style={{ fontSize: '12px', color: '#3D4450' }}>{l}</button>
+                <button key={i} className="px-3 py-1.5" style={{ fontSize: '12px', color: 'var(--neutral-700)' }}>{l}</button>
               ))}
             </div>
           </div>
 
           <div className="mb-8">
-            <h1 style={{ fontSize: '28px', fontWeight: 700, color: '#12151A', lineHeight: '36px', marginBottom: '6px' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--neutral-900)', lineHeight: '36px', marginBottom: '6px' }}>
               {authView === 'reset' ? 'Reset Password' : 'Welcome Back'}
             </h1>
-            <p style={{ fontSize: '14px', color: '#9EA8B3' }}>
+            <p style={{ fontSize: '14px', color: 'var(--neutral-400)' }}>
               {authView === 'reset' ? 'Complete the 3-step reset flow' : 'Log in to your loan portal'}
             </p>
           </div>
 
           {/* Role Selector */}
           <div className="mb-6">
-            <label style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450', display: 'block', marginBottom: '8px' }}>
+            <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)', display: 'block', marginBottom: '8px' }}>
               Select your role
             </label>
             <div className="flex flex-wrap gap-2">
@@ -245,8 +245,8 @@ export function LoginPage() {
                   style={{
                     fontSize: '12px',
                     fontWeight: 500,
-                    backgroundColor: selectedRole === role.id ? '#1A3C2A' : 'white',
-                    color: selectedRole === role.id ? 'white' : '#3D4450',
+                    backgroundColor: selectedRole === role.id ? 'var(--brand-primary)' : 'white',
+                    color: selectedRole === role.id ? 'white' : 'var(--neutral-700)',
                     border: selectedRole === role.id ? '1px solid #1A3C2A' : '1px solid #EDEEF0',
                   }}
                 >
@@ -265,15 +265,15 @@ export function LoginPage() {
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center"
                       style={{
-                        backgroundColor: resetStep >= s ? '#1A3C2A' : '#EDEEF0',
-                        color: resetStep >= s ? 'white' : '#9EA8B3',
+                        backgroundColor: resetStep >= s ? 'var(--brand-primary)' : 'var(--neutral-200)',
+                        color: resetStep >= s ? 'white' : 'var(--neutral-400)',
                         fontSize: '13px',
                         fontWeight: 700,
                       }}
                     >
                       {resetStep > s ? <CheckCircle size={14} /> : s}
                     </div>
-                    {s < 3 && <div className="flex-1 h-0.5 mx-2" style={{ backgroundColor: resetStep > s ? '#1A3C2A' : '#EDEEF0' }} />}
+                    {s < 3 && <div className="flex-1 h-0.5 mx-2" style={{ backgroundColor: resetStep > s ? 'var(--brand-primary)' : 'var(--neutral-200)' }} />}
                   </div>
                 ))}
               </div>
@@ -281,20 +281,20 @@ export function LoginPage() {
               {resetStep === 1 && (
                 <div className="space-y-4">
                   <div>
-                    <label style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450', display: 'block', marginBottom: '6px' }}>Registered mobile or employee ID</label>
+                    <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)', display: 'block', marginBottom: '6px' }}>Registered mobile or employee ID</label>
                     <input
                       value={resetIdentity}
                       onChange={e => setResetIdentity(e.target.value)}
                       placeholder="Mobile / Employee ID"
                       className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
-                      style={{ height: '44px', fontSize: '14px', color: '#12151A' }}
+                      style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                     />
                   </div>
                   <button
                     disabled={!resetIdentity.trim()}
                     onClick={() => setResetStep(2)}
                     className="w-full rounded-xl flex items-center justify-center gap-2 font-semibold"
-                    style={{ height: '44px', backgroundColor: resetIdentity.trim() ? '#1A3C2A' : '#9EA8B3', color: 'white', fontSize: '14px', cursor: resetIdentity.trim() ? 'pointer' : 'not-allowed' }}
+                    style={{ height: '44px', backgroundColor: resetIdentity.trim() ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: resetIdentity.trim() ? 'pointer' : 'not-allowed' }}
                   >
                     Send Reset OTP <ChevronRight size={16} />
                   </button>
@@ -303,24 +303,24 @@ export function LoginPage() {
 
               {resetStep === 2 && (
                 <div className="space-y-4">
-                  <div className="p-3 rounded-xl" style={{ backgroundColor: '#F7F8FA' }}>
-                    <div style={{ fontSize: '13px', color: '#3D4450' }}>Reset OTP sent to registered channel</div>
-                    <div style={{ fontSize: '11px', color: '#9EA8B3', marginTop: '2px' }}>Use demo code 123456</div>
+                  <div className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)' }}>
+                    <div style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Reset OTP sent to registered channel</div>
+                    <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '2px' }}>Use demo code 123456</div>
                   </div>
                   <input
                     value={resetCode}
                     onChange={e => setResetCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     placeholder="Enter 6-digit OTP"
                     className="w-full px-4 rounded-xl border border-[#D1D5DB] text-center focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
-                    style={{ height: '52px', fontSize: '22px', color: '#12151A', fontFamily: 'Roboto Mono', letterSpacing: '8px' }}
+                    style={{ height: '52px', fontSize: '22px', color: 'var(--neutral-900)', fontFamily: 'Roboto Mono', letterSpacing: '8px' }}
                   />
                   <div className="flex gap-3">
-                    <button onClick={() => setResetStep(1)} className="flex-1 rounded-xl border border-[#EDEEF0]" style={{ height: '44px', fontSize: '14px', color: '#3D4450' }}>Back</button>
+                    <button onClick={() => setResetStep(1)} className="flex-1 rounded-xl border border-[#EDEEF0]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-700)' }}>Back</button>
                     <button
                       disabled={resetCode !== '123456'}
                       onClick={() => setResetStep(3)}
                       className="flex-1 rounded-xl font-semibold"
-                      style={{ height: '44px', backgroundColor: resetCode === '123456' ? '#1A3C2A' : '#9EA8B3', color: 'white', fontSize: '14px', cursor: resetCode === '123456' ? 'pointer' : 'not-allowed' }}
+                      style={{ height: '44px', backgroundColor: resetCode === '123456' ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: resetCode === '123456' ? 'pointer' : 'not-allowed' }}
                     >
                       Verify OTP
                     </button>
@@ -331,21 +331,21 @@ export function LoginPage() {
               {resetStep === 3 && (
                 <div className="space-y-4">
                   <div>
-                    <label style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450', display: 'block', marginBottom: '6px' }}>New password</label>
+                    <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)', display: 'block', marginBottom: '6px' }}>New password</label>
                     <input
                       type="password"
                       value={resetPassword}
                       onChange={e => setResetPassword(e.target.value)}
                       placeholder="Create new password"
                       className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
-                      style={{ height: '44px', fontSize: '14px', color: '#12151A' }}
+                      style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                     />
                     <div className="grid grid-cols-4 gap-1 mt-2">
                       {[0, 1, 2, 3].map(i => (
-                        <div key={i} className="h-1.5 rounded-full" style={{ backgroundColor: i < resetStrengthCount ? ['#EF4444', '#F59E0B', '#1E88E5', '#22C55E'][Math.max(0, resetStrengthCount - 1)] : '#EDEEF0' }} />
+                        <div key={i} className="h-1.5 rounded-full" style={{ backgroundColor: i < resetStrengthCount ? ['var(--error-500)', 'var(--warning-500)', 'var(--brand-accent)', 'var(--success-500)'][Math.max(0, resetStrengthCount - 1)] : 'var(--neutral-200)' }} />
                       ))}
                     </div>
-                    <div style={{ fontSize: '11px', color: '#9EA8B3', marginTop: '4px' }}>8 chars, uppercase, number, special character</div>
+                    <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '4px' }}>8 chars, uppercase, number, special character</div>
                   </div>
                   <input
                     type="password"
@@ -353,13 +353,13 @@ export function LoginPage() {
                     onChange={e => setResetConfirm(e.target.value)}
                     placeholder="Confirm password"
                     className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
-                    style={{ height: '44px', fontSize: '14px', color: '#12151A' }}
+                    style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                   />
                   <button
                     disabled={resetStrengthCount < 4 || resetPassword !== resetConfirm}
                     onClick={() => { setAuthView('login'); setLoginMethod('password'); setResetStep(1); setPassword(resetPassword); }}
                     className="w-full rounded-xl font-semibold"
-                    style={{ height: '44px', backgroundColor: resetStrengthCount === 4 && resetPassword === resetConfirm ? '#1A3C2A' : '#9EA8B3', color: 'white', fontSize: '14px', cursor: resetStrengthCount === 4 && resetPassword === resetConfirm ? 'pointer' : 'not-allowed' }}
+                    style={{ height: '44px', backgroundColor: resetStrengthCount === 4 && resetPassword === resetConfirm ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: resetStrengthCount === 4 && resetPassword === resetConfirm ? 'pointer' : 'not-allowed' }}
                   >
                     Update Password
                   </button>
@@ -367,7 +367,7 @@ export function LoginPage() {
               )}
 
               <div className="text-center mt-4">
-                <button onClick={() => { setAuthView('login'); setError(''); }} style={{ fontSize: '12px', color: '#1E88E5' }}>
+                <button onClick={() => { setAuthView('login'); setError(''); }} style={{ fontSize: '12px', color: 'var(--brand-accent)' }}>
                   Back to login
                 </button>
               </div>
@@ -382,8 +382,8 @@ export function LoginPage() {
               style={{
                 fontSize: '13px',
                 fontWeight: 500,
-                backgroundColor: loginMethod === 'otp' ? '#E8F5E9' : 'transparent',
-                color: loginMethod === 'otp' ? '#1A3C2A' : '#9EA8B3',
+                backgroundColor: loginMethod === 'otp' ? 'var(--brand-light)' : 'transparent',
+                color: loginMethod === 'otp' ? 'var(--brand-primary)' : 'var(--neutral-400)',
               }}
             >
               <Smartphone size={14} /> OTP Login
@@ -394,8 +394,8 @@ export function LoginPage() {
               style={{
                 fontSize: '13px',
                 fontWeight: 500,
-                backgroundColor: loginMethod === 'password' ? '#E8F5E9' : 'transparent',
-                color: loginMethod === 'password' ? '#1A3C2A' : '#9EA8B3',
+                backgroundColor: loginMethod === 'password' ? 'var(--brand-light)' : 'transparent',
+                color: loginMethod === 'password' ? 'var(--brand-primary)' : 'var(--neutral-400)',
               }}
             >
               <Lock size={14} /> Password Login
@@ -406,13 +406,13 @@ export function LoginPage() {
             <div>
               {otpState === 'input-mobile' && (
                 <div className="mb-4">
-                  <label style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450', display: 'block', marginBottom: '6px' }}>
-                    Mobile Number <span style={{ color: '#EF4444' }}>*</span>
+                  <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)', display: 'block', marginBottom: '6px' }}>
+                    Mobile Number <span style={{ color: 'var(--error-500)' }}>*</span>
                   </label>
                   <div className="flex gap-2">
                     <div
                       className="flex items-center gap-2 px-3 rounded-xl border border-[#D1D5DB] bg-white"
-                      style={{ height: '44px', fontSize: '14px', color: '#3D4450' }}
+                      style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-700)' }}
                     >
                       🇮🇳 +91
                     </div>
@@ -423,15 +423,15 @@ export function LoginPage() {
                       onChange={e => setMobile(e.target.value.replace(/\D/g, ''))}
                       placeholder="Enter 10-digit number"
                       className="flex-1 px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
-                      style={{ height: '44px', fontSize: '14px', color: '#12151A' }}
+                      style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                     />
                   </div>
-                  {error && <p style={{ fontSize: '12px', color: '#EF4444', marginTop: '6px' }}>{error}</p>}
+                  {error && <p style={{ fontSize: '12px', color: 'var(--error-500)', marginTop: '6px' }}>{error}</p>}
                   <button
                     className="w-full mt-4 rounded-xl flex items-center justify-center gap-2 font-semibold transition-all"
                     style={{
                       height: '44px',
-                      backgroundColor: '#1A3C2A',
+                      backgroundColor: 'var(--brand-primary)',
                       color: 'white',
                       fontSize: '14px',
                       opacity: loading ? 0.7 : 1,
@@ -446,19 +446,19 @@ export function LoginPage() {
 
               {otpState === 'input-otp' && (
                 <div>
-                  <div className="mb-2 p-3 rounded-xl" style={{ backgroundColor: '#F7F8FA' }}>
-                    <p style={{ fontSize: '13px', color: '#3D4450' }}>
+                  <div className="mb-2 p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)' }}>
+                    <p style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>
                       OTP sent to <span style={{ fontFamily: 'Roboto Mono', fontWeight: 600 }}>+91 ****{mobile.slice(-4)}</span>
                     </p>
                     <button
-                      style={{ fontSize: '12px', color: '#1E88E5', marginTop: '2px' }}
+                      style={{ fontSize: '12px', color: 'var(--brand-accent)', marginTop: '2px' }}
                       onClick={() => setOtpState('input-mobile')}
                     >
                       Change number
                     </button>
                   </div>
-                  <label style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450', display: 'block', marginBottom: '8px' }}>
-                    Enter OTP <span style={{ fontSize: '11px', color: '#9EA8B3', fontWeight: 400 }}>(use 123456 for demo)</span>
+                  <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)', display: 'block', marginBottom: '8px' }}>
+                    Enter OTP <span style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 400 }}>(use 123456 for demo)</span>
                   </label>
                   <div className={`flex gap-2 justify-between mb-4 ${otpError ? 'otp-shake' : ''}`}>
                     {otp.map((digit, i) => (
@@ -476,8 +476,8 @@ export function LoginPage() {
                           fontSize: '22px',
                           fontFamily: 'Roboto Mono, monospace',
                           fontWeight: 600,
-                          color: '#12151A',
-                          borderColor: otpError ? '#EF4444' : '#D1D5DB',
+                          color: 'var(--neutral-900)',
+                          borderColor: otpError ? 'var(--error-500)' : 'var(--neutral-300)',
                         }}
                         onKeyDown={e => {
                           if (e.key === 'Backspace' && !digit && i > 0) {
@@ -489,18 +489,18 @@ export function LoginPage() {
                   </div>
                   <button
                     className="w-full rounded-xl flex items-center justify-center gap-2 font-semibold transition-all"
-                    style={{ height: '44px', backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px', opacity: loading ? 0.7 : 1 }}
+                    style={{ height: '44px', backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px', opacity: loading ? 0.7 : 1 }}
                     onClick={handleLogin}
                     disabled={loading}
                   >
                     {loading ? 'Logging in...' : 'Verify & Login'} <ChevronRight size={16} />
                   </button>
-                  {error && <p style={{ fontSize: '12px', color: '#EF4444', textAlign: 'center', marginTop: '8px' }}>{error}</p>}
-                  <div style={{ fontSize: '12px', color: '#9EA8B3', textAlign: 'center', marginTop: '12px' }}>
+                  {error && <p style={{ fontSize: '12px', color: 'var(--error-500)', textAlign: 'center', marginTop: '8px' }}>{error}</p>}
+                  <div style={{ fontSize: '12px', color: 'var(--neutral-400)', textAlign: 'center', marginTop: '12px' }}>
                     {otpTimer > 0 ? (
-                      <>Resend OTP in <span style={{ fontFamily: 'Roboto Mono', color: '#1A3C2A', fontWeight: 600 }}>{otpTimer}s</span></>
+                      <>Resend OTP in <span style={{ fontFamily: 'Roboto Mono', color: 'var(--brand-primary)', fontWeight: 600 }}>{otpTimer}s</span></>
                     ) : (
-                      <button onClick={resendOtp} style={{ color: '#1E88E5', fontWeight: 600 }}>Resend OTP</button>
+                      <button onClick={resendOtp} style={{ color: 'var(--brand-accent)', fontWeight: 600 }}>Resend OTP</button>
                     )}
                   </div>
                 </div>
@@ -509,18 +509,18 @@ export function LoginPage() {
           ) : (
             <div>
               <div className="mb-4">
-                <label style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450', display: 'block', marginBottom: '6px' }}>
+                <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)', display: 'block', marginBottom: '6px' }}>
                   Username / Employee ID
                 </label>
                 <input
                   type="text"
                   placeholder="Enter username"
                   className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
-                  style={{ height: '44px', fontSize: '14px', color: '#12151A' }}
+                  style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                 />
               </div>
               <div className="mb-4 relative">
-                <label style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450', display: 'block', marginBottom: '6px' }}>
+                <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)', display: 'block', marginBottom: '6px' }}>
                   Password
                 </label>
                 <input
@@ -529,27 +529,27 @@ export function LoginPage() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   className="w-full px-4 pr-12 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
-                  style={{ height: '44px', fontSize: '14px', color: '#12151A' }}
+                  style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                 />
                 <button
                   className="absolute right-4 top-9"
                   onClick={() => setShowPassword(!showPassword)}
-                  style={{ color: '#9EA8B3' }}
+                  style={{ color: 'var(--neutral-400)' }}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              {error && <p style={{ fontSize: '12px', color: '#EF4444', marginBottom: '8px' }}>{error}</p>}
+              {error && <p style={{ fontSize: '12px', color: 'var(--error-500)', marginBottom: '8px' }}>{error}</p>}
               <button
                 className="w-full rounded-xl flex items-center justify-center gap-2 font-semibold transition-all"
-                style={{ height: '44px', backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px', opacity: loading ? 0.7 : 1 }}
+                style={{ height: '44px', backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px', opacity: loading ? 0.7 : 1 }}
                 onClick={handlePasswordLogin}
                 disabled={loading}
               >
                 {loading ? 'Logging in...' : 'Login →'}
               </button>
               <div className="text-center mt-3">
-                <button onClick={() => { setAuthView('reset'); setError(''); }} style={{ fontSize: '12px', color: '#1E88E5' }}>Forgot Password?</button>
+                <button onClick={() => { setAuthView('reset'); setError(''); }} style={{ fontSize: '12px', color: 'var(--brand-accent)' }}>Forgot Password?</button>
               </div>
             </div>
           )}
@@ -561,18 +561,18 @@ export function LoginPage() {
               checked={remember}
               onChange={e => setRemember(e.target.checked)}
               className="w-4 h-4 rounded"
-              style={{ accentColor: '#1A3C2A' }}
+              style={{ accentColor: 'var(--brand-primary)' }}
             />
-            <label htmlFor="remember" style={{ fontSize: '13px', color: '#3D4450' }}>Remember this device for 30 days</label>
+            <label htmlFor="remember" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Remember this device for 30 days</label>
           </div>
 
           <div className="mt-8 pt-6 border-t border-[#EDEEF0] text-center">
             <div className="flex items-center justify-center gap-4">
               {['Privacy Policy', 'Terms of Use', 'Help'].map((link, i) => (
-                <a key={i} href="#" style={{ fontSize: '12px', color: '#9EA8B3' }}>{link}</a>
+                <a key={i} href="#" style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>{link}</a>
               ))}
             </div>
-            <p style={{ fontSize: '11px', color: '#9EA8B3', marginTop: '8px' }}>
+            <p style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '8px' }}>
               SFPCL Loan Management v1.0 · Powered by WhatsLoan
             </p>
           </div>

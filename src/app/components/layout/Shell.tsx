@@ -34,7 +34,7 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
   const sidebarWidth = sidebarCollapsed ? 64 : 240;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F7F8FA', fontFamily: 'Inter, "Noto Sans Devanagari", sans-serif' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--neutral-100)', fontFamily: 'Inter, "Noto Sans Devanagari", sans-serif' }}>
       <style>{`
         button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
           outline: 3px solid #1A3C2A;
@@ -119,11 +119,11 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
             style={{ minHeight: '64px' }}
           >
             <div>
-              <h1 style={{ fontSize: '20px', fontWeight: 600, color: '#12151A', lineHeight: '28px' }}>
+              <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--neutral-900)', lineHeight: '28px' }}>
                 {pageTitle}
               </h1>
               {pageSubtitle && (
-                <p style={{ fontSize: '12px', color: '#9EA8B3', lineHeight: '18px' }}>{pageSubtitle}</p>
+                <p style={{ fontSize: '12px', color: 'var(--neutral-400)', lineHeight: '18px' }}>{pageSubtitle}</p>
               )}
             </div>
             {actions && <div className="flex items-center gap-3">{actions}</div>}

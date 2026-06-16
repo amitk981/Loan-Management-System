@@ -40,12 +40,12 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
       pageTitle="New Applications"
       pageSubtitle="Intake and appraisal assignment"
       actions={
-        <button onClick={() => onNavigate('credit-manual-entry')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>
+        <button onClick={() => onNavigate('credit-manual-entry')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
           <Plus size={15} /> Add Manual
         </button>
       }
     >
-      <WorkbenchTabs tabs={creditIntakeTabs} activeKey={activePage} onChange={onNavigate} accent="#1A3C2A" />
+      <WorkbenchTabs tabs={creditIntakeTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />
       {noticeSent && (
         <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', color: '#166534', fontSize: '13px', fontWeight: 700 }}>
           Deficiency notice sent for {selected.id}. Status logged as Notified — awaiting resubmission.
@@ -66,7 +66,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               </div>
               <div className="flex gap-2 flex-wrap">
                 {(['All', 'Today', 'Incomplete', 'Assigned to me'] as const).map(item => (
-                  <button key={item} onClick={() => setFilter(item)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: filter === item ? '#1A3C2A' : 'white', color: filter === item ? 'white' : '#3D4450', border: '1px solid #E5E7EB', fontSize: '12px', fontWeight: 700 }}>
+                  <button key={item} onClick={() => setFilter(item)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: filter === item ? 'var(--brand-primary)' : 'white', color: filter === item ? 'white' : 'var(--neutral-700)', border: '1px solid #E5E7EB', fontSize: '12px', fontWeight: 700 }}>
                     {item}
                   </button>
                 ))}
@@ -76,10 +76,10 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               {filtered.map(app => (
                 <button key={app.id} onClick={() => setSelectedId(app.id)} className="w-full p-4 text-left border-b border-[#E5E7EB] hover:bg-[#FAFAF8]" style={{ backgroundColor: selected.id === app.id ? '#E8F1FA' : 'white' }}>
                   <div className="flex items-center justify-between">
-                    <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#1E88E5', fontWeight: 800 }}>{app.id}</span>
+                    <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 800 }}>{app.id}</span>
                     <StatusBadge status={app.status} />
                   </div>
-                  <div style={{ fontSize: '14px', color: '#12151A', fontWeight: 800, marginTop: '6px' }}>{app.shortName}</div>
+                  <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 800, marginTop: '6px' }}>{app.shortName}</div>
                   <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '3px' }}>{app.village} · {formatCurrency(app.amount)} req.</div>
                   <div style={{ fontSize: '12px', color: app.status === 'Overdue' ? '#C62828' : '#6B7280', marginTop: '6px', fontWeight: 700 }}>{app.blocker} · {app.submittedAgo}</div>
                 </button>
@@ -92,7 +92,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               <div className="flex items-center justify-between">
                 <div>
                   <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 700 }}>APPLICATION</div>
-                  <div style={{ fontSize: '22px', color: '#12151A', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{selected.id}</div>
+                  <div style={{ fontSize: '22px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{selected.id}</div>
                 </div>
                 <StatusBadge status={selected.status === 'Incomplete' ? `Incomplete — ${selected.blocker}` : selected.status} size="md" />
               </div>
@@ -122,17 +122,17 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
             <Section title="KYC Document Checklist">
               <div className="space-y-2">
                 {selected.documents.map(doc => {
-                  const stateColor = doc.state === 'Complete' ? '#2E7D32' : doc.state === 'Missing' ? '#C62828' : '#F59E0B';
+                  const stateColor = doc.state === 'Complete' ? '#2E7D32' : doc.state === 'Missing' ? '#C62828' : 'var(--warning-500)';
                   const icon = doc.state === 'Complete' ? <Check size={15} /> : doc.state === 'Missing' ? <X size={15} /> : <Clock size={15} />;
                   return (
                     <button key={doc.name} onClick={() => doc.state === 'Missing' && setShowNotice(true)} className="w-full flex items-center gap-3 p-3 rounded-lg text-left action-surface" style={{ backgroundColor: `${stateColor}10`, border: `1px solid ${stateColor}22` }}>
                       <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: `${stateColor}18`, color: stateColor }}>{icon}</div>
                       <div className="flex-1">
-                        <div style={{ fontSize: '13px', color: '#12151A', fontWeight: 800 }}>{doc.name}</div>
+                        <div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 800 }}>{doc.name}</div>
                         <div style={{ fontSize: '12px', color: '#6B7280' }}>{doc.detail}</div>
                       </div>
                       <StatusBadge status={doc.state} />
-                      {doc.state === 'Missing' && <span style={{ fontSize: '12px', color: '#1E88E5', fontWeight: 800 }}>Request</span>}
+                      {doc.state === 'Missing' && <span style={{ fontSize: '12px', color: 'var(--brand-accent)', fontWeight: 800 }}>Request</span>}
                     </button>
                   );
                 })}
@@ -140,9 +140,9 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
             </Section>
 
             <div className="flex gap-3 border-t border-[#E5E7EB] pt-5">
-              <button onClick={() => setShowNotice(true)} disabled={missingDocs.length === 0} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: missingDocs.length ? '#FEF3C7' : '#F3F4F6', color: missingDocs.length ? '#92400E' : '#9CA3AF', fontSize: '13px' }}>Send Deficiency Notice</button>
-              <button disabled={!canAssign} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#E8F1FA' : '#F3F4F6', color: canAssign ? '#1E88E5' : '#9CA3AF', fontSize: '13px' }}>Mark Complete</button>
-              <button onClick={() => onNavigate('credit-review')} disabled={!canAssign} className="ml-auto px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#1A3C2A' : '#9CA3AF', color: 'white', fontSize: '13px' }}>Assign to Appraisal →</button>
+              <button onClick={() => setShowNotice(true)} disabled={missingDocs.length === 0} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: missingDocs.length ? 'var(--warning-100)' : '#F3F4F6', color: missingDocs.length ? '#92400E' : '#9CA3AF', fontSize: '13px' }}>Send Deficiency Notice</button>
+              <button disabled={!canAssign} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#E8F1FA' : '#F3F4F6', color: canAssign ? 'var(--brand-accent)' : '#9CA3AF', fontSize: '13px' }}>Mark Complete</button>
+              <button onClick={() => onNavigate('credit-review')} disabled={!canAssign} className="ml-auto px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? 'var(--brand-primary)' : '#9CA3AF', color: 'white', fontSize: '13px' }}>Assign to Appraisal →</button>
             </div>
           </div>
         </div>
@@ -154,13 +154,13 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
           subtitle={`${selected.id} · ${missingDocs.map(doc => doc.name).join(', ') || 'No missing mandatory items'}`}
           icon={<Send size={18} />}
           onClose={() => setShowNotice(false)}
-          footer={<><button onClick={() => setShowNotice(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setNoticeSent(true); setShowNotice(false); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Preview → Send</button></>}
+          footer={<><button onClick={() => setShowNotice(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setNoticeSent(true); setShowNotice(false); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Preview → Send</button></>}
         >
           <div className="space-y-4">
             <div className="flex gap-2">
-              {(['English', 'Marathi'] as const).map(lang => <button key={lang} onClick={() => setNoticeLang(lang)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: noticeLang === lang ? '#1A3C2A' : '#F3F4F6', color: noticeLang === lang ? 'white' : '#3D4450', fontSize: '12px', fontWeight: 700 }}>{lang}</button>)}
+              {(['English', 'Marathi'] as const).map(lang => <button key={lang} onClick={() => setNoticeLang(lang)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: noticeLang === lang ? 'var(--brand-primary)' : '#F3F4F6', color: noticeLang === lang ? 'white' : 'var(--neutral-700)', fontSize: '12px', fontWeight: 700 }}>{lang}</button>)}
             </div>
-            <textarea rows={7} className="w-full p-3 rounded-lg border border-[#D1D5DB]" style={{ fontSize: '13px', color: '#12151A', lineHeight: '20px' }} defaultValue={noticeLang === 'English' ? `Dear ${selected.shortName}, your loan application ${selected.id} is missing: ${missingDocs.map(doc => doc.name).join(', ')}. Please upload the document to continue processing.` : `${selected.shortName}, आपल्या ${selected.id} कर्ज अर्जासाठी ${missingDocs.map(doc => doc.name).join(', ')} आवश्यक आहे. कृपया कागदपत्र अपलोड करा.`} />
+            <textarea rows={7} className="w-full p-3 rounded-lg border border-[#D1D5DB]" style={{ fontSize: '13px', color: 'var(--neutral-900)', lineHeight: '20px' }} defaultValue={noticeLang === 'English' ? `Dear ${selected.shortName}, your loan application ${selected.id} is missing: ${missingDocs.map(doc => doc.name).join(', ')}. Please upload the document to continue processing.` : `${selected.shortName}, आपल्या ${selected.id} कर्ज अर्जासाठी ${missingDocs.map(doc => doc.name).join(', ')} आवश्यक आहे. कृपया कागदपत्र अपलोड करा.`} />
           </div>
         </AppModal>
       )}
@@ -171,7 +171,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-5">
-      <h3 style={{ fontSize: '14px', color: '#12151A', fontWeight: 700, marginBottom: '10px' }}>{title}</h3>
+      <h3 style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 700, marginBottom: '10px' }}>{title}</h3>
       <div className="rounded-lg border border-[#E5E7EB] overflow-hidden">{children}</div>
     </div>
   );
@@ -183,7 +183,7 @@ function InfoGrid({ items }: { items: string[][] }) {
       {items.map(([label, value]) => (
         <div key={label} className="grid grid-cols-2 border-b border-r border-[#E5E7EB] last:border-b-0">
           <div className="p-3" style={{ backgroundColor: '#FAFAF8', fontSize: '12px', color: '#6B7280', fontWeight: 700 }}>{label}</div>
-          <div className="p-3" style={{ fontSize: '13px', color: '#12151A', fontWeight: 700, fontFamily: label.includes('Amount') || label.includes('Folio') || label.includes('Mobile') ? 'Roboto Mono' : 'inherit' }}>{value}</div>
+          <div className="p-3" style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: label.includes('Amount') || label.includes('Folio') || label.includes('Mobile') ? 'Roboto Mono' : 'inherit' }}>{value}</div>
         </div>
       ))}
     </div>

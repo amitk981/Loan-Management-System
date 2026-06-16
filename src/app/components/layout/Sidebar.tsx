@@ -253,7 +253,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
   const { user } = useAuth();
   const { t } = useLanguage();
   const navItems = navByRole[user?.role || 'farmer'] || farmerNav;
-  const accent = roleAccents[user?.role || 'farmer'] || '#1E88E5';
+  const accent = roleAccents[user?.role || 'farmer'] || 'var(--brand-accent)';
   let lastSection = '';
 
   const handleParentClick = (item: NavItem) => {
@@ -269,7 +269,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
       className="app-sidebar fixed left-0 top-14 bottom-0 z-40 flex flex-col transition-all duration-300 overflow-hidden"
       style={{
         width: collapsed ? '64px' : '240px',
-        backgroundColor: '#1A3C2A',
+        backgroundColor: 'var(--brand-primary)',
       }}
     >
       <div className="flex-1 overflow-y-auto py-2 shell-scroll" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.12) transparent' }}>
@@ -327,7 +327,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                       {item.badge ? (
                         <span
                           className="sidebar-badge min-w-5 h-5 px-1 rounded-full flex items-center justify-center text-white"
-                          style={{ backgroundColor: '#EF4444', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}
+                          style={{ backgroundColor: 'var(--error-500)', fontSize: '10px', fontWeight: 700, flexShrink: 0 }}
                         >
                           {item.badge}
                         </span>
@@ -378,7 +378,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                       >
                         <span className="truncate">{childLabel}</span>
                         {child.badge ? (
-                          <span className="min-w-4 h-4 px-1 rounded-full flex items-center justify-center" style={{ backgroundColor: '#EF4444', color: 'white', fontSize: '9px', fontWeight: 800 }}>
+                          <span className="min-w-4 h-4 px-1 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--error-500)', color: 'white', fontSize: '9px', fontWeight: 800 }}>
                             {child.badge}
                           </span>
                         ) : null}
