@@ -146,9 +146,13 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
               </div>
             </div>
           ) : (
-            <button
+            <div
+              role="button"
+              tabIndex={0}
+              aria-label="View active loan details"
               className="farmer-hero col-span-7 text-left p-7 relative overflow-hidden clickable-card"
               onClick={() => onNavigate('farmer-active-loans')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate('farmer-active-loans'); } }}
             >
               <div className="relative z-10 flex flex-col h-full min-h-[250px]">
                 <div className="flex items-center justify-between gap-4">
@@ -182,7 +186,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                   </div>
                 </div>
               </div>
-            </button>
+            </div>
           )}
 
           <div className="col-span-5 farmer-panel p-5">
