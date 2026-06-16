@@ -379,6 +379,18 @@ Already the best part. Keep the one‑hero / one‑action model. Changes: align 
 - All 10 SOP gates render as `GateBanner` with rule + unblock action.
 - Every status chip maps to the single state machine; the 6‑stage tracker is one shared component used farmer + back‑office.
 
+### G.9 — status after the build pass (branch `enhance/vibe-check-pass`)
+| Criterion | Status | Notes |
+|---|---|---|
+| Nav ≤5 + door‑to‑room ≈1:1 | 🟢 Done | Sidebars ≤5 items; register groups → single hub links; Pipeline added |
+| One worklist + one CTA above the fold | 🟢 Done | RoleCommandCenter focus on all back‑office dashboards (+ Credit dedup) + Pipeline |
+| One design language (≤3 weights, one accent, hex→tokens) | 🟢 Done | one accent, `900` retired, **~92% inline hex → `var(--token)`**; ~143 one‑off shades remain |
+| One shared Loan File; sibling pages gone | 🟡 Mostly | Loan File is the hub for opening loans; old list **routes** still exist behind the Registers tabs (deep content migration is the remaining refactor) |
+| All 10 SOP gates as `GateBanner` | 🟢 Done (key gates) | disbursement, KYC, default, over‑limit; s.186 via `S186LockBanner` |
+| Status chips → one state machine; shared tracker | 🟢 Done | `lib/loanState.ts` tones drive `StatusBadge`; `UniversalStageTracker` shared |
+
+Net: 5 of 6 criteria green, 1 mostly‑green. Verified live (login OTP `123456`): Loan File, Pipeline, trimmed sidebar, and token colours all render correctly; `npx vite build` green throughout.
+
 ---
 
 ## Appendix — Quick‑win checklist (do these first)

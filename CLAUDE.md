@@ -33,20 +33,28 @@ Custom URL-param router (`?page=`) — no real nested routes yet.
 
 ## Enhancement pass — done (branch `enhance/vibe-check-pass`)
 - ✅ **`formatCurrency` centralised** → `src/app/lib/format.ts` (was 18 copies).
-- ✅ **One accent:** retired the second blue `#0C5FA5` → `#1E88E5`; mapped 102× `fontWeight:900` → 700.
-- ✅ **Calmer sidebar:** `defaultExpandedGroups` opens only the primary task-group per role.
-- ✅ **`GateBanner`** (`shared/GateBanner.tsx`) — the SOP "blocked because X → do Y" pattern; wired into the disbursement gate.
-- ✅ **One dashboard focus:** removed the Credit dashboard's duplicate red banner.
-- ✅ **Shared Loan File** (`shared/LoanFile.tsx`, route `loan-file`) — one object, role-gated tabs
-  for the 6 stages; reachable via global search + Credit register "Open File".
+- ✅ **Loan state machine** → `src/app/lib/loanState.ts` (canonical states, stage map, 6-tone
+  palette). `StatusBadge` now resolves status→tone (was 96 ad-hoc colour pairs).
+- ✅ **One accent + calm weights:** retired second blue `#0C5FA5`→`#1E88E5`; 102× `fontWeight:900`→700.
+- ✅ **Token migration:** ~92% of inline quoted hex → `var(--token)` from `theme.css`
+  (1,609 literals across components; value-preserving).
+- ✅ **`GateBanner`** (`shared/GateBanner.tsx`) — SOP "blocked because X → do Y"; wired into
+  disbursement, farmer KYC/default, and over-limit appraisal gates.
+- ✅ **Calmer sidebar:** only the primary task-group expands; register groups collapsed to
+  single hub links (sub-registers are tabs on the hub page, not nav doors).
+- ✅ **Shared Loan File** (`shared/LoanFile.tsx`, route `loan-file`) — one object, role-gated
+  tabs for the 6 stages; the hub for "open a loan" (register/active-loans/search/Pipeline).
+- ✅ **Pipeline board** (`shared/Pipeline.tsx`, route `pipeline`) — all loans by the 6 stages;
+  nav item for every back-office role; cards open the Loan File.
+- ✅ **One dashboard focus:** removed Credit's duplicate banner (RoleCommandCenter is the focus).
+- ✅ **a11y:** FarmerDashboard hero is now `<div role=button>` (no invalid nested buttons).
 
-## Known tangles still open (see the audit doc §G for the full plan)
-- **Route bloat:** ~91 page keys; many map to one mega-component (`CreditOperations` renders
-  16 "pages"). Next: migrate their content into Loan File tabs / a tabbed Registers hub.
-- **Inline styling:** ~1,400 `style={{}}` blocks / ~2,500 hex literals → migrate to `theme.css` tokens.
-- **Pre-existing bug:** `FarmerDashboard` hero is a `<button>` containing nested `<button>`s
-  (invalid DOM nesting warning) → make the outer element a clickable `<div role="button">`.
-- Build gate: `npx vite build` must stay green (no `tsc` in the project).
+## Remaining longer-tail (see audit doc §G)
+- **Deep mega-component migration:** `CreditOperations` etc. still render their views; their
+  *content* could move into Loan File tabs so the old routes can be deleted (big refactor).
+- **Last ~143 one-off hex shades** not yet tokenised (rare/specific colours).
+- Build gate: `npx vite build` must stay green (no `tsc` in the project). OTP for the demo
+  login is `123456`.
 
 ## Conventions to hold (so the AI stays a help, not a hazard)
 - One home per job: shared `formatCurrency`, one `StatusBadge` driven by a status enum.
