@@ -113,13 +113,18 @@ export const complianceRegisterTabs = [
   { key: 'cs-reports', label: 'Reports' },
 ];
 
-/** Default expanded sidebar groups per role on first load */
+/**
+ * Default expanded sidebar groups per role on first load.
+ * Each role opens with ONLY its primary task-group expanded, so the sidebar
+ * lands calm and directed instead of a wall of every sub-item (see the audit:
+ * "no nested-group sprawl by default"). Users can still expand the rest.
+ */
 export const defaultExpandedGroups: Record<string, string[]> = {
-  farmer: ['farmer-loans'],
-  credit: ['credit-inbox', 'credit-portfolio'],
-  compliance: ['cs-doc-queue', 'cs-kyc-group', 'cs-ops'],
-  sanction: ['sc-decisions', 'sc-oversight'],
-  treasury: ['treasury-disburse', 'treasury-finance'],
+  farmer: [],
+  credit: ['credit-inbox'],
+  compliance: ['cs-doc-queue'],
+  sanction: ['sc-decisions'],
+  treasury: ['treasury-disburse'],
   admin: [],
 };
 
