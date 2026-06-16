@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Banknote, Check, CheckCircle, ClipboardList, FolderOpen, Search, Stamp } from 'lucide-react';
+import { STAGES } from '../../lib/loanState';
 
 interface LoanTrackerProps {
   currentStage: number;
@@ -8,14 +9,10 @@ interface LoanTrackerProps {
   onStageClick?: (stage: number) => void;
 }
 
-const stages = [
-  { name: 'Application Submitted', icon: ClipboardList },
-  { name: 'Credit Assessment', icon: Search },
-  { name: 'Sanction Approved', icon: Stamp },
-  { name: 'Documentation', icon: FolderOpen },
-  { name: 'Disbursed', icon: Banknote },
-  { name: 'Active / Closed', icon: CheckCircle },
-];
+// Stage labels come from the single source (lib/loanState STAGES); only the
+// farmer-facing icons are local. Keeps stage definitions in one home (C6).
+const stageIcons = [ClipboardList, Search, Stamp, FolderOpen, Banknote, CheckCircle];
+const stages = STAGES.map((name, i) => ({ name, icon: stageIcons[i] }));
 
 export function LoanTracker({ currentStage, compact = false, completedDates = [], onStageClick }: LoanTrackerProps) {
   const [hoveredStage, setHoveredStage] = useState<number | null>(null);
