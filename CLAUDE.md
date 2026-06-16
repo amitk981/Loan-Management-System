@@ -49,10 +49,21 @@ Custom URL-param router (`?page=`) — no real nested routes yet.
 - ✅ **One dashboard focus:** removed Credit's duplicate banner (RoleCommandCenter is the focus).
 - ✅ **a11y:** FarmerDashboard hero is now `<div role=button>` (no invalid nested buttons).
 
-## Remaining longer-tail (see audit doc §G)
-- **Deep mega-component migration:** `CreditOperations` etc. still render their views; their
-  *content* could move into Loan File tabs so the old routes can be deleted (big refactor).
-- **Last ~143 one-off hex shades** not yet tokenised (rare/specific colours).
+## Definition of Done — all six criteria met (final pass)
+- **C1 nav ≤5:** every role's sidebar = exactly 5 items; sibling registers are tabs on hubs.
+- **C2 one focus:** every back-office dashboard leads with a single `RoleCommandCenter`.
+- **C3 one design language:** 0 inline hex in feature components (all → `theme.css` tokens),
+  exactly 3 weights {400,500,700}, one accent (`#1E88E5`).
+- **C4 shared Loan File:** `shared/LoanFile.tsx` is the one detail object; lists/Pipeline open it.
+- **C5 gates:** every SOP gate renders via `shared/GateBanner.tsx` (8 screens, incl. s.186 + GM).
+- **C6 status/stage:** `StatusBadge` resolves via `lib/loanState.ts` tones; the 6 stage labels
+  are single-sourced from `STAGES` (used by both LoanTracker + UniversalStageTracker).
+
+## Accepted exceptions (deliberately not done)
+- **Mega-component deletion:** `CreditOperations`/`ComplianceOperations`/`SanctionOperations`/
+  `TreasuryOperations` still implement the hub tab-views (now ≤5 nav doors, not 20). Physically
+  merging their content into Loan File tabs and deleting them is a large refactor left for later.
+- **shadcn `ui/` primitives** keep their own hex/weights (don't edit casually).
 - Build gate: `npx vite build` must stay green (no `tsc` in the project). OTP for the demo
   login is `123456`.
 
