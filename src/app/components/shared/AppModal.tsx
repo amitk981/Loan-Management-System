@@ -25,16 +25,16 @@ export function AppModal({
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden w-full" style={{ maxWidth: width }}>
         <div className="px-5 py-4 border-b border-[#EDEEF0] flex items-start gap-3">
           {icon && (
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: destructive ? '#FEE2E2' : '#E8F5E9', color: destructive ? '#EF4444' : '#1A3C2A' }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: destructive ? 'var(--error-100)' : 'var(--brand-light)', color: destructive ? 'var(--error-500)' : 'var(--brand-primary)' }}>
               {icon}
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <div id="app-modal-title" style={{ fontSize: '16px', fontWeight: 700, color: '#12151A' }}>{title}</div>
-            {subtitle && <div style={{ fontSize: '12px', color: '#9EA8B3', marginTop: '2px' }}>{subtitle}</div>}
+            <div id="app-modal-title" style={{ fontSize: '16px', fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</div>
+            {subtitle && <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '2px' }}>{subtitle}</div>}
           </div>
           <button onClick={onClose} aria-label="Close modal" className="p-2 rounded-lg hover:bg-[#F7F8FA]">
-            <X size={16} style={{ color: '#9EA8B3' }} />
+            <X size={16} style={{ color: 'var(--neutral-400)' }} />
           </button>
         </div>
         <div className="p-5">{children}</div>

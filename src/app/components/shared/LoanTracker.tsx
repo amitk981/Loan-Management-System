@@ -55,7 +55,7 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
               {i < stages.length - 1 && (
                 <div
                   className="h-0.5 w-6"
-                  style={{ backgroundColor: isDone ? '#22C55E' : '#EDEEF0' }}
+                  style={{ backgroundColor: isDone ? 'var(--success-500)' : 'var(--neutral-200)' }}
                 />
               )}
             </div>
@@ -85,7 +85,7 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
               <div
                 className="absolute top-5 left-1/2 w-full h-0.5 z-0"
                 style={{
-                  backgroundColor: isDone ? '#22C55E' : '#EDEEF0',
+                  backgroundColor: isDone ? 'var(--success-500)' : 'var(--neutral-200)',
                   backgroundImage: !isDone && !isCurrent ? 'repeating-linear-gradient(90deg, #D1D5DB 0 4px, transparent 4px 8px)' : 'none',
                 }}
               />
@@ -110,21 +110,21 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
                 style={{
                   fontSize: '12px',
                   fontWeight: isCurrent ? 600 : 400,
-                  color: isDone ? '#166534' : isCurrent ? '#1A3C2A' : '#9EA8B3',
+                  color: isDone ? '#166534' : isCurrent ? 'var(--brand-primary)' : 'var(--neutral-400)',
                   lineHeight: '18px',
                 }}
               >
                 {stage.name}
               </div>
               {completedDates[i] && (
-                <div style={{ fontSize: '11px', color: '#9EA8B3', marginTop: '2px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '2px' }}>
                   {completedDates[i]}
                 </div>
               )}
               {isCurrent && (
                 <div
                   className="mt-1 px-2 py-0.5 rounded-full inline-flex"
-                  style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '10px', fontWeight: 600 }}
+                  style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '10px', fontWeight: 600 }}
                 >
                   Current
                 </div>

@@ -31,7 +31,7 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
           <span className="w-8 h-8 rounded-full bg-[#0284C7] text-white flex items-center justify-center font-bold text-sm">ℹ</span>
           <div>
             <div style={{ fontSize: '14px', fontWeight: 700, color: '#0369A1' }}>Disbursement Queue: 2 Files Ready for Payment</div>
-            <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px' }}>1 file is blocked due to missing SAP Customer Code. Process pending codes first.</div>
+            <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>1 file is blocked due to missing SAP Customer Code. Process pending codes first.</div>
           </div>
         </div>
         <button onClick={() => onNavigate('treasury-sap-codes')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#0891B2', fontSize: '13px', fontWeight: 700 }}>Create SAP Codes</button>
@@ -55,25 +55,25 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
       />
 
       <div className="bg-white rounded-xl border border-[#EDEEF0] overflow-hidden mb-5">
-        <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: '#F7F8FA' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>Disbursement Queue</h3>
+        <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Disbursement Queue</h3>
           <button onClick={() => onNavigate('treasury-pending')} className="hover:text-[#067a96] transition-colors" style={{ fontSize: '13px', color: '#0891B2', fontWeight: 700 }}>View All</button>
         </div>
         <div className="table-scroll">
           <table className="w-full">
             <thead>
-              <tr>{['Loan ID', 'Borrower', 'Amount', 'Stage', 'CS Sign', 'SAP Code', 'Waiting', 'Action'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: '#9EA8B3', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>)}</tr>
+              <tr>{['Loan ID', 'Borrower', 'Amount', 'Stage', 'CS Sign', 'SAP Code', 'Waiting', 'Action'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: 'var(--neutral-400)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>)}</tr>
             </thead>
             <tbody>
               {treasuryQueue.map(row => (
                 <tr key={row.id} className="border-t border-[#EDEEF0] clickable-row" onClick={() => onNavigate(row.page)}>
                   <td className="px-4 py-3" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#0E7490', fontWeight: 700 }}>{row.id}</td>
-                  <td className="px-4" style={{ fontSize: '13px', color: '#12151A', fontWeight: 600 }}>{row.borrower}</td>
-                  <td className="px-4 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#12151A', fontWeight: 700 }}>{formatCurrency(row.amount, true)}</td>
+                  <td className="px-4" style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600 }}>{row.borrower}</td>
+                  <td className="px-4 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--neutral-900)', fontWeight: 700 }}>{formatCurrency(row.amount, true)}</td>
                   <td className="px-4"><StatusBadge status={row.stage} /></td>
-                  <td className="px-4" style={{ color: row.csSign === '✓' ? '#22C55E' : '#D97706', fontWeight: 800 }}>{row.csSign}</td>
-                  <td className="px-4" style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: row.sapCode ? '#12151A' : '#D97706' }}>{row.sapCode || '—'}</td>
-                  <td className="px-4" style={{ fontSize: '12px', color: row.risk === 'red' ? '#EF4444' : row.risk === 'amber' ? '#D97706' : '#166534', fontWeight: 700 }}>{row.waiting}</td>
+                  <td className="px-4" style={{ color: row.csSign === '✓' ? 'var(--success-500)' : 'var(--gold-500)', fontWeight: 800 }}>{row.csSign}</td>
+                  <td className="px-4" style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: row.sapCode ? 'var(--neutral-900)' : 'var(--gold-500)' }}>{row.sapCode || '—'}</td>
+                  <td className="px-4" style={{ fontSize: '12px', color: row.risk === 'red' ? 'var(--error-500)' : row.risk === 'amber' ? 'var(--gold-500)' : '#166534', fontWeight: 700 }}>{row.waiting}</td>
                   <td className="px-4"><button onClick={(e) => { e.stopPropagation(); onNavigate(row.page); }} className="px-3 py-1.5 rounded-lg transition-all hover:shadow-sm active:scale-95" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: '12px', fontWeight: 700 }}>{row.action} →</button></td>
                 </tr>
               ))}

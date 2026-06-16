@@ -43,8 +43,8 @@ const checklistItems = [
 ];
 
 const signatureBlocks = [
-  { role: 'Company Secretary', note: 'All documents verified & attached', color: '#1A3C2A' },
-  { role: 'Credit Manager', note: 'Loan limits reviewed & confirmed', color: '#2D7A4F' },
+  { role: 'Company Secretary', note: 'All documents verified & attached', color: 'var(--brand-primary)' },
+  { role: 'Credit Manager', note: 'Loan limits reviewed & confirmed', color: 'var(--brand-secondary)' },
   { role: 'Sanction Committee Member', note: 'Final approval as per authority matrix', color: '#7C3AED' },
   { role: 'Senior Manager – Finance', note: 'Loan disbursed to applicant\'s account', color: '#0891B2' },
 ];
@@ -136,15 +136,15 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
       pageSubtitle={`${loan.id} · ${loan.farmerName} · ₹${csWorkspaceLoan.amount.toLocaleString('en-IN')}`}
       actions={
         <div className="flex items-center gap-3">
-          <span style={{ fontSize: '13px', color: '#9EA8B3' }}>5/8 core instruments done</span>
+          <span style={{ fontSize: '13px', color: 'var(--neutral-400)' }}>5/8 core instruments done</span>
           <div className="w-32 h-2 bg-[#EDEEF0] rounded-full overflow-hidden">
-            <div className="h-full rounded-full" style={{ width: '62.5%', backgroundColor: '#2D7A4F' }} />
+            <div className="h-full rounded-full" style={{ width: '62.5%', backgroundColor: 'var(--brand-secondary)' }} />
           </div>
         </div>
       }
     >
-      {showQueueTabs && <WorkbenchTabs tabs={complianceQueueTabs} activeKey={activePage} onChange={onNavigate} accent="#1A3C2A" />}
-      {showDocTabs && <WorkbenchTabs tabs={complianceDocTabs} activeKey={activePage} onChange={onNavigate} accent="#1A3C2A" />}
+      {showQueueTabs && <WorkbenchTabs tabs={complianceQueueTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />}
+      {showDocTabs && <WorkbenchTabs tabs={complianceDocTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />}
       <div className="grid grid-cols-4 gap-3 mb-5">
         {[
           { label: 'Documents', value: `${checkedCount}/15`, ready: allDocsChecked, note: allDocsChecked ? 'All file items present' : `${15 - checkedCount} pending` },
@@ -155,7 +155,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           <button key={item.label} onClick={() => setActiveTab(item.label === 'Documents' || item.label === 'Signatures' ? 'checklist' : item.label === 'PoA Execution' ? 'poa' : 'agreement')} className="rounded-xl p-4 border text-left clickable-card" style={{ backgroundColor: item.ready ? '#F0FDF4' : '#FFFBEB', borderColor: item.ready ? '#BBF7D0' : '#FDE68A' }}>
             <div style={{ fontSize: '11px', color: item.ready ? '#16A34A' : '#B45309', fontWeight: 700, textTransform: 'uppercase' }}>{item.label}</div>
             <div style={{ fontSize: '20px', color: item.ready ? '#166534' : '#92400E', fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
-            <div style={{ fontSize: '12px', color: item.ready ? '#22C55E' : '#B45309', marginTop: '2px' }}>{item.note}</div>
+            <div style={{ fontSize: '12px', color: item.ready ? 'var(--success-500)' : '#B45309', marginTop: '2px' }}>{item.note}</div>
           </button>
         ))}
       </div>
@@ -164,7 +164,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
         <div style={{ fontSize: '13px', color: '#166534', fontWeight: 800 }}>
           Start here: PoA → Tri-Party → SH-4/CDSL → Term Sheet → Loan Agreement → Bank Verification → Checklist
         </div>
-        <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '6px' }}>
+        <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '6px' }}>
           Work through each tab below. Treasury cannot disburse until checklist and CS sign-off are complete.
         </div>
       </div>
@@ -192,21 +192,21 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                 }}
                 className="flex flex-col items-center flex-shrink-0 px-3 py-2 rounded-xl transition-all"
                 style={{
-                  backgroundColor: activeTab === tab.id ? '#1A3C2A' : '#F7F8FA',
+                  backgroundColor: activeTab === tab.id ? 'var(--brand-primary)' : 'var(--neutral-100)',
                   border: activeTab === tab.id ? 'none' : '1px solid #EDEEF0',
                   opacity: tab.id === 'agreement' && !termSheetAuthorityComplete ? 0.5 : 1,
                   cursor: tab.id === 'agreement' && !termSheetAuthorityComplete ? 'not-allowed' : 'pointer'
                 }}
                 title={tab.id === 'agreement' && !termSheetAuthorityComplete ? 'Locked until Term Sheet authority signatures are complete' : ''}
               >
-                <span style={{ fontSize: '12px', fontWeight: activeTab === tab.id ? 600 : 400, color: activeTab === tab.id ? 'white' : '#3D4450' }}>
+                <span style={{ fontSize: '12px', fontWeight: activeTab === tab.id ? 600 : 400, color: activeTab === tab.id ? 'white' : 'var(--neutral-700)' }}>
                   {tab.shortLabel}
                 </span>
                 <span
                   className="mt-1"
                   style={{
                     fontSize: '10px',
-                    color: s === 'Ready' ? '#22C55E' : s === 'Pending' ? '#F59E0B' : activeTab === tab.id ? 'rgba(255,255,255,0.6)' : '#9EA8B3',
+                    color: s === 'Ready' ? 'var(--success-500)' : s === 'Pending' ? 'var(--warning-500)' : activeTab === tab.id ? 'rgba(255,255,255,0.6)' : 'var(--neutral-400)',
                     fontWeight: 500,
                   }}
                 >
@@ -224,7 +224,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           {/* PoA Tab */}
           {activeTab === 'poa' && (
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#12151A', marginBottom: '16px' }}>Power of Attorney</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '16px' }}>Power of Attorney</h3>
               <div className="grid grid-cols-2 gap-4 mb-5">
                 {[
                   { label: 'Borrower Name', value: loan.farmerName, readonly: true },
@@ -233,7 +233,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { label: 'Notary Name', value: '', readonly: false },
                 ].map((field, i) => (
                   <div key={i}>
-                    <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450' }}>{field.label}</label>
+                    <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>{field.label}</label>
                     <input
                       type="text"
                       defaultValue={field.value}
@@ -242,15 +242,15 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                       style={{
                         height: '40px',
                         fontSize: '14px',
-                        borderColor: field.readonly ? '#EDEEF0' : '#D1D5DB',
-                        backgroundColor: field.readonly ? '#F7F8FA' : 'white',
-                        color: field.readonly ? '#9EA8B3' : '#12151A',
+                        borderColor: field.readonly ? 'var(--neutral-200)' : 'var(--neutral-300)',
+                        backgroundColor: field.readonly ? 'var(--neutral-100)' : 'white',
+                        color: field.readonly ? 'var(--neutral-400)' : 'var(--neutral-900)',
                       }}
                     />
                   </div>
                 ))}
               </div>
-              <div className="p-3 rounded-xl mb-4 flex items-center gap-2" style={{ backgroundColor: '#FEF3C7' }}>
+              <div className="p-3 rounded-xl mb-4 flex items-center gap-2" style={{ backgroundColor: 'var(--warning-100)' }}>
                 <AlertTriangle size={15} color="#92400E" />
                 <span style={{ fontSize: '13px', color: '#92400E' }}>₹500 stamp paper required for PoA execution</span>
               </div>
@@ -259,30 +259,30 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { label: 'Stamp duty paid', checked: poaStamped, onChange: setPoaStamped },
                   { label: 'Notarised copy received', checked: poaNotarised, onChange: setPoaNotarised },
                 ].map(item => (
-                  <label key={item.label} className="flex items-center justify-between p-3 rounded-xl border cursor-pointer" style={{ borderColor: item.checked ? '#BBF7D0' : '#EDEEF0', backgroundColor: item.checked ? '#F0FDF4' : '#FFFFFF' }}>
-                    <span style={{ fontSize: '13px', color: '#3D4450' }}>{item.label}</span>
-                    <input type="checkbox" checked={item.checked} onChange={e => item.onChange(e.target.checked)} style={{ accentColor: '#1A3C2A' }} />
+                  <label key={item.label} className="flex items-center justify-between p-3 rounded-xl border cursor-pointer" style={{ borderColor: item.checked ? '#BBF7D0' : 'var(--neutral-200)', backgroundColor: item.checked ? '#F0FDF4' : '#FFFFFF' }}>
+                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{item.label}</span>
+                    <input type="checkbox" checked={item.checked} onChange={e => item.onChange(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
                   </label>
                 ))}
               </div>
               <div className="mb-4">
-                <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: '#3D4450' }}>Upload Stamped PoA Copy</label>
-                <div className="border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[#2D7A4F] hover:bg-[#F0FDF4] transition-all" style={{ borderColor: '#D1D5DB' }}>
-                  <Upload size={18} style={{ color: '#9EA8B3' }} />
-                  <span style={{ fontSize: '13px', color: '#3D4450' }}>Drag or click to upload stamped copy</span>
+                <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Upload Stamped PoA Copy</label>
+                <div className="border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[#2D7A4F] hover:bg-[#F0FDF4] transition-all" style={{ borderColor: 'var(--neutral-300)' }}>
+                  <Upload size={18} style={{ color: 'var(--neutral-400)' }} />
+                  <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Drag or click to upload stamped copy</span>
                 </div>
               </div>
               <div className="flex gap-3">
                 <button
                   className="px-4 py-2.5 rounded-xl flex items-center gap-2"
-                  style={{ backgroundColor: '#F7F8FA', color: '#3D4450', fontSize: '14px', border: '1px solid #EDEEF0' }}
+                  style={{ backgroundColor: 'var(--neutral-100)', color: 'var(--neutral-700)', fontSize: '14px', border: '1px solid #EDEEF0' }}
                 >
                   <Eye size={14} /> Generate Draft PDF
                 </button>
                 <button
                   onClick={() => { setPoaStatus('Executed'); setPoaStamped(true); setPoaNotarised(true); }}
                   className="px-4 py-2.5 rounded-xl font-semibold flex items-center gap-2"
-                  style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}
+                  style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}
                 >
                   <Check size={14} /> Mark as Executed
                 </button>
@@ -293,7 +293,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           {/* Term Sheet Tab */}
           {activeTab === 'termsheet' && (
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#12151A', marginBottom: '16px' }}>Term Sheet</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '16px' }}>Term Sheet</h3>
               <div className="grid grid-cols-2 gap-4">
                   {[
                   { label: '1. Borrower Name', value: loan.farmerName, readonly: true },
@@ -311,7 +311,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { label: '13. Dispute Resolution', value: 'Arbitration · Nashik Jurisdiction', readonly: false },
                 ].map((field, i) => (
                   <div key={i}>
-                    <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: '#3D4450' }}>{field.label}</label>
+                    <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: 'var(--neutral-700)' }}>{field.label}</label>
                     <input
                       defaultValue={field.value}
                       readOnly={field.readonly}
@@ -319,15 +319,15 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                       style={{
                         height: '40px',
                         fontSize: '13px',
-                        borderColor: field.readonly ? '#EDEEF0' : '#D1D5DB',
-                        backgroundColor: field.readonly ? '#F7F8FA' : 'white',
-                        color: field.readonly ? '#9EA8B3' : '#12151A',
+                        borderColor: field.readonly ? 'var(--neutral-200)' : 'var(--neutral-300)',
+                        backgroundColor: field.readonly ? 'var(--neutral-100)' : 'white',
+                        color: field.readonly ? 'var(--neutral-400)' : 'var(--neutral-900)',
                       }}
                     />
                   </div>
                 ))}
               </div>
-              <div className="mt-4 p-3 rounded-xl" style={{ backgroundColor: '#DBEAFE' }}>
+              <div className="mt-4 p-3 rounded-xl" style={{ backgroundColor: 'var(--info-100)' }}>
                 <span style={{ fontSize: '12px', color: '#1E40AF' }}>Term Sheet authority gate: {loan.sanctionedAmount > 500000 ? 'CFO + exactly 2 Directors required' : 'CFO + 1 Director required'}</span>
               </div>
               <div className="grid grid-cols-3 gap-3 mt-4">
@@ -336,26 +336,26 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { key: 'director1' as const, label: 'Director 1 Signature', required: true },
                   { key: 'director2' as const, label: 'Director 2 Signature', required: loan.sanctionedAmount > 500000 },
                 ].map(item => (
-                  <label key={item.key} className="p-3 rounded-xl border cursor-pointer" style={{ backgroundColor: termSheetSignatures[item.key] ? '#F0FDF4' : item.required ? '#FFFBEB' : '#F7F8FA', borderColor: termSheetSignatures[item.key] ? '#BBF7D0' : '#EDEEF0' }}>
+                  <label key={item.key} className="p-3 rounded-xl border cursor-pointer" style={{ backgroundColor: termSheetSignatures[item.key] ? '#F0FDF4' : item.required ? '#FFFBEB' : 'var(--neutral-100)', borderColor: termSheetSignatures[item.key] ? '#BBF7D0' : 'var(--neutral-200)' }}>
                     <div className="flex items-center justify-between">
-                      <span style={{ fontSize: '12px', color: '#3D4450', fontWeight: 600 }}>{item.label}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--neutral-700)', fontWeight: 600 }}>{item.label}</span>
                       <input
                         type="checkbox"
                         checked={termSheetSignatures[item.key]}
                         disabled={!item.required}
                         onChange={e => setTermSheetSignatures(prev => ({ ...prev, [item.key]: e.target.checked }))}
-                        style={{ accentColor: '#1A3C2A' }}
+                        style={{ accentColor: 'var(--brand-primary)' }}
                       />
                     </div>
-                    <div style={{ fontSize: '11px', color: item.required ? '#D97706' : '#9EA8B3', marginTop: '4px' }}>{item.required ? 'Required' : 'Not required for this amount'}</div>
+                    <div style={{ fontSize: '11px', color: item.required ? 'var(--gold-500)' : 'var(--neutral-400)', marginTop: '4px' }}>{item.required ? 'Required' : 'Not required for this amount'}</div>
                   </label>
                 ))}
               </div>
               <div className="flex gap-3 mt-4">
-                <button className="px-4 py-2.5 rounded-xl flex items-center gap-2" style={{ backgroundColor: '#F7F8FA', color: '#3D4450', fontSize: '14px', border: '1px solid #EDEEF0' }}>
+                <button className="px-4 py-2.5 rounded-xl flex items-center gap-2" style={{ backgroundColor: 'var(--neutral-100)', color: 'var(--neutral-700)', fontSize: '14px', border: '1px solid #EDEEF0' }}>
                   <FileText size={14} /> Generate Term Sheet PDF
                 </button>
-                <button onClick={() => setTermSheetSigned(true)} className="px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>
+                <button onClick={() => setTermSheetSigned(true)} className="px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
                   {termSheetSigned ? '✓ Signed' : 'Mark as Signed'}
                 </button>
               </div>
@@ -364,7 +364,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
 
           {activeTab === 'triparty' && (
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#12151A', marginBottom: '16px' }}>Tri-Party Agreement</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '16px' }}>Tri-Party Agreement</h3>
               <div className="grid grid-cols-3 gap-4 mb-4">
                 {[
                   { label: 'Borrower', value: loan.farmerName },
@@ -375,15 +375,15 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { label: 'Execution Status', value: 'Ready for signatures' },
                 ].map(field => (
                   <div key={field.label}>
-                    <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: '#3D4450' }}>{field.label}</label>
-                    <input defaultValue={field.value} className="w-full px-3 rounded-xl border border-[#D1D5DB]" style={{ height: '40px', fontSize: '13px', color: '#12151A' }} />
+                    <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: 'var(--neutral-700)' }}>{field.label}</label>
+                    <input defaultValue={field.value} className="w-full px-3 rounded-xl border border-[#D1D5DB]" style={{ height: '40px', fontSize: '13px', color: 'var(--neutral-900)' }} />
                   </div>
                 ))}
               </div>
               <div className="p-3 rounded-xl mb-4" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
                 <div style={{ fontSize: '13px', color: '#166534', fontWeight: 700 }}>Deduction consent captured for subsidiary-mediated repayments.</div>
               </div>
-              <button className="px-4 py-2.5 rounded-xl font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>
+              <button className="px-4 py-2.5 rounded-xl font-semibold flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
                 <FileText size={14} /> Generate Tri-Party PDF
               </button>
             </div>
@@ -392,14 +392,14 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           {activeTab === 'sh4' && (
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
               <div className="flex items-center justify-between mb-4">
-                <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#12151A' }}>Share Security</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Share Security</h3>
                 <div className="flex rounded-xl border border-[#EDEEF0] overflow-hidden">
                   {(['physical', 'demat'] as const).map(type => (
                     <button
                       key={type}
                       onClick={() => setShareType(type)}
                       className="px-4 py-2"
-                      style={{ backgroundColor: shareType === type ? '#1A3C2A' : 'white', color: shareType === type ? 'white' : '#3D4450', fontSize: '13px', fontWeight: 600 }}
+                      style={{ backgroundColor: shareType === type ? 'var(--brand-primary)' : 'white', color: shareType === type ? 'white' : 'var(--neutral-700)', fontSize: '13px', fontWeight: 600 }}
                     >
                       {type === 'physical' ? 'Physical SH-4' : 'D-MAT CDSL'}
                     </button>
@@ -417,31 +417,31 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                       ['Witness Folio', 'SH-01942'],
                     ].map(([label, value]) => (
                       <div key={label}>
-                        <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: '#3D4450' }}>{label}</label>
-                        <input defaultValue={value} className="w-full px-3 rounded-xl border border-[#D1D5DB]" style={{ height: '40px', fontSize: '13px', color: '#12151A' }} />
+                        <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: 'var(--neutral-700)' }}>{label}</label>
+                        <input defaultValue={value} className="w-full px-3 rounded-xl border border-[#D1D5DB]" style={{ height: '40px', fontSize: '13px', color: 'var(--neutral-900)' }} />
                       </div>
                     ))}
                   </div>
                   <label className="flex items-center justify-between p-3 rounded-xl border" style={{ borderColor: witnessConfirmed ? '#BBF7D0' : '#FDE68A', backgroundColor: witnessConfirmed ? '#F0FDF4' : '#FFFBEB' }}>
-                    <span style={{ fontSize: '13px', color: '#3D4450', fontWeight: 600 }}>Witness is an existing SFPCL shareholder and has signed SH-4</span>
-                    <input type="checkbox" checked={witnessConfirmed} onChange={e => setWitnessConfirmed(e.target.checked)} style={{ accentColor: '#1A3C2A' }} />
+                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>Witness is an existing SFPCL shareholder and has signed SH-4</span>
+                    <input type="checkbox" checked={witnessConfirmed} onChange={e => setWitnessConfirmed(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
                   </label>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {[
-                    ['1. PRF submitted to DP', 'Done', '#22C55E'],
-                    ['2. PSN generated', 'PSN-2025-04821', '#1E88E5'],
-                    ['3. Pledgee DP acceptance', 'Pending', '#F59E0B'],
-                    ['4. IRF invocation form', 'Locked until default + board approval', '#9EA8B3'],
-                    ['5. URF / auto-unpledge release', 'Locked until NOC', '#9EA8B3'],
+                    ['1. PRF submitted to DP', 'Done', 'var(--success-500)'],
+                    ['2. PSN generated', 'PSN-2025-04821', 'var(--brand-accent)'],
+                    ['3. Pledgee DP acceptance', 'Pending', 'var(--warning-500)'],
+                    ['4. IRF invocation form', 'Locked until default + board approval', 'var(--neutral-400)'],
+                    ['5. URF / auto-unpledge release', 'Locked until NOC', 'var(--neutral-400)'],
                   ].map(([step, status, color]) => (
-                    <div key={step} className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: '#F7F8FA', border: '1px solid #EDEEF0' }}>
-                      <span style={{ fontSize: '13px', color: '#3D4450', fontWeight: 600 }}>{step}</span>
+                    <div key={step} className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
+                      <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>{step}</span>
                       <span style={{ fontSize: '12px', color, fontWeight: 700 }}>{status}</span>
                     </div>
                   ))}
-                  <button className="px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Confirm CDSL Pledge Acceptance</button>
+                  <button className="px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Confirm CDSL Pledge Acceptance</button>
                 </div>
               )}
             </div>
@@ -450,12 +450,12 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           {activeTab === 'bank' && (
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
               <div className="flex items-center justify-between mb-4">
-                <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#12151A' }}>Bank Verification Letter</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Bank Verification Letter</h3>
                 <StatusBadge status={bankSignatureMismatch ? 'Pending' : 'Verified'} />
               </div>
               <label className="flex items-center justify-between p-3 rounded-xl border mb-4" style={{ backgroundColor: bankSignatureMismatch ? '#FFFBEB' : '#F0FDF4', borderColor: bankSignatureMismatch ? '#FDE68A' : '#BBF7D0' }}>
-                <span style={{ fontSize: '13px', color: '#3D4450', fontWeight: 600 }}>Signature mismatch raised on cancelled cheque</span>
-                <input type="checkbox" checked={bankSignatureMismatch} onChange={e => setBankSignatureMismatch(e.target.checked)} style={{ accentColor: '#1A3C2A' }} />
+                <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>Signature mismatch raised on cancelled cheque</span>
+                <input type="checkbox" checked={bankSignatureMismatch} onChange={e => setBankSignatureMismatch(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
               </label>
               {bankSignatureMismatch ? (
                 <div className="space-y-4">
@@ -467,14 +467,14 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                       ['Officer Name', 'Branch Operations Manager'],
                     ].map(([label, value]) => (
                       <div key={label}>
-                        <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: '#3D4450' }}>{label}</label>
-                        <input defaultValue={value} className="w-full px-3 rounded-xl border border-[#D1D5DB]" style={{ height: '40px', fontSize: '13px', color: '#12151A' }} />
+                        <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: 'var(--neutral-700)' }}>{label}</label>
+                        <input defaultValue={value} className="w-full px-3 rounded-xl border border-[#D1D5DB]" style={{ height: '40px', fontSize: '13px', color: 'var(--neutral-900)' }} />
                       </div>
                     ))}
                   </div>
-                  <label className="flex items-center justify-between p-3 rounded-xl border" style={{ borderColor: bankLetterReady ? '#BBF7D0' : '#EDEEF0', backgroundColor: bankLetterReady ? '#F0FDF4' : 'white' }}>
-                    <span style={{ fontSize: '13px', color: '#3D4450' }}>Stamped bank letter received and uploaded</span>
-                    <input type="checkbox" checked={bankLetterReady} onChange={e => setBankLetterReady(e.target.checked)} style={{ accentColor: '#1A3C2A' }} />
+                  <label className="flex items-center justify-between p-3 rounded-xl border" style={{ borderColor: bankLetterReady ? '#BBF7D0' : 'var(--neutral-200)', backgroundColor: bankLetterReady ? '#F0FDF4' : 'white' }}>
+                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Stamped bank letter received and uploaded</span>
+                    <input type="checkbox" checked={bankLetterReady} onChange={e => setBankLetterReady(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
                   </label>
                 </div>
               ) : (
@@ -488,12 +488,12 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           {/* Checklist Tab */}
           {activeTab === 'checklist' && (
             <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden">
-              <div className="px-5 py-3 flex items-center justify-between" style={{ backgroundColor: '#F7F8FA', borderBottom: '1px solid #EDEEF0' }}>
-                <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#12151A' }}>Document Checklist (Annexure H)</h3>
+              <div className="px-5 py-3 flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)', borderBottom: '1px solid #EDEEF0' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--neutral-900)' }}>Document Checklist (Annexure H)</h3>
                 <div className="flex items-center gap-2">
-                  <span style={{ fontSize: '13px', color: '#9EA8B3' }}>{checkedCount} / {checklistItems.length} verified</span>
+                  <span style={{ fontSize: '13px', color: 'var(--neutral-400)' }}>{checkedCount} / {checklistItems.length} verified</span>
                   <div className="w-24 h-2 bg-[#EDEEF0] rounded-full">
-                    <div className="h-full rounded-full" style={{ width: `${(checkedCount / 15) * 100}%`, backgroundColor: '#22C55E' }} />
+                    <div className="h-full rounded-full" style={{ width: `${(checkedCount / 15) * 100}%`, backgroundColor: 'var(--success-500)' }} />
                   </div>
                 </div>
               </div>
@@ -508,11 +508,11 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                         checked={checkedDocs[i] || false}
                         onChange={() => toggleDoc(i)}
                         className="w-4 h-4 rounded flex-shrink-0"
-                        style={{ accentColor: '#1A3C2A' }}
+                        style={{ accentColor: 'var(--brand-primary)' }}
                       />
                       <div className="flex-1 min-w-0">
-                        <div style={{ fontSize: '13px', color: '#3D4450' }}>
-                          <span style={{ color: '#9EA8B3', fontFamily: 'Roboto Mono', marginRight: '6px' }}>
+                        <div style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>
+                          <span style={{ color: 'var(--neutral-400)', fontFamily: 'Roboto Mono', marginRight: '6px' }}>
                             {String(i + 1).padStart(2, '0')}.
                           </span>
                           {item}
@@ -520,9 +520,9 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         {doc && <StatusBadge status={doc.status} />}
-                        {doc?.date && <span style={{ fontSize: '11px', color: '#9EA8B3' }}>{doc.date}</span>}
+                        {doc?.date && <span style={{ fontSize: '11px', color: 'var(--neutral-400)' }}>{doc.date}</span>}
                         <button className="p-1.5 hover:bg-[#EDEEF0] rounded-lg transition-all">
-                          <Upload size={12} style={{ color: '#9EA8B3' }} />
+                          <Upload size={12} style={{ color: 'var(--neutral-400)' }} />
                         </button>
                       </div>
                     </div>
@@ -531,10 +531,10 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
               </div>
 
               {/* Signature Blocks */}
-              <div className="px-5 py-5 border-t-2 border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}>
+              <div className="px-5 py-5 border-t-2 border-[#EDEEF0]" style={{ backgroundColor: 'var(--neutral-100)' }}>
                 <div className="flex items-center justify-between mb-3">
-                  <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#12151A' }}>Required Signatures</h4>
-                  <span style={{ fontSize: '12px', color: '#9EA8B3' }}>Sequential countersignature flow</span>
+                  <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--neutral-900)' }}>Required Signatures</h4>
+                  <span style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>Sequential countersignature flow</span>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   {signatureBlocks.map((block, i) => {
@@ -546,26 +546,26 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                         key={i}
                         className="p-4 rounded-xl border-2 transition-all"
                         style={{
-                          borderColor: isSigned ? block.color : '#EDEEF0',
+                          borderColor: isSigned ? block.color : 'var(--neutral-200)',
                           backgroundColor: isSigned ? `${block.color}08` : 'white',
                         }}
                       >
                         <div style={{ fontSize: '12px', fontWeight: 600, color: block.color }}>{block.role}</div>
-                        <div style={{ fontSize: '11px', color: '#9EA8B3', marginTop: '2px' }}>{block.note}</div>
+                        <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '2px' }}>{block.note}</div>
                         <div className="flex items-center justify-between mt-3">
                           {isSigned ? (
-                            <span className="flex items-center gap-1.5" style={{ fontSize: '12px', color: '#22C55E', fontWeight: 600 }}>
+                            <span className="flex items-center gap-1.5" style={{ fontSize: '12px', color: 'var(--success-500)', fontWeight: 600 }}>
                               <Check size={12} /> Signed {new Date().toLocaleDateString('en-IN')}
                             </span>
                           ) : (
-                            <span style={{ fontSize: '12px', color: '#9EA8B3' }}>Not yet signed</span>
+                            <span style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>Not yet signed</span>
                           )}
                           {!isSigned && (
                             <button
                               disabled={!priorSigned || (i === 0 && (!allDocsChecked || !legalDocsExecuted))}
                               onClick={() => setSignatures(prev => ({ ...prev, [sigKey]: true }))}
                               className="px-3 py-1 rounded-lg text-white"
-                              style={{ backgroundColor: priorSigned && (i > 0 || (allDocsChecked && legalDocsExecuted)) ? block.color : '#9EA8B3', fontSize: '11px', fontWeight: 600, cursor: priorSigned && (i > 0 || (allDocsChecked && legalDocsExecuted)) ? 'pointer' : 'not-allowed' }}
+                              style={{ backgroundColor: priorSigned && (i > 0 || (allDocsChecked && legalDocsExecuted)) ? block.color : 'var(--neutral-400)', fontSize: '11px', fontWeight: 600, cursor: priorSigned && (i > 0 || (allDocsChecked && legalDocsExecuted)) ? 'pointer' : 'not-allowed' }}
                             >
                               Sign Off
                             </button>
@@ -579,8 +579,8 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
 
               <div className="px-5 pb-5">
                 {!canSubmit && (
-                  <div className="mb-3 p-3 rounded-xl flex gap-2" style={{ backgroundColor: '#FEF3C7', border: '1px solid #FDE68A' }}>
-                    <AlertTriangle size={14} style={{ color: '#F59E0B', marginTop: '2px' }} />
+                  <div className="mb-3 p-3 rounded-xl flex gap-2" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid #FDE68A' }}>
+                    <AlertTriangle size={14} style={{ color: 'var(--warning-500)', marginTop: '2px' }} />
                     <div style={{ fontSize: '12px', color: '#92400E', lineHeight: '18px' }}>
                       Disbursement is blocked until every document is verified, PoA and Loan Agreement are stamped/notarised, Term Sheet authority signatures are complete, witness signatures are captured, bank verification is cleared, and all four checklist signatures are complete.
                     </div>
@@ -617,7 +617,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                       onMouseLeave={() => setIsHolding(false)}
                       className="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all relative overflow-hidden"
                       style={{
-                        backgroundColor: canSubmit ? '#1A3C2A' : '#9EA8B3',
+                        backgroundColor: canSubmit ? 'var(--brand-primary)' : 'var(--neutral-400)',
                         color: 'white',
                         fontSize: '15px',
                         cursor: canSubmit ? 'pointer' : 'not-allowed',
@@ -632,7 +632,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   );
                 })()}
                 {!canSubmit && (
-                  <p style={{ fontSize: '12px', color: '#9EA8B3', textAlign: 'center', marginTop: '6px' }}>
+                  <p style={{ fontSize: '12px', color: 'var(--neutral-400)', textAlign: 'center', marginTop: '6px' }}>
                     {!allDocsChecked ? `${15 - checkedCount} documents still pending` : !legalDocsExecuted ? 'Stamping and notarisation still pending' : !termSheetAuthorityComplete ? 'Term Sheet CFO / Director signatures pending' : !witnessConfirmed ? 'Witness signature capture pending' : !bankGateReady ? 'Bank verification letter pending' : 'All four signatures required before treasury release'}
                   </p>
                 )}
@@ -643,7 +643,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           {/* Loan Agreement Tab */}
           {activeTab === 'agreement' && (
             <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#12151A', marginBottom: '16px' }}>Loan Agreement Execution</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '16px' }}>Loan Agreement Execution</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 {[
                   { label: 'Borrower', value: loan.farmerName },
@@ -652,12 +652,12 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { label: 'Execution Date', value: '15 Jan 2025' },
                 ].map(field => (
                   <div key={field.label}>
-                    <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: '#3D4450' }}>{field.label}</label>
-                    <input defaultValue={field.value} className="w-full px-3 rounded-xl border border-[#D1D5DB] focus:outline-none" style={{ height: '40px', fontSize: '13px', color: '#12151A' }} />
+                    <label className="block mb-1.5" style={{ fontSize: '12px', fontWeight: 500, color: 'var(--neutral-700)' }}>{field.label}</label>
+                    <input defaultValue={field.value} className="w-full px-3 rounded-xl border border-[#D1D5DB] focus:outline-none" style={{ height: '40px', fontSize: '13px', color: 'var(--neutral-900)' }} />
                   </div>
                 ))}
               </div>
-              <div className="p-3 rounded-xl mb-4" style={{ backgroundColor: '#FEF3C7' }}>
+              <div className="p-3 rounded-xl mb-4" style={{ backgroundColor: 'var(--warning-100)' }}>
                 <div style={{ fontSize: '13px', color: '#92400E', fontWeight: 600 }}>Hard gate: ₹500 stamp paper and notarisation are mandatory before checklist sign-off.</div>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-4">
@@ -666,16 +666,16 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   { label: 'Notarised agreement uploaded', checked: agreementNotarised, onChange: setAgreementNotarised },
                   { label: 'Witness signature captured and shareholder folio validated', checked: witnessConfirmed, onChange: setWitnessConfirmed },
                 ].map(item => (
-                  <label key={item.label} className="flex items-center justify-between p-3 rounded-xl border cursor-pointer" style={{ borderColor: item.checked ? '#BBF7D0' : '#EDEEF0', backgroundColor: item.checked ? '#F0FDF4' : '#FFFFFF' }}>
-                    <span style={{ fontSize: '13px', color: '#3D4450' }}>{item.label}</span>
-                    <input type="checkbox" checked={item.checked} onChange={e => item.onChange(e.target.checked)} style={{ accentColor: '#1A3C2A' }} />
+                  <label key={item.label} className="flex items-center justify-between p-3 rounded-xl border cursor-pointer" style={{ borderColor: item.checked ? '#BBF7D0' : 'var(--neutral-200)', backgroundColor: item.checked ? '#F0FDF4' : '#FFFFFF' }}>
+                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{item.label}</span>
+                    <input type="checkbox" checked={item.checked} onChange={e => item.onChange(e.target.checked)} style={{ accentColor: 'var(--brand-primary)' }} />
                   </label>
                 ))}
               </div>
               <button
                 onClick={() => { setAgreementStamped(true); setAgreementNotarised(true); }}
                 className="px-4 py-2.5 rounded-xl font-semibold flex items-center gap-2"
-                style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}
+                style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}
               >
                 <Check size={14} /> Mark Agreement Executed
               </button>
@@ -686,11 +686,11 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           {!['poa', 'triparty', 'sh4', 'termsheet', 'agreement', 'bank', 'checklist'].includes(activeTab) && (
             <div className="bg-white rounded-2xl p-8 border border-[#EDEEF0] flex flex-col items-center justify-center">
               <div style={{ fontSize: '40px', marginBottom: '12px' }}>📄</div>
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#12151A', marginBottom: '8px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '8px' }}>
                 {docTabs.find(t => t.id === activeTab)?.label}
               </h3>
-              <p style={{ fontSize: '14px', color: '#9EA8B3' }}>Document preparation workspace · Click "Generate Draft PDF" to begin</p>
-              <button className="mt-5 px-5 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>
+              <p style={{ fontSize: '14px', color: 'var(--neutral-400)' }}>Document preparation workspace · Click "Generate Draft PDF" to begin</p>
+              <button className="mt-5 px-5 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
                 Generate Draft PDF
               </button>
             </div>
@@ -700,21 +700,21 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
         {/* Right Preview Panel */}
         <div className="w-[560px] flex-shrink-0">
           <div className="bg-white rounded-2xl border border-[#EDEEF0] p-5 sticky top-4">
-            <div style={{ fontSize: '14px', fontWeight: 700, color: '#1A3C2A', marginBottom: '12px' }}>Legal Document Preview</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--brand-primary)', marginBottom: '12px' }}>Legal Document Preview</div>
             <div
               className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center"
-              style={{ height: '300px', borderColor: '#EDEEF0', backgroundColor: '#FDFAF4', fontFamily: 'Georgia, serif' }}
+              style={{ height: '300px', borderColor: 'var(--neutral-200)', backgroundColor: '#FDFAF4', fontFamily: 'Georgia, serif' }}
             >
-              <FileText size={40} style={{ color: '#EDEEF0' }} />
-              <p style={{ fontSize: '13px', color: '#9EA8B3', marginTop: '8px', textAlign: 'center' }}>
+              <FileText size={40} style={{ color: 'var(--neutral-200)' }} />
+              <p style={{ fontSize: '13px', color: 'var(--neutral-400)', marginTop: '8px', textAlign: 'center' }}>
                 Generate a PDF to preview it here
               </p>
             </div>
             <div className="flex gap-2 mt-4">
-              <button className="flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5" style={{ backgroundColor: '#F7F8FA', fontSize: '13px', color: '#3D4450', border: '1px solid #EDEEF0' }}>
+              <button className="flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5" style={{ backgroundColor: 'var(--neutral-100)', fontSize: '13px', color: 'var(--neutral-700)', border: '1px solid #EDEEF0' }}>
                 <Eye size={13} /> Preview
               </button>
-              <button className="flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '13px' }}>
+              <button className="flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '13px' }}>
                 <Download size={13} /> Download
               </button>
             </div>

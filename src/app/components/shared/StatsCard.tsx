@@ -14,10 +14,10 @@ interface StatsCardProps {
 
 export function StatsCard({ title, value, subtitle, icon, color, badge, progress, className = '', onClick }: StatsCardProps) {
   const badgeColors = {
-    success: { bg: '#DCFCE7', text: '#22C55E' },
-    warning: { bg: '#FEF3C7', text: '#F59E0B' },
-    error: { bg: '#FEE2E2', text: '#EF4444' },
-    info: { bg: '#DBEAFE', text: '#3B82F6' },
+    success: { bg: 'var(--success-100)', text: 'var(--success-500)' },
+    warning: { bg: 'var(--warning-100)', text: 'var(--warning-500)' },
+    error: { bg: 'var(--error-100)', text: 'var(--error-500)' },
+    info: { bg: 'var(--info-100)', text: 'var(--info-500)' },
   };
 
   const Wrapper = onClick ? 'button' : 'div';
@@ -30,21 +30,21 @@ export function StatsCard({ title, value, subtitle, icon, color, badge, progress
       type={onClick ? 'button' : undefined}
     >
       <div className="flex items-start justify-between mb-3">
-        <span style={{ fontSize: '13px', fontWeight: 500, color: '#9EA8B3', lineHeight: '18px' }}>{title}</span>
+        <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-400)', lineHeight: '18px' }}>{title}</span>
         {icon && (
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ backgroundColor: color ? `${color}18` : '#E8F5E9' }}
+            style={{ backgroundColor: color ? `${color}18` : 'var(--brand-light)' }}
           >
-            <span style={{ color: color || '#2D7A4F' }}>{icon}</span>
+            <span style={{ color: color || 'var(--brand-secondary)' }}>{icon}</span>
           </div>
         )}
       </div>
-      <div style={{ fontSize: '28px', fontWeight: 700, color: '#12151A', lineHeight: '36px', fontFamily: 'Inter, sans-serif' }}>
+      <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--neutral-900)', lineHeight: '36px', fontFamily: 'Inter, sans-serif' }}>
         {value}
       </div>
       {subtitle && (
-        <div style={{ fontSize: '12px', color: '#9EA8B3', marginTop: '4px', lineHeight: '18px' }}>{subtitle}</div>
+        <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px', lineHeight: '18px' }}>{subtitle}</div>
       )}
       {badge && (
         <span
@@ -59,10 +59,10 @@ export function StatsCard({ title, value, subtitle, icon, color, badge, progress
           <div className="h-1.5 bg-[#EDEEF0] rounded-full overflow-hidden">
             <div
               className="h-full rounded-full"
-              style={{ width: `${progress}%`, backgroundColor: color || '#2D7A4F', transition: 'width 0.6s ease' }}
+              style={{ width: `${progress}%`, backgroundColor: color || 'var(--brand-secondary)', transition: 'width 0.6s ease' }}
             />
           </div>
-          <div style={{ fontSize: '11px', color: '#9EA8B3', marginTop: '4px' }}>{progress}% completed</div>
+          <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '4px' }}>{progress}% completed</div>
         </div>
       )}
     </Wrapper>

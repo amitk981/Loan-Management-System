@@ -18,10 +18,10 @@ interface GateBannerProps {
 }
 
 const styles: Record<GateVariant, { bg: string; border: string; fg: string; icon: ReactNode; btn: string }> = {
-  blocked: { bg: '#FEF2F2', border: '#FECACA', fg: '#991B1B', icon: <AlertOctagon size={18} />, btn: '#EF4444' },
-  warning: { bg: '#FFFBEB', border: '#FDE68A', fg: '#92400E', icon: <AlertTriangle size={18} />, btn: '#D97706' },
-  info: { bg: '#EFF6FF', border: '#BFDBFE', fg: '#1E40AF', icon: <Info size={18} />, btn: '#1E88E5' },
-  ok: { bg: '#F0FDF4', border: '#BBF7D0', fg: '#166534', icon: <CheckCircle2 size={18} />, btn: '#1A3C2A' },
+  blocked: { bg: '#FEF2F2', border: '#FECACA', fg: '#991B1B', icon: <AlertOctagon size={18} />, btn: 'var(--error-500)' },
+  warning: { bg: '#FFFBEB', border: '#FDE68A', fg: '#92400E', icon: <AlertTriangle size={18} />, btn: 'var(--gold-500)' },
+  info: { bg: '#EFF6FF', border: '#BFDBFE', fg: '#1E40AF', icon: <Info size={18} />, btn: 'var(--brand-accent)' },
+  ok: { bg: '#F0FDF4', border: '#BBF7D0', fg: '#166534', icon: <CheckCircle2 size={18} />, btn: 'var(--brand-primary)' },
 };
 
 export function GateBanner({ variant, title, detail, action, className = '' }: GateBannerProps) {
@@ -36,7 +36,7 @@ export function GateBanner({ variant, title, detail, action, className = '' }: G
         <span style={{ color: s.btn, flexShrink: 0, marginTop: 1 }}>{s.icon}</span>
         <div>
           <div style={{ fontSize: '14px', fontWeight: 700, color: s.fg }}>{title}</div>
-          <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px', lineHeight: '18px' }}>{detail}</div>
+          <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px', lineHeight: '18px' }}>{detail}</div>
         </div>
       </div>
       {action && (

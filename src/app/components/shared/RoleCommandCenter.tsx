@@ -20,13 +20,13 @@ interface RoleCommandCenterProps {
 }
 
 const tones = {
-  green: { bg: '#E8F5E9', fg: '#1A3C2A', border: '#BBF7D0' },
-  blue: { bg: '#DBEAFE', fg: '#1E40AF', border: '#BFDBFE' },
+  green: { bg: 'var(--brand-light)', fg: 'var(--brand-primary)', border: '#BBF7D0' },
+  blue: { bg: 'var(--info-100)', fg: '#1E40AF', border: '#BFDBFE' },
   purple: { bg: '#EDE9FE', fg: '#7C3AED', border: '#DDD6FE' },
   cyan: { bg: '#E0F2FE', fg: '#0891B2', border: '#BAE6FD' },
-  amber: { bg: '#FEF3C7', fg: '#92400E', border: '#FDE68A' },
-  red: { bg: '#FEE2E2', fg: '#991B1B', border: '#FECACA' },
-  neutral: { bg: '#F7F8FA', fg: '#3D4450', border: '#EDEEF0' },
+  amber: { bg: 'var(--warning-100)', fg: '#92400E', border: '#FDE68A' },
+  red: { bg: 'var(--error-100)', fg: '#991B1B', border: '#FECACA' },
+  neutral: { bg: 'var(--neutral-100)', fg: 'var(--neutral-700)', border: 'var(--neutral-200)' },
 };
 
 function toneFor(tone: RoleAction['tone'] = 'green') {
@@ -49,8 +49,8 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
               {icon || <ShieldCheck size={18} />}
               <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase' }}>{title}</span>
             </div>
-            <h2 style={{ fontSize: 20, lineHeight: '28px', fontWeight: 800, color: '#12151A' }}>{focus}</h2>
-            <div style={{ fontSize: 13, lineHeight: '20px', color: '#3D4450', marginTop: 8 }}>{primaryAction.detail}</div>
+            <h2 style={{ fontSize: 20, lineHeight: '28px', fontWeight: 800, color: 'var(--neutral-900)' }}>{focus}</h2>
+            <div style={{ fontSize: 13, lineHeight: '20px', color: 'var(--neutral-700)', marginTop: 8 }}>{primaryAction.detail}</div>
           </div>
           <div className="mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-lg" style={{ backgroundColor: primaryTone.fg, color: 'white', fontSize: 13, fontWeight: 800, width: 'fit-content' }}>
             {primaryAction.label} <ArrowRight size={14} />
@@ -62,7 +62,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
             {metrics.map(metric => {
               const metricTone = toneFor(metric.tone || 'neutral');
               return (
-                <div key={metric.label} className="p-3 rounded-xl" style={{ backgroundColor: '#F7F8FA', border: '1px solid #EDEEF0' }}>
+                <div key={metric.label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
                   <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 800 }}>{metric.label}</div>
                   <div style={{ fontSize: 19, color: metricTone.fg, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{metric.value}</div>
                 </div>
@@ -82,7 +82,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div style={{ fontSize: 13, color: actionTone.fg, fontWeight: 700 }}>{action.label}</div>
-                      <div style={{ fontSize: 12, color: '#3D4450', lineHeight: '18px', marginTop: 3 }}>{action.detail}</div>
+                      <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 3 }}>{action.detail}</div>
                     </div>
                     {action.badge && (
                       <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.72)', color: actionTone.fg, fontSize: 11, fontWeight: 800 }}>

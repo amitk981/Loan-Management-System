@@ -30,7 +30,7 @@ const pageCopy: Record<string, { title: string; subtitle: string }> = {
 
 
 function Metric({ label, value, note, color }: { label: string; value: string; note: string; color: string }) {
-  return <div className="bg-white rounded-lg p-4 border border-[#EDEEF0]"><div style={{ fontSize: 12, color: '#9EA8B3', fontWeight: 800 }}>{label}</div><div style={{ fontSize: 25, color, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{value}</div><div style={{ fontSize: 12, color: '#3D4450', marginTop: 4 }}>{note}</div></div>;
+  return <div className="bg-white rounded-lg p-4 border border-[#EDEEF0]"><div style={{ fontSize: 12, color: 'var(--neutral-400)', fontWeight: 800 }}>{label}</div><div style={{ fontSize: 25, color, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{value}</div><div style={{ fontSize: 12, color: 'var(--neutral-700)', marginTop: 4 }}>{note}</div></div>;
 }
 
 export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperationsProps) {
@@ -47,7 +47,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
           <div className="col-span-8 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden">
             <Header icon={<ShieldCheck size={16} />} title="Authorization Queue" action={<StatusBadge status="Pending Authorization" />} />
             <SimpleTable headers={['', 'Loan ID', 'Borrower', 'Amount', 'Mode', 'Initiated By', 'Initiated At', 'Waiting', 'Action']}>
-              {authRows.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-disbursement')} className="border-b border-[#EDEEF0] clickable-row"><Cell><span className="inline-block w-2.5 h-2.5 rounded-full" style={{ backgroundColor: row.risk === 'red' ? '#EF4444' : '#F59E0B' }} /></Cell><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell>{row.mode}</Cell><Cell>{row.by}</Cell><Cell>{row.at}</Cell><Cell><strong style={{ color: row.risk === 'red' ? '#EF4444' : '#D97706' }}>{row.waiting}</strong></Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-disbursement'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 12, fontWeight: 800 }}>Review & Authorize</button></Cell></tr>)}
+              {authRows.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-disbursement')} className="border-b border-[#EDEEF0] clickable-row"><Cell><span className="inline-block w-2.5 h-2.5 rounded-full" style={{ backgroundColor: row.risk === 'red' ? 'var(--error-500)' : 'var(--warning-500)' }} /></Cell><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell>{row.mode}</Cell><Cell>{row.by}</Cell><Cell>{row.at}</Cell><Cell><strong style={{ color: row.risk === 'red' ? 'var(--error-500)' : 'var(--gold-500)' }}>{row.waiting}</strong></Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-disbursement'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 12, fontWeight: 800 }}>Review & Authorize</button></Cell></tr>)}
             </SimpleTable>
           </div>
           <div className="col-span-4 bg-white rounded-lg p-5 border border-[#EDEEF0]">
@@ -56,10 +56,10 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
               ['Borrower', 'Ramesh Patil'], ['Amount', '₹2,00,000.00'], ['Mode', 'NEFT'], ['From Account', 'SFPCL · RBL · XXXX-8842'], ['To Account', 'Ramesh Patil · SBI · XXXX-4821'], ['Initiated By', 'Rajesh Kulkarni'],
             ].map(([l, v]) => <Info key={l} label={l} value={v} />)}
             <div className="grid grid-cols-3 gap-2 my-4">{['View Sanction', 'View Checklist', 'SAP Preview'].map(x => <button key={x} className="p-2 rounded-lg border border-[#EDEEF0]" style={{ fontSize: 11, fontWeight: 800 }}>{x}</button>)}</div>
-            <p style={{ fontSize: 13, color: '#3D4450', fontWeight: 800 }}>Enter OTP sent to +91 98765 XXXXX</p>
+            <p style={{ fontSize: 13, color: 'var(--neutral-700)', fontWeight: 800 }}>Enter OTP sent to +91 98765 XXXXX</p>
             <div className="flex gap-2 mt-2 mb-3">{otp.map((d, i) => <input key={i} aria-label={`OTP digit ${i + 1}`} value={d} onChange={e => setOtp(prev => prev.map((x, idx) => idx === i ? e.target.value.slice(-1) : x))} className="text-center rounded-lg border border-[#D1D5DB]" style={{ width: 42, height: 46, fontFamily: 'Roboto Mono' }} />)}</div>
-            <button className="w-full py-3 rounded-lg font-semibold" style={{ backgroundColor: '#22C55E', color: 'white' }}>Authorize & Execute Payment</button>
-            <button className="w-full py-3 rounded-lg font-semibold mt-2" style={{ backgroundColor: '#FEE2E2', color: '#991B1B' }}>Reject / Hold</button>
+            <button className="w-full py-3 rounded-lg font-semibold" style={{ backgroundColor: 'var(--success-500)', color: 'white' }}>Authorize & Execute Payment</button>
+            <button className="w-full py-3 rounded-lg font-semibold mt-2" style={{ backgroundColor: 'var(--error-100)', color: '#991B1B' }}>Reject / Hold</button>
           </div>
         </div>
       );
@@ -73,13 +73,13 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
       <div className="space-y-5">
         <div className="grid grid-cols-4 gap-5">
           <Metric label="Ready Files" value="4" note="Released by CS checklist" color="#0891B2" />
-          <Metric label="Pending Authorization" value="2" note="CFC authorization required" color="#F59E0B" />
-          <Metric label="Disbursed Today" value="₹3.2L" note="UTR and SAP posted" color="#22C55E" />
-          <Metric label="Blocked" value="1" note="SAP code missing" color="#EF4444" />
+          <Metric label="Pending Authorization" value="2" note="CFC authorization required" color="var(--warning-500)" />
+          <Metric label="Disbursed Today" value="₹3.2L" note="UTR and SAP posted" color="var(--success-500)" />
+          <Metric label="Blocked" value="1" note="SAP code missing" color="var(--error-500)" />
         </div>
         <DataCard title="Disbursement Control Queue" action={<button onClick={() => onNavigate('treasury-disbursement')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 12, fontWeight: 800 }}>Process Selected</button>}>
           <SimpleTable headers={['Loan ID', 'Borrower', 'Amount', 'Stage', 'CS Sign', 'SAP Code', 'Waiting', 'Action']}>
-            {rows.map(row => <tr key={`${row.id}-${row.stage}`} onClick={() => onNavigate(row.page)} className="border-b border-[#EDEEF0] clickable-row"><Cell mono blue>{row.id}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell><StatusBadge status={row.stage} /></Cell><Cell>{row.csSign}</Cell><Cell mono>{row.sapCode || 'Pending'}</Cell><Cell>{row.waiting}</Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate(row.page); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.sapCode ? '#0891B2' : '#EDEEF0', color: row.sapCode ? 'white' : '#6B7280', fontSize: 12, fontWeight: 800 }}>{row.action}</button></Cell></tr>)}
+            {rows.map(row => <tr key={`${row.id}-${row.stage}`} onClick={() => onNavigate(row.page)} className="border-b border-[#EDEEF0] clickable-row"><Cell mono blue>{row.id}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.amount, true)}</Cell><Cell><StatusBadge status={row.stage} /></Cell><Cell>{row.csSign}</Cell><Cell mono>{row.sapCode || 'Pending'}</Cell><Cell>{row.waiting}</Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate(row.page); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.sapCode ? '#0891B2' : 'var(--neutral-200)', color: row.sapCode ? 'white' : '#6B7280', fontSize: 12, fontWeight: 800 }}>{row.action}</button></Cell></tr>)}
           </SimpleTable>
         </DataCard>
       </div>
@@ -106,8 +106,8 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
           <h3 style={{ fontSize: 16, fontWeight: 700 }}>Create New SAP Customer Code</h3><p style={{ fontSize: 12, color: '#6B7280', marginBottom: 12 }}>First-time applicant — new Customer ID required per SOP §5.1</p>
           {[
             ['Farmer Full Name', 'Prakash Ramchandra Shinde'], ['Aadhaar Number', 'XXXX-XXXX-3421'], ['PAN Number', 'ABCPS1234F'], ['Address', 'Village Pimpalgaon, Taluka Niphad, Nashik 422209'], ['Email ID', 'prakash.s@gmail.com'], ['Loan Application Number', 'LO000050'], ['SAP Company Code', 'SFPCL'], ['Customer Account Group', 'Z001 — FPC Member Borrower'],
-          ].map(([label, value]) => <div key={label} className="mb-3"><label style={{ fontSize: 12, color: '#3D4450', fontWeight: 800 }}>{label}</label><input readOnly value={value} className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB] bg-[#F7F8FA]" style={{ height: 38, fontSize: 13 }} /></div>)}
-          <div className="p-3 rounded-lg mb-3" style={{ backgroundColor: '#FEF3C7', color: '#92400E', fontSize: 13, fontWeight: 800 }}>Duplicate check: No existing SAP customer ID found for PAN ABCPS1234F.</div>
+          ].map(([label, value]) => <div key={label} className="mb-3"><label style={{ fontSize: 12, color: 'var(--neutral-700)', fontWeight: 800 }}>{label}</label><input readOnly value={value} className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB] bg-[#F7F8FA]" style={{ height: 38, fontSize: 13 }} /></div>)}
+          <div className="p-3 rounded-lg mb-3" style={{ backgroundColor: 'var(--warning-100)', color: '#92400E', fontSize: 13, fontWeight: 800 }}>Duplicate check: No existing SAP customer ID found for PAN ABCPS1234F.</div>
           <button className="w-full py-3 rounded-lg font-semibold" style={{ backgroundColor: '#0891B2', color: 'white' }}>Create SAP Customer Code</button>
         </div>
         <div className="col-span-6"><DataCard title="Recent SAP Code Creations"><SimpleTable headers={['Loan ID', 'Farmer Name', 'Aadhaar', 'PAN', 'SAP Code', 'Status']}>{sapCodeRequests.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-sap-log')} className="border-b border-[#EDEEF0] clickable-row"><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono>{row.aadhaar}</Cell><Cell mono>{row.pan}</Cell><Cell mono>{row.code}</Cell><Cell><StatusBadge status={row.status} /></Cell></tr>)}</SimpleTable></DataCard></div>
@@ -119,19 +119,19 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
     if (activePage === 'treasury-deductions') {
       return (
         <div className="space-y-5">
-          <div className="p-4 rounded-lg" style={{ backgroundColor: '#F7F8FA', borderLeft: '4px solid #1A3C2A', fontSize: 13, color: '#3D4450' }}><strong>Tri-Party Repayment Flow:</strong> Farmer sells produce → Subsidiary deducts repayment → transfers to SFPCL → SFPCL posts to SAP. Amounts must match within ₹1 tolerance.</div>
-          <DataCard title="Subsidiary Deduction Queue"><SimpleTable headers={['Statement Date', 'Farmer Name', 'Loan ID', 'Subsidiary Ref', 'Gross Payment', 'Deduction', 'Net to Farmer', 'Received', 'Reconciled', 'Action']}>{subsidiaryDeductions.map(row => <tr key={row.ref} onClick={() => onNavigate('treasury-reconciliation')} className="border-b border-[#EDEEF0] clickable-row"><Cell>{row.date}</Cell><Cell>{row.borrower}</Cell><Cell mono blue>{row.loan}</Cell><Cell mono>{row.ref}</Cell><Cell mono right>{formatCurrency(row.gross)}</Cell><Cell mono right>{formatCurrency(row.deduction)}</Cell><Cell mono right>{formatCurrency(row.net)}</Cell><Cell>{row.received}</Cell><Cell><StatusBadge status={row.reconciled} /></Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-reconciliation'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.reconciled === 'Matched' ? '#EDEEF0' : '#0891B2', color: row.reconciled === 'Matched' ? '#3D4450' : 'white', fontSize: 12, fontWeight: 800 }}>{row.reconciled === 'Matched' ? 'View' : 'Reconcile'}</button></Cell></tr>)}</SimpleTable></DataCard>
+          <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--neutral-100)', borderLeft: '4px solid #1A3C2A', fontSize: 13, color: 'var(--neutral-700)' }}><strong>Tri-Party Repayment Flow:</strong> Farmer sells produce → Subsidiary deducts repayment → transfers to SFPCL → SFPCL posts to SAP. Amounts must match within ₹1 tolerance.</div>
+          <DataCard title="Subsidiary Deduction Queue"><SimpleTable headers={['Statement Date', 'Farmer Name', 'Loan ID', 'Subsidiary Ref', 'Gross Payment', 'Deduction', 'Net to Farmer', 'Received', 'Reconciled', 'Action']}>{subsidiaryDeductions.map(row => <tr key={row.ref} onClick={() => onNavigate('treasury-reconciliation')} className="border-b border-[#EDEEF0] clickable-row"><Cell>{row.date}</Cell><Cell>{row.borrower}</Cell><Cell mono blue>{row.loan}</Cell><Cell mono>{row.ref}</Cell><Cell mono right>{formatCurrency(row.gross)}</Cell><Cell mono right>{formatCurrency(row.deduction)}</Cell><Cell mono right>{formatCurrency(row.net)}</Cell><Cell>{row.received}</Cell><Cell><StatusBadge status={row.reconciled} /></Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-reconciliation'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.reconciled === 'Matched' ? 'var(--neutral-200)' : '#0891B2', color: row.reconciled === 'Matched' ? 'var(--neutral-700)' : 'white', fontSize: 12, fontWeight: 800 }}>{row.reconciled === 'Matched' ? 'View' : 'Reconcile'}</button></Cell></tr>)}</SimpleTable></DataCard>
         </div>
       );
     }
 
     return (
       <div className="space-y-5">
-        <div className="rounded-lg p-4" style={{ backgroundColor: '#12151A', color: 'white', fontSize: 16, fontWeight: 700 }}>This Month's Collections: ₹2,18,500 received | 14 transactions | <span style={{ color: '#F59E0B' }}>₹43,200 pending SAP posting</span></div>
+        <div className="rounded-lg p-4" style={{ backgroundColor: 'var(--neutral-900)', color: 'white', fontSize: 16, fontWeight: 700 }}>This Month's Collections: ₹2,18,500 received | 14 transactions | <span style={{ color: 'var(--warning-500)' }}>₹43,200 pending SAP posting</span></div>
         <div className="p-4 rounded-lg" style={{ backgroundColor: '#E0F2FE', borderLeft: '4px solid #0891B2', fontSize: 13, color: '#0E7490' }}>Repayment allocation is hardcoded: partial repayments apply to principal first, then interest. Full repayment triggers NOC workflow to Compliance.</div>
         <DataCard title="Awaiting SAP Entry" action={<button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#0891B2', color: 'white', fontSize: 12, fontWeight: 800 }}>Post All to SAP</button>}>
           <SimpleTable headers={['Date', 'UTR No.', 'Farmer Name', 'Loan ID', 'Amount', 'Mode', 'Principal Adj.', 'Interest Adj.', 'Balance After', 'Action']}>
-            {directRepayments.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-sap-log')} className="border-b border-[#EDEEF0] clickable-row" style={{ backgroundColor: row.status === 'UTR Missing' ? '#FEF2F2' : 'white' }}><Cell>{row.date}</Cell><Cell mono>{row.utr}</Cell><Cell>{row.borrower}</Cell><Cell mono blue>{row.loan}</Cell><Cell mono right>{formatCurrency(row.amount)}</Cell><Cell>{row.mode}</Cell><Cell mono right>{row.principal ? formatCurrency(row.principal) : '-'}</Cell><Cell mono right>{row.interest ? formatCurrency(row.interest) : '-'}</Cell><Cell mono right>{row.balance ? formatCurrency(row.balance) : '-'}</Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-sap-log'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.status === 'UTR Missing' ? '#FEF3C7' : '#0891B2', color: row.status === 'UTR Missing' ? '#92400E' : 'white', fontSize: 12, fontWeight: 800 }}>{row.status === 'UTR Missing' ? 'Verify UTR' : 'Post to SAP'}</button></Cell></tr>)}
+            {directRepayments.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-sap-log')} className="border-b border-[#EDEEF0] clickable-row" style={{ backgroundColor: row.status === 'UTR Missing' ? '#FEF2F2' : 'white' }}><Cell>{row.date}</Cell><Cell mono>{row.utr}</Cell><Cell>{row.borrower}</Cell><Cell mono blue>{row.loan}</Cell><Cell mono right>{formatCurrency(row.amount)}</Cell><Cell>{row.mode}</Cell><Cell mono right>{row.principal ? formatCurrency(row.principal) : '-'}</Cell><Cell mono right>{row.interest ? formatCurrency(row.interest) : '-'}</Cell><Cell mono right>{row.balance ? formatCurrency(row.balance) : '-'}</Cell><Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('treasury-sap-log'); }} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: row.status === 'UTR Missing' ? 'var(--warning-100)' : '#0891B2', color: row.status === 'UTR Missing' ? '#92400E' : 'white', fontSize: 12, fontWeight: 800 }}>{row.status === 'UTR Missing' ? 'Verify UTR' : 'Post to SAP'}</button></Cell></tr>)}
           </SimpleTable>
         </DataCard>
       </div>
@@ -140,28 +140,28 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
 
   const renderInterest = () => (
     <div className="space-y-5">
-      <div className="rounded-lg p-4" style={{ backgroundColor: '#12151A', color: 'white', fontWeight: 700 }}>June 2026 — Accruing interest on 47 active loans · Total this month: ₹24,300</div>
-      <DataCard title="Monthly Accruals" action={<button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#2D7A4F', color: 'white', fontSize: 12, fontWeight: 800 }}>Generate All June Accruals</button>}>
+      <div className="rounded-lg p-4" style={{ backgroundColor: 'var(--neutral-900)', color: 'white', fontWeight: 700 }}>June 2026 — Accruing interest on 47 active loans · Total this month: ₹24,300</div>
+      <DataCard title="Monthly Accruals" action={<button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-secondary)', color: 'white', fontSize: 12, fontWeight: 800 }}>Generate All June Accruals</button>}>
         <SimpleTable headers={['Loan ID', 'Borrower', 'Principal O/S', 'Rate', 'Monthly Interest', 'Accrual Date', 'SAP Entry', 'Status']}>{interestAccruals.map(row => <tr key={row.loan} onClick={() => onNavigate('treasury-sap-log')} className="border-b border-[#EDEEF0] clickable-row"><Cell mono blue>{row.loan}</Cell><Cell>{row.borrower}</Cell><Cell mono right>{formatCurrency(row.principal)}</Cell><Cell>{row.rate}</Cell><Cell mono right>{formatCurrency(row.interest)}</Cell><Cell>{row.date}</Cell><Cell mono>{row.sap}</Cell><Cell><StatusBadge status={row.status} /></Cell></tr>)}</SimpleTable>
       </DataCard>
       <div className="grid grid-cols-2 gap-5">
         <DataCard title="Year-End Interest Invoices"><SimpleTable headers={['Loan ID', 'Interest', 'Status', 'Due By', 'Action']}><tr><Cell mono blue>LO000031</Cell><Cell mono>₹17,100</Cell><Cell><StatusBadge status="Paid" /></Cell><Cell>30 Apr 2026</Cell><Cell>View Invoice</Cell></tr><tr style={{ backgroundColor: '#FEF2F2' }}><Cell mono blue>LO000022</Cell><Cell mono>₹9,600</Cell><Cell><StatusBadge status="Unpaid" /></Cell><Cell>30 Apr 2026</Cell><Cell>Capitalize →</Cell></tr></SimpleTable></DataCard>
-        <DataCard title="Capitalization Guardrail"><div className="p-5" style={{ fontSize: 13, color: '#3D4450', lineHeight: '22px' }}>Capitalization is valid only after 30 April cutoff and after intimation letter is sent to borrower. Finance Controller authorization is required before posting the SAP capitalization entry.</div></DataCard>
+        <DataCard title="Capitalization Guardrail"><div className="p-5" style={{ fontSize: 13, color: 'var(--neutral-700)', lineHeight: '22px' }}>Capitalization is valid only after 30 April cutoff and after intimation letter is sent to borrower. Finance Controller authorization is required before posting the SAP capitalization entry.</div></DataCard>
       </div>
     </div>
   );
 
   const renderReconciliation = () => (
     <div className="space-y-5">
-      <div className="grid grid-cols-3 gap-5"><Metric label="Bank Statement Total Credits" value="₹3,82,500" note="RBL statement credits" color="#22C55E" /><Metric label="SAP-Posted Total Credits" value="₹3,82,500" note="SAP receipts posted" color="#22C55E" /><Metric label="Unreconciled Items" value="1" note="₹10,000 likely LO000022" color="#EF4444" /></div>
-      <DataCard title="Matched and Unmatched Transactions"><SimpleTable headers={['Statement Date', 'Description', 'Statement Amount', 'SAP Entry', 'SAP Amount', 'Match', 'Action']}>{reconciliationRows.map(row => <tr key={row.desc} onClick={() => onNavigate('treasury-reconciliation')} className="border-b border-[#EDEEF0] clickable-row" style={{ backgroundColor: row.match ? '#F0FDF4' : '#FEF2F2' }}><Cell>{row.date}</Cell><Cell>{row.desc}</Cell><Cell mono right>{formatCurrency(row.statement)}</Cell><Cell mono>{row.sap}</Cell><Cell mono right>{row.sapAmount ? formatCurrency(row.sapAmount) : '-'}</Cell><Cell>{row.match ? 'Matched' : 'Unmatched'}</Cell><Cell>{row.match ? 'Matched' : <button onClick={(e) => e.stopPropagation()} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#EF4444', color: 'white', fontSize: 12, fontWeight: 800 }}>Match Manually</button>}</Cell></tr>)}</SimpleTable></DataCard>
+      <div className="grid grid-cols-3 gap-5"><Metric label="Bank Statement Total Credits" value="₹3,82,500" note="RBL statement credits" color="var(--success-500)" /><Metric label="SAP-Posted Total Credits" value="₹3,82,500" note="SAP receipts posted" color="var(--success-500)" /><Metric label="Unreconciled Items" value="1" note="₹10,000 likely LO000022" color="var(--error-500)" /></div>
+      <DataCard title="Matched and Unmatched Transactions"><SimpleTable headers={['Statement Date', 'Description', 'Statement Amount', 'SAP Entry', 'SAP Amount', 'Match', 'Action']}>{reconciliationRows.map(row => <tr key={row.desc} onClick={() => onNavigate('treasury-reconciliation')} className="border-b border-[#EDEEF0] clickable-row" style={{ backgroundColor: row.match ? '#F0FDF4' : '#FEF2F2' }}><Cell>{row.date}</Cell><Cell>{row.desc}</Cell><Cell mono right>{formatCurrency(row.statement)}</Cell><Cell mono>{row.sap}</Cell><Cell mono right>{row.sapAmount ? formatCurrency(row.sapAmount) : '-'}</Cell><Cell>{row.match ? 'Matched' : 'Unmatched'}</Cell><Cell>{row.match ? 'Matched' : <button onClick={(e) => e.stopPropagation()} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--error-500)', color: 'white', fontSize: 12, fontWeight: 800 }}>Match Manually</button>}</Cell></tr>)}</SimpleTable></DataCard>
     </div>
   );
 
   const renderReports = () => (
     <div className="space-y-5">
-      <div className="grid grid-cols-4 gap-5"><Metric label="Total Disbursed" value="₹42.6L" note="Loan portfolio total" color="#0891B2" /><Metric label="Outstanding" value="₹38.4L" note="Principal outstanding" color="#1A3C2A" /><Metric label="Collection Efficiency" value="91%" note="Current FY" color="#22C55E" /><Metric label="SAP Open Items" value="3" note="Posting exceptions" color="#F59E0B" /></div>
-      <div className="grid grid-cols-3 gap-5">{['Bank Reconciliation Report', 'Ledger Summary', 'Disbursement Advice Export', 'SAP Posting Audit', 'Interest Accrual Pack', 'Subsidiary Deduction Report', 'Quarterly CFO MIS', 'Export Centre Bundle', 'NOC / Closure Register'].map(report => <button key={report} onClick={() => onNavigate(report.includes('Reconciliation') ? 'treasury-reconciliation' : report.includes('Ledger') ? 'treasury-ledger' : 'treasury-exports')} className="bg-white rounded-lg p-5 border border-[#EDEEF0] text-left clickable-card"><FileBarChart size={18} color="#0891B2" /><h3 style={{ fontSize: 14, fontWeight: 700, marginTop: 12 }}>{report}</h3><div style={{ fontSize: 13, color: '#3D4450', minHeight: 40, marginTop: 8 }}>Audit refs, SAP status and totals.</div><span className="inline-flex mt-3 px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}><Download size={13} style={{ marginRight: 6 }} />Generate</span></button>)}</div>
+      <div className="grid grid-cols-4 gap-5"><Metric label="Total Disbursed" value="₹42.6L" note="Loan portfolio total" color="#0891B2" /><Metric label="Outstanding" value="₹38.4L" note="Principal outstanding" color="var(--brand-primary)" /><Metric label="Collection Efficiency" value="91%" note="Current FY" color="var(--success-500)" /><Metric label="SAP Open Items" value="3" note="Posting exceptions" color="var(--warning-500)" /></div>
+      <div className="grid grid-cols-3 gap-5">{['Bank Reconciliation Report', 'Ledger Summary', 'Disbursement Advice Export', 'SAP Posting Audit', 'Interest Accrual Pack', 'Subsidiary Deduction Report', 'Quarterly CFO MIS', 'Export Centre Bundle', 'NOC / Closure Register'].map(report => <button key={report} onClick={() => onNavigate(report.includes('Reconciliation') ? 'treasury-reconciliation' : report.includes('Ledger') ? 'treasury-ledger' : 'treasury-exports')} className="bg-white rounded-lg p-5 border border-[#EDEEF0] text-left clickable-card"><FileBarChart size={18} color="#0891B2" /><h3 style={{ fontSize: 14, fontWeight: 700, marginTop: 12 }}>{report}</h3><div style={{ fontSize: 13, color: 'var(--neutral-700)', minHeight: 40, marginTop: 8 }}>Audit refs, SAP status and totals.</div><span className="inline-flex mt-3 px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 12, fontWeight: 800 }}><Download size={13} style={{ marginRight: 6 }} />Generate</span></button>)}</div>
     </div>
   );
 
@@ -192,7 +192,7 @@ export function TreasuryOperations({ onNavigate, activePage }: TreasuryOperation
 }
 
 function Header({ icon, title, action }: { icon: ReactNode; title: string; action?: ReactNode }) {
-  return <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: '#F7F8FA' }}><div className="flex items-center gap-2" style={{ color: '#0891B2' }}>{icon}<h3 style={{ fontSize: 15, fontWeight: 700, color: '#12151A' }}>{title}</h3></div>{action}</div>;
+  return <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}><div className="flex items-center gap-2" style={{ color: '#0891B2' }}>{icon}<h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</h3></div>{action}</div>;
 }
 
 function DataCard({ title, action, children }: { title: string; action?: ReactNode; children: ReactNode }) {
@@ -200,13 +200,13 @@ function DataCard({ title, action, children }: { title: string; action?: ReactNo
 }
 
 function SimpleTable({ headers, children }: { headers: string[]; children: ReactNode }) {
-  return <div className="table-scroll"><table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: '#9EA8B3', fontWeight: 800, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
+  return <div className="table-scroll"><table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 800, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
 }
 
 function Cell({ children, mono, blue, right }: { children: ReactNode; mono?: boolean; blue?: boolean; right?: boolean }) {
-  return <td className={`px-4 py-3 ${right ? 'text-right' : ''}`} style={{ fontSize: 13, color: blue ? '#0E7490' : '#3D4450', fontFamily: mono ? 'Roboto Mono' : 'inherit', fontWeight: blue ? 900 : 600 }}>{children}</td>;
+  return <td className={`px-4 py-3 ${right ? 'text-right' : ''}`} style={{ fontSize: 13, color: blue ? '#0E7490' : 'var(--neutral-700)', fontFamily: mono ? 'Roboto Mono' : 'inherit', fontWeight: blue ? 900 : 600 }}>{children}</td>;
 }
 
 function Info({ label, value }: { label: string; value: string }) {
-  return <div className="flex items-center justify-between py-2 border-b border-[#EDEEF0]"><span style={{ fontSize: 12, color: '#6B7280' }}>{label}</span><span style={{ fontSize: 12, color: '#12151A', fontWeight: 800, textAlign: 'right' }}>{value}</span></div>;
+  return <div className="flex items-center justify-between py-2 border-b border-[#EDEEF0]"><span style={{ fontSize: 12, color: '#6B7280' }}>{label}</span><span style={{ fontSize: 12, color: 'var(--neutral-900)', fontWeight: 800, textAlign: 'right' }}>{value}</span></div>;
 }

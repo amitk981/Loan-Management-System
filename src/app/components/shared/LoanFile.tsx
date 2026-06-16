@@ -67,12 +67,12 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
         <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
           <div className="flex items-center gap-4">
             <div>
-              <div style={{ fontSize: '12px', color: '#9EA8B3', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Requested</div>
-              <div style={{ fontSize: '28px', fontWeight: 700, color: '#12151A', fontFamily: 'Roboto Mono', lineHeight: '34px' }}>{formatCurrency(loan.requested)}</div>
+              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Requested</div>
+              <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--neutral-900)', fontFamily: 'Roboto Mono', lineHeight: '34px' }}>{formatCurrency(loan.requested)}</div>
             </div>
-            <div className="h-10 w-px" style={{ backgroundColor: '#EDEEF0' }} />
+            <div className="h-10 w-px" style={{ backgroundColor: 'var(--neutral-200)' }} />
             <div>
-              <div style={{ fontSize: '12px', color: '#9EA8B3', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Eligible limit</div>
+              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Eligible limit</div>
               <div style={{ fontSize: '16px', fontWeight: 600, color: overLimit ? '#B42318' : '#166534', fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
             </div>
           </div>
@@ -97,7 +97,7 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
         tabs={TABS.map(t => ({ key: t.key, label: t.label }))}
         activeKey={tab}
         onChange={(k) => setTab(k as TabKey)}
-        accent="#1A3C2A"
+        accent="var(--brand-primary)"
       />
 
       {!owns(tab) && tab !== 'audit' && (
@@ -118,8 +118,8 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
 function Card({ title, children, action }: { title: string; children: React.ReactNode; action?: React.ReactNode }) {
   return (
     <div className="bg-white rounded-xl border border-[#EDEEF0] overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: '#F7F8FA' }}>
-        <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>{title}</h3>
+      <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}>
+        <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</h3>
         {action}
       </div>
       <div className="p-5">{children}</div>
@@ -131,7 +131,7 @@ function Row({ label, value, mono }: { label: string; value: string; mono?: bool
   return (
     <div className="flex justify-between gap-4 py-2.5 border-b border-[#EDEEF0] last:border-0">
       <span style={{ fontSize: '13px', color: '#6B7280' }}>{label}</span>
-      <span style={{ fontSize: '13px', color: '#12151A', fontWeight: 600, fontFamily: mono ? 'Roboto Mono' : 'inherit', textAlign: 'right' }}>{value}</span>
+      <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600, fontFamily: mono ? 'Roboto Mono' : 'inherit', textAlign: 'right' }}>{value}</span>
     </div>
   );
 }
@@ -176,9 +176,9 @@ function AppraisalTab({ loan, shareLimit, landLimit, eligible, editable, onNavig
       <Card title="Eligibility (5 gates — Annexure B)">
         <div className="space-y-2">
           {gates.map(g => (
-            <label key={g} className="flex items-start gap-2.5 p-2.5 rounded-lg" style={{ backgroundColor: '#F7F8FA' }}>
-              <input type="checkbox" defaultChecked disabled={!editable} style={{ accentColor: '#1A3C2A', marginTop: 2 }} />
-              <span style={{ fontSize: '13px', color: '#3D4450', lineHeight: '18px' }}>{g}</span>
+            <label key={g} className="flex items-start gap-2.5 p-2.5 rounded-lg" style={{ backgroundColor: 'var(--neutral-100)' }}>
+              <input type="checkbox" defaultChecked disabled={!editable} style={{ accentColor: 'var(--brand-primary)', marginTop: 2 }} />
+              <span style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '18px' }}>{g}</span>
             </label>
           ))}
         </div>
@@ -186,13 +186,13 @@ function AppraisalTab({ loan, shareLimit, landLimit, eligible, editable, onNavig
       <Card title="Loan limit (lower of the two)">
         <Row label="Shareholding-based" value={`${loan.shares.toLocaleString('en-IN')} × ₹${loan.valuationPerShare} = ${formatCurrency(shareLimit)}`} mono />
         <Row label="Land-based (scale of finance)" value={`${loan.landAcres} × ₹${loan.scaleOfFinance.toLocaleString('en-IN')} = ${formatCurrency(landLimit)}`} mono />
-        <div className="mt-3 p-3 rounded-lg flex items-center justify-between" style={{ backgroundColor: '#1A3C2A' }}>
+        <div className="mt-3 p-3 rounded-lg flex items-center justify-between" style={{ backgroundColor: 'var(--brand-primary)' }}>
           <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)' }}>Eligible limit</span>
           <span style={{ fontSize: '18px', color: 'white', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</span>
         </div>
         <Row label="Risk rating" value={loan.risk} />
         {editable && (
-          <button onClick={() => onNavigate('credit-review')} className="mt-3 w-full py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>
+          <button onClick={() => onNavigate('credit-review')} className="mt-3 w-full py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
             Open full appraisal note <ArrowRight size={15} />
           </button>
         )}
@@ -212,8 +212,8 @@ function SignatureLadder({ authority }: { authority: string }) {
     <div className="space-y-2">
       {sigs.map(s => (
         <div key={s.who} className="flex items-center justify-between p-3 rounded-lg" style={{ backgroundColor: s.state === 'Signed' ? '#F0FDF4' : '#FFFBEB' }}>
-          <span className="flex items-center gap-2" style={{ fontSize: '13px', fontWeight: 600, color: '#12151A' }}>
-            {s.state === 'Signed' ? <Check size={15} style={{ color: '#22C55E' }} /> : <Lock size={15} style={{ color: '#D97706' }} />} {s.who}
+          <span className="flex items-center gap-2" style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-900)' }}>
+            {s.state === 'Signed' ? <Check size={15} style={{ color: 'var(--success-500)' }} /> : <Lock size={15} style={{ color: 'var(--gold-500)' }} />} {s.who}
           </span>
           <StatusBadge status={s.state === 'Signed' ? 'Verified' : 'Awaiting Signature'} />
         </div>
@@ -229,9 +229,9 @@ function SanctionTab({ authority, editable }: { authority: string; editable: boo
       <Card title="Credit scrutiny (7 checks)">
         <div className="space-y-2">
           {checks.map(c => (
-            <div key={c} className="flex items-center gap-2.5 p-2.5 rounded-lg" style={{ backgroundColor: '#F7F8FA' }}>
-              <Check size={15} style={{ color: '#22C55E' }} />
-              <span style={{ fontSize: '13px', color: '#3D4450' }}>{c}</span>
+            <div key={c} className="flex items-center gap-2.5 p-2.5 rounded-lg" style={{ backgroundColor: 'var(--neutral-100)' }}>
+              <Check size={15} style={{ color: 'var(--success-500)' }} />
+              <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{c}</span>
             </div>
           ))}
         </div>
@@ -240,8 +240,8 @@ function SanctionTab({ authority, editable }: { authority: string; editable: boo
         <SignatureLadder authority={authority} />
         {editable && (
           <div className="flex gap-2 mt-4">
-            <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Approve</button>
-            <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#FEE2E2', color: '#991B1B', fontSize: '14px' }}>Reject with reason</button>
+            <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Approve</button>
+            <button className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--error-100)', color: '#991B1B', fontSize: '14px' }}>Reject with reason</button>
           </div>
         )}
         <p style={{ fontSize: '12px', color: '#6B7280', marginTop: '10px', lineHeight: '18px' }}>Decision is recorded in the Credit Sanction Register (Annexure K). For loans above ₹5L the first signature locks "pending 2nd director".</p>
@@ -254,10 +254,10 @@ function DocStateCard({ name, state, note }: { name: string; state: string; note
   return (
     <div className="flex items-center justify-between p-3 rounded-lg border border-[#EDEEF0]">
       <div className="flex items-center gap-2.5">
-        <FileText size={16} style={{ color: '#1A3C2A' }} />
+        <FileText size={16} style={{ color: 'var(--brand-primary)' }} />
         <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#12151A' }}>{name}</div>
-          <div style={{ fontSize: '11px', color: '#9EA8B3' }}>{note}</div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-900)' }}>{name}</div>
+          <div style={{ fontSize: '11px', color: 'var(--neutral-400)' }}>{note}</div>
         </div>
       </div>
       <StatusBadge status={state} />
@@ -321,8 +321,8 @@ function RepaymentTab() {
       <Card title="Default ladder (SOP §6.2)">
         <div className="space-y-2">
           {['Miss → +3-month grace', 'Assess intentional / non-intentional', 'Non-intentional → +1-year extension', 'Still unpaid → Note for Non-Payment', 'SC + Board → SH-4 / cheque invocation'].map((s, i) => (
-            <div key={s} className="flex items-center gap-2.5" style={{ fontSize: '13px', color: '#3D4450' }}>
-              <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: '#EDEEF0', fontSize: '11px', fontWeight: 700, color: '#6B7280' }}>{i + 1}</span>
+            <div key={s} className="flex items-center gap-2.5" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>
+              <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--neutral-200)', fontSize: '11px', fontWeight: 700, color: '#6B7280' }}>{i + 1}</span>
               {s}
             </div>
           ))}
