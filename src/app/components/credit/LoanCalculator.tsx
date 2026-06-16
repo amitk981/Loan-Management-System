@@ -35,7 +35,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
         <div className="bg-white rounded-2xl p-6 border border-[#EDEEF0] mb-5">
           <div className="flex items-center gap-2 mb-5">
             <Calculator size={20} style={{ color: 'var(--brand-secondary)' }} />
-            <h3 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--neutral-900)' }}>Calculate Loan Eligibility</h3>
+            <h3 style={{ fontSize: '18px', fontWeight: 500, color: 'var(--neutral-900)' }}>Calculate Loan Eligibility</h3>
           </div>
 
           <div className="grid grid-cols-2 gap-6">
@@ -51,7 +51,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
                   value={shares}
                   onChange={e => setShares(parseInt(e.target.value) || 0)}
                   className="w-full px-4 rounded-xl border border-[#A7F3D0] focus:outline-none bg-white"
-                  style={{ height: '48px', fontSize: '20px', fontFamily: 'Roboto Mono', fontWeight: 600, color: 'var(--neutral-900)' }}
+                  style={{ height: '48px', fontSize: '20px', fontFamily: 'Roboto Mono', fontWeight: 500, color: 'var(--neutral-900)' }}
                 />
               </div>
 
@@ -90,7 +90,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
                   step="0.25"
                   onChange={e => setLandAcres(parseFloat(e.target.value) || 0)}
                   className="w-full px-4 rounded-xl border border-[#BFDBFE] focus:outline-none bg-white"
-                  style={{ height: '48px', fontSize: '20px', fontFamily: 'Roboto Mono', fontWeight: 600, color: 'var(--neutral-900)' }}
+                  style={{ height: '48px', fontSize: '20px', fontFamily: 'Roboto Mono', fontWeight: 500, color: 'var(--neutral-900)' }}
                 />
               </div>
 
@@ -156,7 +156,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
             <RefreshCw size={14} /> Reset Calculator
           </button>
           <button
-            className="flex-1 py-3 rounded-xl font-semibold transition-all hover:opacity-90"
+            className="flex-1 py-3 rounded-xl font-medium transition-all hover:opacity-90"
             style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}
             onClick={() => onNavigate('credit-review')}
           >
@@ -165,7 +165,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
         </div>
 
         <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid #FDE68A' }}>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--warning-700)', marginBottom: '4px' }}>⚠️ Configurable Parameters (Super Admin only)</div>
+          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--warning-700)', marginBottom: '4px' }}>⚠️ Configurable Parameters (Super Admin only)</div>
           <div style={{ fontSize: '12px', color: 'var(--warning-700)', lineHeight: '20px' }}>
             Share valuation: ₹{shareValuation}/share (Board approved, AGM 2024) · Scale of Finance: ₹{scaleOfFinance.toLocaleString('en-IN')}/acre (FY 2025-26) · Pledge %: 30% of NAV
           </div>

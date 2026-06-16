@@ -21,7 +21,7 @@ export function UniversalStageTracker({ currentStage = 5, compact = false }: { c
                 >
                   {done ? <Check size={16} /> : stage}
                 </button>
-                {!compact && <div style={{ fontSize: 12, color: active ? 'var(--brand-primary)' : 'var(--neutral-700)', fontWeight: active ? 900 : 700, textAlign: 'center', marginTop: 8, maxWidth: 96 }}>{label}</div>}
+                {!compact && <div style={{ fontSize: 12, color: active ? 'var(--brand-primary)' : 'var(--neutral-700)', fontWeight: active ? 700 : 700, textAlign: 'center', marginTop: 8, maxWidth: 96 }}>{label}</div>}
               </div>
               {i < loanStages.length - 1 && <div className="flex-1 h-1 mx-2 mt-4 rounded-full" style={{ backgroundColor: done ? 'var(--success-500)' : 'var(--neutral-200)', borderTop: done ? '0' : '1px dashed #D1D5DB' }} />}
             </div>
@@ -43,7 +43,7 @@ export function AuditTrailPanel({ farmerSafe = false }: { farmerSafe?: boolean }
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead><tr>{['Timestamp', 'Role', 'Actor', 'Stage', 'Action', 'Entity', 'Details'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: 11, color: 'var(--neutral-400)', textTransform: 'uppercase' }}>{h}</th>)}</tr></thead>
-          <tbody>{visibleEvents.map(row => <tr key={`${row[0]}-${row[4]}`} className="border-t border-[#EDEEF0]">{row.map((cell, i) => <td key={i} className="px-4 py-3" style={{ fontSize: 12, color: i === 5 ? 'var(--brand-accent)' : 'var(--neutral-700)', fontFamily: i === 5 ? 'Roboto Mono' : 'inherit', fontWeight: i === 5 ? 900 : 600 }}>{cell}</td>)}</tr>)}</tbody>
+          <tbody>{visibleEvents.map(row => <tr key={`${row[0]}-${row[4]}`} className="border-t border-[#EDEEF0]">{row.map((cell, i) => <td key={i} className="px-4 py-3" style={{ fontSize: 12, color: i === 5 ? 'var(--brand-accent)' : 'var(--neutral-700)', fontFamily: i === 5 ? 'Roboto Mono' : 'inherit', fontWeight: i === 5 ? 700 : 500 }}>{cell}</td>)}</tr>)}</tbody>
         </table>
       </div>
     </div>
@@ -58,7 +58,7 @@ export function DirectorCaseBanner({ blocked = false }: { blocked?: boolean }) {
         <div className="flex-1">
           <div style={{ fontSize: 14, fontWeight: 700 }}>{blocked ? 'Access Excluded — Director / Relative Borrower' : 'SPECIAL CASE — DIRECTOR / RELATIVE BORROWER'}</div>
           <p style={{ fontSize: 13, lineHeight: '20px', marginTop: 4 }}>{blocked ? 'You are excluded from reviewing this loan per Section 378ZK. Contact the CFO.' : 'This applicant is identified as a relative of R. Deshmukh. Per Section 378ZK, GM approval is required before sanction.'}</p>
-          {!blocked && <div className="flex gap-2 mt-3"><button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: 12, fontWeight: 800 }}>Upload GM Resolution</button><button className="px-3 py-1.5 rounded-lg border border-[#F59E0B]" style={{ fontSize: 12, fontWeight: 800 }}>Mark GM Pending</button></div>}
+          {!blocked && <div className="flex gap-2 mt-3"><button className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: 12, fontWeight: 700 }}>Upload GM Resolution</button><button className="px-3 py-1.5 rounded-lg border border-[#F59E0B]" style={{ fontSize: 12, fontWeight: 700 }}>Mark GM Pending</button></div>}
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@ export function DocumentLinkList() {
     <div className="space-y-2">
       {['CS-signed checklist PDF', 'Credit appraisal note summary', 'Sanction register entry', '15-item document index', 'SAP customer code log entry'].map(item => (
         <button key={item} className="w-full flex items-center justify-between p-3 rounded-lg border border-[#EDEEF0] hover:bg-[#F7F8FA]">
-          <span className="flex items-center gap-2" style={{ fontSize: 13, fontWeight: 800, color: 'var(--neutral-700)' }}><FileText size={14} />{item}</span>
+          <span className="flex items-center gap-2" style={{ fontSize: 13, fontWeight: 700, color: 'var(--neutral-700)' }}><FileText size={14} />{item}</span>
           <span style={{ fontSize: 12, color: 'var(--accent-treasury)', fontWeight: 700 }}>View →</span>
         </button>
       ))}

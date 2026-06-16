@@ -43,7 +43,7 @@ export function WorkbenchTabs({ tabs, activeKey, onChange, accent = 'var(--brand
                   backgroundColor: isActive ? 'rgba(255,255,255,0.22)' : 'var(--error-100)',
                   color: isActive ? 'white' : 'var(--error-900)',
                   fontSize: '10px',
-                  fontWeight: 800,
+                  fontWeight: 700,
                 }}
               >
                 {tab.badge}

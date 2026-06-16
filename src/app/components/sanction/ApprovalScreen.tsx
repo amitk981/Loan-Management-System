@@ -56,7 +56,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
               <div key={item} className="flex items-center gap-2 py-1"><CheckCircle size={14} />{item}</div>
             ))}
           </div>
-          <div className="flex gap-3 mt-6"><button onClick={() => onNavigate('sc-awaiting')} className="px-5 py-2.5 rounded-lg border border-[#EDEEF0]">Back to Approval Queue</button><button onClick={() => onNavigate('sc-register')} className="px-5 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--accent-sanction)', color: 'white' }}>View Sanction Register</button></div>
+          <div className="flex gap-3 mt-6"><button onClick={() => onNavigate('sc-awaiting')} className="px-5 py-2.5 rounded-lg border border-[#EDEEF0]">Back to Approval Queue</button><button onClick={() => onNavigate('sc-register')} className="px-5 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--accent-sanction)', color: 'white' }}>View Sanction Register</button></div>
         </div>
       </Shell>
     );
@@ -131,7 +131,7 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
               <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Decision Panel</div>
               <div className="mt-2 space-y-2">
                 {(isJoint ? ['S. Nair · CFO · Signed', 'R. Deshmukh · Director · Pending', 'V. Kulkarni · Director · Pending'] : ['S. Nair · CFO · You', 'R. Deshmukh · Director · Pending']).map((sig, i) => (
-                  <div key={sig} className="px-2 py-1 rounded-full inline-flex mr-1" style={{ backgroundColor: i === 0 ? 'var(--success-100)' : 'var(--warning-100)', color: i === 0 ? 'var(--success-700)' : 'var(--warning-700)', fontSize: '11px', fontWeight: 800 }}>{sig}</div>
+                  <div key={sig} className="px-2 py-1 rounded-full inline-flex mr-1" style={{ backgroundColor: i === 0 ? 'var(--success-100)' : 'var(--warning-100)', color: i === 0 ? 'var(--success-700)' : 'var(--warning-700)', fontSize: '11px', fontWeight: 700 }}>{sig}</div>
                 ))}
               </div>
             </div>
@@ -141,12 +141,12 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
                 <label key={label} className="block p-2 rounded-lg mb-2 cursor-pointer" style={{ backgroundColor: scrutiny[i] ? 'var(--success-50)' : 'white', border: '1px solid #EDEEF0' }}>
                   <div className="flex items-start gap-2">
                     <input aria-label={`Scrutiny point ${i + 1}: ${label}. Current state: ${scrutiny[i] ? 'Checked' : 'Unchecked'}`} type="checkbox" checked={scrutiny[i]} onChange={e => setScrutiny(prev => prev.map((v, idx) => idx === i ? e.target.checked : v))} style={{ accentColor: 'var(--success-500)', marginTop: '2px' }} />
-                    <div><div style={{ fontSize: '12px', color: scrutiny[i] ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: 800 }}>{i + 1}. {label}</div><div style={{ fontSize: '11px', color: 'var(--neutral-500)', marginTop: '3px' }}>{note}</div></div>
+                    <div><div style={{ fontSize: '12px', color: scrutiny[i] ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: 700 }}>{i + 1}. {label}</div><div style={{ fontSize: '11px', color: 'var(--neutral-500)', marginTop: '3px' }}>{note}</div></div>
                   </div>
                 </label>
               ))}
               <div className="h-2 rounded-full my-3" style={{ backgroundColor: 'var(--neutral-200)' }}><div className="h-full rounded-full" style={{ width: `${(scrutiny.filter(Boolean).length / 7) * 100}%`, backgroundColor: 'var(--success-500)' }} /></div>
-              <div style={{ fontSize: '12px', color: allScrutinyDone ? 'var(--success-700)' : 'var(--neutral-500)', fontWeight: 800 }}>{scrutiny.filter(Boolean)} of 7 {allScrutinyDone ? '✓ Ready to decide' : ''}</div>
+              <div style={{ fontSize: '12px', color: allScrutinyDone ? 'var(--success-700)' : 'var(--neutral-500)', fontWeight: 700 }}>{scrutiny.filter(Boolean)} of 7 {allScrutinyDone ? '✓ Ready to decide' : ''}</div>
 
               <div className="grid grid-cols-1 gap-2 mt-4">
                 {[
@@ -158,19 +158,19 @@ export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) 
                 ))}
               </div>
 
-              {decision === 'approve' && <div className="mt-4"><label style={{ fontSize: '12px', color: amountError ? 'var(--error-500)' : 'var(--neutral-700)', fontWeight: 800 }}>Approved Amount</label><input value={approvedAmount} onChange={e => setApprovedAmount(e.target.value)} className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB] text-right" style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono' }} />{amountError && <div style={{ fontSize: '11px', color: 'var(--error-500)', marginTop: '4px' }}>Cannot exceed appraisal recommended amount of {formatCurrency(scReviewLoan.amount)}</div>}</div>}
-              <div className="mt-4"><label style={{ fontSize: '12px', color: commentsRequired && !comments.trim() ? 'var(--error-500)' : 'var(--neutral-700)', fontWeight: 800 }}>SC Comments {commentsRequired && '(Required)'}</label><textarea value={comments} onChange={e => setComments(e.target.value)} rows={3} className="w-full mt-1 p-2 rounded-lg border border-[#D1D5DB]" placeholder="Required for Reject or Return; optional for Approve" style={{ fontSize: '13px' }} /></div>
+              {decision === 'approve' && <div className="mt-4"><label style={{ fontSize: '12px', color: amountError ? 'var(--error-500)' : 'var(--neutral-700)', fontWeight: 700 }}>Approved Amount</label><input value={approvedAmount} onChange={e => setApprovedAmount(e.target.value)} className="w-full mt-1 px-3 rounded-lg border border-[#D1D5DB] text-right" style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono' }} />{amountError && <div style={{ fontSize: '11px', color: 'var(--error-500)', marginTop: '4px' }}>Cannot exceed appraisal recommended amount of {formatCurrency(scReviewLoan.amount)}</div>}</div>}
+              <div className="mt-4"><label style={{ fontSize: '12px', color: commentsRequired && !comments.trim() ? 'var(--error-500)' : 'var(--neutral-700)', fontWeight: 700 }}>SC Comments {commentsRequired && '(Required)'}</label><textarea value={comments} onChange={e => setComments(e.target.value)} rows={3} className="w-full mt-1 p-2 rounded-lg border border-[#D1D5DB]" placeholder="Required for Reject or Return; optional for Approve" style={{ fontSize: '13px' }} /></div>
               <label className="flex items-start gap-2 mt-4"><input type="checkbox" checked={registerChecked} onChange={e => setRegisterChecked(e.target.checked)} style={{ accentColor: 'var(--accent-sanction)', marginTop: '2px' }} /><span style={{ fontSize: '12px', color: 'var(--neutral-700)' }}>Record in Credit Sanction Register (mandatory)</span></label>
-              <button disabled={!canSubmit} onClick={() => setShowConfirm(true)} className="w-full mt-4 py-3 rounded-lg font-semibold" style={{ backgroundColor: canSubmit ? 'var(--accent-sanction)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: canSubmit ? 'pointer' : 'not-allowed' }}>Submit Decision →</button>
+              <button disabled={!canSubmit} onClick={() => setShowConfirm(true)} className="w-full mt-4 py-3 rounded-lg font-medium" style={{ backgroundColor: canSubmit ? 'var(--accent-sanction)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: canSubmit ? 'pointer' : 'not-allowed' }}>Submit Decision →</button>
             </div>
           </div>
         </div>
       </div>
 
       {showConfirm && (
-        <AppModal title="Confirm Sanction Committee Decision" subtitle={`${scReviewLoan.id} · ${scReviewLoan.borrower}`} icon={<CheckCircle size={18} />} onClose={() => setShowConfirm(false)} footer={<><button onClick={() => setShowConfirm(false)} className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Cancel</button><button disabled={countdown > 0} onClick={() => { setShowConfirm(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: countdown > 0 ? 'var(--neutral-400)' : 'var(--success-700)', color: 'white' }}>{countdown > 0 ? `Confirm in ${countdown}s` : 'Confirm & Record →'}</button></>}>
+        <AppModal title="Confirm Sanction Committee Decision" subtitle={`${scReviewLoan.id} · ${scReviewLoan.borrower}`} icon={<CheckCircle size={18} />} onClose={() => setShowConfirm(false)} footer={<><button onClick={() => setShowConfirm(false)} className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">Cancel</button><button disabled={countdown > 0} onClick={() => { setShowConfirm(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: countdown > 0 ? 'var(--neutral-400)' : 'var(--success-700)', color: 'white' }}>{countdown > 0 ? `Confirm in ${countdown}s` : 'Confirm & Record →'}</button></>}>
           <div style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '22px' }}>
-            Decision: <strong>{decision.toUpperCase()}</strong><br />Sanctioned Amount: <strong>{formatCurrency(amountNum)}</strong><br />Your authority: <strong>CFO</strong><br /><br />This decision will be recorded in the Credit Sanction Register, notify CS to begin documents, update the loan tracker, and be attributable to S. Nair as signing CFO.<br /><br /><span style={{ color: 'var(--error-500)', fontWeight: 800 }}>This action cannot be undone.</span>
+            Decision: <strong>{decision.toUpperCase()}</strong><br />Sanctioned Amount: <strong>{formatCurrency(amountNum)}</strong><br />Your authority: <strong>CFO</strong><br /><br />This decision will be recorded in the Credit Sanction Register, notify CS to begin documents, update the loan tracker, and be attributable to S. Nair as signing CFO.<br /><br /><span style={{ color: 'var(--error-500)', fontWeight: 700 }}>This action cannot be undone.</span>
           </div>
         </AppModal>
       )}
@@ -183,5 +183,5 @@ function Panel({ title, children }: { title: string; children: ReactNode }) {
 }
 
 function Info({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
-  return <div className="p-3 border-b border-r border-[#EDEEF0]"><div style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 800 }}>{label}</div><div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '4px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{value}</div></div>;
+  return <div className="p-3 border-b border-r border-[#EDEEF0]"><div style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 700 }}>{label}</div><div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '4px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{value}</div></div>;
 }

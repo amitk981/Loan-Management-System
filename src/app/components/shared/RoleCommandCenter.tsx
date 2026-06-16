@@ -49,10 +49,10 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
               {icon || <ShieldCheck size={18} />}
               <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase' }}>{title}</span>
             </div>
-            <h2 style={{ fontSize: 20, lineHeight: '28px', fontWeight: 800, color: 'var(--neutral-900)' }}>{focus}</h2>
+            <h2 style={{ fontSize: 20, lineHeight: '28px', fontWeight: 700, color: 'var(--neutral-900)' }}>{focus}</h2>
             <div style={{ fontSize: 13, lineHeight: '20px', color: 'var(--neutral-700)', marginTop: 8 }}>{primaryAction.detail}</div>
           </div>
-          <div className="mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-lg" style={{ backgroundColor: primaryTone.fg, color: 'white', fontSize: 13, fontWeight: 800, width: 'fit-content' }}>
+          <div className="mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-lg" style={{ backgroundColor: primaryTone.fg, color: 'white', fontSize: 13, fontWeight: 700, width: 'fit-content' }}>
             {primaryAction.label} <ArrowRight size={14} />
           </div>
         </button>
@@ -63,7 +63,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
               const metricTone = toneFor(metric.tone || 'neutral');
               return (
                 <div key={metric.label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
-                  <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 800 }}>{metric.label}</div>
+                  <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 700 }}>{metric.label}</div>
                   <div style={{ fontSize: 19, color: metricTone.fg, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{metric.value}</div>
                 </div>
               );
@@ -85,7 +85,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
                       <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 3 }}>{action.detail}</div>
                     </div>
                     {action.badge && (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.72)', color: actionTone.fg, fontSize: 11, fontWeight: 800 }}>
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.72)', color: actionTone.fg, fontSize: 11, fontWeight: 700 }}>
                         <Clock size={11} /> {action.badge}
                       </span>
                     )}

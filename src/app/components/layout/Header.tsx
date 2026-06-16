@@ -137,7 +137,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
           style={{ fontSize: '17px', letterSpacing: '-0.3px' }}
         >
           <span
-            className="w-7 h-7 rounded-md flex items-center justify-center font-black text-sm"
+            className="w-7 h-7 rounded-md flex items-center justify-center font-bold text-sm"
             style={{ backgroundColor: 'var(--brand-accent)', color: 'white' }}
           >W</span>
           WhatsLoan
@@ -161,8 +161,8 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
 
       <div className="flex items-center gap-2">
         <div className="hidden xl:flex items-center gap-2 mr-2 px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)' }}>
-          <span className="w-6 h-6 rounded-md flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: 'white', fontSize: '10px', fontWeight: 800 }}>SF</span>
-          <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.72)', fontWeight: 600 }}>Sahyadri Farms</span>
+          <span className="w-6 h-6 rounded-md flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: 'white', fontSize: '10px', fontWeight: 700 }}>SF</span>
+          <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.72)', fontWeight: 500 }}>Sahyadri Farms</span>
         </div>
         <div className="relative" ref={searchRef}>
           <button
@@ -230,7 +230,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
             >
               <style>{`@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }`}</style>
               <div className="px-4 py-3 border-b border-[#EDEEF0] flex items-center justify-between">
-                <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--neutral-900)' }}>{t('app.notifications', 'Notifications')}</span>
+                <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>{t('app.notifications', 'Notifications')}</span>
                 <button onClick={() => setNotificationsRead(true)} style={{ fontSize: '12px', color: 'var(--brand-accent)', cursor: 'pointer' }}>Mark all read</button>
               </div>
               <div className="max-h-80 overflow-y-auto">
@@ -240,7 +240,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
                   const route = 'route' in n ? n.route : '';
                   return (
                     <button key={n.id} onClick={() => { if (route) onNavigate(route); setShowNotifications(false); }} className="w-full text-left px-4 py-3 border-b border-[#EDEEF0] hover:bg-[#F7F8FA] cursor-pointer transition-colors">
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--neutral-900)' }}>{title}</div>
+                      <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>{title}</div>
                       <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '2px' }}>{body}</div>
                       <div style={{ fontSize: '11px', color: 'var(--brand-accent)', marginTop: '4px' }}>{'cta' in n ? n.cta : n.time}</div>
                     </button>
@@ -282,13 +282,13 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
             aria-expanded={showProfile}
           >
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-medium"
               style={{ backgroundColor: roleColor, boxShadow: `0 0 0 2px rgba(255,255,255,0.45), 0 0 0 4px ${roleColor}` }}
             >
               {initials}
             </div>
             <div className="text-left hidden sm:block">
-              <div style={{ fontSize: '13px', fontWeight: 600, color: 'white', lineHeight: '16px' }}>{user?.name}</div>
+              <div style={{ fontSize: '13px', fontWeight: 500, color: 'white', lineHeight: '16px' }}>{user?.name}</div>
               <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', lineHeight: '14px' }}>{user?.roleLabel}</div>
             </div>
             <ChevronDown size={14} className="text-white/50" />
@@ -299,7 +299,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
               style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)', animation: 'fadeIn 0.15s ease' }}
             >
               <div className="px-4 py-3 border-b border-[#EDEEF0]">
-                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--neutral-900)' }}>{user?.name}</div>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>{user?.name}</div>
                 <div style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>{user?.roleLabel}</div>
               </div>
               <button onClick={() => { onNavigate(profilePage); setShowProfile(false); }} className="w-full px-4 py-2.5 flex items-center gap-2 hover:bg-[#F7F8FA] text-left transition-colors">

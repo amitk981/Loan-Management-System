@@ -40,7 +40,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
       pageTitle="New Applications"
       pageSubtitle="Intake and appraisal assignment"
       actions={
-        <button onClick={() => onNavigate('credit-manual-entry')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
+        <button onClick={() => onNavigate('credit-manual-entry')} className="px-4 py-2.5 rounded-lg font-medium flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
           <Plus size={15} /> Add Manual
         </button>
       }
@@ -51,7 +51,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
           Deficiency notice sent for {selected.id}. Status logged as Notified — awaiting resubmission.
         </div>
       )}
-      <div className="mb-4 p-3 rounded-lg flex items-center justify-between" style={{ backgroundColor: 'var(--info-50)', border: '1px solid #BAE6FD', color: '#0E7490', fontSize: '13px', fontWeight: 800 }}>
+      <div className="mb-4 p-3 rounded-lg flex items-center justify-between" style={{ backgroundColor: 'var(--info-50)', border: '1px solid #BAE6FD', color: '#0E7490', fontSize: '13px', fontWeight: 700 }}>
         <span>{filtered.length} applications in view</span>
         <button onClick={() => onNavigate('credit-manual-entry')} className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--accent-treasury)', color: 'white', fontSize: '12px' }}>Open Manual Entry</button>
       </div>
@@ -76,10 +76,10 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               {filtered.map(app => (
                 <button key={app.id} onClick={() => setSelectedId(app.id)} className="w-full p-4 text-left border-b border-[#E5E7EB] hover:bg-[#FAFAF8]" style={{ backgroundColor: selected.id === app.id ? '#E8F1FA' : 'white' }}>
                   <div className="flex items-center justify-between">
-                    <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 800 }}>{app.id}</span>
+                    <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 700 }}>{app.id}</span>
                     <StatusBadge status={app.status} />
                   </div>
-                  <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 800, marginTop: '6px' }}>{app.shortName}</div>
+                  <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '6px' }}>{app.shortName}</div>
                   <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '3px' }}>{app.village} · {formatCurrency(app.amount)} req.</div>
                   <div style={{ fontSize: '12px', color: app.status === 'Overdue' ? 'var(--error-700)' : 'var(--neutral-500)', marginTop: '6px', fontWeight: 700 }}>{app.blocker} · {app.submittedAgo}</div>
                 </button>
@@ -128,11 +128,11 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
                     <button key={doc.name} onClick={() => doc.state === 'Missing' && setShowNotice(true)} className="w-full flex items-center gap-3 p-3 rounded-lg text-left action-surface" style={{ backgroundColor: `${stateColor}10`, border: `1px solid ${stateColor}22` }}>
                       <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: `${stateColor}18`, color: stateColor }}>{icon}</div>
                       <div className="flex-1">
-                        <div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 800 }}>{doc.name}</div>
+                        <div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700 }}>{doc.name}</div>
                         <div style={{ fontSize: '12px', color: 'var(--neutral-500)' }}>{doc.detail}</div>
                       </div>
                       <StatusBadge status={doc.state} />
-                      {doc.state === 'Missing' && <span style={{ fontSize: '12px', color: 'var(--brand-accent)', fontWeight: 800 }}>Request</span>}
+                      {doc.state === 'Missing' && <span style={{ fontSize: '12px', color: 'var(--brand-accent)', fontWeight: 700 }}>Request</span>}
                     </button>
                   );
                 })}
@@ -140,9 +140,9 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
             </Section>
 
             <div className="flex gap-3 border-t border-[#E5E7EB] pt-5">
-              <button onClick={() => setShowNotice(true)} disabled={missingDocs.length === 0} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: missingDocs.length ? 'var(--warning-100)' : '#F3F4F6', color: missingDocs.length ? 'var(--warning-700)' : '#9CA3AF', fontSize: '13px' }}>Send Deficiency Notice</button>
-              <button disabled={!canAssign} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#E8F1FA' : '#F3F4F6', color: canAssign ? 'var(--brand-accent)' : '#9CA3AF', fontSize: '13px' }}>Mark Complete</button>
-              <button onClick={() => onNavigate('credit-review')} disabled={!canAssign} className="ml-auto px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? 'var(--brand-primary)' : '#9CA3AF', color: 'white', fontSize: '13px' }}>Assign to Appraisal →</button>
+              <button onClick={() => setShowNotice(true)} disabled={missingDocs.length === 0} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: missingDocs.length ? 'var(--warning-100)' : '#F3F4F6', color: missingDocs.length ? 'var(--warning-700)' : '#9CA3AF', fontSize: '13px' }}>Send Deficiency Notice</button>
+              <button disabled={!canAssign} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: canAssign ? '#E8F1FA' : '#F3F4F6', color: canAssign ? 'var(--brand-accent)' : '#9CA3AF', fontSize: '13px' }}>Mark Complete</button>
+              <button onClick={() => onNavigate('credit-review')} disabled={!canAssign} className="ml-auto px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: canAssign ? 'var(--brand-primary)' : '#9CA3AF', color: 'white', fontSize: '13px' }}>Assign to Appraisal →</button>
             </div>
           </div>
         </div>
@@ -154,7 +154,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
           subtitle={`${selected.id} · ${missingDocs.map(doc => doc.name).join(', ') || 'No missing mandatory items'}`}
           icon={<Send size={18} />}
           onClose={() => setShowNotice(false)}
-          footer={<><button onClick={() => setShowNotice(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setNoticeSent(true); setShowNotice(false); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Preview → Send</button></>}
+          footer={<><button onClick={() => setShowNotice(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setNoticeSent(true); setShowNotice(false); }} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Preview → Send</button></>}
         >
           <div className="space-y-4">
             <div className="flex gap-2">

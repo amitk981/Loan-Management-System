@@ -56,7 +56,7 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
               {mockLoans.map(loan => (
                 <tr key={loan.id} onClick={() => onNavigate('member-loan-profile')} className="border-b border-[#EDEEF0] clickable-row">
                   <td className="px-4 py-3" style={{ fontSize: '13px', color: 'var(--brand-accent)', fontFamily: 'Roboto Mono' }}>{loan.id}</td>
-                  <td className="px-4" style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 600 }}>{loan.farmerName}</td>
+                  <td className="px-4" style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 500 }}>{loan.farmerName}</td>
                   <td className="px-4 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono' }}>{formatCurrency(loan.sanctionedAmount)}</td>
                   <td className="px-4 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono' }}>{formatCurrency(loan.outstandingPrincipal + loan.outstandingInterest)}</td>
                   <td className="px-4" style={{ fontSize: '13px', color: loan.dpd > 0 ? 'var(--error-500)' : 'var(--success-500)', fontWeight: 700 }}>{loan.dpd}</td>
@@ -73,7 +73,7 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
             {portfolioDonut.map(item => (
               <button key={item.name} onClick={() => onNavigate('admin-portfolio')} className="w-full mb-3 text-left p-1 rounded-lg clickable-row">
                 <div className="flex items-center justify-between mb-1">
-                  <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>{item.name}</span>
+                  <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 500 }}>{item.name}</span>
                   <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontFamily: 'Roboto Mono' }}>{formatCurrency(item.value)}</span>
                 </div>
                 <div className="h-2 bg-[#EDEEF0] rounded-full">
@@ -114,7 +114,7 @@ export function UserManagement({ onNavigate, activePage }: AdminScreensProps) {
       pageTitle="User Management"
       pageSubtitle={`${mockUsers.length} users`}
       actions={
-        <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
+        <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
           <UserPlus size={14} /> Invite New User
         </button>
       }
@@ -165,12 +165,12 @@ export function UserManagement({ onNavigate, activePage }: AdminScreensProps) {
                 <td className="px-5">
                   <div className="flex items-center gap-2">
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0"
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-medium flex-shrink-0"
                       style={{ backgroundColor: 'var(--brand-secondary)' }}
                     >
                       {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                     </div>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--neutral-900)' }}>{user.name}</div>
+                    <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>{user.name}</div>
                   </div>
                 </td>
                 <td className="px-5" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{user.role}</td>
@@ -242,7 +242,7 @@ export function AuditLog({ onNavigate, activePage }: AdminScreensProps) {
       <div className="bg-white rounded-2xl p-4 border border-[#EDEEF0] mb-4 grid grid-cols-4 gap-3">
         {['User', 'Action Type', 'Date Range', 'Entity'].map((filter, i) => (
           <div key={filter}>
-            <label className="block mb-1" style={{ fontSize: '12px', color: 'var(--neutral-700)', fontWeight: 600 }}>{filter}</label>
+            <label className="block mb-1" style={{ fontSize: '12px', color: 'var(--neutral-700)', fontWeight: 500 }}>{filter}</label>
             <input
               placeholder={i === 2 ? 'DD/MM/YYYY - DD/MM/YYYY' : `Filter ${filter.toLowerCase()}`}
               className="w-full px-3 rounded-xl border border-[#D1D5DB]"
@@ -255,7 +255,7 @@ export function AuditLog({ onNavigate, activePage }: AdminScreensProps) {
         <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: 'var(--warning-100)' }}>
           <div className="flex items-center gap-2">
             <ShieldCheck size={14} style={{ color: 'var(--warning-700)' }} />
-            <span style={{ fontSize: '13px', color: 'var(--warning-700)', fontWeight: 600 }}>Immutable Audit Log</span>
+            <span style={{ fontSize: '13px', color: 'var(--warning-700)', fontWeight: 500 }}>Immutable Audit Log</span>
           </div>
         </div>
         <div className="table-scroll"><table className="w-full">
@@ -272,7 +272,7 @@ export function AuditLog({ onNavigate, activePage }: AdminScreensProps) {
                 <td className="px-4 py-3.5" style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: 'var(--neutral-400)', whiteSpace: 'nowrap' }}>{log.timestamp}</td>
                 <td className="px-4" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{log.user}</td>
                 <td className="px-4">
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--brand-primary)', backgroundColor: 'var(--brand-light)', padding: '2px 8px', borderRadius: '6px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--brand-primary)', backgroundColor: 'var(--brand-light)', padding: '2px 8px', borderRadius: '6px' }}>
                     {log.action}
                   </span>
                 </td>
@@ -407,7 +407,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
     >
       <div className="max-w-4xl space-y-5">
         <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '16px' }}>Loan Parameters</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '16px' }}>Loan Parameters</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)' }}>
               <div>
@@ -420,7 +420,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
                   value={scaleOfFinance}
                   onChange={e => setScaleOfFinance(parseInt(e.target.value))}
                   className="w-28 px-3 rounded-xl border border-[#D1D5DB] text-right"
-                  style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono', fontWeight: 600 }}
+                  style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono', fontWeight: 500 }}
                 />
               </div>
             </div>
@@ -435,7 +435,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
                 value={shareValuation}
                 onChange={e => setShareValuation(parseInt(e.target.value))}
                 className="w-28 px-3 rounded-xl border border-[#D1D5DB] text-right"
-                style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono', fontWeight: 600 }}
+                style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono', fontWeight: 500 }}
               />
             </div>
 
@@ -449,14 +449,14 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
                 value={pledgePct}
                 onChange={e => setPledgePct(parseInt(e.target.value))}
                 className="w-28 px-3 rounded-xl border border-[#D1D5DB] text-right"
-                style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono', fontWeight: 600 }}
+                style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono', fontWeight: 500 }}
               />
             </div>
           </div>
         </div>
 
         <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '16px' }}>Interest Rate Management</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '16px' }}>Interest Rate Management</h3>
           <div className="flex items-center justify-between p-4 rounded-xl mb-4" style={{ backgroundColor: 'var(--neutral-100)' }}>
             <div>
               <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>Base Interest Rate (% p.a.)</div>
@@ -468,7 +468,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
               value={baseRate}
               onChange={e => setBaseRate(parseFloat(e.target.value))}
               className="w-28 px-3 rounded-xl border border-[#D1D5DB] text-right"
-              style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono', fontWeight: 600 }}
+              style={{ height: '40px', fontSize: '16px', fontFamily: 'Roboto Mono', fontWeight: 500 }}
             />
           </div>
           <div className="border-t border-[#EDEEF0] pt-4">
@@ -489,7 +489,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
         <div className="grid grid-cols-2 gap-5">
           <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
             <div className="flex items-center justify-between mb-3">
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Section 186 Compliance</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Section 186 Compliance</h3>
               <StatusBadge status="Verified" />
             </div>
             <div className="space-y-3">
@@ -499,7 +499,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
               ].map(item => (
                 <div key={item.label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)' }}>
                   <div className="flex items-center justify-between mb-2">
-                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>{item.label}</span>
+                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 500 }}>{item.label}</span>
                     <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontFamily: 'Roboto Mono', fontWeight: 700 }}>{item.value}</span>
                   </div>
                   <div className="h-2 bg-[#EDEEF0] rounded-full">
@@ -513,7 +513,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
 
           <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
             <div className="flex items-center justify-between mb-3">
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>NBFC Principal Test Monitor</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>NBFC Principal Test Monitor</h3>
               <StatusBadge status="Pending" />
             </div>
             <div className="space-y-3">
@@ -523,7 +523,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
               ].map(item => (
                 <div key={item.label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)' }}>
                   <div className="flex items-center justify-between mb-2">
-                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>{item.label}</span>
+                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 500 }}>{item.label}</span>
                     <span style={{ fontSize: '18px', color: item.color, fontFamily: 'Roboto Mono', fontWeight: 700 }}>{item.value}</span>
                   </div>
                   <div style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>{item.threshold}</div>
@@ -538,7 +538,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
         </div>
 
         <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)', marginBottom: '16px' }}>DPD Thresholds</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '16px' }}>DPD Thresholds</h3>
           <div className="space-y-2">
             {[
               { label: 'Bucket 1: Warning (days)', value: '365–730', color: 'var(--warning-500)' },
@@ -550,7 +550,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
                   <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
                   <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{item.label}</span>
                 </div>
-                <span style={{ fontSize: '14px', fontFamily: 'Roboto Mono', fontWeight: 600, color: item.color }}>{item.value}</span>
+                <span style={{ fontSize: '14px', fontFamily: 'Roboto Mono', fontWeight: 500, color: item.color }}>{item.value}</span>
               </div>
             ))}
           </div>
@@ -559,10 +559,10 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
         <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
           <div className="flex items-center gap-2 mb-4">
             <ShieldCheck size={16} style={{ color: 'var(--brand-primary)' }} />
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>SOP Compliance Matrix</h3>
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>SOP Compliance Matrix</h3>
           </div>
           <div className="mb-4 p-4 rounded-xl flex items-start gap-3" style={{ backgroundColor: '#FEF2F2', border: '1px solid #FECACA' }}>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontWeight: 800 }}>!</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontWeight: 700 }}>!</div>
             <div>
               <div style={{ fontSize: '13px', color: 'var(--error-900)', fontWeight: 700 }}>Annual money-lending exemption confirmation is pending</div>
               <div style={{ fontSize: '12px', color: '#7F1D1D', marginTop: '3px', lineHeight: '18px' }}>
@@ -600,7 +600,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
         <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
           <div className="flex items-center gap-2 mb-4">
             <Bell size={16} style={{ color: 'var(--brand-accent)' }} />
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Notification Templates</h3>
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Notification Templates</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {[
@@ -614,7 +614,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
               'KYC re-verification request',
             ].map(template => (
               <div key={template} className="p-3 rounded-xl flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
-                <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>{template}</span>
+                <span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 500 }}>{template}</span>
                 <StatusBadge status="Active" />
               </div>
             ))}
@@ -624,7 +624,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
         <div className="p-4 rounded-xl flex items-start gap-3" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid #FDE68A' }}>
           <span style={{ fontSize: '16px' }}>⚠️</span>
           <div>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--warning-700)' }}>Changes require Board authorization</div>
+            <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--warning-700)' }}>Changes require Board authorization</div>
             <div style={{ fontSize: '12px', color: '#B45309', marginTop: '2px' }}>All parameter changes are logged in the audit trail and require CFO approval before taking effect.</div>
           </div>
         </div>
@@ -632,7 +632,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
         <div className="bg-white rounded-2xl p-5 border border-[#EDEEF0]">
           <div className="flex items-center gap-2 mb-3">
             <Upload size={16} style={{ color: 'var(--gold-500)' }} />
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--neutral-900)' }}>Board Resolution Upload</h3>
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Board Resolution Upload</h3>
           </div>
           <div className="border-2 border-dashed rounded-xl p-5 flex items-center justify-center gap-2" style={{ borderColor: 'var(--neutral-300)', backgroundColor: '#FAFAFA' }}>
             <Upload size={18} style={{ color: 'var(--neutral-400)' }} />
@@ -640,7 +640,7 @@ export function SystemConfig({ onNavigate, activePage }: AdminScreensProps) {
           </div>
         </div>
 
-        <button className="w-full py-3 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '15px' }}>
+        <button className="w-full py-3 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '15px' }}>
           Save Configuration (Requires CFO Approval)
         </button>
       </div>

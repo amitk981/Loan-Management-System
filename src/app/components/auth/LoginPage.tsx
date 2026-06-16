@@ -160,7 +160,7 @@ export function LoginPage() {
       >
         <div className="w-full flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-lg" style={{ backgroundColor: 'var(--brand-accent)' }}>W</div>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white text-lg" style={{ backgroundColor: 'var(--brand-accent)' }}>W</div>
             <span style={{ fontSize: '20px', fontWeight: 700, color: 'white', letterSpacing: '-0.3px' }}>WhatsLoan</span>
           </div>
           <div className="flex items-center gap-2">
@@ -293,7 +293,7 @@ export function LoginPage() {
                   <button
                     disabled={!resetIdentity.trim()}
                     onClick={() => setResetStep(2)}
-                    className="w-full rounded-xl flex items-center justify-center gap-2 font-semibold"
+                    className="w-full rounded-xl flex items-center justify-center gap-2 font-medium"
                     style={{ height: '44px', backgroundColor: resetIdentity.trim() ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: resetIdentity.trim() ? 'pointer' : 'not-allowed' }}
                   >
                     Send Reset OTP <ChevronRight size={16} />
@@ -319,7 +319,7 @@ export function LoginPage() {
                     <button
                       disabled={resetCode !== '123456'}
                       onClick={() => setResetStep(3)}
-                      className="flex-1 rounded-xl font-semibold"
+                      className="flex-1 rounded-xl font-medium"
                       style={{ height: '44px', backgroundColor: resetCode === '123456' ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: resetCode === '123456' ? 'pointer' : 'not-allowed' }}
                     >
                       Verify OTP
@@ -358,7 +358,7 @@ export function LoginPage() {
                   <button
                     disabled={resetStrengthCount < 4 || resetPassword !== resetConfirm}
                     onClick={() => { setAuthView('login'); setLoginMethod('password'); setResetStep(1); setPassword(resetPassword); }}
-                    className="w-full rounded-xl font-semibold"
+                    className="w-full rounded-xl font-medium"
                     style={{ height: '44px', backgroundColor: resetStrengthCount === 4 && resetPassword === resetConfirm ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: resetStrengthCount === 4 && resetPassword === resetConfirm ? 'pointer' : 'not-allowed' }}
                   >
                     Update Password
@@ -428,7 +428,7 @@ export function LoginPage() {
                   </div>
                   {error && <p style={{ fontSize: '12px', color: 'var(--error-500)', marginTop: '6px' }}>{error}</p>}
                   <button
-                    className="w-full mt-4 rounded-xl flex items-center justify-center gap-2 font-semibold transition-all"
+                    className="w-full mt-4 rounded-xl flex items-center justify-center gap-2 font-medium transition-all"
                     style={{
                       height: '44px',
                       backgroundColor: 'var(--brand-primary)',
@@ -448,7 +448,7 @@ export function LoginPage() {
                 <div>
                   <div className="mb-2 p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)' }}>
                     <p style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>
-                      OTP sent to <span style={{ fontFamily: 'Roboto Mono', fontWeight: 600 }}>+91 ****{mobile.slice(-4)}</span>
+                      OTP sent to <span style={{ fontFamily: 'Roboto Mono', fontWeight: 500 }}>+91 ****{mobile.slice(-4)}</span>
                     </p>
                     <button
                       style={{ fontSize: '12px', color: 'var(--brand-accent)', marginTop: '2px' }}
@@ -475,7 +475,7 @@ export function LoginPage() {
                           height: '52px',
                           fontSize: '22px',
                           fontFamily: 'Roboto Mono, monospace',
-                          fontWeight: 600,
+                          fontWeight: 500,
                           color: 'var(--neutral-900)',
                           borderColor: otpError ? 'var(--error-500)' : 'var(--neutral-300)',
                         }}
@@ -488,7 +488,7 @@ export function LoginPage() {
                     ))}
                   </div>
                   <button
-                    className="w-full rounded-xl flex items-center justify-center gap-2 font-semibold transition-all"
+                    className="w-full rounded-xl flex items-center justify-center gap-2 font-medium transition-all"
                     style={{ height: '44px', backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px', opacity: loading ? 0.7 : 1 }}
                     onClick={handleLogin}
                     disabled={loading}
@@ -498,9 +498,9 @@ export function LoginPage() {
                   {error && <p style={{ fontSize: '12px', color: 'var(--error-500)', textAlign: 'center', marginTop: '8px' }}>{error}</p>}
                   <div style={{ fontSize: '12px', color: 'var(--neutral-400)', textAlign: 'center', marginTop: '12px' }}>
                     {otpTimer > 0 ? (
-                      <>Resend OTP in <span style={{ fontFamily: 'Roboto Mono', color: 'var(--brand-primary)', fontWeight: 600 }}>{otpTimer}s</span></>
+                      <>Resend OTP in <span style={{ fontFamily: 'Roboto Mono', color: 'var(--brand-primary)', fontWeight: 500 }}>{otpTimer}s</span></>
                     ) : (
-                      <button onClick={resendOtp} style={{ color: 'var(--brand-accent)', fontWeight: 600 }}>Resend OTP</button>
+                      <button onClick={resendOtp} style={{ color: 'var(--brand-accent)', fontWeight: 500 }}>Resend OTP</button>
                     )}
                   </div>
                 </div>
@@ -541,7 +541,7 @@ export function LoginPage() {
               </div>
               {error && <p style={{ fontSize: '12px', color: 'var(--error-500)', marginBottom: '8px' }}>{error}</p>}
               <button
-                className="w-full rounded-xl flex items-center justify-center gap-2 font-semibold transition-all"
+                className="w-full rounded-xl flex items-center justify-center gap-2 font-medium transition-all"
                 style={{ height: '44px', backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px', opacity: loading ? 0.7 : 1 }}
                 onClick={handlePasswordLogin}
                 disabled={loading}

@@ -62,7 +62,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
         <>
           <button onClick={() => setDocumentModal(null)} className="px-4 py-2.5 rounded-xl border border-[#EDEEF0]" style={{ fontSize: '14px' }}>Close</button>
           {documentModal.status === 'Available' && (
-            <button onClick={() => setDocumentModal(null)} className="px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Download PDF</button>
+            <button onClick={() => setDocumentModal(null)} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Download PDF</button>
           )}
         </>
       }
@@ -83,7 +83,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
       footer={
         <>
           <button onClick={() => setUploadModal(false)} className="px-4 py-2.5 rounded-xl border border-[#EDEEF0]" style={{ fontSize: '14px' }}>Cancel</button>
-          <button onClick={() => setUploadModal(false)} className="px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Attach File</button>
+          <button onClick={() => setUploadModal(false)} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Attach File</button>
         </>
       }
     >
@@ -101,7 +101,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
             <div className="w-20 h-20 rounded-full mx-auto flex items-center justify-center" style={{ backgroundColor: 'var(--success-500)', color: 'white' }}>
               <FileCheck size={42} />
             </div>
-            <h2 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--neutral-900)', marginTop: '24px' }}>Loan Repaid</h2>
+            <h2 style={{ fontSize: '32px', fontWeight: 700, color: 'var(--neutral-900)', marginTop: '24px' }}>Loan Repaid</h2>
             <div className="mt-6 p-5 rounded-2xl text-left" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #22C55E' }}>
               <div className="grid grid-cols-2 gap-4">
                 {[
@@ -124,7 +124,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
               ))}
             </div>
             <div className="mt-7 flex items-center justify-center gap-3">
-              <button onClick={() => setDocumentModal({ name: 'NOC', type: 'PDF', status: 'Available', date: '15 Jan 2026', group: 'Receipts' })} className="px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
+              <button onClick={() => setDocumentModal({ name: 'NOC', type: 'PDF', status: 'Available', date: '15 Jan 2026', group: 'Receipts' })} className="px-5 py-2.5 rounded-xl font-medium flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
                 <Download size={15} /> Download NOC
               </button>
               <button onClick={() => onNavigate('farmer-dashboard')} className="px-5 py-2.5 rounded-xl" style={{ color: 'var(--brand-primary)', fontSize: '14px', fontWeight: 700 }}>Back to Dashboard</button>
@@ -290,7 +290,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>Next Payment Due</div>
               <div style={{ fontSize: '20px', color: 'var(--warning-500)', fontWeight: 700 }}>{farmerLoan.nextDueDate}</div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>{farmerLoan.dueIn}</div>
-              <button onClick={() => setShowPaymentModal(true)} className="mt-3 px-5 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Pay Now</button>
+              <button onClick={() => setShowPaymentModal(true)} className="mt-3 px-5 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Pay Now</button>
             </div>
           </div>
           <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden table-scroll">
@@ -337,7 +337,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
       )}
 
       {showPaymentModal && (
-        <AppModal title="Confirm Payment" subtitle={`${formatCurrency(2000)} · Direct Transfer · ${farmerLoan.id}`} icon={<CreditCard size={18} />} onClose={() => setShowPaymentModal(false)} footer={<><button onClick={() => setShowPaymentModal(false)} className="px-4 py-2.5 rounded-xl border border-[#EDEEF0]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowPaymentModal(false); onNavigate('farmer-repayment'); }} className="px-4 py-2.5 rounded-xl font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Continue</button></>}>
+        <AppModal title="Confirm Payment" subtitle={`${formatCurrency(2000)} · Direct Transfer · ${farmerLoan.id}`} icon={<CreditCard size={18} />} onClose={() => setShowPaymentModal(false)} footer={<><button onClick={() => setShowPaymentModal(false)} className="px-4 py-2.5 rounded-xl border border-[#EDEEF0]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowPaymentModal(false); onNavigate('farmer-repayment'); }} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Continue</button></>}>
           <div style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>This opens the full Make Payment flow. SFPCL will verify and confirm payment before posting it to your loan ledger.</div>
         </AppModal>
       )}

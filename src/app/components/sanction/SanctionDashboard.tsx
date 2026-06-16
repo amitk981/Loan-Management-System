@@ -24,7 +24,7 @@ export function SanctionDashboard({ onNavigate, activePage }: SanctionDashboardP
       breadcrumbs={['Sanction Committee', 'Dashboard']}
       pageTitle={`${greeting}, ${user?.name || 'CFO'}`}
       pageSubtitle={`${user?.roleLabel || 'Sanction Committee'} · Review authority up to ₹5,00,000`}
-      actions={<button onClick={() => onNavigate('sc-awaiting')} className="px-4 py-2.5 rounded-lg font-semibold hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: 'var(--accent-sanction)', color: 'white', fontSize: '14px' }}>Review Now →</button>}
+      actions={<button onClick={() => onNavigate('sc-awaiting')} className="px-4 py-2.5 rounded-lg font-medium hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: 'var(--accent-sanction)', color: 'white', fontSize: '14px' }}>Review Now →</button>}
     >
       <div className="mb-6 p-4 rounded-xl border border-[#DDD6FE] flex items-center justify-between" style={{ backgroundColor: '#F5F3FF' }}>
         <div className="flex items-center gap-3">
@@ -63,7 +63,7 @@ export function SanctionDashboard({ onNavigate, activePage }: SanctionDashboardP
         ].map(([label, value, note, color, page]) => (
           <button key={label} onClick={() => onNavigate(page)} className="bg-white rounded-xl p-5 border border-[#EDEEF0] text-left clickable-card">
             <div style={{ fontSize: '11px', color: 'var(--neutral-500)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}</div>
-            <div style={{ fontSize: label === 'Sanctioned This Month' ? '22px' : '26px', color, fontWeight: 800, fontFamily: 'Roboto Mono', marginTop: '8px' }}>{value}</div>
+            <div style={{ fontSize: label === 'Sanctioned This Month' ? '22px' : '26px', color, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: '8px' }}>{value}</div>
             {label === 'Lending Capacity' && <div className="h-2 rounded-full mt-3 mb-2" style={{ backgroundColor: 'var(--neutral-200)' }}><div className="h-full rounded-full transition-all" style={{ width: `${scPortfolio.s186Used}%`, backgroundColor: 'var(--warning-500)' }} /></div>}
             <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '4px' }}>{note}</div>
           </button>
@@ -109,7 +109,7 @@ export function SanctionDashboard({ onNavigate, activePage }: SanctionDashboardP
             ['3+ yrs overdue', '3 loans', '2.0%', 'var(--error-500)'],
           ].map(([label, count, pct, color]) => (
             <button key={label} onClick={() => onNavigate('sc-dpd')} className="w-full mb-4 text-left clickable-row rounded-lg p-1">
-              <div className="flex items-center justify-between mb-1"><span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 600 }}>{label}</span><span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700 }}>{count} · {pct}</span></div>
+              <div className="flex items-center justify-between mb-1"><span style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 500 }}>{label}</span><span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700 }}>{count} · {pct}</span></div>
               <div className="h-2 rounded-full" style={{ backgroundColor: 'var(--neutral-200)' }}><div className="h-full rounded-full transition-all" style={{ width: pct, backgroundColor: color }} /></div>
             </button>
           ))}

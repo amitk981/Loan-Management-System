@@ -37,9 +37,9 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
           <div className="w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ backgroundColor: 'var(--success-100)', color: 'var(--success-600)' }}>
             <Check size={42} />
           </div>
-          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--neutral-900)' }}>Appraisal Note Submitted</h2>
+          <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--neutral-900)' }}>Appraisal Note Submitted</h2>
           <p style={{ fontSize: '14px', color: 'var(--neutral-500)', marginTop: '6px' }}>{appraisalLoan.id} is now Submitted to SC. Appraisal note locked, timestamp appended, and Days Waiting counter reset from this stage-entry time.</p>
-          <button onClick={() => onNavigate('credit-sc-queue')} className="mt-6 px-5 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Open Sanction Committee Queue</button>
+          <button onClick={() => onNavigate('credit-sc-queue')} className="mt-6 px-5 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Open Sanction Committee Queue</button>
         </div>
       </Shell>
     );
@@ -70,7 +70,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
             ].map(([id, label]) => (
               <button key={id} onClick={() => setStep(id as number)} className="w-full px-4 py-3 flex items-center gap-3 text-left border-b border-[#E5E7EB] last:border-b-0" style={{ backgroundColor: step === id ? '#E8F1FA' : 'white' }}>
                 <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: step === id ? 'var(--brand-accent)' : Number(id) < step ? 'var(--success-600)' : '#F3F4F6', color: step === id || Number(id) < step ? 'white' : 'var(--neutral-500)', fontSize: '12px', fontWeight: 700 }}>{Number(id) < step ? '✓' : id}</span>
-                <span style={{ fontSize: '13px', color: step === id ? 'var(--brand-accent)' : 'var(--neutral-700)', fontWeight: 800 }}>{label}</span>
+                <span style={{ fontSize: '13px', color: step === id ? 'var(--brand-accent)' : 'var(--neutral-700)', fontWeight: 700 }}>{label}</span>
               </button>
             ))}
           </div>
@@ -154,11 +154,11 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
                 <Field label="Crop risk" value="Medium — tomato price volatility" />
               </Panel>
               <div>
-                <label style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 800 }}>Risk Mitigation Notes</label>
+                <label style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700 }}>Risk Mitigation Notes</label>
                 <textarea className="w-full mt-2 p-3 rounded-lg border border-[#D1D5DB]" rows={4} defaultValue="Repayment routed through tri-party subsidiary deduction. Bank average supports short-term working capital cycle. Crop price risk mitigated through existing Sahyadri procurement relationship." />
               </div>
               <div>
-                <div style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 800, marginBottom: '8px' }}>Overall Risk Rating</div>
+                <div style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700, marginBottom: '8px' }}>Overall Risk Rating</div>
                 <div className="flex gap-2">
                   {(['Low', 'Medium', 'High'] as const).map(rating => (
                     <button key={rating} onClick={() => setRiskRating(rating)} className="px-4 py-2 rounded-lg" style={{ backgroundColor: riskRating === rating ? (rating === 'Low' ? 'var(--success-100)' : rating === 'Medium' ? 'var(--warning-100)' : 'var(--error-100)') : '#F3F4F6', color: riskRating === rating ? (rating === 'Low' ? 'var(--success-600)' : rating === 'Medium' ? 'var(--warning-700)' : 'var(--error-700)') : 'var(--neutral-500)', fontSize: '13px', fontWeight: 700 }}>{rating}</button>
@@ -173,23 +173,23 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
               <StepTitle title="Step 4: Recommendation" />
               <div className="grid grid-cols-3 gap-4">
                 <AmountBox label="Recommended amount" value={eligible} note={exceeds ? 'Revised to eligible limit' : 'As requested'} highlight />
-                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 800 }}>Tenure</div><div style={{ fontSize: '17px', fontWeight: 700, marginTop: '6px' }}>Short-term (≤1 year)</div></div>
-                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 800 }}>Interest Rate</div><div style={{ fontSize: '17px', fontWeight: 700, marginTop: '6px' }}>12% p.a. floating</div></div>
+                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>Tenure</div><div style={{ fontSize: '17px', fontWeight: 700, marginTop: '6px' }}>Short-term (≤1 year)</div></div>
+                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>Interest Rate</div><div style={{ fontSize: '17px', fontWeight: 700, marginTop: '6px' }}>12% p.a. floating</div></div>
               </div>
               <div>
-                <label style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 800 }}>Remarks for SC</label>
+                <label style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700 }}>Remarks for SC</label>
                 <textarea value={recommendation} onChange={e => setRecommendation(e.target.value)} className="w-full mt-2 p-3 rounded-lg border border-[#D1D5DB]" rows={5} />
               </div>
               <div className="flex justify-end gap-3">
-                <button className="px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 border border-[#E5E7EB]" style={{ color: 'var(--error-900)', fontSize: '14px' }}>Prepare Rejection Note</button>
-                <button onClick={() => setShowSubmit(true)} className="px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}><Send size={15} /> Submit to Sanction Committee</button>
+                <button className="px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 border border-[#E5E7EB]" style={{ color: 'var(--error-900)', fontSize: '14px' }}>Prepare Rejection Note</button>
+                <button onClick={() => setShowSubmit(true)} className="px-5 py-2.5 rounded-lg font-medium flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}><Send size={15} /> Submit to Sanction Committee</button>
               </div>
             </div>
           )}
 
           <div className="flex items-center justify-between mt-8 pt-5 border-t border-[#E5E7EB]">
             <button onClick={() => step > 1 ? setStep(step - 1) : onNavigate('credit-queue')} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>{step > 1 ? 'Previous' : 'Back to Intake'}</button>
-            {step < 4 && <button onClick={() => setStep(step + 1)} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Next →</button>}
+            {step < 4 && <button onClick={() => setStep(step + 1)} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Next →</button>}
           </div>
         </div>
       </div>
@@ -200,7 +200,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
           subtitle="The appraisal note will be locked and cannot be edited after submission."
           icon={<ShieldCheck size={18} />}
           onClose={() => setShowSubmit(false)}
-          footer={<><button onClick={() => setShowSubmit(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowSubmit(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Confirm</button></>}
+          footer={<><button onClick={() => setShowSubmit(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowSubmit(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Confirm</button></>}
         >
           <div className="flex gap-3 p-3 rounded-lg" style={{ backgroundColor: 'var(--warning-100)', color: 'var(--warning-700)', fontSize: '13px', lineHeight: '20px' }}>
             <AlertTriangle size={16} /> Confirming will move the Credit inbox row to Submitted to SC and append Submitted by: Amit Kulkarni with the current timestamp.
@@ -220,11 +220,11 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
 }
 
 function Field({ label, value, mono, type }: { label: string; value: string; mono?: boolean; type?: string }) {
-  return <div className="p-4 border-t border-r border-[#E5E7EB]"><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div><div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 800, marginTop: '5px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{type === 'radio' ? `● ${value}` : value}</div></div>;
+  return <div className="p-4 border-t border-r border-[#E5E7EB]"><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div><div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '5px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{type === 'radio' ? `● ${value}` : value}</div></div>;
 }
 
 function CalcInput({ label, value, onChange, suffix, step = 1 }: { label: string; value: number; onChange: (n: number) => void; suffix: string; step?: number }) {
-  return <label className="block mb-3"><span style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 800 }}>{label}</span><div className="flex items-center gap-2 mt-1"><input type="number" step={step} value={value} onChange={e => onChange(Number(e.target.value) || 0)} className="w-full px-3 rounded-md border border-[#D1D5DB]" style={{ height: '36px', fontSize: '14px', fontFamily: 'Roboto Mono' }} /><span style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>{suffix}</span></div></label>;
+  return <label className="block mb-3"><span style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</span><div className="flex items-center gap-2 mt-1"><input type="number" step={step} value={value} onChange={e => onChange(Number(e.target.value) || 0)} className="w-full px-3 rounded-md border border-[#D1D5DB]" style={{ height: '36px', fontSize: '14px', fontFamily: 'Roboto Mono' }} /><span style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>{suffix}</span></div></label>;
 }
 
 function Metric({ label, value, color = 'var(--neutral-900)' }: { label: string; value: string; color?: string }) {
@@ -232,5 +232,5 @@ function Metric({ label, value, color = 'var(--neutral-900)' }: { label: string;
 }
 
 function AmountBox({ label, value, note, highlight }: { label: string; value: number; note: string; highlight?: boolean }) {
-  return <div className="p-4 rounded-lg" style={{ backgroundColor: highlight ? '#F0F7F2' : 'var(--neutral-150)', border: `1px solid ${highlight ? '#3D7A4F' : '#E5E7EB'}` }}><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 800 }}>{label}</div><div style={{ fontSize: '22px', color: highlight ? 'var(--brand-primary)' : 'var(--brand-accent)', fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{formatCurrency(value)}</div><div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '4px' }}>{note}</div></div>;
+  return <div className="p-4 rounded-lg" style={{ backgroundColor: highlight ? '#F0F7F2' : 'var(--neutral-150)', border: `1px solid ${highlight ? '#3D7A4F' : '#E5E7EB'}` }}><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div><div style={{ fontSize: '22px', color: highlight ? 'var(--brand-primary)' : 'var(--brand-accent)', fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{formatCurrency(value)}</div><div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '4px' }}>{note}</div></div>;
 }

@@ -119,7 +119,7 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
             style={{ minHeight: '64px' }}
           >
             <div>
-              <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--neutral-900)', lineHeight: '28px' }}>
+              <h1 style={{ fontSize: '20px', fontWeight: 500, color: 'var(--neutral-900)', lineHeight: '28px' }}>
                 {pageTitle}
               </h1>
               {pageSubtitle && (

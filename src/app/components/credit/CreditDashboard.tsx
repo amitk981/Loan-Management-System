@@ -42,7 +42,7 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
       pageTitle={`${greeting}, ${user?.name || 'Credit Manager'}`}
       pageSubtitle={user?.roleLabel || 'Credit Assessment'}
       actions={
-        <button onClick={() => onNavigate('credit-queue')} className="px-4 py-2.5 rounded-lg font-semibold flex items-center gap-2 hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
+        <button onClick={() => onNavigate('credit-queue')} className="px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
           New Applications <ArrowRight size={15} />
         </button>
       }
@@ -79,7 +79,7 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 700 }}>{item.loan}</span>
-                  <span style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 600 }}>{item.name}</span>
+                  <span style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 500 }}>{item.name}</span>
                   <StatusBadge status={item.status} />
                 </div>
                 <div className="truncate" style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '3px' }}>{item.note}</div>
@@ -116,8 +116,8 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
           {dpdData.map(d => (
             <button key={d.label} onClick={() => onNavigate('credit-dpd')} className="p-3 rounded-lg text-left clickable-row" style={{ backgroundColor: 'var(--neutral-150)' }}>
               <div className="flex items-center justify-between mb-2">
-                <span style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 600 }}>{d.label}</span>
-                <span style={{ fontSize: '18px', color: d.color, fontWeight: 800 }}>{d.count}</span>
+                <span style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 500 }}>{d.label}</span>
+                <span style={{ fontSize: '18px', color: d.color, fontWeight: 700 }}>{d.count}</span>
               </div>
               <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--neutral-200)' }}>
                 <div className="h-full rounded-full transition-all" style={{ width: `${d.pct}%`, backgroundColor: d.color }} />
