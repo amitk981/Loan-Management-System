@@ -1,6 +1,7 @@
 import { Plus, Download, FileText, TrendingUp, Clock, ChevronRight, Bell, BadgeIndianRupee, CheckCircle2, AlertCircle, Info, IdCard, AlertOctagon } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
+import { GateBanner } from '../shared/GateBanner';
 import { LoanTracker } from '../shared/LoanTracker';
 import { farmerDocuments, farmerEligibility, farmerLoan, farmerNotifications, farmerProfile, farmerTransactions } from '../../data/farmerData';
 import { formatCurrency } from '../../lib/format';
@@ -66,29 +67,23 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       }
     >
       <div className="farmer-page">
-        {/* KYC Expiry / Default Hard Block Banners */}
+        {/* KYC Expiry / Default Hard Block Banners (SOP gates via shared GateBanner) */}
         {kycExpired && (
-          <div className="mb-4 p-4 rounded-xl border border-[#FECACA] flex items-center justify-between" style={{ backgroundColor: '#FEF2F2' }}>
-            <div className="flex items-center gap-3">
-              <AlertOctagon size={18} style={{ color: '#EF4444', flexShrink: 0 }} />
-              <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#991B1B' }}>KYC Expired — New Loan Applications Blocked</div>
-                <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px' }}>Your KYC expired on 15 Mar 2025. Visit your Credit Manager at the SFPCL office to renew.</div>
-              </div>
-            </div>
-            <button onClick={() => onNavigate('farmer-support')} className="px-4 py-2 rounded-lg text-white flex-shrink-0" style={{ backgroundColor: '#EF4444', fontSize: '13px', fontWeight: 700 }}>Contact Office</button>
-          </div>
+          <GateBanner
+            className="mb-4"
+            variant="blocked"
+            title="KYC expired — new loan applications blocked"
+            detail="Your KYC expired on 15 Mar 2025. Re-KYC is required every 2 years (SOP §KYC). Visit your Credit Manager at the SFPCL office to renew."
+            action={{ label: 'Contact Office', onClick: () => onNavigate('farmer-support') }}
+          />
         )}
         {hasActiveDefault && (
-          <div className="mb-4 p-4 rounded-xl border border-[#FECACA] flex items-center justify-between" style={{ backgroundColor: '#FEF2F2' }}>
-            <div className="flex items-center gap-3">
-              <AlertOctagon size={18} style={{ color: '#EF4444', flexShrink: 0 }} />
-              <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#991B1B' }}>Active Default — New Loan Blocked</div>
-                <div style={{ fontSize: '12px', color: '#3D4450', marginTop: '2px' }}>You have an active default on LO000022. Contact your Credit Manager before applying for a new loan.</div>
-              </div>
-            </div>
-          </div>
+          <GateBanner
+            className="mb-4"
+            variant="blocked"
+            title="Active default — new loan blocked"
+            detail="You have an active default on LO000022. No new loan can be disbursed to a borrower with an existing default (SOP §6). Contact your Credit Manager before applying."
+          />
         )}
         <div className="mb-6 p-4 rounded-xl border border-[#BBF7D0] flex items-center justify-between" style={{ backgroundColor: '#F0FDF4' }}>
           <div className="flex items-center gap-3">
