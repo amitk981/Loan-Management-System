@@ -11,13 +11,13 @@ interface CreditDashboardProps {
 
 const actionQueue = [
   { icon: '!', loan: 'LO00000089', name: 'Rajesh Patil', note: 'Appraisal Note overdue 1d', status: 'Overdue', page: 'credit-review', color: 'var(--error-700)' },
-  { icon: '→', loan: 'LO00000091', name: 'Priya Shinde', note: 'Docs incomplete — PAN missing', status: 'Incomplete', page: 'credit-queue', color: '#1565C0' },
-  { icon: '→', loan: 'LO00000086', name: 'Narayan FPC', note: 'Sent to SC — awaiting decision', status: 'Awaiting SC Approval', page: 'credit-sc-queue', color: '#1565C0' },
+  { icon: '→', loan: 'LO00000091', name: 'Priya Shinde', note: 'Docs incomplete — PAN missing', status: 'Incomplete', page: 'credit-queue', color: 'var(--brand-accent-700)' },
+  { icon: '→', loan: 'LO00000086', name: 'Narayan FPC', note: 'Sent to SC — awaiting decision', status: 'Awaiting SC Approval', page: 'credit-sc-queue', color: 'var(--brand-accent-700)' },
   { icon: '✓', loan: 'LO00000082', name: 'Disbursed', note: 'Update loan register', status: 'Disbursed', page: 'credit-register', color: 'var(--success-600)' },
 ];
 
 const alerts = [
-  { title: 'TAT Breach', body: 'LO00000076 — Appraisal due 2 days ago', color: '#E65100', page: 'credit-review' },
+  { title: 'TAT Breach', body: 'LO00000076 — Appraisal due 2 days ago', color: 'var(--warning-800)', page: 'credit-review' },
   { title: 'Default Flag', body: 'LO00000051 — Principal overdue 94 days', color: 'var(--error-700)', page: 'credit-dpd' },
   { title: 'Re-KYC Due', body: '14 members — KYC expiring in 30d', color: 'var(--warning-500)', page: 'credit-all-apps' },
 ];
@@ -25,7 +25,7 @@ const alerts = [
 const dpdData = [
   { label: 'Current', count: 127, pct: 86, color: 'var(--success-500)' },
   { label: '1-2yr', count: 12, pct: 8, color: 'var(--warning-500)' },
-  { label: '2-3yr', count: 5, pct: 4, color: '#E65100' },
+  { label: '2-3yr', count: 5, pct: 4, color: 'var(--warning-800)' },
   { label: '3yr+', count: 3, pct: 2, color: 'var(--error-500)' },
 ];
 
@@ -69,12 +69,12 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
       />
 
       <div className="grid grid-cols-11 gap-5 mb-5">
-        <div className="col-span-6 bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
-          <div className="px-5 py-3 border-b border-[#E5E7EB]" style={{ backgroundColor: 'var(--neutral-150)' }}>
+        <div className="col-span-6 bg-white rounded-xl border border-[var(--neutral-250)] overflow-hidden">
+          <div className="px-5 py-3 border-b border-[var(--neutral-250)]" style={{ backgroundColor: 'var(--neutral-150)' }}>
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Action Queue</h3>
           </div>
           {actionQueue.map(item => (
-            <button key={item.loan} onClick={() => onNavigate(item.page)} className="w-full px-5 py-4 flex items-center gap-4 text-left border-b border-[#E5E7EB] last:border-b-0 clickable-row">
+            <button key={item.loan} onClick={() => onNavigate(item.page)} className="w-full px-5 py-4 flex items-center gap-4 text-left border-b border-[var(--neutral-250)] last:border-b-0 clickable-row">
               <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${item.color}18`, color: item.color, fontWeight: 700 }}>{item.icon}</div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -89,8 +89,8 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
           ))}
         </div>
 
-        <div className="col-span-5 bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
-          <div className="px-5 py-3 border-b border-[#E5E7EB]" style={{ backgroundColor: 'var(--neutral-150)' }}>
+        <div className="col-span-5 bg-white rounded-xl border border-[var(--neutral-250)] overflow-hidden">
+          <div className="px-5 py-3 border-b border-[var(--neutral-250)]" style={{ backgroundColor: 'var(--neutral-150)' }}>
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Alerts</h3>
           </div>
           <div className="p-4 space-y-3">
@@ -107,10 +107,10 @@ export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-5 border border-[#E5E7EB]">
+      <div className="bg-white rounded-xl p-5 border border-[var(--neutral-250)]">
         <div className="flex items-center justify-between mb-4">
           <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Portfolio Health</h3>
-          <button onClick={() => onNavigate('credit-dpd')} className="hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)', fontWeight: 700 }}>DPD Monitoring →</button>
+          <button onClick={() => onNavigate('credit-dpd')} className="hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)', fontWeight: 700 }}>DPD Monitoring →</button>
         </div>
         <div className="grid grid-cols-4 gap-4 mb-4">
           {dpdData.map(d => (

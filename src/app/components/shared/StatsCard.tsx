@@ -24,7 +24,7 @@ export function StatsCard({ title, value, subtitle, icon, color, badge, progress
 
   return (
     <Wrapper
-      className={`bg-white rounded-2xl p-5 border border-[#EDEEF0] text-left ${onClick ? 'clickable-card' : ''} ${className}`}
+      className={`bg-white rounded-2xl p-5 border border-[var(--neutral-200)] text-left ${onClick ? 'clickable-card' : ''} ${className}`}
       style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
       onClick={onClick}
       type={onClick ? 'button' : undefined}
@@ -56,7 +56,7 @@ export function StatsCard({ title, value, subtitle, icon, color, badge, progress
       )}
       {progress !== undefined && (
         <div className="mt-3">
-          <div className="h-1.5 bg-[#EDEEF0] rounded-full overflow-hidden">
+          <div className="h-1.5 bg-[var(--neutral-200)] rounded-full overflow-hidden">
             <div
               className="h-full rounded-full"
               style={{ width: `${progress}%`, backgroundColor: color || 'var(--brand-secondary)', transition: 'width 0.6s ease' }}

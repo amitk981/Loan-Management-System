@@ -46,7 +46,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <DataCard title={activePage === 'credit-returned' ? 'Incomplete Files' : 'Appraisal Worklist'} action={<button onClick={() => onNavigate('credit-queue')} style={{ fontSize: '13px', color: 'var(--brand-accent)', fontWeight: 700 }}>Open Intake</button>}>
         <SimpleTable headers={['Loan ID', 'Borrower', 'Requested', 'Purpose', 'TAT / Blocker', 'Action']}>
           {rows.map(row => (
-            <tr key={row.id} onClick={() => onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review')} className="border-b border-[#E5E7EB] clickable-row">
+            <tr key={row.id} onClick={() => onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review')} className="border-b border-[var(--neutral-250)] clickable-row">
               <Cell mono blue>{row.id}</Cell>
               <Cell><strong>{row.shortName}</strong><br /><span style={{ color: 'var(--neutral-500)', fontSize: '12px' }}>{row.folio} · {row.village}</span></Cell>
               <Cell right mono>{formatCurrency(row.amount)}</Cell>
@@ -64,21 +64,21 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
     const selected = sanctionQueue.find(row => row.id === selectedSc) || sanctionQueue[2];
     return (
       <div className="space-y-5">
-        <DataCard title="Sanction Committee Queue" action={<button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}><Download size={13} /> Export CSV</button>}>
+        <DataCard title="Sanction Committee Queue" action={<button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--accent-blue-50)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}><Download size={13} /> Export CSV</button>}>
           <SimpleTable headers={['Loan ID', 'Name', 'Amount', 'Submitted', 'SC Level', 'Status']}>
             {sanctionQueue.map(row => (
-              <tr key={row.id} onClick={() => setSelectedSc(row.id)} className="border-b border-[#E5E7EB] hover:bg-[#FAFAF8] cursor-pointer" style={{ backgroundColor: selectedSc === row.id ? '#E8F1FA' : 'white' }}>
+              <tr key={row.id} onClick={() => setSelectedSc(row.id)} className="border-b border-[var(--neutral-250)] hover:bg-[var(--neutral-150)] cursor-pointer" style={{ backgroundColor: selectedSc === row.id ? 'var(--accent-blue-50)' : 'white' }}>
                 <Cell mono blue>{row.id}</Cell>
                 <Cell><strong>{row.name}</strong></Cell>
                 <Cell right mono>{formatCurrency(row.amount)}</Cell>
                 <Cell>{row.submitted}</Cell>
-                <Cell><span className="px-2 py-1 rounded-full" style={{ backgroundColor: row.level === 'CFO+2Dir' ? '#F3E8FF' : '#E8F1FA', color: row.level === 'CFO+2Dir' ? 'var(--accent-sanction)' : 'var(--brand-accent)', fontSize: '11px', fontWeight: 700 }}>{row.level}</span></Cell>
+                <Cell><span className="px-2 py-1 rounded-full" style={{ backgroundColor: row.level === 'CFO+2Dir' ? 'var(--purple-100)' : 'var(--accent-blue-50)', color: row.level === 'CFO+2Dir' ? 'var(--accent-sanction)' : 'var(--brand-accent)', fontSize: '11px', fontWeight: 700 }}>{row.level}</span></Cell>
                 <Cell><StatusBadge status={row.status} /></Cell>
               </tr>
             ))}
           </SimpleTable>
         </DataCard>
-        <div className="bg-white rounded-lg p-5 border border-[#E5E7EB]">
+        <div className="bg-white rounded-lg p-5 border border-[var(--neutral-250)]">
           <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--neutral-900)' }}>Expanded Row: {selected.id} — {selected.name}</div>
           <div className="grid grid-cols-4 gap-3 mt-4">
             <Info label="SC Decision" value={selected.status.toUpperCase()} />
@@ -94,10 +94,10 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
   };
 
   const renderRegister = () => (
-    <DataCard title="Loan Register" action={<div className="flex items-center gap-2"><input placeholder="Search by LO# / Name / Village" className="px-3 rounded-md border border-[#D1D5DB]" style={{ height: '34px', fontSize: '13px' }} /><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Export ↓</button></div>}>
+    <DataCard title="Loan Register" action={<div className="flex items-center gap-2"><input placeholder="Search by LO# / Name / Village" className="px-3 rounded-md border border-[var(--neutral-300)]" style={{ height: '34px', fontSize: '13px' }} /><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--accent-blue-50)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Export ↓</button></div>}>
       <SimpleTable headers={['#', 'Loan ID', 'Borrower', 'Amount', 'Disbursed', 'Stage', 'DPD', 'Action']}>
         {loanRegister.map((row, i) => (
-          <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[#E5E7EB] clickable-row">
+          <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[var(--neutral-250)] clickable-row">
             <Cell>{String(i + 1)}</Cell>
             <Cell mono blue>{row.id}</Cell>
             <Cell><strong>{row.borrower}</strong></Cell>
@@ -109,7 +109,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
           </tr>
         ))}
       </SimpleTable>
-      <div className="p-4 border-t border-[#E5E7EB]" style={{ fontSize: '13px', color: 'var(--neutral-500)' }}>Showing 1-5 of 147 · Selected drawer: {selectedLoan}</div>
+      <div className="p-4 border-t border-[var(--neutral-250)]" style={{ fontSize: '13px', color: 'var(--neutral-500)' }}>Showing 1-5 of 147 · Selected drawer: {selectedLoan}</div>
     </DataCard>
   );
 
@@ -117,7 +117,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
     <div className="space-y-5">
       <div className="grid grid-cols-5 gap-4">
         {dpdSummary.map(item => (
-          <div key={item.label} className="bg-white rounded-lg p-4 border border-[#E5E7EB]">
+          <div key={item.label} className="bg-white rounded-lg p-4 border border-[var(--neutral-250)]">
             <div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>{item.label}</div>
             <div style={{ fontSize: '24px', color: item.color, fontWeight: 700, marginTop: '6px' }}>{item.loans ? `${item.loans} loans` : item.amount}</div>
             {item.loans > 0 && <div style={{ fontSize: '13px', color: 'var(--neutral-700)', fontFamily: 'Roboto Mono', marginTop: '4px' }}>{item.amount}</div>}
@@ -127,7 +127,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <DataCard title="DPD Table: Filter 3+ Years" action={<button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 700 }}>Generate CFO MIS Report</button>}>
         <SimpleTable headers={['Borrower', 'Loan ID', 'Amount', 'DPD Days', 'Action Required']}>
           {dpdRows.map(row => (
-            <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[#E5E7EB] clickable-row">
+            <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[var(--neutral-250)] clickable-row">
               <Cell><strong>{row.borrower}</strong></Cell>
               <Cell mono blue>{row.loan}</Cell>
               <Cell right mono>{formatCurrency(row.amount)}</Cell>
@@ -137,12 +137,12 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
           ))}
         </SimpleTable>
       </DataCard>
-      <div className="bg-white rounded-lg p-5 border border-[#E5E7EB]">
+      <div className="bg-white rounded-lg p-5 border border-[var(--neutral-250)]">
         <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--neutral-900)' }}>Default Workflow Panel — LO00000018</h3>
         {['Missed payment detected — 12-Jan-2024', '3-month grace period given — 15-Jan-2024 → 15-Apr-2024', 'Non-payment assessed: Non-intentional (crop failure noted)', '1-year extension granted — 20-Apr-2024 → 20-Apr-2025', 'Extension period expired — 20-Apr-2025 — still not repaid'].map((item, i) => (
           <div key={item} className="flex items-center gap-3 py-2"><span style={{ color: i < 4 ? 'var(--success-600)' : 'var(--error-700)', fontWeight: 700 }}>{i < 4 ? '✓' : '✕'}</span><span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{item}</span></div>
         ))}
-        <textarea className="w-full mt-3 p-3 rounded-lg border border-[#D1D5DB]" rows={5} defaultValue="Auto-draft note for non-payment: Narayan Patil, LO00000018, sanctioned ₹1,20,000, DPD 1247 days. Crop failure recorded; extension expired. Recommendation: submit to SC for action approval and review SH-4 / undated cheque invocation." />
+        <textarea className="w-full mt-3 p-3 rounded-lg border border-[var(--neutral-300)]" rows={5} defaultValue="Auto-draft note for non-payment: Narayan Patil, LO00000018, sanctioned ₹1,20,000, DPD 1247 days. Crop failure recorded; extension expired. Recommendation: submit to SC for action approval and review SH-4 / undated cheque invocation." />
         <button className="mt-3 px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Submit to Sanction Committee for action approval</button>
       </div>
     </div>
@@ -154,22 +154,22 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <DataCard title="Interest Invoice Batch" action={<button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 700 }}>Generate All Invoices</button>}>
         <SimpleTable headers={['Borrower', 'Loan ID', 'Principal', 'Interest (yr)', 'Status', 'Action']}>
           {interestInvoices.map(row => (
-            <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[#E5E7EB] clickable-row">
-              <Cell><strong>{row.borrower}</strong></Cell><Cell mono blue>{row.loan}</Cell><Cell right mono>{formatCurrency(row.principal)}</Cell><Cell right mono>{formatCurrency(row.interest)}<br /><span style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>(12% p.a.)</span></Cell><Cell><StatusBadge status={row.status} /></Cell><Cell><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: row.status === 'Unpaid' ? 'var(--warning-100)' : '#E8F1FA', color: row.status === 'Unpaid' ? 'var(--warning-700)' : 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>{row.action}</button></Cell>
+            <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[var(--neutral-250)] clickable-row">
+              <Cell><strong>{row.borrower}</strong></Cell><Cell mono blue>{row.loan}</Cell><Cell right mono>{formatCurrency(row.principal)}</Cell><Cell right mono>{formatCurrency(row.interest)}<br /><span style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>(12% p.a.)</span></Cell><Cell><StatusBadge status={row.status} /></Cell><Cell><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: row.status === 'Unpaid' ? 'var(--warning-100)' : 'var(--accent-blue-50)', color: row.status === 'Unpaid' ? 'var(--warning-700)' : 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>{row.action}</button></Cell>
             </tr>
           ))}
         </SimpleTable>
       </DataCard>
-      <div className="bg-white rounded-lg p-5 border border-[#E5E7EB]">
+      <div className="bg-white rounded-lg p-5 border border-[var(--neutral-250)]">
         <h3 style={{ fontSize: '16px', fontWeight: 700 }}>Capitalization Workflow</h3>
         <p style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px', marginTop: '8px' }}>Loans with unpaid interest past 30 April: 15 cases. Bulk capitalisation will add interest to principal, recalculate FY interest, generate intimation letters, and notify Sr. Manager-Finance for SAP accrual entries.</p>
-        <button className="mt-4 px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: '#E65100', color: 'white', fontSize: '14px' }}>Preview changes before confirming</button>
+        <button className="mt-4 px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--warning-800)', color: 'white', fontSize: '14px' }}>Preview changes before confirming</button>
       </div>
     </div>
   );
 
   const renderSap = () => (
-    <div className="bg-white rounded-lg p-6 border border-[#E5E7EB] max-w-4xl">
+    <div className="bg-white rounded-lg p-6 border border-[var(--neutral-250)] max-w-4xl">
       <div className="flex items-center justify-between mb-5"><div><h3 style={{ fontSize: '18px', fontWeight: 700 }}>Create SAP Customer Code — LO00000090 — Ganesh Thorat FPC</h3><div style={{ fontSize: '13px', color: 'var(--neutral-500)', marginTop: '4px' }}>Status: SC Approved ✓ → SAP Code: Not yet created ⏳</div></div><Mail color="var(--brand-accent)" /></div>
       <InfoGrid rows={[
         ['Farmer Full Name', 'Ganesh Thorat Farmers Producer Company'],
@@ -179,10 +179,10 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
         ['Email ID', 'ganesh.thorat.fpc@gmail.com'],
         ['Loan Application No.', appraisalLoan.id],
       ]} />
-      <div className="mt-5 p-4 rounded-lg" style={{ backgroundColor: 'var(--neutral-150)', border: '1px solid #E5E7EB', fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '22px' }}>
+      <div className="mt-5 p-4 rounded-lg" style={{ backgroundColor: 'var(--neutral-150)', border: '1px solid var(--neutral-250)', fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '22px' }}>
         Send to: Sr. Manager - Finance (Rohan Mehta) &lt;rmehta@sahyadrifarms.com&gt;<br />Cc: Credit Manager (auto)<br />Format: Excel attachment (Annexure I template) + email body
       </div>
-      <div className="mt-5 flex gap-3"><button className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]">Preview Email</button><button className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Send Request →</button></div>
+      <div className="mt-5 flex gap-3"><button className="px-4 py-2.5 rounded-lg border border-[var(--neutral-250)]">Preview Email</button><button className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Send Request →</button></div>
     </div>
   );
 
@@ -196,21 +196,21 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
           ] : [
             ['LO00000079', 'Suresh Bhagat', 'Purpose outside approved agriculture list', 'Email', 'Prepare Rejection Note'],
             ['LO00000072', 'Mohan Kale', 'KYC not completed after deficiency notice', 'Courier', 'View Register'],
-          ]).map(row => <tr key={row[1]} onClick={() => setSelectedLoan(row[1])} className="border-b border-[#E5E7EB] clickable-row">{row.map((cell, i) => <Cell key={i}>{cell}</Cell>)}</tr>)}
+          ]).map(row => <tr key={row[1]} onClick={() => setSelectedLoan(row[1])} className="border-b border-[var(--neutral-250)] clickable-row">{row.map((cell, i) => <Cell key={i}>{cell}</Cell>)}</tr>)}
         </SimpleTable>
       </DataCard>
       <DataCard title="Audit Trail">
-        <SimpleTable headers={['Timestamp', 'Actor', 'Action']}>{auditTrail.map(row => <tr key={row[0]} className="border-b border-[#E5E7EB]">{row.map((cell, i) => <Cell key={i}>{cell}</Cell>)}</tr>)}</SimpleTable>
+        <SimpleTable headers={['Timestamp', 'Actor', 'Action']}>{auditTrail.map(row => <tr key={row[0]} className="border-b border-[var(--neutral-250)]">{row.map((cell, i) => <Cell key={i}>{cell}</Cell>)}</tr>)}</SimpleTable>
       </DataCard>
     </div>
   );
 
   const renderMember = () => (
     <div className="grid grid-cols-5 gap-5">
-      <div className="col-span-2 bg-white rounded-lg p-5 border border-[#E5E7EB]">
-        <div className="relative"><Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" color="var(--neutral-500)" /><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search member, folio, loan ID" className="w-full pl-9 rounded-md border border-[#D1D5DB]" style={{ height: '38px' }} /></div>
+      <div className="col-span-2 bg-white rounded-lg p-5 border border-[var(--neutral-250)]">
+        <div className="relative"><Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" color="var(--neutral-500)" /><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search member, folio, loan ID" className="w-full pl-9 rounded-md border border-[var(--neutral-300)]" style={{ height: '38px' }} /></div>
       </div>
-      <div className="col-span-3 bg-white rounded-lg p-5 border border-[#E5E7EB]">
+      <div className="col-span-3 bg-white rounded-lg p-5 border border-[var(--neutral-250)]">
         <h3 style={{ fontSize: '18px', fontWeight: 700 }}>Priya Ramesh Shinde</h3>
         <p style={{ fontSize: '13px', color: 'var(--neutral-500)', marginTop: '4px' }}>Member since April 2021 · Active ✓ · Dindori, Nashik · Grapes (3 acres)</p>
         <InfoGrid rows={[['Folio', 'SH-2847'], ['Shareholding', '250 shares'], ['Valuation', '₹2,000/share · Total ₹5,00,000'], ['Max loan share-based', '₹50,000'], ['Repayment track record', '95% on-time'], ['KYC Status', 'PAN ✓ Aadhaar ✓ Re-KYC Due Aug 2026']]} />
@@ -221,9 +221,9 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
   const renderMis = () => (
       <div className="grid grid-cols-3 gap-5">
       {['Quarterly Portfolio MIS', 'Section 186 Limit Monitor', 'NBFC Threshold Monitor'].map((title, i) => (
-        <button key={title} onClick={() => onNavigate(i === 0 ? 'credit-mis' : 'shared-s186-lock')} className="bg-white rounded-lg p-5 border border-[#E5E7EB] text-left clickable-card">
+        <button key={title} onClick={() => onNavigate(i === 0 ? 'credit-mis' : 'shared-s186-lock')} className="bg-white rounded-lg p-5 border border-[var(--neutral-250)] text-left clickable-card">
           <h3 style={{ fontSize: '16px', fontWeight: 700 }}>{title}</h3>
-          <div className="mt-4 h-3 rounded-full" style={{ backgroundColor: '#E5E7EB' }}><div className="h-full rounded-full" style={{ width: i === 0 ? '82%' : i === 1 ? '58%' : '40%', backgroundColor: i === 2 ? 'var(--warning-500)' : 'var(--success-600)' }} /></div>
+          <div className="mt-4 h-3 rounded-full" style={{ backgroundColor: 'var(--neutral-250)' }}><div className="h-full rounded-full" style={{ width: i === 0 ? '82%' : i === 1 ? '58%' : '40%', backgroundColor: i === 2 ? 'var(--warning-500)' : 'var(--success-600)' }} /></div>
           <div style={{ fontSize: '13px', color: 'var(--neutral-700)', marginTop: '12px' }}>{i === 2 ? '40% threshold watch' : 'Ready for export'}</div>
           <span className="inline-flex mt-4 px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '12px', fontWeight: 700 }}>Generate</span>
         </button>
@@ -234,10 +234,10 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
   const renderActiveLoans = () => {
     const activeRows = loanRegister.filter(row => row.stage === 'Active' || row.stage === 'Disbursed');
     return (
-      <DataCard title="Active Loans" action={<button onClick={() => onNavigate('credit-dpd')} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Open DPD Monitor</button>}>
+      <DataCard title="Active Loans" action={<button onClick={() => onNavigate('credit-dpd')} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--accent-blue-50)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Open DPD Monitor</button>}>
         <SimpleTable headers={['Loan ID', 'Borrower', 'Sanctioned', 'Outstanding', 'DPD', 'Next Due', 'Action']}>
           {activeRows.map(row => (
-            <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[#E5E7EB] clickable-row">
+            <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[var(--neutral-250)] clickable-row">
               <Cell mono blue>{row.id}</Cell>
               <Cell><strong>{row.borrower}</strong></Cell>
               <Cell right mono>{formatCurrency(row.amount)}</Cell>
@@ -289,7 +289,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
 }
 
 function DataCard({ title, action, children }: { title: string; action?: React.ReactNode; children: React.ReactNode }) {
-  return <div className="bg-white rounded-lg border border-[#E5E7EB] overflow-hidden"><div className="px-5 py-3 border-b border-[#E5E7EB] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-150)' }}><h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</h3>{action}</div>{children}</div>;
+  return <div className="bg-white rounded-lg border border-[var(--neutral-250)] overflow-hidden"><div className="px-5 py-3 border-b border-[var(--neutral-250)] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-150)' }}><h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</h3>{action}</div>{children}</div>;
 }
 
 function SimpleTable({ headers, children }: { headers: string[]; children: React.ReactNode }) {
@@ -301,7 +301,7 @@ function Cell({ children, mono, blue, right }: { children: React.ReactNode; mono
 }
 
 function Info({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
-  return <div className="bg-white rounded-lg p-4 border border-[#E5E7EB]"><div style={{ fontSize: '11px', color: 'var(--neutral-500)', fontWeight: 700, textTransform: 'uppercase' }}>{label}</div><div style={{ fontSize: '18px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '6px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{value}</div></div>;
+  return <div className="bg-white rounded-lg p-4 border border-[var(--neutral-250)]"><div style={{ fontSize: '11px', color: 'var(--neutral-500)', fontWeight: 700, textTransform: 'uppercase' }}>{label}</div><div style={{ fontSize: '18px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '6px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{value}</div></div>;
 }
 
 function InfoGrid({ rows }: { rows: string[][] }) {

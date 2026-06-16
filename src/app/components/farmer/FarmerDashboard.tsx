@@ -85,9 +85,9 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
             detail="You have an active default on LO000022. No new loan can be disbursed to a borrower with an existing default (SOP §6). Contact your Credit Manager before applying."
           />
         )}
-        <div className="mb-6 p-4 rounded-xl border border-[#BBF7D0] flex items-center justify-between" style={{ backgroundColor: 'var(--success-50)' }}>
+        <div className="mb-6 p-4 rounded-xl border border-[var(--success-200)] flex items-center justify-between" style={{ backgroundColor: 'var(--success-50)' }}>
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-full bg-[#22C55E] text-white flex items-center justify-center font-bold text-sm">✓</span>
+            <span className="w-8 h-8 rounded-full bg-[var(--success-500)] text-white flex items-center justify-center font-bold text-sm">✓</span>
             <div>
               <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--success-700)' }}>Your loan is Active & in Good Standing</div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>Next instalment of ₹19,500 is due by 31 Mar 2027.</div>
@@ -101,7 +101,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
             <div
               className="col-span-7 text-left p-7 relative overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #374151 0%, #4B5563 52%, #6B7280 100%)',
+                background: 'linear-gradient(135deg, var(--gray-700) 0%, var(--gray-600) 52%, var(--neutral-500) 100%)',
                 color: 'white',
                 borderRadius: '22px',
                 boxShadow: '0 18px 42px rgba(55,65,81,0.22)',
@@ -131,7 +131,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                     <button
                       onClick={() => onNavigate('farmer-active-loans')}
                       className="px-5 py-2.5 rounded-xl"
-                      style={{ backgroundColor: 'white', color: '#374151', fontSize: '14px', fontWeight: 700 }}
+                      style={{ backgroundColor: 'white', color: 'var(--gray-700)', fontSize: '14px', fontWeight: 700 }}
                     >
                       Track Status
                     </button>
@@ -173,7 +173,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                     <button
                       onClick={(e) => { e.stopPropagation(); onNavigate('farmer-repayment'); }}
                       className="px-5 py-2.5 rounded-xl"
-                      style={{ backgroundColor: 'white', color: '#16452F', fontSize: '14px', fontWeight: 700 }}
+                      style={{ backgroundColor: 'white', color: 'var(--green-900)', fontSize: '14px', fontWeight: 700 }}
                     >
                       Pay instalment
                     </button>
@@ -188,14 +188,14 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
             <div className="flex items-center justify-between mb-4">
               <div>
                 <div className="farmer-kicker">Borrower Command</div>
-                <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#111827', marginTop: '4px' }}>What you can do now</h2>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--neutral-950)', marginTop: '4px' }}>What you can do now</h2>
               </div>
               <StatusBadge status="Good Standing" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: 'Track loan', detail: 'Stage, schedule, timeline', icon: <Clock size={18} />, page: 'farmer-active-loans', color: '#1E6CEB' },
-                { label: 'Download files', detail: 'Agreement, invoices, forms', icon: <FileText size={18} />, page: 'farmer-documents', color: '#286C4B' },
+                { label: 'Track loan', detail: 'Stage, schedule, timeline', icon: <Clock size={18} />, page: 'farmer-active-loans', color: 'var(--blue-500)' },
+                { label: 'Download files', detail: 'Agreement, invoices, forms', icon: <FileText size={18} />, page: 'farmer-documents', color: 'var(--green-800)' },
                 { label: 'Apply again', detail: `${formatCurrency(farmerEligibility.eligible)} eligible limit`, icon: <TrendingUp size={18} />, page: 'farmer-apply', color: 'var(--accent-sanction)' },
                 { label: 'Ask for help', detail: 'Raise or track a ticket', icon: <Bell size={18} />, page: 'farmer-support', color: 'var(--gold-500)' },
               ].map(item => (
@@ -203,8 +203,8 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${item.color}15`, color: item.color }}>
                     {item.icon}
                   </div>
-                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#111827' }}>{item.label}</div>
-                  <div style={{ fontSize: '12px', color: '#667085', marginTop: '4px', lineHeight: '17px' }}>{item.detail}</div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-950)' }}>{item.label}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--neutral-550)', marginTop: '4px', lineHeight: '17px' }}>{item.detail}</div>
                 </button>
               ))}
             </div>
@@ -212,12 +212,12 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
         </section>
 
       {/* Loan Journey Tracker */}
-      <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-[#EDEEF0]">
+      <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-[var(--neutral-200)]">
         <div className="flex items-center justify-between mb-6">
           <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Loan Journey</h3>
           <button
             onClick={() => onNavigate('farmer-active-loans')}
-            className="flex items-center gap-1 transition-colors hover:text-[#1565C0]"
+            className="flex items-center gap-1 transition-colors hover:text-[var(--brand-accent-700)]"
             style={{ fontSize: '13px', color: 'var(--brand-accent)', fontWeight: 500 }}
           >
             View Details <ChevronRight size={14} />
@@ -233,15 +233,15 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       {/* Two Column Row */}
       <div className="grid grid-cols-5 gap-5 mb-6">
         {/* Recent Transactions */}
-        <div className="col-span-3 bg-white rounded-2xl p-5 shadow-sm border border-[#EDEEF0]">
+        <div className="col-span-3 bg-white rounded-2xl p-5 shadow-sm border border-[var(--neutral-200)]">
           <div className="flex items-center justify-between mb-4">
             <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Recent Transactions</h3>
-            <button onClick={() => onNavigate('farmer-repayment')} className="flex items-center gap-1 hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
+            <button onClick={() => onNavigate('farmer-repayment')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
           </div>
           <div className="table-scroll">
             <table className="w-full">
               <thead>
-                <tr style={{ borderBottom: '1px solid #EDEEF0' }}>
+                <tr style={{ borderBottom: '1px solid var(--neutral-200)' }}>
                   {['Date', 'Type', 'Amount', 'Mode', 'Status'].map(h => (
                     <th key={h} className="pb-2 text-left" style={{ fontSize: '11px', fontWeight: 500, color: 'var(--neutral-400)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
                   ))}
@@ -249,7 +249,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
               </thead>
               <tbody>
                 {farmerTransactions.map((r, i) => (
-                  <tr key={i} className="border-b border-[#EDEEF0] clickable-row" onClick={() => onNavigate('farmer-repayment')}>
+                  <tr key={i} className="border-b border-[var(--neutral-200)] clickable-row" onClick={() => onNavigate('farmer-repayment')}>
                     <td className="py-3" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{r.date}</td>
                     <td><span className="px-2 py-1 rounded-full" style={{ fontSize: '11px', backgroundColor: r.type === 'Disbursement' ? 'var(--info-100)' : 'var(--success-100)', color: r.type === 'Disbursement' ? 'var(--brand-accent)' : 'var(--success-500)', fontWeight: 700 }}>{r.type}</span></td>
                     <td style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: r.sign === '+' ? 'var(--success-500)' : 'var(--neutral-700)', textAlign: 'right' }}>{r.sign}{formatCurrency(r.amount)}</td>
@@ -263,10 +263,10 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
         </div>
 
         {/* My Documents */}
-        <div className="col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-[#EDEEF0]">
+        <div className="col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-[var(--neutral-200)]">
           <div className="flex items-center justify-between mb-4">
             <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Documents</h3>
-            <button onClick={() => onNavigate('farmer-documents')} className="flex items-center gap-1 hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
+            <button onClick={() => onNavigate('farmer-documents')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
           </div>
           <div className="space-y-1">
             {farmerDocuments.slice(3, 9).map((doc, i) => (
@@ -280,7 +280,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                 <div className="flex items-center gap-2">
                   <StatusBadge status={doc.status} />
                   {doc.status === 'Available' && (
-                    <span className="p-1.5 hover:bg-[#E8F5E9] rounded-lg transition-colors">
+                    <span className="p-1.5 hover:bg-[var(--brand-light)] rounded-lg transition-colors">
                       <Download size={14} style={{ color: 'var(--brand-secondary)' }} />
                     </span>
                   )}
@@ -292,10 +292,10 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       </div>
 
       {/* Notifications */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#EDEEF0]">
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-[var(--neutral-200)]">
         <div className="flex items-center justify-between mb-4">
           <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Recent Alerts</h3>
-          <button onClick={() => onNavigate('notifications-center')} className="flex items-center gap-1 hover:text-[#1565C0] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
+          <button onClick={() => onNavigate('notifications-center')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
         </div>
         <div className="space-y-1">
           {farmerNotifications.map(n => {

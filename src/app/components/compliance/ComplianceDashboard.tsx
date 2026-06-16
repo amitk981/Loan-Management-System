@@ -22,9 +22,9 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
       pageTitle="CS Dashboard"
       pageSubtitle={`${greeting}, ${user?.name || 'Company Secretary'} · ${user?.roleLabel || 'Compliance'}`}
     >
-      <div className="mb-6 p-4 rounded-xl border border-[#FDE68A] flex items-center justify-between" style={{ backgroundColor: '#FFFBEB' }}>
+      <div className="mb-6 p-4 rounded-xl border border-[var(--warning-200)] flex items-center justify-between" style={{ backgroundColor: 'var(--warning-50)' }}>
         <div className="flex items-center gap-3">
-          <span className="w-8 h-8 rounded-full bg-[#F59E0B] text-white flex items-center justify-center font-bold text-sm">!</span>
+          <span className="w-8 h-8 rounded-full bg-[var(--warning-500)] text-white flex items-center justify-center font-bold text-sm">!</span>
           <div>
             <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--warning-700)' }}>14 Files Pending Documentation</div>
             <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>Next priority: Notarise PoA and Loan Agreement for Ramesh Patil (LO00000047).</div>
@@ -51,14 +51,14 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
       />
 
       <div className="grid grid-cols-12 gap-5 mb-5">
-        <div className="col-span-7 bg-white rounded-xl border border-[#EDEEF0] overflow-hidden">
-          <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: '#FDFAF4' }}>
+        <div className="col-span-7 bg-white rounded-xl border border-[var(--neutral-200)] overflow-hidden">
+          <div className="px-5 py-3 border-b border-[var(--neutral-200)]" style={{ backgroundColor: 'var(--cream-50)' }}>
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--brand-primary)' }}>Pending Document Actions</h3>
           </div>
           {csDocQueue.map(row => {
             const color = row.icon === '!' ? 'var(--error-500)' : row.icon === '✓' ? 'var(--success-500)' : 'var(--brand-accent)';
             return (
-              <button key={row.loan} onClick={() => onNavigate(row.page)} className="w-full px-5 py-4 flex items-center gap-4 text-left border-b border-[#EDEEF0] last:border-b-0 clickable-row">
+              <button key={row.loan} onClick={() => onNavigate(row.page)} className="w-full px-5 py-4 flex items-center gap-4 text-left border-b border-[var(--neutral-200)] last:border-b-0 clickable-row">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}18`, color, fontWeight: 700 }}>{row.icon}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -74,13 +74,13 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
           })}
         </div>
 
-        <div className="col-span-5 bg-white rounded-xl border border-[#EDEEF0] overflow-hidden">
-          <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: '#FDFAF4' }}>
+        <div className="col-span-5 bg-white rounded-xl border border-[var(--neutral-200)] overflow-hidden">
+          <div className="px-5 py-3 border-b border-[var(--neutral-200)]" style={{ backgroundColor: 'var(--cream-50)' }}>
             <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--brand-primary)' }}>Upcoming Deadlines</h3>
           </div>
           <div className="p-4 space-y-3">
             {csDeadlines.map(item => (
-              <button key={item.date} onClick={() => onNavigate('cs-calendar')} className="w-full p-3 rounded-lg flex gap-3 text-left clickable-row" style={{ backgroundColor: item.severity === 'Critical' ? '#FEF2F2' : item.severity === 'Scheduled' ? 'var(--success-50)' : '#FFFBEB', border: '1px solid #EDEEF0' }}>
+              <button key={item.date} onClick={() => onNavigate('cs-calendar')} className="w-full p-3 rounded-lg flex gap-3 text-left clickable-row" style={{ backgroundColor: item.severity === 'Critical' ? 'var(--error-50)' : item.severity === 'Scheduled' ? 'var(--success-50)' : 'var(--warning-50)', border: '1px solid var(--neutral-200)' }}>
                 <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5" style={{ backgroundColor: item.severity === 'Critical' ? 'var(--error-500)' : item.severity === 'Scheduled' ? 'var(--success-500)' : 'var(--warning-500)' }} />
                 <div className="flex-1">
                   <div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700 }}>{item.date} — {item.title}</div>
@@ -88,7 +88,7 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
                 </div>
               </button>
             ))}
-            <div className="pt-3 border-t border-[#EDEEF0]">
+            <div className="pt-3 border-t border-[var(--neutral-200)]">
               <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-900)', marginBottom: '6px' }}>KYC Renewal</div>
               {['Ganesh Thorat — 8 days', 'Meena Kulkarni — 12 days', '+7 more in 30d'].map(item => (
                 <button key={item} onClick={() => onNavigate('cs-kyc')} className="w-full text-left py-1.5 clickable-row rounded" style={{ fontSize: '13px', color: 'var(--neutral-700)', padding: '4px 8px' }}>⚠ {item}</button>

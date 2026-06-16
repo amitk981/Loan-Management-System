@@ -18,7 +18,7 @@ type LoanTab = 'overview' | 'documents' | 'repayment' | 'timeline';
 function DocCard({ doc, onOpen }: { doc: typeof farmerDocuments[number]; onOpen: (doc: typeof farmerDocuments[number]) => void }) {
   const available = doc.status === 'Available';
   return (
-    <div onClick={() => onOpen(doc)} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen(doc)} className="bg-white rounded-2xl p-5 border border-[#EDEEF0] shadow-sm text-left clickable-card">
+    <div onClick={() => onOpen(doc)} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen(doc)} className="bg-white rounded-2xl p-5 border border-[var(--neutral-200)] shadow-sm text-left clickable-card">
       <div className="flex items-start justify-between">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'var(--error-100)' }}>
           <FileText size={18} style={{ color: 'var(--error-500)' }} />
@@ -60,7 +60,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
       onClose={() => setDocumentModal(null)}
       footer={
         <>
-          <button onClick={() => setDocumentModal(null)} className="px-4 py-2.5 rounded-xl border border-[#EDEEF0]" style={{ fontSize: '14px' }}>Close</button>
+          <button onClick={() => setDocumentModal(null)} className="px-4 py-2.5 rounded-xl border border-[var(--neutral-200)]" style={{ fontSize: '14px' }}>Close</button>
           {documentModal.status === 'Available' && (
             <button onClick={() => setDocumentModal(null)} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Download PDF</button>
           )}
@@ -82,12 +82,12 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
       onClose={() => setUploadModal(false)}
       footer={
         <>
-          <button onClick={() => setUploadModal(false)} className="px-4 py-2.5 rounded-xl border border-[#EDEEF0]" style={{ fontSize: '14px' }}>Cancel</button>
+          <button onClick={() => setUploadModal(false)} className="px-4 py-2.5 rounded-xl border border-[var(--neutral-200)]" style={{ fontSize: '14px' }}>Cancel</button>
           <button onClick={() => setUploadModal(false)} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Attach File</button>
         </>
       }
     >
-      <button onClick={() => setUploadModal(false)} className="w-full border-2 border-dashed rounded-xl p-6 text-center hover:bg-[#F0FDF4]" style={{ borderColor: 'var(--neutral-300)', backgroundColor: '#FAFAFA', fontSize: '13px', color: 'var(--neutral-700)' }}>
+      <button onClick={() => setUploadModal(false)} className="w-full border-2 border-dashed rounded-xl p-6 text-center hover:bg-[var(--success-50)]" style={{ borderColor: 'var(--neutral-300)', backgroundColor: 'var(--neutral-60)', fontSize: '13px', color: 'var(--neutral-700)' }}>
         Choose a document to add it to the farmer loan file.
       </button>
     </AppModal>
@@ -97,12 +97,12 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
     return (
       <Shell activePage={activePage} onNavigate={onNavigate} breadcrumbs={['My Loans', farmerLoan.id, 'NOC Issued']}>
         <div className="relative min-h-[560px] flex items-center justify-center overflow-hidden">
-          <div className="w-full max-w-xl text-center bg-white rounded-2xl p-8 border border-[#EDEEF0] shadow-sm">
+          <div className="w-full max-w-xl text-center bg-white rounded-2xl p-8 border border-[var(--neutral-200)] shadow-sm">
             <div className="w-20 h-20 rounded-full mx-auto flex items-center justify-center" style={{ backgroundColor: 'var(--success-500)', color: 'white' }}>
               <FileCheck size={42} />
             </div>
             <h2 style={{ fontSize: '32px', fontWeight: 700, color: 'var(--neutral-900)', marginTop: '24px' }}>Loan Repaid</h2>
-            <div className="mt-6 p-5 rounded-2xl text-left" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #22C55E' }}>
+            <div className="mt-6 p-5 rounded-2xl text-left" style={{ backgroundColor: 'var(--success-50)', border: '1px solid var(--success-500)' }}>
               <div className="grid grid-cols-2 gap-4">
                 {[
                   ['Loan ID', farmerLoan.id],
@@ -147,16 +147,16 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
             ['Total Repaid', formatCurrency(totalRepaid), 'var(--success-500)', 'farmer-repayment'],
             ['Active Loans', '1', 'var(--brand-accent)', 'farmer-active-loans'],
           ].map(([label, value, color, page]) => (
-            <button key={label} onClick={() => onNavigate(page)} className="bg-white rounded-2xl p-5 border border-[#EDEEF0] text-left clickable-card">
+            <button key={label} onClick={() => onNavigate(page)} className="bg-white rounded-2xl p-5 border border-[var(--neutral-200)] text-left clickable-card">
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>{label}</div>
               <div style={{ fontSize: '26px', color, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{value}</div>
             </button>
           ))}
         </div>
-        <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden table-scroll">
+        <div className="bg-white rounded-2xl border border-[var(--neutral-200)] overflow-hidden table-scroll">
           <table className="w-full">
             <thead>
-              <tr style={{ backgroundColor: 'var(--neutral-100)', borderBottom: '1px solid #EDEEF0' }}>
+              <tr style={{ backgroundColor: 'var(--neutral-100)', borderBottom: '1px solid var(--neutral-200)' }}>
                 {['Loan ID', 'Sanctioned', 'Disbursed', 'Repaid', 'Tenure', 'Status', 'Actions'].map(h => (
                   <th key={h} className="px-5 py-3 text-left" style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 700, textTransform: 'uppercase' }}>{h}</th>
                 ))}
@@ -164,7 +164,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
             </thead>
             <tbody>
               {farmerLoanHistory.map(row => (
-                <tr key={row.id} onClick={() => onNavigate('farmer-active-loans')} className="border-b border-[#EDEEF0] clickable-row">
+                <tr key={row.id} onClick={() => onNavigate('farmer-active-loans')} className="border-b border-[var(--neutral-200)] clickable-row">
                   <td className="px-5 py-4" style={{ fontSize: '13px', color: row.status === 'Active' ? 'var(--brand-accent)' : 'var(--neutral-400)', fontFamily: 'Roboto Mono', textDecoration: row.status === 'Closed' ? 'line-through' : 'none' }}>{row.id}</td>
                   <td className="px-5 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono' }}>{formatCurrency(row.sanctioned)}</td>
                   <td className="px-5" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{row.disbursed}</td>
@@ -193,18 +193,18 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
           {['All Loans', farmerLoan.id, farmerLoan.previousLoanId].map((item, i) => (
             <button key={item} onClick={() => setDocFilter(item)} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: docFilter === item ? 'var(--brand-primary)' : 'var(--neutral-100)', color: docFilter === item ? 'white' : 'var(--neutral-700)', fontSize: '13px', fontWeight: 700 }}>{item}</button>
           ))}
-          <input value={docSearch} onChange={(e) => setDocSearch(e.target.value)} placeholder="Search documents..." className="ml-auto px-3 rounded-xl border border-[#D1D5DB]" style={{ height: '36px', fontSize: '13px', minWidth: '240px' }} />
+          <input value={docSearch} onChange={(e) => setDocSearch(e.target.value)} placeholder="Search documents..." className="ml-auto px-3 rounded-xl border border-[var(--neutral-300)]" style={{ height: '36px', fontSize: '13px', minWidth: '240px' }} />
         </div>
         <div className="grid grid-cols-3 gap-4">
           {visibleDocuments.map(doc => <DocCard key={doc.name} doc={doc} onOpen={setDocumentModal} />)}
-          <button onClick={() => setUploadModal(true)} className="rounded-2xl p-5 border-2 border-dashed border-[#D1D5DB] hover:bg-[#E8F5E9] text-center">
+          <button onClick={() => setUploadModal(true)} className="rounded-2xl p-5 border-2 border-dashed border-[var(--neutral-300)] hover:bg-[var(--brand-light)] text-center">
             <div className="w-12 h-12 rounded-xl mx-auto flex items-center justify-center" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-primary)', fontSize: '28px' }}>+</div>
             <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '12px' }}>Upload a Document</div>
             <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>Add receipts, letters, or other loan documents</div>
           </button>
         </div>
         {visibleDocuments.length === 0 && (
-          <div className="mt-5 p-5 rounded-2xl text-center" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0', color: 'var(--neutral-500)', fontSize: '13px' }}>
+          <div className="mt-5 p-5 rounded-2xl text-center" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid var(--neutral-200)', color: 'var(--neutral-500)', fontSize: '13px' }}>
             No documents match this search.
           </div>
         )}
@@ -230,15 +230,15 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
       pageSubtitle={`${farmerLoan.status} · ${farmerLoan.tenure} · Disbursed ${farmerLoan.disbursedDate}`}
       actions={<StatusBadge status={farmerLoan.status} size="md" />}
     >
-      <div className="flex items-center gap-6 mb-5 bg-white border border-[#EDEEF0] rounded-xl px-4">
+      <div className="flex items-center gap-6 mb-5 bg-white border border-[var(--neutral-200)] rounded-xl px-4">
         {tabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className="py-3" style={{ fontSize: '14px', fontWeight: 700, color: activeTab === tab.id ? 'var(--brand-primary)' : 'var(--neutral-700)', borderBottom: activeTab === tab.id ? '2px solid #1A3C2A' : '2px solid transparent' }}>{tab.label}</button>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className="py-3" style={{ fontSize: '14px', fontWeight: 700, color: activeTab === tab.id ? 'var(--brand-primary)' : 'var(--neutral-700)', borderBottom: activeTab === tab.id ? '2px solid var(--brand-primary)' : '2px solid transparent' }}>{tab.label}</button>
         ))}
       </div>
 
       {activeTab === 'overview' && (
         <div className="space-y-5">
-          <div className="bg-white rounded-2xl p-6 border border-[#EDEEF0]">
+          <div className="bg-white rounded-2xl p-6 border border-[var(--neutral-200)]">
             <div className="grid grid-cols-5 gap-4">
               {[
                 ['Sanctioned Amount', formatCurrency(farmerLoan.sanctionedAmount), ''],
@@ -255,7 +255,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
               ))}
             </div>
           </div>
-          <div className="bg-white rounded-2xl p-6 border border-[#EDEEF0]">
+          <div className="bg-white rounded-2xl p-6 border border-[var(--neutral-200)]">
             <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--neutral-900)', marginBottom: '20px' }}>Loan Journey</h3>
             <LoanTracker currentStage={6} completedDates={['10 Jan 2025', '12 Jan 2025', '13 Jan 2025', '14 Jan 2025', '15 Jan 2025', 'Active since 15 Jan 2025']} />
           </div>
@@ -265,7 +265,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
               ['Download Statement', 'PDF, last updated today', <Download size={24} />],
               ['View Agreement', 'Loan Agreement PDF', <FileCheck size={24} />],
             ].map(([title, sub, icon]) => (
-              <button key={title as string} onClick={() => title === 'Make Payment' ? onNavigate('farmer-repayment') : setActiveTab('documents')} className="bg-white rounded-2xl p-5 border border-[#EDEEF0] text-left clickable-card">
+              <button key={title as string} onClick={() => title === 'Make Payment' ? onNavigate('farmer-repayment') : setActiveTab('documents')} className="bg-white rounded-2xl p-5 border border-[var(--neutral-200)] text-left clickable-card">
                 <div style={{ color: 'var(--brand-accent)', marginBottom: '10px' }}>{icon}</div>
                 <div style={{ fontSize: '15px', color: 'var(--neutral-900)', fontWeight: 700 }}>{title}</div>
                 <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>{sub}</div>
@@ -279,11 +279,11 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
 
       {activeTab === 'repayment' && (
         <div className="space-y-5">
-          <div className="bg-white rounded-2xl p-6 border border-[#EDEEF0] flex items-center justify-between">
+          <div className="bg-white rounded-2xl p-6 border border-[var(--neutral-200)] flex items-center justify-between">
             <div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>Outstanding Balance</div>
               <div style={{ fontSize: '32px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{formatCurrency(farmerLoan.outstandingBalance)}</div>
-              <div className="w-80 max-w-full h-2 bg-[#EDEEF0] rounded-full mt-3"><div className="h-full rounded-full" style={{ width: '28.75%', backgroundColor: 'var(--success-500)' }} /></div>
+              <div className="w-80 max-w-full h-2 bg-[var(--neutral-200)] rounded-full mt-3"><div className="h-full rounded-full" style={{ width: '28.75%', backgroundColor: 'var(--success-500)' }} /></div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '6px' }}>{formatCurrency(farmerLoan.totalRepaid)} repaid of {formatCurrency(farmerLoan.sanctionedAmount)}</div>
             </div>
             <div className="text-right">
@@ -293,12 +293,12 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
               <button onClick={() => setShowPaymentModal(true)} className="mt-3 px-5 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Pay Now</button>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden table-scroll">
-            <div className="px-5 py-3 border-b border-[#EDEEF0]" style={{ backgroundColor: 'var(--neutral-100)' }}><h3 style={{ fontSize: '15px', fontWeight: 700 }}>Repayment Schedule</h3></div>
+          <div className="bg-white rounded-2xl border border-[var(--neutral-200)] overflow-hidden table-scroll">
+            <div className="px-5 py-3 border-b border-[var(--neutral-200)]" style={{ backgroundColor: 'var(--neutral-100)' }}><h3 style={{ fontSize: '15px', fontWeight: 700 }}>Repayment Schedule</h3></div>
             <table className="w-full">
               <thead><tr>{['Due Date', 'Principal (₹)', 'Interest (₹)', 'Total (₹)', 'Status'].map(h => <th key={h} className="px-5 py-3 text-left" style={{ fontSize: '11px', color: 'var(--neutral-400)', textTransform: 'uppercase' }}>{h}</th>)}</tr></thead>
               <tbody>{farmerRepaymentSchedule.map(row => (
-                <tr key={row.dueDate} onClick={() => row.status === 'Due Soon' && setShowPaymentModal(true)} className="border-b border-[#EDEEF0] clickable-row" style={{ backgroundColor: row.status === 'Due Soon' ? 'var(--brand-light)' : 'white', borderLeft: row.status === 'Due Soon' ? '3px solid #1A3C2A' : '3px solid transparent' }}>
+                <tr key={row.dueDate} onClick={() => row.status === 'Due Soon' && setShowPaymentModal(true)} className="border-b border-[var(--neutral-200)] clickable-row" style={{ backgroundColor: row.status === 'Due Soon' ? 'var(--brand-light)' : 'white', borderLeft: row.status === 'Due Soon' ? '3px solid var(--brand-primary)' : '3px solid transparent' }}>
                   <td className="px-5 py-3" style={{ fontSize: '13px', color: row.status === 'Paid' ? 'var(--neutral-400)' : 'var(--neutral-700)' }}>{row.dueDate}</td>
                   <td className="px-5 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono' }}>{formatCurrency(row.principal)}</td>
                   <td className="px-5 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono' }}>{formatCurrency(row.interest)}</td>
@@ -312,7 +312,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
       )}
 
       {activeTab === 'timeline' && (
-        <div className="bg-white rounded-2xl p-6 border border-[#EDEEF0]">
+        <div className="bg-white rounded-2xl p-6 border border-[var(--neutral-200)]">
           <div className="mb-5">
             <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--neutral-900)' }}>Loan Activity Timeline</h3>
             <div style={{ fontSize: '13px', color: 'var(--neutral-400)', marginTop: '3px' }}>Loan activity</div>
@@ -322,7 +322,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
               <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: i < 5 ? 'var(--success-100)' : 'var(--info-100)', color: i < 5 ? 'var(--success-700)' : 'var(--info-900)' }}>
                 {i < 5 ? <FileCheck size={15} /> : <Banknote size={15} />}
               </div>
-              <div className="flex-1 rounded-xl border border-[#EDEEF0] p-4">
+              <div className="flex-1 rounded-xl border border-[var(--neutral-200)] p-4">
                 <div className="flex items-center justify-between gap-3">
                   <span className="px-2 py-1 rounded-full" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-primary)', fontSize: '11px', fontWeight: 700 }}>{item.role}</span>
                   <span style={{ fontSize: '12px', color: 'var(--neutral-400)', fontFamily: 'Roboto Mono' }}>{item.date}</span>
@@ -337,7 +337,7 @@ export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
       )}
 
       {showPaymentModal && (
-        <AppModal title="Confirm Payment" subtitle={`${formatCurrency(2000)} · Direct Transfer · ${farmerLoan.id}`} icon={<CreditCard size={18} />} onClose={() => setShowPaymentModal(false)} footer={<><button onClick={() => setShowPaymentModal(false)} className="px-4 py-2.5 rounded-xl border border-[#EDEEF0]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowPaymentModal(false); onNavigate('farmer-repayment'); }} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Continue</button></>}>
+        <AppModal title="Confirm Payment" subtitle={`${formatCurrency(2000)} · Direct Transfer · ${farmerLoan.id}`} icon={<CreditCard size={18} />} onClose={() => setShowPaymentModal(false)} footer={<><button onClick={() => setShowPaymentModal(false)} className="px-4 py-2.5 rounded-xl border border-[var(--neutral-200)]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowPaymentModal(false); onNavigate('farmer-repayment'); }} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Continue</button></>}>
           <div style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>This opens the full Make Payment flow. SFPCL will verify and confirm payment before posting it to your loan ledger.</div>
         </AppModal>
       )}

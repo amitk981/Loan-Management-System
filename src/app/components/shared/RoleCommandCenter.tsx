@@ -21,11 +21,11 @@ interface RoleCommandCenterProps {
 
 const tones = {
   green: { bg: 'var(--brand-light)', fg: 'var(--brand-primary)', border: 'var(--success-200)' },
-  blue: { bg: 'var(--info-100)', fg: 'var(--info-900)', border: '#BFDBFE' },
-  purple: { bg: '#EDE9FE', fg: 'var(--accent-sanction)', border: '#DDD6FE' },
-  cyan: { bg: 'var(--info-50)', fg: 'var(--accent-treasury)', border: '#BAE6FD' },
+  blue: { bg: 'var(--info-100)', fg: 'var(--info-900)', border: 'var(--info-200)' },
+  purple: { bg: 'var(--accent-sanction-100)', fg: 'var(--accent-sanction)', border: 'var(--purple-200)' },
+  cyan: { bg: 'var(--info-50)', fg: 'var(--accent-treasury)', border: 'var(--sky-200)' },
   amber: { bg: 'var(--warning-100)', fg: 'var(--warning-700)', border: 'var(--warning-200)' },
-  red: { bg: 'var(--error-100)', fg: 'var(--error-900)', border: '#FECACA' },
+  red: { bg: 'var(--error-100)', fg: 'var(--error-900)', border: 'var(--error-200)' },
   neutral: { bg: 'var(--neutral-100)', fg: 'var(--neutral-700)', border: 'var(--neutral-200)' },
 };
 
@@ -37,12 +37,12 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
   const primaryTone = toneFor(primaryAction.tone);
 
   return (
-    <section className="mb-5 bg-white rounded-2xl border border-[#EDEEF0] overflow-hidden" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+    <section className="mb-5 bg-white rounded-2xl border border-[var(--neutral-200)] overflow-hidden" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
       <div className="grid grid-cols-12">
         <button
           onClick={() => onNavigate(primaryAction.page)}
           className="col-span-5 p-5 text-left flex flex-col justify-between clickable-card"
-          style={{ backgroundColor: primaryTone.bg, borderRight: '1px solid #EDEEF0', minHeight: 178 }}
+          style={{ backgroundColor: primaryTone.bg, borderRight: '1px solid var(--neutral-200)', minHeight: 178 }}
         >
           <div>
             <div className="flex items-center gap-2 mb-3" style={{ color: primaryTone.fg }}>
@@ -62,7 +62,7 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
             {metrics.map(metric => {
               const metricTone = toneFor(metric.tone || 'neutral');
               return (
-                <div key={metric.label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
+                <div key={metric.label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid var(--neutral-200)' }}>
                   <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 700 }}>{metric.label}</div>
                   <div style={{ fontSize: 19, color: metricTone.fg, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{metric.value}</div>
                 </div>

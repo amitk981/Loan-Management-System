@@ -32,7 +32,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
       pageSubtitle="SFPCL member loan limit calculation tool"
     >
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-2xl p-6 border border-[#EDEEF0] mb-5">
+        <div className="bg-white rounded-2xl p-6 border border-[var(--neutral-200)] mb-5">
           <div className="flex items-center gap-2 mb-5">
             <Calculator size={20} style={{ color: 'var(--brand-secondary)' }} />
             <h3 style={{ fontSize: '18px', fontWeight: 500, color: 'var(--neutral-900)' }}>Calculate Loan Eligibility</h3>
@@ -40,7 +40,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
 
           <div className="grid grid-cols-2 gap-6">
             {/* Method 1 */}
-            <div className="p-5 rounded-2xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #DCFCE7' }}>
+            <div className="p-5 rounded-2xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid var(--success-100)' }}>
               <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--brand-primary)', marginBottom: '16px' }}>
                 Method 1: Shareholding-Based
               </div>
@@ -50,7 +50,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
                   type="number"
                   value={shares}
                   onChange={e => setShares(parseInt(e.target.value) || 0)}
-                  className="w-full px-4 rounded-xl border border-[#A7F3D0] focus:outline-none bg-white"
+                  className="w-full px-4 rounded-xl border border-[var(--green-200b)] focus:outline-none bg-white"
                   style={{ height: '48px', fontSize: '20px', fontFamily: 'Roboto Mono', fontWeight: 500, color: 'var(--neutral-900)' }}
                 />
               </div>
@@ -78,7 +78,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
             </div>
 
             {/* Method 2 */}
-            <div className="p-5 rounded-2xl" style={{ backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE' }}>
+            <div className="p-5 rounded-2xl" style={{ backgroundColor: 'var(--info-25)', border: '1px solid var(--info-200)' }}>
               <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--info-900)', marginBottom: '16px' }}>
                 Method 2: Agricultural Land-Based
               </div>
@@ -89,7 +89,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
                   value={landAcres}
                   step="0.25"
                   onChange={e => setLandAcres(parseFloat(e.target.value) || 0)}
-                  className="w-full px-4 rounded-xl border border-[#BFDBFE] focus:outline-none bg-white"
+                  className="w-full px-4 rounded-xl border border-[var(--info-200)] focus:outline-none bg-white"
                   style={{ height: '48px', fontSize: '20px', fontFamily: 'Roboto Mono', fontWeight: 500, color: 'var(--neutral-900)' }}
                 />
               </div>
@@ -123,7 +123,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
           className="rounded-2xl p-6 mb-5 relative overflow-hidden"
           style={{ backgroundColor: 'var(--brand-primary)' }}
         >
-          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 50%, #1E88E5 0%, transparent 60%)' }} />
+          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 50%, var(--brand-accent) 0%, transparent 60%)' }} />
           <div className="relative flex items-center justify-between">
             <div>
               <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', fontWeight: 500, marginBottom: '4px' }}>MAXIMUM ELIGIBLE LOAN AMOUNT</div>
@@ -150,7 +150,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
         <div className="flex gap-3">
           <button
             onClick={reset}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-[#EDEEF0] hover:bg-[#F7F8FA] transition-all"
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-[var(--neutral-200)] hover:bg-[var(--neutral-100)] transition-all"
             style={{ fontSize: '14px', color: 'var(--neutral-700)' }}
           >
             <RefreshCw size={14} /> Reset Calculator
@@ -164,7 +164,7 @@ export function LoanCalculator({ onNavigate, activePage }: LoanCalculatorProps) 
           </button>
         </div>
 
-        <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid #FDE68A' }}>
+        <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid var(--warning-200)' }}>
           <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--warning-700)', marginBottom: '4px' }}>⚠️ Configurable Parameters (Super Admin only)</div>
           <div style={{ fontSize: '12px', color: 'var(--warning-700)', lineHeight: '20px' }}>
             Share valuation: ₹{shareValuation}/share (Board approved, AGM 2024) · Scale of Finance: ₹{scaleOfFinance.toLocaleString('en-IN')}/acre (FY 2025-26) · Pledge %: 30% of NAV

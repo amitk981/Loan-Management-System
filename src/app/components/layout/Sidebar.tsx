@@ -350,7 +350,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                   </button>
                 )}
                 {collapsed && (
-                  <div className="absolute left-16 bg-[#12151A] text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 whitespace-nowrap z-50 pointer-events-none shadow-lg">
+                  <div className="absolute left-16 bg-[var(--neutral-900)] text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 whitespace-nowrap z-50 pointer-events-none shadow-lg">
                     {itemLabel}
                   </div>
                 )}

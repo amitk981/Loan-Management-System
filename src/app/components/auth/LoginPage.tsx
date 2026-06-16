@@ -16,11 +16,11 @@ type OTPState = 'input-mobile' | 'input-otp' | 'sending';
 type AuthView = 'login' | 'reset';
 
 const roleIllustrations: Record<UserRole, { title: string; subtitle: string; accent: string }> = {
-  farmer: { title: 'Farmer Loan Portal', subtitle: 'Apply for loans, track status, manage repayments — all in one place.', accent: '#DDEDD7' },
-  credit: { title: 'Credit Assessment', subtitle: 'Review applications, prepare appraisals, monitor portfolio health.', accent: '#BFE0FF' },
-  compliance: { title: 'Compliance Portal', subtitle: 'Manage documents, KYC, compliance calendar, and NOC issuance.', accent: '#DDF5E6' },
-  sanction: { title: 'Sanction Committee', subtitle: 'Review and approve loan applications with complete audit trail.', accent: '#E9D5FF' },
-  treasury: { title: 'Finance & Treasury', subtitle: 'Initiate disbursements, manage SAP entries, track repayments.', accent: '#CFFAFE' },
+  farmer: { title: 'Farmer Loan Portal', subtitle: 'Apply for loans, track status, manage repayments — all in one place.', accent: 'var(--green-100c)' },
+  credit: { title: 'Credit Assessment', subtitle: 'Review applications, prepare appraisals, monitor portfolio health.', accent: 'var(--sky-100)' },
+  compliance: { title: 'Compliance Portal', subtitle: 'Manage documents, KYC, compliance calendar, and NOC issuance.', accent: 'var(--green-50b)' },
+  sanction: { title: 'Sanction Committee', subtitle: 'Review and approve loan applications with complete audit trail.', accent: 'var(--purple-150)' },
+  treasury: { title: 'Finance & Treasury', subtitle: 'Initiate disbursements, manage SAP entries, track repayments.', accent: 'var(--cyan-100)' },
   admin: { title: 'System Administration', subtitle: 'Manage users, roles, audit logs, and system configuration.', accent: 'var(--neutral-200)' },
 };
 
@@ -215,7 +215,7 @@ export function LoginPage() {
       <div className="flex-1 flex flex-col items-center justify-center p-6 bg-white">
         <div className="w-full max-w-sm">
           <div className="flex justify-end mb-6">
-            <div className="flex items-center rounded-lg border border-[#EDEEF0] overflow-hidden">
+            <div className="flex items-center rounded-lg border border-[var(--neutral-200)] overflow-hidden">
               {['English', 'मराठी', 'हिंदी'].map((l, i) => (
                 <button key={i} className="px-3 py-1.5" style={{ fontSize: '12px', color: 'var(--neutral-700)' }}>{l}</button>
               ))}
@@ -247,7 +247,7 @@ export function LoginPage() {
                     fontWeight: 500,
                     backgroundColor: selectedRole === role.id ? 'var(--brand-primary)' : 'white',
                     color: selectedRole === role.id ? 'white' : 'var(--neutral-700)',
-                    border: selectedRole === role.id ? '1px solid #1A3C2A' : '1px solid #EDEEF0',
+                    border: selectedRole === role.id ? '1px solid var(--brand-primary)' : '1px solid var(--neutral-200)',
                   }}
                 >
                   <span>{role.icon}</span>
@@ -286,7 +286,7 @@ export function LoginPage() {
                       value={resetIdentity}
                       onChange={e => setResetIdentity(e.target.value)}
                       placeholder="Mobile / Employee ID"
-                      className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
+                      className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:ring-2 focus:border-[var(--brand-primary)]"
                       style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                     />
                   </div>
@@ -311,11 +311,11 @@ export function LoginPage() {
                     value={resetCode}
                     onChange={e => setResetCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                     placeholder="Enter 6-digit OTP"
-                    className="w-full px-4 rounded-xl border border-[#D1D5DB] text-center focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
+                    className="w-full px-4 rounded-xl border border-[var(--neutral-300)] text-center focus:outline-none focus:ring-2 focus:border-[var(--brand-primary)]"
                     style={{ height: '52px', fontSize: '22px', color: 'var(--neutral-900)', fontFamily: 'Roboto Mono', letterSpacing: '8px' }}
                   />
                   <div className="flex gap-3">
-                    <button onClick={() => setResetStep(1)} className="flex-1 rounded-xl border border-[#EDEEF0]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-700)' }}>Back</button>
+                    <button onClick={() => setResetStep(1)} className="flex-1 rounded-xl border border-[var(--neutral-200)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-700)' }}>Back</button>
                     <button
                       disabled={resetCode !== '123456'}
                       onClick={() => setResetStep(3)}
@@ -337,7 +337,7 @@ export function LoginPage() {
                       value={resetPassword}
                       onChange={e => setResetPassword(e.target.value)}
                       placeholder="Create new password"
-                      className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
+                      className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:ring-2 focus:border-[var(--brand-primary)]"
                       style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                     />
                     <div className="grid grid-cols-4 gap-1 mt-2">
@@ -352,7 +352,7 @@ export function LoginPage() {
                     value={resetConfirm}
                     onChange={e => setResetConfirm(e.target.value)}
                     placeholder="Confirm password"
-                    className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
+                    className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:ring-2 focus:border-[var(--brand-primary)]"
                     style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                   />
                   <button
@@ -411,7 +411,7 @@ export function LoginPage() {
                   </label>
                   <div className="flex gap-2">
                     <div
-                      className="flex items-center gap-2 px-3 rounded-xl border border-[#D1D5DB] bg-white"
+                      className="flex items-center gap-2 px-3 rounded-xl border border-[var(--neutral-300)] bg-white"
                       style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-700)' }}
                     >
                       🇮🇳 +91
@@ -422,7 +422,7 @@ export function LoginPage() {
                       value={mobile}
                       onChange={e => setMobile(e.target.value.replace(/\D/g, ''))}
                       placeholder="Enter 10-digit number"
-                      className="flex-1 px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
+                      className="flex-1 px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:ring-2 focus:border-[var(--brand-primary)]"
                       style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                     />
                   </div>
@@ -469,7 +469,7 @@ export function LoginPage() {
                         maxLength={1}
                         value={digit}
                         onChange={e => handleOTPChange(i, e.target.value)}
-                        className="border rounded-xl text-center focus:outline-none focus:ring-2 focus:border-[#1A3C2A] transition-all"
+                        className="border rounded-xl text-center focus:outline-none focus:ring-2 focus:border-[var(--brand-primary)] transition-all"
                         style={{
                           width: '48px',
                           height: '52px',
@@ -515,7 +515,7 @@ export function LoginPage() {
                 <input
                   type="text"
                   placeholder="Enter username"
-                  className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
+                  className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:ring-2 focus:border-[var(--brand-primary)]"
                   style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                 />
               </div>
@@ -528,7 +528,7 @@ export function LoginPage() {
                   placeholder="Enter password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  className="w-full px-4 pr-12 rounded-xl border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:border-[#1A3C2A]"
+                  className="w-full px-4 pr-12 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:ring-2 focus:border-[var(--brand-primary)]"
                   style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}
                 />
                 <button
@@ -566,7 +566,7 @@ export function LoginPage() {
             <label htmlFor="remember" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Remember this device for 30 days</label>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-[#EDEEF0] text-center">
+          <div className="mt-8 pt-6 border-t border-[var(--neutral-200)] text-center">
             <div className="flex items-center justify-center gap-4">
               {['Privacy Policy', 'Terms of Use', 'Help'].map((link, i) => (
                 <a key={i} href="#" style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>{link}</a>

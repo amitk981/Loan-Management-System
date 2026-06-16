@@ -22,15 +22,15 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
       actions={
         <div className="flex items-center gap-2">
           <button onClick={() => onNavigate('treasury-disbursement')} className="px-4 py-2.5 rounded-lg font-medium hover:shadow-md transition-all active:scale-[0.98]" style={{ backgroundColor: 'var(--accent-treasury)', color: 'white', fontSize: '14px' }}>+ Initiate Disbursement</button>
-          <button aria-label="Refresh" className="w-10 h-10 rounded-lg border border-[#EDEEF0] flex items-center justify-center hover:bg-[#F7F8FA] transition-colors"><RefreshCw size={16} /></button>
+          <button aria-label="Refresh" className="w-10 h-10 rounded-lg border border-[var(--neutral-200)] flex items-center justify-center hover:bg-[var(--neutral-100)] transition-colors"><RefreshCw size={16} /></button>
         </div>
       }
     >
-      <div className="mb-6 p-4 rounded-xl border border-[#BAE6FD] flex items-center justify-between" style={{ backgroundColor: '#F0F9FF' }}>
+      <div className="mb-6 p-4 rounded-xl border border-[var(--sky-200)] flex items-center justify-between" style={{ backgroundColor: 'var(--sky-50)' }}>
         <div className="flex items-center gap-3">
-          <span className="w-8 h-8 rounded-full bg-[#0284C7] text-white flex items-center justify-center font-bold text-sm">ℹ</span>
+          <span className="w-8 h-8 rounded-full bg-[var(--blue-600)] text-white flex items-center justify-center font-bold text-sm">ℹ</span>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: '#0369A1' }}>Disbursement Queue: 2 Files Ready for Payment</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--blue-700)' }}>Disbursement Queue: 2 Files Ready for Payment</div>
             <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>1 file is blocked due to missing SAP Customer Code. Process pending codes first.</div>
           </div>
         </div>
@@ -54,10 +54,10 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
         onNavigate={onNavigate}
       />
 
-      <div className="bg-white rounded-xl border border-[#EDEEF0] overflow-hidden mb-5">
-        <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}>
+      <div className="bg-white rounded-xl border border-[var(--neutral-200)] overflow-hidden mb-5">
+        <div className="px-5 py-3 border-b border-[var(--neutral-200)] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}>
           <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>Disbursement Queue</h3>
-          <button onClick={() => onNavigate('treasury-pending')} className="hover:text-[#067a96] transition-colors" style={{ fontSize: '13px', color: 'var(--accent-treasury)', fontWeight: 700 }}>View All</button>
+          <button onClick={() => onNavigate('treasury-pending')} className="hover:text-[var(--teal-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--accent-treasury)', fontWeight: 700 }}>View All</button>
         </div>
         <div className="table-scroll">
           <table className="w-full">
@@ -66,8 +66,8 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
             </thead>
             <tbody>
               {treasuryQueue.map(row => (
-                <tr key={row.id} className="border-t border-[#EDEEF0] clickable-row" onClick={() => onNavigate(row.page)}>
-                  <td className="px-4 py-3" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#0E7490', fontWeight: 700 }}>{row.id}</td>
+                <tr key={row.id} className="border-t border-[var(--neutral-200)] clickable-row" onClick={() => onNavigate(row.page)}>
+                  <td className="px-4 py-3" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--accent-treasury-700)', fontWeight: 700 }}>{row.id}</td>
                   <td className="px-4" style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 500 }}>{row.borrower}</td>
                   <td className="px-4 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--neutral-900)', fontWeight: 700 }}>{formatCurrency(row.amount, true)}</td>
                   <td className="px-4"><StatusBadge status={row.stage} /></td>

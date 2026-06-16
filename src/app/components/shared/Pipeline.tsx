@@ -56,12 +56,12 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
                 style={{ backgroundColor: mine ? 'var(--brand-primary)' : 'var(--neutral-200)', color: mine ? 'white' : 'var(--neutral-700)' }}
               >
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: mine ? 'rgba(255,255,255,0.22)' : '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>{stage}</span>
+                  <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: mine ? 'rgba(255,255,255,0.22)' : 'white', fontSize: '11px', fontWeight: 700 }}>{stage}</span>
                   <span style={{ fontSize: '13px', fontWeight: 500 }}>{label}</span>
                 </div>
                 <span style={{ fontSize: '12px', fontWeight: 700, opacity: 0.8 }}>{cards.length}</span>
               </div>
-              <div className="rounded-b-xl p-2 space-y-2 min-h-[120px]" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0', borderTop: 'none' }}>
+              <div className="rounded-b-xl p-2 space-y-2 min-h-[120px]" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid var(--neutral-200)', borderTop: 'none' }}>
                 {cards.length === 0 && (
                   <div className="text-center py-6" style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>No loans</div>
                 )}
@@ -69,7 +69,7 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
                   <button
                     key={c.id}
                     onClick={() => onNavigate('loan-file')}
-                    className="w-full text-left bg-white rounded-lg p-3 border border-[#EDEEF0] clickable-card"
+                    className="w-full text-left bg-white rounded-lg p-3 border border-[var(--neutral-200)] clickable-card"
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 500 }}>{c.id}</span>

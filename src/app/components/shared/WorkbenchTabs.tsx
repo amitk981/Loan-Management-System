@@ -15,7 +15,7 @@ interface WorkbenchTabsProps {
 export function WorkbenchTabs({ tabs, activeKey, onChange, accent = 'var(--brand-primary)', className = '' }: WorkbenchTabsProps) {
   return (
     <div
-      className={`flex items-center gap-1 overflow-x-auto bg-white border border-[#EDEEF0] rounded-xl px-2 py-1.5 mb-5 ${className}`}
+      className={`flex items-center gap-1 overflow-x-auto bg-white border border-[var(--neutral-200)] rounded-xl px-2 py-1.5 mb-5 ${className}`}
       role="tablist"
       aria-label="Section navigation"
     >
