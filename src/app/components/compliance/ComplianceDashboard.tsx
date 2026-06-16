@@ -22,16 +22,8 @@ export function ComplianceDashboard({ onNavigate, activePage }: ComplianceDashbo
       pageTitle="CS Dashboard"
       pageSubtitle={`${greeting}, ${user?.name || 'Company Secretary'} · ${user?.roleLabel || 'Compliance'}`}
     >
-      <div className="mb-6 p-4 rounded-xl border border-[var(--warning-200)] flex items-center justify-between" style={{ backgroundColor: 'var(--warning-50)' }}>
-        <div className="flex items-center gap-3">
-          <span className="w-8 h-8 rounded-full bg-[var(--warning-500)] text-white flex items-center justify-center font-bold text-sm">!</span>
-          <div>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--warning-700)' }}>14 Files Pending Documentation</div>
-            <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>Next priority: Notarise PoA and Loan Agreement for Ramesh Patil (LO00000047).</div>
-          </div>
-        </div>
-        <button onClick={() => onNavigate('cs-workspace')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: 'var(--brand-primary)', fontSize: '13px', fontWeight: 700 }}>Open Workspace</button>
-      </div>
+      {/* Single focus: RoleCommandCenter is the one prioritised worklist + CTA
+          (a duplicate "14 files pending" banner competed for the same action). */}
       <RoleCommandCenter
         title="CS Workbench"
         focus="Finish documents blocking disbursement"
