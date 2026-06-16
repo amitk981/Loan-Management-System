@@ -4,15 +4,13 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { RoleCommandCenter } from '../shared/RoleCommandCenter';
 import { mockLoans, mockUsers, mockAuditLogs, portfolioDonut } from '../../data/mockData';
 import { Bell, Edit, Search, ShieldCheck, Upload, UserPlus, UserX } from 'lucide-react';
+import { formatCurrency } from '../../lib/format';
 
 interface AdminScreensProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps) {
   const totalOutstanding = mockLoans.reduce((sum, loan) => sum + loan.outstandingPrincipal + loan.outstandingInterest, 0);

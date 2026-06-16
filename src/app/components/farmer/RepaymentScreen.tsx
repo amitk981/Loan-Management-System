@@ -3,15 +3,13 @@ import { CheckCircle, Copy, Info, Landmark, Receipt, Upload } from 'lucide-react
 import { Shell } from '../layout/Shell';
 import { AppModal } from '../shared/AppModal';
 import { farmerLoan } from '../../data/farmerData';
+import { formatCurrency } from '../../lib/format';
 
 interface RepaymentScreenProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps) {
   const [method, setMethod] = useState<'direct' | 'subsidiary'>('direct');

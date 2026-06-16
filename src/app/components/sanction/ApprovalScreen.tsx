@@ -6,6 +6,7 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { AppModal } from '../shared/AppModal';
 import { scReviewLoan, scScrutinyItems } from '../../data/sanctionData';
 import { DirectorCaseBanner } from '../shared/CrossRoleComponents';
+import { formatCurrency } from '../../lib/format';
 
 interface ApprovalScreenProps {
   onNavigate: (page: string) => void;
@@ -14,9 +15,6 @@ interface ApprovalScreenProps {
 
 type Decision = 'approve' | 'reject' | 'return' | '';
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function ApprovalScreen({ onNavigate, activePage }: ApprovalScreenProps) {
   const isJoint = activePage === 'sc-joint';

@@ -3,15 +3,13 @@ import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { RoleCommandCenter } from '../shared/RoleCommandCenter';
 import { treasuryProfile, treasuryQueue } from '../../data/treasuryData';
+import { formatCurrency } from '../../lib/format';
 
 interface TreasuryDashboardProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
-function formatCurrency(n: number, paise = false) {
-  return '₹' + n.toLocaleString('en-IN') + (paise ? '.00' : '');
-}
 
 export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardProps) {
   return (

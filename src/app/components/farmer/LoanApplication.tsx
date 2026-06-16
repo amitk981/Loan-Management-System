@@ -3,6 +3,7 @@ import { Check, Upload, ChevronRight, ChevronLeft, Plus, Trash2, Calculator, Shi
 import { Shell } from '../layout/Shell';
 import { UniversalStageTracker } from '../shared/CrossRoleComponents';
 import { farmerEligibility, farmerProfile } from '../../data/farmerData';
+import { formatCurrency } from '../../lib/format';
 
 interface LoanApplicationProps {
   onNavigate: (page: string) => void;
@@ -56,7 +57,6 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
   const amountWithinLimit = reqAmount > 0 && reqAmount <= eligibleLimit;
   const canSubmitApplication = amountWithinLimit && allDeclarationsChecked && missingDocs.length === 0;
 
-  const formatCurrency = (n: number) => '₹' + n.toLocaleString('en-IN');
 
   const addLandParcel = () => {
     setLandParcels([...landParcels, { survey: '', village: '', area: '', crop: '', season: '' }]);

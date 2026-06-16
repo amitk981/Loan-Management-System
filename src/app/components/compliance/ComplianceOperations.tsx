@@ -6,6 +6,7 @@ import { WorkbenchTabs } from '../shared/WorkbenchTabs';
 import { complianceQueueTabs, complianceRegisterTabs } from '../../data/roleNav';
 import { AppModal } from '../shared/AppModal';
 import { complianceRows, grievanceRegister, nocQueue, stampRows } from '../../data/complianceData';
+import { formatCurrency } from '../../lib/format';
 
 interface ComplianceOperationsProps {
   onNavigate: (page: string) => void;
@@ -27,9 +28,6 @@ const pageCopy: Record<string, { title: string; subtitle: string }> = {
   'cs-cdsl': { title: 'CDSL Pledge Tracker', subtitle: 'D-MAT share pledge lifecycle' },
 };
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function ComplianceOperations({ onNavigate, activePage }: ComplianceOperationsProps) {
   const [selectedDay, setSelectedDay] = useState(15);

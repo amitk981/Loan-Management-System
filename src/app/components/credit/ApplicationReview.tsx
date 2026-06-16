@@ -5,15 +5,13 @@ import { AppModal } from '../shared/AppModal';
 import { StatusBadge } from '../shared/StatusBadge';
 import { appraisalLoan } from '../../data/creditData';
 import { DirectorCaseBanner } from '../shared/CrossRoleComponents';
+import { formatCurrency } from '../../lib/format';
 
 interface ApplicationReviewProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewProps) {
   const [step, setStep] = useState(1);

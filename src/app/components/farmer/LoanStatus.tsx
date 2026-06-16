@@ -5,6 +5,7 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { LoanTracker } from '../shared/LoanTracker';
 import { AppModal } from '../shared/AppModal';
 import { farmerDocuments, farmerLoan, farmerLoanHistory, farmerProfile, farmerRepaymentSchedule, farmerTimeline } from '../../data/farmerData';
+import { formatCurrency } from '../../lib/format';
 
 interface LoanStatusProps {
   onNavigate: (page: string) => void;
@@ -13,9 +14,6 @@ interface LoanStatusProps {
 
 type LoanTab = 'overview' | 'documents' | 'repayment' | 'timeline';
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 function DocCard({ doc, onOpen }: { doc: typeof farmerDocuments[number]; onOpen: (doc: typeof farmerDocuments[number]) => void }) {
   const available = doc.status === 'Available';

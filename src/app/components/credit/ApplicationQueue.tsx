@@ -6,15 +6,13 @@ import { WorkbenchTabs } from '../shared/WorkbenchTabs';
 import { creditIntakeTabs } from '../../data/roleNav';
 import { AppModal } from '../shared/AppModal';
 import { creditApplications } from '../../data/creditData';
+import { formatCurrency } from '../../lib/format';
 
 interface ApplicationQueueProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueueProps) {
   const [search, setSearch] = useState('');

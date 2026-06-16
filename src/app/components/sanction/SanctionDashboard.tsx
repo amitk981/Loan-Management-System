@@ -4,15 +4,13 @@ import { StatusBadge } from '../shared/StatusBadge';
 import { RoleCommandCenter } from '../shared/RoleCommandCenter';
 import { useAuth } from '../../context/AuthContext';
 import { scApprovalQueue, scPortfolio } from '../../data/sanctionData';
+import { formatCurrency } from '../../lib/format';
 
 interface SanctionDashboardProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
-function formatCurrency(n: number) {
-  return '₹' + n.toLocaleString('en-IN');
-}
 
 export function SanctionDashboard({ onNavigate, activePage }: SanctionDashboardProps) {
   const { user } = useAuth();
