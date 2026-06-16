@@ -38,16 +38,16 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
                 <div
                   className={`w-3.5 h-3.5 rounded-full border-2 transition-all ${
                     isDone
-                      ? 'bg-[#22C55E] border-[#22C55E]'
+                      ? 'bg-[var(--success-500)] border-[var(--success-500)]'
                       : isCurrent
-                      ? 'border-[#1A3C2A] bg-white'
-                      : 'bg-[#EDEEF0] border-[#EDEEF0]'
+                      ? 'border-[var(--brand-primary)] bg-white'
+                      : 'bg-[var(--neutral-200)] border-[var(--neutral-200)]'
                   }`}
                   style={isCurrent ? { boxShadow: '0 0 0 3px rgba(26,60,42,0.15)' } : undefined}
                 >
                   {isDone ? <Check size={10} className="text-white" /> : <StageIcon size={9} />}
                 </div>
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#12151A] text-white text-xs px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 whitespace-nowrap z-10 pointer-events-none transition-opacity" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[var(--neutral-900)] text-white text-xs px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 whitespace-nowrap z-10 pointer-events-none transition-opacity" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
                   {stage.name}
                   {completedDates[i] && <div className="text-white/60 mt-0.5">{completedDates[i]}</div>}
                 </div>
@@ -86,17 +86,17 @@ export function LoanTracker({ currentStage, compact = false, completedDates = []
                 className="absolute top-5 left-1/2 w-full h-0.5 z-0"
                 style={{
                   backgroundColor: isDone ? 'var(--success-500)' : 'var(--neutral-200)',
-                  backgroundImage: !isDone && !isCurrent ? 'repeating-linear-gradient(90deg, #D1D5DB 0 4px, transparent 4px 8px)' : 'none',
+                  backgroundImage: !isDone && !isCurrent ? 'repeating-linear-gradient(90deg, var(--neutral-300) 0 4px, transparent 4px 8px)' : 'none',
                 }}
               />
             )}
             <div
               className={`relative z-10 w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm transition-all ${
                 isDone
-                  ? 'bg-[#22C55E] border-[#22C55E] text-white'
+                  ? 'bg-[var(--success-500)] border-[var(--success-500)] text-white'
                   : isCurrent
-                  ? 'border-[#1A3C2A] bg-white shadow-md'
-                  : 'bg-[#F7F8FA] border-[#EDEEF0] text-[#9EA8B3]'
+                  ? 'border-[var(--brand-primary)] bg-white shadow-md'
+                  : 'bg-[var(--neutral-100)] border-[var(--neutral-200)] text-[var(--neutral-400)]'
               }`}
               style={{
                 ...(isCurrent ? { boxShadow: '0 0 0 4px rgba(26,60,42,0.12), 0 2px 8px rgba(0,0,0,0.1)' } : {}),

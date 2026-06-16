@@ -175,18 +175,18 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
           </button>
           {showSearch && (
             <div
-              className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-[#EDEEF0] w-96 z-50 overflow-hidden"
+              className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-[var(--neutral-200)] w-96 z-50 overflow-hidden"
               style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)', animation: 'fadeIn 0.15s ease' }}
             >
-              <div className="p-3 border-b border-[#EDEEF0]">
+              <div className="p-3 border-b border-[var(--neutral-200)]">
                 <div className="relative">
-                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9EA8B3]" />
+                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--neutral-400)]" />
                   <input
                     autoFocus
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
                     placeholder="Search loans, members, queues"
-                    className="w-full pl-9 pr-3 rounded-lg border border-[#D1D5DB]"
+                    className="w-full pl-9 pr-3 rounded-lg border border-[var(--neutral-300)]"
                     style={{ height: 38, fontSize: 13 }}
                   />
                 </div>
@@ -196,7 +196,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
                   <button
                     key={item.page}
                     onClick={() => { onNavigate(item.page); setShowSearch(false); setSearchQuery(''); }}
-                    className="w-full text-left px-4 py-3 border-b border-[#EDEEF0] hover:bg-[#F7F8FA]"
+                    className="w-full text-left px-4 py-3 border-b border-[var(--neutral-200)] hover:bg-[var(--neutral-100)]"
                   >
                     <div style={{ fontSize: 13, color: 'var(--neutral-900)', fontWeight: 700 }}>{item.label}</div>
                     <div style={{ fontSize: 12, color: 'var(--neutral-500)', marginTop: 2 }}>{item.meta}</div>
@@ -225,11 +225,11 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
           </button>
           {showNotifications && (
             <div
-              className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-[#EDEEF0] w-80 z-50 overflow-hidden"
+              className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-[var(--neutral-200)] w-80 z-50 overflow-hidden"
               style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)', animation: 'fadeIn 0.15s ease' }}
             >
               <style>{`@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }`}</style>
-              <div className="px-4 py-3 border-b border-[#EDEEF0] flex items-center justify-between">
+              <div className="px-4 py-3 border-b border-[var(--neutral-200)] flex items-center justify-between">
                 <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>{t('app.notifications', 'Notifications')}</span>
                 <button onClick={() => setNotificationsRead(true)} style={{ fontSize: '12px', color: 'var(--brand-accent)', cursor: 'pointer' }}>Mark all read</button>
               </div>
@@ -239,7 +239,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
                   const body = 'detail' in n ? n.detail : n.body;
                   const route = 'route' in n ? n.route : '';
                   return (
-                    <button key={n.id} onClick={() => { if (route) onNavigate(route); setShowNotifications(false); }} className="w-full text-left px-4 py-3 border-b border-[#EDEEF0] hover:bg-[#F7F8FA] cursor-pointer transition-colors">
+                    <button key={n.id} onClick={() => { if (route) onNavigate(route); setShowNotifications(false); }} className="w-full text-left px-4 py-3 border-b border-[var(--neutral-200)] hover:bg-[var(--neutral-100)] cursor-pointer transition-colors">
                       <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>{title}</div>
                       <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '2px' }}>{body}</div>
                       <div style={{ fontSize: '11px', color: 'var(--brand-accent)', marginTop: '4px' }}>{'cta' in n ? n.cta : n.time}</div>
@@ -247,7 +247,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
                   );
                 })}
               </div>
-              <button onClick={() => { onNavigate('notifications-center'); setShowNotifications(false); }} className="w-full px-4 py-3 text-center hover:bg-[#F7F8FA] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)', cursor: 'pointer' }}>
+              <button onClick={() => { onNavigate('notifications-center'); setShowNotifications(false); }} className="w-full px-4 py-3 text-center hover:bg-[var(--neutral-100)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)', cursor: 'pointer' }}>
                 {t('app.viewAll', 'View all notifications')} →
               </button>
             </div>
@@ -295,28 +295,28 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
           </button>
           {showProfile && (
             <div
-              className="absolute right-0 top-12 bg-white rounded-xl shadow-lg border border-[#EDEEF0] w-48 z-50 overflow-hidden"
+              className="absolute right-0 top-12 bg-white rounded-xl shadow-lg border border-[var(--neutral-200)] w-48 z-50 overflow-hidden"
               style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)', animation: 'fadeIn 0.15s ease' }}
             >
-              <div className="px-4 py-3 border-b border-[#EDEEF0]">
+              <div className="px-4 py-3 border-b border-[var(--neutral-200)]">
                 <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>{user?.name}</div>
                 <div style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>{user?.roleLabel}</div>
               </div>
-              <button onClick={() => { onNavigate(profilePage); setShowProfile(false); }} className="w-full px-4 py-2.5 flex items-center gap-2 hover:bg-[#F7F8FA] text-left transition-colors">
-                <User size={14} className="text-[#9EA8B3]" />
+              <button onClick={() => { onNavigate(profilePage); setShowProfile(false); }} className="w-full px-4 py-2.5 flex items-center gap-2 hover:bg-[var(--neutral-100)] text-left transition-colors">
+                <User size={14} className="text-[var(--neutral-400)]" />
                 <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{profileLabel}</span>
               </button>
               {user?.role !== 'farmer' && (
-                <button onClick={() => { onNavigate('member-loan-profile'); setShowProfile(false); }} className="w-full px-4 py-2.5 flex items-center gap-2 hover:bg-[#F7F8FA] text-left transition-colors">
-                  <Search size={14} className="text-[#9EA8B3]" />
+                <button onClick={() => { onNavigate('member-loan-profile'); setShowProfile(false); }} className="w-full px-4 py-2.5 flex items-center gap-2 hover:bg-[var(--neutral-100)] text-left transition-colors">
+                  <Search size={14} className="text-[var(--neutral-400)]" />
                   <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Borrower Lookup</span>
                 </button>
               )}
               <button
-                className="w-full px-4 py-2.5 flex items-center gap-2 hover:bg-[#F7F8FA] text-left border-t border-[#EDEEF0] transition-colors"
+                className="w-full px-4 py-2.5 flex items-center gap-2 hover:bg-[var(--neutral-100)] text-left border-t border-[var(--neutral-200)] transition-colors"
                 onClick={() => { logout(); setShowProfile(false); }}
               >
-                <LogOut size={14} className="text-[#EF4444]" />
+                <LogOut size={14} className="text-[var(--error-500)]" />
                 <span style={{ fontSize: '13px', color: 'var(--error-500)' }}>{t('app.logout', 'Logout')}</span>
               </button>
             </div>

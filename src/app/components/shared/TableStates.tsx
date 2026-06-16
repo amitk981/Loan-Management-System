@@ -16,7 +16,7 @@ export function SkeletonRows({ rows = 5, cols = 6 }: { rows?: number; cols?: num
   return (
     <>
       {Array.from({ length: rows }).map((_, row) => (
-        <tr key={row} className="border-b border-[#EDEEF0]">
+        <tr key={row} className="border-b border-[var(--neutral-200)]">
           {Array.from({ length: cols }).map((__, col) => (
             <td key={col} className="px-4 py-4">
               <div className="h-3 rounded-full animate-pulse" style={{ width: `${col === 0 ? 56 : 70 + ((row + col) % 3) * 18}%`, backgroundColor: 'var(--neutral-200)' }} />

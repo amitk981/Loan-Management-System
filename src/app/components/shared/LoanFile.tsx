@@ -63,7 +63,7 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
       pageSubtitle={`${loan.borrower} · ${loan.category}`}
     >
       {/* Header: the shared object's identity + where it is in the 6 stages */}
-      <div className="bg-white rounded-xl border border-[#EDEEF0] p-5 mb-5">
+      <div className="bg-white rounded-xl border border-[var(--neutral-200)] p-5 mb-5">
         <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
           <div className="flex items-center gap-4">
             <div>
@@ -73,11 +73,11 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
             <div className="h-10 w-px" style={{ backgroundColor: 'var(--neutral-200)' }} />
             <div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Eligible limit</div>
-              <div style={{ fontSize: '16px', fontWeight: 500, color: overLimit ? '#B42318' : 'var(--success-700)', fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
+              <div style={{ fontSize: '16px', fontWeight: 500, color: overLimit ? 'var(--error-800)' : 'var(--success-700)', fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1.5 rounded-full" style={{ backgroundColor: authority.includes('2') ? '#F3E8FF' : '#E8F1FA', color: authority.includes('2') ? 'var(--accent-sanction)' : '#1565C0', fontSize: '12px', fontWeight: 700 }}>{authority}</span>
+            <span className="px-3 py-1.5 rounded-full" style={{ backgroundColor: authority.includes('2') ? 'var(--purple-100)' : 'var(--accent-blue-50)', color: authority.includes('2') ? 'var(--accent-sanction)' : 'var(--brand-accent-700)', fontSize: '12px', fontWeight: 700 }}>{authority}</span>
             <StatusBadge status="Under Assessment" size="md" />
           </div>
         </div>
@@ -117,8 +117,8 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
 
 function Card({ title, children, action }: { title: string; children: React.ReactNode; action?: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-xl border border-[#EDEEF0] overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}>
+    <div className="bg-white rounded-xl border border-[var(--neutral-200)] overflow-hidden">
+      <div className="px-5 py-3 border-b border-[var(--neutral-200)] flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)' }}>
         <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</h3>
         {action}
       </div>
@@ -129,7 +129,7 @@ function Card({ title, children, action }: { title: string; children: React.Reac
 
 function Row({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
-    <div className="flex justify-between gap-4 py-2.5 border-b border-[#EDEEF0] last:border-0">
+    <div className="flex justify-between gap-4 py-2.5 border-b border-[var(--neutral-200)] last:border-0">
       <span style={{ fontSize: '13px', color: 'var(--neutral-500)' }}>{label}</span>
       <span style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 500, fontFamily: mono ? 'Roboto Mono' : 'inherit', textAlign: 'right' }}>{value}</span>
     </div>
@@ -211,7 +211,7 @@ function SignatureLadder({ authority }: { authority: string }) {
   return (
     <div className="space-y-2">
       {sigs.map(s => (
-        <div key={s.who} className="flex items-center justify-between p-3 rounded-lg" style={{ backgroundColor: s.state === 'Signed' ? 'var(--success-50)' : '#FFFBEB' }}>
+        <div key={s.who} className="flex items-center justify-between p-3 rounded-lg" style={{ backgroundColor: s.state === 'Signed' ? 'var(--success-50)' : 'var(--warning-50)' }}>
           <span className="flex items-center gap-2" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>
             {s.state === 'Signed' ? <Check size={15} style={{ color: 'var(--success-500)' }} /> : <Lock size={15} style={{ color: 'var(--gold-500)' }} />} {s.who}
           </span>
@@ -252,7 +252,7 @@ function SanctionTab({ authority, editable }: { authority: string; editable: boo
 
 function DocStateCard({ name, state, note }: { name: string; state: string; note: string }) {
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg border border-[#EDEEF0]">
+    <div className="flex items-center justify-between p-3 rounded-lg border border-[var(--neutral-200)]">
       <div className="flex items-center gap-2.5">
         <FileText size={16} style={{ color: 'var(--brand-primary)' }} />
         <div>
@@ -276,7 +276,7 @@ function DocumentsTab({ editable, onNavigate }: { editable: boolean; onNavigate:
     ['Checklist (Annexure H)', 'Pending CS', 'Index · 4 signatures'],
   ] as const;
   return (
-    <Card title="Legal documents (Stage 4)" action={editable ? <button onClick={() => onNavigate('cs-workspace')} style={{ fontSize: '13px', color: '#1565C0', fontWeight: 700 }}>Open document workspace →</button> : undefined}>
+    <Card title="Legal documents (Stage 4)" action={editable ? <button onClick={() => onNavigate('cs-workspace')} style={{ fontSize: '13px', color: 'var(--brand-accent-700)', fontWeight: 700 }}>Open document workspace →</button> : undefined}>
       <div className="grid grid-cols-2 gap-3">
         {docs.map(([name, state, note]) => <DocStateCard key={name} name={name} state={state} note={note} />)}
       </div>

@@ -37,7 +37,7 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
     <div className="min-h-screen" style={{ backgroundColor: 'var(--neutral-100)', fontFamily: 'Inter, "Noto Sans Devanagari", sans-serif' }}>
       <style>{`
         button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
-          outline: 3px solid #1A3C2A;
+          outline: 3px solid var(--brand-primary);
           outline-offset: 2px;
         }
         /* Custom scrollbar */
@@ -48,7 +48,7 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
         .shell-scroll { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.12) transparent; }
         /* Interactive row styles */
         .clickable-row { cursor: pointer; transition: all 0.15s ease; }
-        .clickable-row:hover { background-color: #F7F8FA; }
+        .clickable-row:hover { background-color: var(--neutral-100); }
         .clickable-row:active { transform: scale(0.995); }
         .clickable-card { cursor: pointer; transition: all 0.2s ease; }
         .clickable-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-1px); }
@@ -115,7 +115,7 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
       >
         {(pageTitle || actions) && (
           <div
-            className="shell-titlebar flex items-center justify-between px-8 bg-white border-b border-[#EDEEF0] flex-shrink-0"
+            className="shell-titlebar flex items-center justify-between px-8 bg-white border-b border-[var(--neutral-200)] flex-shrink-0"
             style={{ minHeight: '64px' }}
           >
             <div>

@@ -85,7 +85,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
           <p style={{ fontSize: '15px', color: 'var(--neutral-400)', marginBottom: '16px' }}>Your application has been received by our Credit Team. You'll hear back within 2 working days.</p>
           <div
             className="px-6 py-4 rounded-2xl mb-6"
-            style={{ backgroundColor: 'var(--brand-light)', border: '1px solid #DCFCE7' }}
+            style={{ backgroundColor: 'var(--brand-light)', border: '1px solid var(--success-100)' }}
           >
             <div style={{ fontSize: '12px', color: 'var(--brand-secondary)', fontWeight: 500, marginBottom: '4px' }}>Application Reference</div>
             <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--brand-primary)', fontFamily: 'Roboto Mono' }}>LO00000052</div>
@@ -96,7 +96,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
           </p>
           <div className="flex gap-3">
             <button
-              className="px-5 py-2.5 rounded-xl border border-[#EDEEF0] transition-all hover:bg-[#F7F8FA]"
+              className="px-5 py-2.5 rounded-xl border border-[var(--neutral-200)] transition-all hover:bg-[var(--neutral-100)]"
               style={{ fontSize: '14px', color: 'var(--neutral-700)' }}
               onClick={() => onNavigate('farmer-dashboard')}
             >
@@ -134,8 +134,8 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             ].map(([label, value, helper]) => (
               <div key={label} className="farmer-panel-tight p-4">
                 <div className="farmer-kicker">{label}</div>
-                <div className="farmer-value mt-2" style={{ fontSize: '22px', lineHeight: '28px', color: label === 'Requested' && !amountWithinLimit ? '#B42318' : '#111827' }}>{value}</div>
-                <div style={{ fontSize: '12px', color: '#667085', marginTop: '5px' }}>{helper}</div>
+                <div className="farmer-value mt-2" style={{ fontSize: '22px', lineHeight: '28px', color: label === 'Requested' && !amountWithinLimit ? 'var(--error-800)' : 'var(--neutral-950)' }}>{value}</div>
+                <div style={{ fontSize: '12px', color: 'var(--neutral-550)', marginTop: '5px' }}>{helper}</div>
               </div>
             ))}
           </div>
@@ -153,14 +153,14 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                     key={s.id}
                     onClick={() => setStep(s.id)}
                     className="w-full flex items-center gap-3 rounded-xl p-3 text-left"
-                    style={{ backgroundColor: isActive ? 'var(--brand-light)' : 'transparent', border: `1px solid ${isActive ? '#B7E4C7' : 'transparent'}` }}
+                    style={{ backgroundColor: isActive ? 'var(--brand-light)' : 'transparent', border: `1px solid ${isActive ? 'var(--green-200c)' : 'transparent'}` }}
                   >
-                    <span className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: complete || isActive ? '#16452F' : '#EEF2F6', color: complete || isActive ? 'white' : '#98A2B3', fontSize: '13px', fontWeight: 700 }}>
+                    <span className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: complete || isActive ? 'var(--green-900)' : 'var(--gray-150b)', color: complete || isActive ? 'white' : 'var(--gray-450)', fontSize: '13px', fontWeight: 700 }}>
                       {complete ? <Check size={15} /> : s.id}
                     </span>
                     <span>
-                      <span style={{ display: 'block', fontSize: '14px', fontWeight: 700, color: isActive ? '#16452F' : '#111827' }}>{s.label}</span>
-                      <span style={{ display: 'block', fontSize: '12px', color: '#667085', marginTop: '2px' }}>
+                      <span style={{ display: 'block', fontSize: '14px', fontWeight: 700, color: isActive ? 'var(--green-900)' : 'var(--neutral-950)' }}>{s.label}</span>
+                      <span style={{ display: 'block', fontSize: '12px', color: 'var(--neutral-550)', marginTop: '2px' }}>
                         {complete ? 'Completed' : isActive ? 'Current section' : 'Not started'}
                       </span>
                     </span>
@@ -168,9 +168,9 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                 );
               })}
             </div>
-            <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: '#F8FAFC', border: '1px solid #E4E7EC' }}>
-              <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>Current blocker</div>
-              <div style={{ fontSize: '12px', color: '#667085', lineHeight: '18px', marginTop: '5px' }}>
+            <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: 'var(--gray-50b)', border: '1px solid var(--gray-200b)' }}>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-950)' }}>Current blocker</div>
+              <div style={{ fontSize: '12px', color: 'var(--neutral-550)', lineHeight: '18px', marginTop: '5px' }}>
                 {step === 1 && !nomineeAdult ? 'Confirm nominee is 18+.' : step === 5 && !canSubmitApplication ? 'Finish documents, declarations, and amount checks.' : 'No blocker on this step.'}
               </div>
             </div>
@@ -187,43 +187,43 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Full Name</label>
                 <div className="relative">
-                  <input value={farmerProfile.fullName} readOnly className="w-full px-4 rounded-xl border border-[#EDEEF0] bg-[#F7F8FA] pr-10" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-400)' }} />
+                  <input value={farmerProfile.fullName} readOnly className="w-full px-4 rounded-xl border border-[var(--neutral-200)] bg-[var(--neutral-100)] pr-10" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-400)' }} />
                   <ShieldCheck className="absolute right-3 top-3" size={16} style={{ color: 'var(--neutral-400)' }} />
                 </div>
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Mobile Number</label>
-                <input value={farmerProfile.mobile} readOnly className="w-full px-4 rounded-xl border border-[#EDEEF0] bg-[#F7F8FA]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-400)', fontFamily: 'Roboto Mono' }} />
+                <input value={farmerProfile.mobile} readOnly className="w-full px-4 rounded-xl border border-[var(--neutral-200)] bg-[var(--neutral-100)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-400)', fontFamily: 'Roboto Mono' }} />
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Date of Birth <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <input type="date" className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
+                <input type="date" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Alternate Mobile</label>
-                <input type="tel" placeholder="Optional" className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
+                <input type="tel" placeholder="Optional" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Email Address</label>
-                <input type="email" placeholder="Optional" className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
+                <input type="email" placeholder="Optional" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Gender <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <select className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A] bg-white" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}>
+                <select className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)] bg-white" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}>
                   <option>Male</option><option>Female</option><option>Other</option>
                 </select>
               </div>
               <div className="col-span-2">
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Residential Address <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <textarea rows={3} className="w-full px-4 py-3 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A] resize-none" style={{ fontSize: '14px', color: 'var(--neutral-900)' }} placeholder="Enter your full address..." />
+                <textarea rows={3} className="w-full px-4 py-3 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)] resize-none" style={{ fontSize: '14px', color: 'var(--neutral-900)' }} placeholder="Enter your full address..." />
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Village / Taluka <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <input type="text" defaultValue={`${farmerProfile.village} / ${farmerProfile.taluka}`} className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
+                <input type="text" defaultValue={`${farmerProfile.village} / ${farmerProfile.taluka}`} className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>District / State <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <select className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A] bg-white" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}>
+                <select className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)] bg-white" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}>
                   <option>{farmerProfile.district}, {farmerProfile.state}</option>
                   <option>Pune, Maharashtra</option>
                   <option>Aurangabad, Maharashtra</option>
@@ -232,7 +232,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             </div>
 
             {/* Nominee Section */}
-            <div className="mt-6 pt-5 border-t border-[#EDEEF0]">
+            <div className="mt-6 pt-5 border-t border-[var(--neutral-200)]">
               <div className="flex items-center justify-between mb-4">
                 <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Nominee Details</h3>
                 <span className="px-2 py-1 rounded-lg text-xs font-medium" style={{ backgroundColor: 'var(--warning-100)', color: 'var(--warning-500)' }}>Required by SOP</span>
@@ -247,11 +247,11 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   <div key={i}>
                     <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>{field.label} <span style={{ color: 'var(--error-500)' }}>*</span></label>
                     {field.type === 'select' ? (
-                      <select className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A] bg-white" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}>
+                      <select className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)] bg-white" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}>
                         <option>Spouse</option><option>Son</option><option>Daughter</option><option>Father</option><option>Mother</option>
                       </select>
                     ) : (
-                      <input type={field.type} placeholder={field.placeholder} className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: field.label.includes('Aadhaar') || field.label.includes('PAN') ? 'Roboto Mono' : 'inherit' }} />
+                      <input type={field.type} placeholder={field.placeholder} className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: field.label.includes('Aadhaar') || field.label.includes('PAN') ? 'Roboto Mono' : 'inherit' }} />
                     )}
                   </div>
                 ))}
@@ -263,7 +263,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             </div>
             
             {/* KYC Status */}
-            <div className="mt-6 pt-5 border-t border-[#EDEEF0]">
+            <div className="mt-6 pt-5 border-t border-[var(--neutral-200)]">
               <div className="p-4 rounded-xl flex gap-3" style={{ backgroundColor: rekycRequested ? 'var(--warning-100)' : 'var(--success-50)', border: `1px solid ${rekycRequested ? 'var(--warning-200)' : 'var(--success-200)'}` }}>
                 <ShieldCheck size={24} style={{ color: rekycRequested ? 'var(--warning-700)' : 'var(--success-700)', flexShrink: 0 }} />
                 <div>
@@ -295,7 +295,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   { label: 'Shares Held', value: `${shares} shares`, mono: false },
                   { label: 'Share Type', value: `${farmerProfile.shareType} (D-MAT pending)`, mono: false },
               ].map((item, i) => (
-                <div key={i} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid #EDEEF0' }}>
+                <div key={i} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid var(--neutral-200)' }}>
                   <div style={{ fontSize: '11px', fontWeight: 500, color: 'var(--neutral-400)', marginBottom: '4px' }}>{item.label}</div>
                   <div style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', fontFamily: item.mono ? 'Roboto Mono' : 'inherit' }}>{item.value}</div>
                 </div>
@@ -303,7 +303,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             </div>
 
             {/* Calculator Panel */}
-            <div className="rounded-2xl p-5 mb-6" style={{ backgroundColor: 'var(--brand-light)', border: '1px solid #C6E8D0' }}>
+            <div className="rounded-2xl p-5 mb-6" style={{ backgroundColor: 'var(--brand-light)', border: '1px solid var(--green-100b)' }}>
               <div className="flex items-center gap-2 mb-4">
                 <Calculator size={18} style={{ color: 'var(--brand-secondary)' }} />
                 <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--brand-primary)' }}>Loan Limit Calculator</h3>
@@ -316,7 +316,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                       type="number"
                       value={shares}
                       onChange={e => setShares(parseInt(e.target.value) || 0)}
-                      className="w-20 px-2 rounded-lg border border-[#D1D5DB] text-center focus:outline-none focus:border-[#1A3C2A]"
+                      className="w-20 px-2 rounded-lg border border-[var(--neutral-300)] text-center focus:outline-none focus:border-[var(--brand-primary)]"
                       style={{ height: '36px', fontSize: '14px', fontFamily: 'Roboto Mono' }}
                     />
                     <span style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>shares × ₹{shareValuation}</span>
@@ -334,7 +334,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                       value={landAcres}
                       step="0.5"
                       onChange={e => setLandAcres(parseFloat(e.target.value) || 0)}
-                      className="w-20 px-2 rounded-lg border border-[#D1D5DB] text-center focus:outline-none focus:border-[#1A3C2A]"
+                      className="w-20 px-2 rounded-lg border border-[var(--neutral-300)] text-center focus:outline-none focus:border-[var(--brand-primary)]"
                       style={{ height: '36px', fontSize: '14px', fontFamily: 'Roboto Mono' }}
                     />
                     <span style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>acres × ₹{scaleOfFinance.toLocaleString('en-IN')}/acre</span>
@@ -368,7 +368,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   value={requestedAmount}
                   onChange={e => setRequestedAmount(e.target.value)}
                   placeholder={`Max: ${formatCurrency(eligibleLimit)}`}
-                  className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A]"
+                  className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]"
                   style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: 'Roboto Mono' }}
                 />
                 {reqAmount > eligibleLimit && (
@@ -377,7 +377,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Purpose of Loan <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <select value={purpose} onChange={e => setPurpose(e.target.value)} className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A] bg-white" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}>
+                <select value={purpose} onChange={e => setPurpose(e.target.value)} className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)] bg-white" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }}>
                   <option>Crop Production & Farm Inputs</option>
                   <option>Farm Equipment Purchase</option>
                   <option>Irrigation & Infrastructure</option>
@@ -387,7 +387,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               </div>
               <div className="col-span-2">
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Purpose Declaration</label>
-                <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid #BBF7D0' }}>
+                <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--success-50)', border: '1px solid var(--success-200)' }}>
                   <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--success-700)', marginBottom: '4px' }}>Controlled SOP purpose selected</div>
                   <div style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>
                     This application will be processed under the selected category: <strong>{purpose}</strong>. Free-text purposes are disabled to keep the loan file aligned with the approved agriculture-purpose list.
@@ -417,8 +417,8 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                 <button
                   type="button"
                   onClick={() => markDocUploaded(zone.doc)}
-                  className="border-2 border-dashed rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-all hover:border-[#2D7A4F] hover:bg-[#F0FDF4]"
-                  style={{ borderColor: 'var(--neutral-300)', padding: '20px', backgroundColor: '#FAFAFA' }}
+                  className="border-2 border-dashed rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-all hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)]"
+                  style={{ borderColor: 'var(--neutral-300)', padding: '20px', backgroundColor: 'var(--neutral-60)' }}
                 >
                   <Upload size={24} style={{ color: 'var(--neutral-400)' }} />
                   <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Drag files here or <span style={{ color: 'var(--brand-accent)' }}>click to browse</span></span>
@@ -428,7 +428,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             ))}
 
             {/* Land Parcels Table */}
-            <div className="mt-5 pt-5 border-t border-[#EDEEF0]">
+            <div className="mt-5 pt-5 border-t border-[var(--neutral-200)]">
               <div className="flex items-center justify-between mb-3">
                 <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)' }}>Land Parcels</h3>
                 <button onClick={addLandParcel} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all" style={{ backgroundColor: 'var(--brand-light)', color: 'var(--brand-secondary)', fontSize: '13px', fontWeight: 500 }}>
@@ -438,7 +438,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr style={{ backgroundColor: 'var(--neutral-100)', borderBottom: '1px solid #EDEEF0' }}>
+                    <tr style={{ backgroundColor: 'var(--neutral-100)', borderBottom: '1px solid var(--neutral-200)' }}>
                       {['Survey No.', 'Village', 'Area (acres)', 'Crop', 'Season', ''].map(h => (
                         <th key={h} className="px-3 py-2 text-left" style={{ fontSize: '11px', fontWeight: 500, color: 'var(--neutral-400)' }}>{h}</th>
                       ))}
@@ -446,7 +446,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   </thead>
                   <tbody>
                     {landParcels.map((parcel, i) => (
-                      <tr key={i} className="border-b border-[#EDEEF0]">
+                      <tr key={i} className="border-b border-[var(--neutral-200)]">
                         {(['survey', 'village', 'area', 'crop', 'season'] as const).map(field => (
                           <td key={field} className="px-2 py-2">
                             <input
@@ -456,7 +456,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                                 updated[i] = { ...updated[i], [field]: e.target.value };
                                 setLandParcels(updated);
                               }}
-                              className="w-full px-2 rounded-lg border border-[#EDEEF0] focus:outline-none focus:border-[#1A3C2A]"
+                              className="w-full px-2 rounded-lg border border-[var(--neutral-200)] focus:outline-none focus:border-[var(--brand-primary)]"
                               style={{ height: '36px', fontSize: '13px', color: 'var(--neutral-900)' }}
                             />
                           </td>
@@ -474,19 +474,19 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             </div>
 
             {/* Bank Details */}
-            <div className="mt-5 pt-5 border-t border-[#EDEEF0]">
+            <div className="mt-5 pt-5 border-t border-[var(--neutral-200)]">
               <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '16px' }}>Bank Account Details</h3>
               <div className="grid grid-cols-2 gap-4">
                 {['Account Holder Name', 'Bank Name', 'Account Number', 'IFSC Code', 'Branch Name'].map((label, i) => (
                   <div key={i}>
                     <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>{label} <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                    <input type="text" className="w-full px-4 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#1A3C2A]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: label.includes('IFSC') || label.includes('Account Number') ? 'Roboto Mono' : 'inherit' }} />
+                    <input type="text" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: label.includes('IFSC') || label.includes('Account Number') ? 'Roboto Mono' : 'inherit' }} />
                   </div>
                 ))}
               </div>
               <div className="mt-4">
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Upload Cancelled Cheque <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <button type="button" onClick={() => markDocUploaded('Cancelled Cheque')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[#2D7A4F] transition-colors" style={{ borderColor: 'var(--neutral-300)' }}>
+                <button type="button" onClick={() => markDocUploaded('Cancelled Cheque')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: 'var(--neutral-300)' }}>
                   <Upload size={20} style={{ color: 'var(--neutral-400)' }} />
                   <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload scanned copy of cancelled cheque</span>
                 </button>
@@ -513,7 +513,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>
                     {doc.label} {doc.required && <span style={{ color: 'var(--error-500)' }}>*</span>}
                   </label>
-                  <button type="button" onClick={() => markDocUploaded(doc.doc)} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[#2D7A4F] hover:bg-[#F0FDF4] transition-all text-left" style={{ borderColor: 'var(--neutral-300)' }}>
+                  <button type="button" onClick={() => markDocUploaded(doc.doc)} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)] transition-all text-left" style={{ borderColor: 'var(--neutral-300)' }}>
                     <Upload size={18} style={{ color: 'var(--neutral-400)' }} />
                     <div>
                       <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload {doc.label}</span>
@@ -529,7 +529,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               {['PAN Card (Nominee)', 'Aadhaar Card (Nominee)', 'Passport Photo (Nominee)'].map((label, i) => (
                 <div key={i}>
                   <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>{label} <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                  <button type="button" onClick={() => markDocUploaded('Nominee KYC')} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[#2D7A4F] hover:bg-[#F0FDF4] transition-all text-left" style={{ borderColor: 'var(--neutral-300)' }}>
+                  <button type="button" onClick={() => markDocUploaded('Nominee KYC')} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)] transition-all text-left" style={{ borderColor: 'var(--neutral-300)' }}>
                     <Upload size={18} style={{ color: 'var(--neutral-400)' }} />
                     <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload {label}</span>
                   </button>
@@ -537,7 +537,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               ))}
             </div>
 
-            <div className="pt-5 border-t border-[#EDEEF0]">
+            <div className="pt-5 border-t border-[var(--neutral-200)]">
               <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Declarations</h3>
               <div className="space-y-3">
                 {[
@@ -593,7 +593,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               { title: 'Land Details', content: `${landAcres} acres · ${landParcels.length} parcel(s) registered`, editStep: 3 },
               { title: 'Bank Account', content: 'Account verified · RBL Bank · IFSC: RBLS0000234', editStep: 3 },
             ].map((section, i) => (
-              <div key={i} className="mb-3 p-4 rounded-xl border border-[#EDEEF0] flex items-center justify-between">
+              <div key={i} className="mb-3 p-4 rounded-xl border border-[var(--neutral-200)] flex items-center justify-between">
                 <div>
                   <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>{section.title}</div>
                   <div style={{ fontSize: '13px', color: 'var(--neutral-400)', marginTop: '2px' }}>{section.content}</div>
@@ -603,7 +603,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             ))}
 
             {/* Document Checklist */}
-            <div className="mt-5 pt-5 border-t border-[#EDEEF0]">
+            <div className="mt-5 pt-5 border-t border-[var(--neutral-200)]">
               <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Document Checklist</h3>
               <div className="grid grid-cols-2 gap-2">
                 {reviewDocs.map((doc, i) => (
@@ -616,7 +616,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                       setReviewDocs(updated);
                     }}
                     className="flex items-center gap-2 p-2 rounded-lg text-left"
-                    style={{ backgroundColor: doc.uploaded ? 'var(--success-50)' : '#FEF2F2' }}
+                    style={{ backgroundColor: doc.uploaded ? 'var(--success-50)' : 'var(--error-50)' }}
                   >
                     {doc.uploaded ? <FileCheck size={16} style={{ color: 'var(--success-500)' }} /> : <Upload size={16} style={{ color: 'var(--error-500)' }} />}
                     <span style={{ fontSize: '13px', color: doc.uploaded ? 'var(--brand-primary)' : 'var(--error-500)' }}>{doc.name}</span>
@@ -656,7 +656,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
         <div className="flex items-center justify-between mt-5">
           <button
             onClick={() => step > 1 ? setStep(step - 1) : onNavigate('farmer-dashboard')}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#EDEEF0] transition-all hover:bg-[#F7F8FA]"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[var(--neutral-200)] transition-all hover:bg-[var(--neutral-100)]"
             style={{ fontSize: '14px', color: 'var(--neutral-700)' }}
           >
             <ChevronLeft size={16} /> {step > 1 ? 'Previous' : 'Back to Dashboard'}
