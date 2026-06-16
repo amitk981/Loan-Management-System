@@ -1,9 +1,9 @@
 import {
-  LayoutDashboard, FileText, CreditCard, Files, Wallet, HeadphonesIcon,
-  Inbox, BookOpen, BarChart3, AlertTriangle, Calendar, Building, ClipboardCheck,
-  CheckSquare, PenTool, TrendingUp, DollarSign, Receipt, FileBarChart,
-  Settings, UserCog, ScrollText, ShieldCheck, Plus, ChevronRight, Users,
-  Calculator, Archive, Scale, Bell, Link2, Landmark, FileCheck, Download, GitBranch,
+  LayoutDashboard, FileText, CreditCard, Wallet, HeadphonesIcon,
+  Inbox, BookOpen, Building, ClipboardCheck,
+  CheckSquare, TrendingUp, DollarSign, Receipt,
+  Settings, UserCog, ScrollText, ShieldCheck, ChevronRight,
+  Bell, FileCheck, GitBranch,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -31,10 +31,10 @@ const farmerNav: NavItem[] = [
     children: [
       { label: 'Active Loan', key: 'farmer-active-loans' },
       { label: 'Loan History', key: 'farmer-loan-history' },
+      { label: 'My Documents', key: 'farmer-documents' },
       { label: 'NOC & Closure', key: 'farmer-noc' },
     ],
   },
-  { icon: <Files size={20} />, label: 'My Documents', key: 'farmer-documents', i18nKey: 'nav.myDocuments', section: 'My Loan' },
   { icon: <Wallet size={20} />, label: 'Make Payment', key: 'farmer-repayment', i18nKey: 'nav.repayment', section: 'Services' },
   { icon: <HeadphonesIcon size={20} />, label: 'Support', key: 'farmer-support', i18nKey: 'nav.support', section: 'Services' },
 ];
@@ -59,18 +59,9 @@ const creditNav: NavItem[] = [
   { icon: <FileCheck size={20} />, label: 'Appraisal Note', key: 'credit-review', section: 'Intake' },
   // Portfolio registers (Active Loans, DPD, Defaults, MIS, Rejected, Exceptions)
   // are reached as tabs on this one hub page — no nested sidebar children needed.
+  // Member lookup + Loan Calculator are reached via global search (top bar),
+  // keeping the sidebar at the 5-item task spine.
   { icon: <BookOpen size={20} />, label: 'Registers & Reports', key: 'credit-register', section: 'Portfolio' },
-  {
-    icon: <Users size={20} />,
-    label: 'Member Registry',
-    key: 'credit-search-member',
-    groupKey: 'credit-members',
-    section: 'Tools',
-    children: [
-      { label: 'Borrower Lookup', key: 'member-loan-profile' },
-      { label: 'Loan Calculator', key: 'credit-calculator' },
-    ],
-  },
 ];
 
 const complianceNav: NavItem[] = [
@@ -100,9 +91,9 @@ const complianceNav: NavItem[] = [
       { label: 'CDSL Pledge Tracker', key: 'cs-cdsl' },
     ],
   },
-  // NOC, Calendar, Security Return, Stamp, Grievance are tabs on the CS Operations hub.
-  { icon: <Scale size={20} />, label: 'CS Operations', key: 'cs-noc', badge: 2, section: 'Compliance' },
-  { icon: <BookOpen size={20} />, label: 'Registers & Reports', key: 'cs-loan-register', section: 'Registers' },
+  // NOC, Calendar, Security Return, Stamp, Grievance and the registers are all
+  // tabs on this one hub — no separate "CS Operations" nav door needed.
+  { icon: <BookOpen size={20} />, label: 'Registers & Operations', key: 'cs-loan-register', badge: 2, section: 'Registers' },
 ];
 
 const sanctionNav: NavItem[] = [
@@ -137,9 +128,9 @@ const sanctionNav: NavItem[] = [
       { label: 'Exposure & Limits', key: 'sc-exposure' },
       { label: 'DPD Summary', key: 'sc-dpd' },
       { label: 'Recovery Actions', key: 'sc-default-escalations' },
+      { label: 'Policy Settings', key: 'sc-policy' },
     ],
   },
-  { icon: <Settings size={20} />, label: 'Policy Settings', key: 'sc-policy', section: 'Governance' },
 ];
 
 const treasuryNav: NavItem[] = [
@@ -171,19 +162,9 @@ const treasuryNav: NavItem[] = [
       { label: 'Ledger Summary', key: 'treasury-ledger' },
     ],
   },
-  // Incoming, Deductions, Accruals, Reconciliation are tabs on the Finance hub.
+  // Incoming, Deductions, Accruals, Reconciliation, Reports & Export Centre are
+  // all tabs on this Finance hub — one nav door, not two.
   { icon: <Receipt size={20} />, label: 'Repayments & Finance', key: 'treasury-incoming', section: 'Finance' },
-  {
-    icon: <FileBarChart size={20} />,
-    label: 'Reporting',
-    key: 'treasury-reports',
-    groupKey: 'treasury-reporting',
-    section: 'Reporting',
-    children: [
-      { label: 'Financial Reports', key: 'treasury-reports' },
-      { label: 'Export Centre', key: 'treasury-exports' },
-    ],
-  },
 ];
 
 const adminNav: NavItem[] = [
@@ -191,9 +172,18 @@ const adminNav: NavItem[] = [
   { icon: <UserCog size={20} />, label: 'User Management', key: 'admin-users', section: 'Controls' },
   { icon: <ScrollText size={20} />, label: 'Audit Log', key: 'admin-audit', section: 'Controls' },
   { icon: <Settings size={20} />, label: 'Configuration', key: 'admin-config', section: 'Controls' },
-  { icon: <ShieldCheck size={20} />, label: 's.186 Limits', key: 'admin-section186', section: 'Compliance' },
-  { icon: <Scale size={20} />, label: 'NBFC Monitor', key: 'admin-nbfc', section: 'Compliance' },
-  { icon: <Link2 size={20} />, label: 'Integration Hub', key: 'integration-overview', section: 'Compliance' },
+  {
+    icon: <ShieldCheck size={20} />,
+    label: 'Compliance Monitors',
+    key: 'admin-section186',
+    groupKey: 'admin-compliance',
+    section: 'Compliance',
+    children: [
+      { label: 's.186 Limits', key: 'admin-section186' },
+      { label: 'NBFC Monitor', key: 'admin-nbfc' },
+      { label: 'Integration Hub', key: 'integration-overview' },
+    ],
+  },
 ];
 
 const navByRole: Record<string, NavItem[]> = {
