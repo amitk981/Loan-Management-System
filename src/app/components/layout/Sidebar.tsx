@@ -56,20 +56,9 @@ const creditNav: NavItem[] = [
     ],
   },
   { icon: <FileCheck size={20} />, label: 'Appraisal Note', key: 'credit-review', section: 'Intake' },
-  {
-    icon: <BookOpen size={20} />,
-    label: 'Loan Register',
-    key: 'credit-register',
-    groupKey: 'credit-portfolio',
-    section: 'Portfolio',
-    children: [
-      { label: 'Full Register', key: 'credit-register' },
-      { label: 'Active Loans', key: 'credit-active-loans' },
-      { label: 'DPD Monitoring', key: 'credit-dpd' },
-      { label: 'Defaults & Recovery', key: 'credit-defaults' },
-      { label: 'MIS Reports', key: 'credit-mis' },
-    ],
-  },
+  // Portfolio registers (Active Loans, DPD, Defaults, MIS, Rejected, Exceptions)
+  // are reached as tabs on this one hub page — no nested sidebar children needed.
+  { icon: <BookOpen size={20} />, label: 'Registers & Reports', key: 'credit-register', section: 'Portfolio' },
   {
     icon: <Users size={20} />,
     label: 'Member Registry',
@@ -109,20 +98,8 @@ const complianceNav: NavItem[] = [
       { label: 'CDSL Pledge Tracker', key: 'cs-cdsl' },
     ],
   },
-  {
-    icon: <Scale size={20} />,
-    label: 'CS Operations',
-    key: 'cs-noc',
-    groupKey: 'cs-ops',
-    section: 'Compliance',
-    children: [
-      { label: 'NOC Management', key: 'cs-noc', badge: 2 },
-      { label: 'Compliance Calendar', key: 'cs-calendar', badge: 3 },
-      { label: 'Security Return Log', key: 'cs-security-return' },
-      { label: 'Stamp Duty Register', key: 'cs-stamp' },
-      { label: 'Grievance Register', key: 'cs-grievance' },
-    ],
-  },
+  // NOC, Calendar, Security Return, Stamp, Grievance are tabs on the CS Operations hub.
+  { icon: <Scale size={20} />, label: 'CS Operations', key: 'cs-noc', badge: 2, section: 'Compliance' },
   { icon: <BookOpen size={20} />, label: 'Registers & Reports', key: 'cs-loan-register', section: 'Registers' },
 ];
 
@@ -144,18 +121,8 @@ const sanctionNav: NavItem[] = [
       { label: 'Final Sign-off', key: 'sc-final-signoff', badge: 2 },
     ],
   },
-  {
-    icon: <BookOpen size={20} />,
-    label: 'Registers',
-    key: 'sc-register',
-    groupKey: 'sc-governance',
-    section: 'Decisions',
-    children: [
-      { label: 'Sanction Register', key: 'sc-register' },
-      { label: 'Exception Register', key: 'sc-exceptions' },
-      { label: 'Board Minutes', key: 'sc-board' },
-    ],
-  },
+  // Sanction / Exception registers and Board Minutes are tabs on this hub.
+  { icon: <BookOpen size={20} />, label: 'Registers', key: 'sc-register', section: 'Decisions' },
   {
     icon: <TrendingUp size={20} />,
     label: 'Oversight',
@@ -200,19 +167,8 @@ const treasuryNav: NavItem[] = [
       { label: 'Ledger Summary', key: 'treasury-ledger' },
     ],
   },
-  {
-    icon: <Receipt size={20} />,
-    label: 'Repayments & Finance',
-    key: 'treasury-incoming',
-    groupKey: 'treasury-finance',
-    section: 'Finance',
-    children: [
-      { label: 'Incoming Payments', key: 'treasury-incoming' },
-      { label: 'Subsidiary Deductions', key: 'treasury-deductions' },
-      { label: 'Interest Accruals', key: 'treasury-interest' },
-      { label: 'Reconciliation', key: 'treasury-reconciliation' },
-    ],
-  },
+  // Incoming, Deductions, Accruals, Reconciliation are tabs on the Finance hub.
+  { icon: <Receipt size={20} />, label: 'Repayments & Finance', key: 'treasury-incoming', section: 'Finance' },
   {
     icon: <FileBarChart size={20} />,
     label: 'Reporting',
