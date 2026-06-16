@@ -3,7 +3,7 @@ import {
   Inbox, BookOpen, BarChart3, AlertTriangle, Calendar, Building, ClipboardCheck,
   CheckSquare, PenTool, TrendingUp, DollarSign, Receipt, FileBarChart,
   Settings, UserCog, ScrollText, ShieldCheck, Plus, ChevronRight, Users,
-  Calculator, Archive, Scale, Bell, Link2, Landmark, FileCheck, Download,
+  Calculator, Archive, Scale, Bell, Link2, Landmark, FileCheck, Download, GitBranch,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -41,6 +41,7 @@ const farmerNav: NavItem[] = [
 
 const creditNav: NavItem[] = [
   { icon: <LayoutDashboard size={20} />, label: 'Dashboard', key: 'credit-dashboard', section: 'Today' },
+  { icon: <GitBranch size={20} />, label: 'Pipeline', key: 'pipeline', section: 'Today' },
   {
     icon: <Inbox size={20} />,
     label: 'Application Inbox',
@@ -74,6 +75,7 @@ const creditNav: NavItem[] = [
 
 const complianceNav: NavItem[] = [
   { icon: <LayoutDashboard size={20} />, label: 'CS Dashboard', key: 'cs-dashboard', section: 'Today' },
+  { icon: <GitBranch size={20} />, label: 'Pipeline', key: 'pipeline', section: 'Today' },
   {
     icon: <ClipboardCheck size={20} />,
     label: 'Document Queue',
@@ -105,6 +107,7 @@ const complianceNav: NavItem[] = [
 
 const sanctionNav: NavItem[] = [
   { icon: <LayoutDashboard size={20} />, label: 'SC Dashboard', key: 'sc-dashboard', section: 'Today' },
+  { icon: <GitBranch size={20} />, label: 'Pipeline', key: 'pipeline', section: 'Today' },
   {
     icon: <CheckSquare size={20} />,
     label: 'Approval Queue',
@@ -141,6 +144,7 @@ const sanctionNav: NavItem[] = [
 
 const treasuryNav: NavItem[] = [
   { icon: <LayoutDashboard size={20} />, label: 'Dashboard', key: 'treasury-dashboard', section: 'Today' },
+  { icon: <GitBranch size={20} />, label: 'Pipeline', key: 'pipeline', section: 'Today' },
   {
     icon: <DollarSign size={20} />,
     label: 'Disbursements',
