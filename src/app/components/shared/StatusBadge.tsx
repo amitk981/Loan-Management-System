@@ -1,0 +1,121 @@
+interface StatusBadgeProps {
+  status: string;
+  size?: 'sm' | 'md';
+}
+
+const statusConfig: Record<string, { bg: string; text: string; label?: string }> = {
+  'Application Received': { bg: '#DBEAFE', text: '#3B82F6' },
+  'Under Assessment': { bg: '#FEF3C7', text: '#F59E0B' },
+  'Pending Approval': { bg: '#FEF3C7', text: '#D97706' },
+  'Awaiting SC Approval': { bg: '#FEF3C7', text: '#D97706' },
+  'Incomplete': { bg: '#FEE2E2', text: '#EF4444' },
+  'Incomplete — PAN missing': { bg: '#FEE2E2', text: '#EF4444' },
+  'Complete': { bg: '#DCFCE7', text: '#22C55E' },
+  // === NEW: Missing states from design review ===
+  'On Hold': { bg: '#FEF3C7', text: '#D97706' },
+  'GM Approval Required': { bg: 'rgba(217,119,6,0.10)', text: '#D97706' },
+  'Under Processing': { bg: '#DBEAFE', text: '#3B82F6' },
+  'Good Standing': { bg: '#DCFCE7', text: '#22C55E' },
+  'Overdue': { bg: '#FEE2E2', text: '#C62828' },
+  '<30 days': { bg: '#FEF3C7', text: '#D97706' },
+  '30-60 days': { bg: '#FFEDD5', text: '#E65100' },
+  'Live': { bg: '#DCFCE7', text: '#22C55E' },
+  'Q2 Due Nov': { bg: '#EDEEF0', text: '#3D4450' },
+  '9 due this qtr': { bg: '#FEF3C7', text: '#D97706' },
+  'On track': { bg: '#DCFCE7', text: '#22C55E' },
+  'Due Oct 15': { bg: '#FEE2E2', text: '#EF4444' },
+  'FY25 done': { bg: '#DCFCE7', text: '#22C55E' },
+  'Action Required': { bg: '#FEF3C7', text: '#D97706' },
+  'N/A': { bg: '#EDEEF0', text: '#3D4450' },
+  'Done': { bg: '#DCFCE7', text: '#22C55E' },
+  'Sent': { bg: '#DBEAFE', text: '#1565C0' },
+  'Unpaid': { bg: '#FEF3C7', text: '#D97706' },
+  'Docs Preparation': { bg: '#DBEAFE', text: '#3B82F6' },
+  'Ready for Disbursement': { bg: '#E8F5E9', text: '#2D7A4F' },
+  'Disbursed': { bg: '#DCFCE7', text: '#22C55E' },
+  'Active': { bg: '#DCFCE7', text: '#22C55E' },
+  'Closed': { bg: '#EDEEF0', text: '#3D4450' },
+  'NOC Issued': { bg: '#EDEEF0', text: '#3D4450' },
+  'Rejected': { bg: '#FEE2E2', text: '#EF4444' },
+  'Returned': { bg: '#FEF3C7', text: '#F59E0B' },
+  'Defaulted': { bg: '#FEE2E2', text: '#991B1B' },
+  'Extension Granted': { bg: '#FEF3C7', text: '#D97706' },
+  'Special Case': { bg: '#D97706', text: '#FFFFFF' },
+  'Non-Recoverable': { bg: '#FEE2E2', text: '#C62828' },
+  'Under SC Review': { bg: '#DBEAFE', text: '#1565C0' },
+  'Immutable': { bg: '#EDEEF0', text: '#3D4450' },
+  'Annotated': { bg: '#FEF3C7', text: '#D97706' },
+  'Fresh KYC': { bg: '#DCFCE7', text: '#22C55E' },
+  'Re-KYC Due Soon': { bg: '#FEF3C7', text: '#F59E0B' },
+  'Re-KYC Overdue': { bg: '#FEE2E2', text: '#EF4444' },
+  'CKYC Linked': { bg: '#DBEAFE', text: '#3B82F6' },
+  'Verified': { bg: '#DCFCE7', text: '#22C55E' },
+  'Pending': { bg: '#FEF3C7', text: '#F59E0B' },
+  'Pending Authorization': { bg: '#FEF3C7', text: '#D97706' },
+  'Pending Initiation': { bg: '#FEF3C7', text: '#D97706' },
+  'Pending Auth': { bg: '#DBEAFE', text: '#0891B2' },
+  'Transfer Complete': { bg: '#DCFCE7', text: '#22C55E' },
+  'SAP Code Pending': { bg: '#EDEEF0', text: '#3D4450' },
+  'SAP Pending': { bg: '#EDEEF0', text: '#3D4450' },
+  'SAP Posted': { bg: '#DCFCE7', text: '#22C55E' },
+  'Pending Review': { bg: '#FEF3C7', text: '#D97706' },
+  'Existing ID used': { bg: '#FEF3C7', text: '#D97706' },
+  'Matched': { bg: '#DCFCE7', text: '#22C55E' },
+  'Unmatched': { bg: '#FEF3C7', text: '#D97706' },
+  'Ready': { bg: '#DBEAFE', text: '#3B82F6' },
+  'Not Started': { bg: '#EDEEF0', text: '#3D4450' },
+  'Executed': { bg: '#DCFCE7', text: '#22C55E' },
+  'Approved': { bg: '#DCFCE7', text: '#22C55E' },
+  'Confirmed': { bg: '#DCFCE7', text: '#22C55E' },
+  'Credited': { bg: '#DCFCE7', text: '#22C55E' },
+  'Available': { bg: '#DCFCE7', text: '#22C55E' },
+  'Not Generated': { bg: '#EDEEF0', text: '#3D4450' },
+  'Due Soon': { bg: '#FEF3C7', text: '#D97706' },
+  'Awaiting Signature': { bg: '#FEF3C7', text: '#D97706' },
+  'Processing': { bg: '#DBEAFE', text: '#3B82F6' },
+  'Fully Repaid': { bg: '#DCFCE7', text: '#22C55E' },
+  'Closed — NOC Issued': { bg: '#EDEEF0', text: '#1A3C2A' },
+  'No': { bg: '#EDEEF0', text: '#3D4450' },
+  'Active Member': { bg: '#DCFCE7', text: '#22C55E' },
+  'Inactive': { bg: '#EDEEF0', text: '#3D4450' },
+  'Low': { bg: '#DCFCE7', text: '#22C55E' },
+  'Medium': { bg: '#FEF3C7', text: '#F59E0B' },
+  'High': { bg: '#FEE2E2', text: '#EF4444' },
+  'Paid': { bg: '#DCFCE7', text: '#22C55E' },
+  'Due': { bg: '#FEE2E2', text: '#EF4444' },
+  'Upcoming': { bg: '#EDEEF0', text: '#3D4450' },
+  'Posted': { bg: '#DCFCE7', text: '#22C55E' },
+  'Unposted': { bg: '#FEF3C7', text: '#F59E0B' },
+  'Blocked': { bg: '#FEE2E2', text: '#EF4444' },
+  'GM Required': { bg: '#FEF3C7', text: '#D97706' },
+  'Draft': { bg: '#EDEEF0', text: '#3D4450' },
+  'Open': { bg: '#DBEAFE', text: '#3B82F6' },
+  'Resolved': { bg: '#DCFCE7', text: '#22C55E' },
+  'Pending CS': { bg: '#FEF3C7', text: '#D97706' },
+  'Ready for NOC': { bg: '#E8F5E9', text: '#2D7A4F' },
+};
+
+export function StatusBadge({ status, size = 'sm' }: StatusBadgeProps) {
+  const config = statusConfig[status] || { bg: '#EDEEF0', text: '#3D4450' };
+  const padding = size === 'sm' ? '2px 8px' : '4px 12px';
+  const fontSize = size === 'sm' ? '11px' : '13px';
+
+  return (
+    <span
+      style={{
+        backgroundColor: config.bg,
+        color: config.text,
+        padding,
+        borderRadius: '9999px',
+        fontSize,
+        fontWeight: 500,
+        display: 'inline-flex',
+        alignItems: 'center',
+        whiteSpace: 'nowrap',
+        lineHeight: '16px',
+      }}
+    >
+      {status}
+    </span>
+  );
+}

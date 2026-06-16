@@ -1,0 +1,140 @@
+/* Farmer role product surfaces only. Keep this file scoped; broad resets live in theme/Shell. */
+.farmer-page {
+  --farmer-ink: #111827;
+  --farmer-muted: #667085;
+  --farmer-line: #E4E7EC;
+  --farmer-soft: #F2F6F3;
+  --farmer-green: #16452F;
+  --farmer-green-2: #286C4B;
+  --farmer-blue: #1E6CEB;
+  --farmer-amber: #D97706;
+}
+
+.farmer-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--farmer-line);
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
+}
+
+.farmer-panel-tight {
+  background: white;
+  border: 1px solid var(--farmer-line);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(17, 24, 39, 0.045);
+}
+
+.farmer-hero {
+  background:
+    radial-gradient(circle at 82% 16%, rgba(125, 211, 252, 0.28), transparent 34%),
+    linear-gradient(135deg, #123624 0%, #1E5F40 52%, #2A8057 100%);
+  color: white;
+  border-radius: 22px;
+  box-shadow: 0 18px 42px rgba(18, 54, 36, 0.22);
+}
+
+.farmer-kicker {
+  color: #667085;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.farmer-value {
+  color: var(--farmer-ink);
+  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.farmer-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: var(--farmer-green);
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.farmer-action:hover {
+  background: #0F3323;
+}
+
+.farmer-action-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--farmer-line);
+  background: white;
+  color: var(--farmer-green);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.farmer-input,
+.farmer-select,
+.farmer-textarea {
+  width: 100%;
+  border: 1px solid #CBD5E1;
+  background: white;
+  color: #111827;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.farmer-input,
+.farmer-select {
+  height: 44px;
+  padding: 0 14px;
+}
+
+.farmer-textarea {
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.farmer-input:focus,
+.farmer-select:focus,
+.farmer-textarea:focus {
+  border-color: var(--farmer-green);
+  box-shadow: 0 0 0 4px rgba(22, 69, 47, 0.1);
+}
+
+.farmer-readonly {
+  background: #F8FAFC;
+  color: #667085;
+}
+
+.farmer-upload {
+  border: 1.5px dashed #CBD5E1;
+  background: #F8FAFC;
+  border-radius: 14px;
+}
+
+.farmer-upload:hover {
+  border-color: #286C4B;
+  background: #F0FDF4;
+}
+
+.farmer-grid-shell {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .farmer-grid-shell {
+    grid-template-columns: 1fr;
+  }
+}

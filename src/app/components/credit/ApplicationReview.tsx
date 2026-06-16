@@ -1,0 +1,230 @@
+import { useState } from 'react';
+import { AlertTriangle, Check, Send, ShieldCheck } from 'lucide-react';
+import { Shell } from '../layout/Shell';
+import { AppModal } from '../shared/AppModal';
+import { StatusBadge } from '../shared/StatusBadge';
+import { appraisalLoan } from '../../data/creditData';
+import { DirectorCaseBanner } from '../shared/CrossRoleComponents';
+
+interface ApplicationReviewProps {
+  onNavigate: (page: string) => void;
+  activePage: string;
+}
+
+function formatCurrency(n: number) {
+  return '₹' + n.toLocaleString('en-IN');
+}
+
+export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewProps) {
+  const [step, setStep] = useState(1);
+  const [shares, setShares] = useState(appraisalLoan.shares);
+  const [landAcres, setLandAcres] = useState(appraisalLoan.landAcres);
+  const [requested, setRequested] = useState(appraisalLoan.requested);
+  const [riskRating, setRiskRating] = useState<'Low' | 'Medium' | 'High'>('Medium');
+  const [recommendation, setRecommendation] = useState('Recommend approval at revised eligible limit');
+  const [showSubmit, setShowSubmit] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const shareLimit = shares * appraisalLoan.valuationPerShare;
+  const landLimit = landAcres * appraisalLoan.scaleOfFinance;
+  const eligible = Math.min(shareLimit, landLimit);
+  const exceeds = requested > eligible;
+  const isDirectorCase = appraisalLoan.borrower.includes('Ganesh') || appraisalLoan.borrower.includes('Director');
+
+  if (submitted) {
+    return (
+      <Shell activePage={activePage} onNavigate={onNavigate} breadcrumbs={['Credit Assessment', 'Submitted to SC']}>
+        <div className="flex flex-col items-center justify-center min-h-80 text-center">
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-5" style={{ backgroundColor: '#DCFCE7', color: '#2E7D32' }}>
+            <Check size={42} />
+          </div>
+          <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#12151A' }}>Appraisal Note Submitted</h2>
+          <p style={{ fontSize: '14px', color: '#6B7280', marginTop: '6px' }}>{appraisalLoan.id} is now Submitted to SC. Appraisal note locked, timestamp appended, and Days Waiting counter reset from this stage-entry time.</p>
+          <button onClick={() => onNavigate('credit-sc-queue')} className="mt-6 px-5 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Open Sanction Committee Queue</button>
+        </div>
+      </Shell>
+    );
+  }
+
+  return (
+    <Shell
+      activePage={activePage}
+      onNavigate={onNavigate}
+      breadcrumbs={['Credit Assessment', 'Appraisal Queue', appraisalLoan.id]}
+      pageTitle={`Prepare Appraisal Note — ${appraisalLoan.id} — ${appraisalLoan.borrower}`}
+      pageSubtitle={appraisalLoan.due}
+      actions={<StatusBadge status="Under Assessment" size="md" />}
+    >
+      {isDirectorCase && <div className="mb-5"><DirectorCaseBanner /></div>}
+      <div className="mb-5 h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#FEF3C7' }}>
+        <div className="h-full" style={{ width: '62%', backgroundColor: '#F59E0B' }} />
+      </div>
+
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-3 space-y-4">
+          <div className="bg-white rounded-lg border border-[#E5E7EB] overflow-hidden">
+            {[
+              [1, 'Eligibility Check'],
+              [2, 'Loan Limit Calc'],
+              [3, 'Risk Assessment'],
+              [4, 'Recommendation'],
+            ].map(([id, label]) => (
+              <button key={id} onClick={() => setStep(id as number)} className="w-full px-4 py-3 flex items-center gap-3 text-left border-b border-[#E5E7EB] last:border-b-0" style={{ backgroundColor: step === id ? '#E8F1FA' : 'white' }}>
+                <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: step === id ? '#0C5FA5' : Number(id) < step ? '#2E7D32' : '#F3F4F6', color: step === id || Number(id) < step ? 'white' : '#6B7280', fontSize: '12px', fontWeight: 900 }}>{Number(id) < step ? '✓' : id}</span>
+                <span style={{ fontSize: '13px', color: step === id ? '#0C5FA5' : '#3D4450', fontWeight: 800 }}>{label}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-lg p-4 border border-[#E5E7EB] sticky top-4">
+            <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 900, textTransform: 'uppercase', marginBottom: '12px' }}>Live Eligibility Calc</div>
+            <CalcInput label="Shares Held" value={shares} onChange={setShares} suffix="shares" />
+            <Metric label="Valuation / share" value={`₹${appraisalLoan.valuationPerShare.toLocaleString('en-IN')}`} />
+            <Metric label="Limit (shares)" value={formatCurrency(shareLimit)} color="#0C5FA5" />
+            <CalcInput label="Land (acres)" value={landAcres} onChange={setLandAcres} suffix="acres" step={0.25} />
+            <Metric label="Scale of Finance" value="₹20,000/acre" />
+            <Metric label="Limit (land)" value={formatCurrency(landLimit)} color="#0C5FA5" />
+            <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: '#F0F7F2', border: '2px solid #3D7A4F' }}>
+              <div style={{ fontSize: '11px', color: '#2E7D32', fontWeight: 900 }}>ELIGIBLE LIMIT</div>
+              <div style={{ fontSize: '28px', color: '#1A3C2A', fontWeight: 900, fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
+              <div style={{ fontSize: '11px', color: '#6B7280' }}>Lower of share and land limits</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-span-9 bg-white rounded-lg border border-[#E5E7EB] p-6">
+          {step === 1 && (
+            <div className="space-y-5">
+              <StepTitle title="Step 1: Borrower Eligibility Check" />
+              <Panel title="1.1 Member Status Verification">
+                <Field label="Active Member?" value="Yes" type="radio" />
+                <Field label="Years supplying produce" value="4 yrs" />
+                <Field label="Supplying to" value="SFPCL" />
+                <Field label="Source verified from" value="Share Register" />
+              </Panel>
+              <Panel title="1.2 Existing Loan Default Check">
+                <Field label="Any existing default in SFPCL?" value="No" type="radio" />
+                <Field label="Any default in subsidiary co.?" value="No" type="radio" />
+                <Field label="Outstanding loans (current)" value="₹0" mono />
+              </Panel>
+              <Panel title="1.3 Loan Purpose Compliance">
+                <Field label="Stated purpose" value={appraisalLoan.purpose} />
+                <Field label="Category" value={appraisalLoan.category} />
+              </Panel>
+              <Panel title="1.4 Nominee Eligibility">
+                <Field label="Nominee Name" value="Board resolution attached" />
+                <Field label="Is nominee minor?" value="No" type="radio" />
+                <Field label="Aadhaar verified?" value="Yes" />
+              </Panel>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="space-y-5">
+              <StepTitle title="Step 2: Loan Limit Calculation" />
+              <div className="grid grid-cols-3 gap-4">
+                <AmountBox label="Shareholding limit" value={shareLimit} note={`${shares} × ₹200`} />
+                <AmountBox label="Land-based limit" value={landLimit} note={`${landAcres} acres × ₹20k`} />
+                <AmountBox label="Final eligible amount" value={eligible} note="Lower of two" highlight />
+              </div>
+              <div className="p-4 rounded-lg" style={{ backgroundColor: exceeds ? '#FEF2F2' : '#F0FDF4', border: `1px solid ${exceeds ? '#FECACA' : '#BBF7D0'}` }}>
+                <div style={{ fontSize: '13px', color: exceeds ? '#C62828' : '#166534', fontWeight: 900 }}>{exceeds ? `Requested exceeds eligible by ${formatCurrency(requested - eligible)}` : 'Requested amount is within eligible limit'}</div>
+                <div className="mt-3 flex items-center gap-3">
+                  <input type="number" value={requested} onChange={e => setRequested(Number(e.target.value) || 0)} className="px-3 rounded-md border border-[#D1D5DB]" style={{ height: '40px', fontFamily: 'Roboto Mono', fontSize: '15px' }} />
+                  <span style={{ fontSize: '13px', color: '#3D4450' }}>Requested amount</span>
+                </div>
+                {exceeds && <div style={{ fontSize: '12px', color: '#C62828', marginTop: '8px' }}>Amount will be revised to {formatCurrency(eligible)} at sanction.</div>}
+              </div>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="space-y-5">
+              <StepTitle title="Step 3: Risk Assessment" />
+              <Panel title="Repayment and Crop Risk">
+                <Field label="Repayment source" value={appraisalLoan.source} />
+                <Field label="Bank statement average" value={formatCurrency(appraisalLoan.bankAverage)} mono />
+                <Field label="Irregularity flag" value="No critical irregularity" />
+                <Field label="Crop risk" value="Medium — tomato price volatility" />
+              </Panel>
+              <div>
+                <label style={{ fontSize: '13px', color: '#3D4450', fontWeight: 800 }}>Risk Mitigation Notes</label>
+                <textarea className="w-full mt-2 p-3 rounded-lg border border-[#D1D5DB]" rows={4} defaultValue="Repayment routed through tri-party subsidiary deduction. Bank average supports short-term working capital cycle. Crop price risk mitigated through existing Sahyadri procurement relationship." />
+              </div>
+              <div>
+                <div style={{ fontSize: '13px', color: '#3D4450', fontWeight: 800, marginBottom: '8px' }}>Overall Risk Rating</div>
+                <div className="flex gap-2">
+                  {(['Low', 'Medium', 'High'] as const).map(rating => (
+                    <button key={rating} onClick={() => setRiskRating(rating)} className="px-4 py-2 rounded-lg" style={{ backgroundColor: riskRating === rating ? (rating === 'Low' ? '#DCFCE7' : rating === 'Medium' ? '#FEF3C7' : '#FEE2E2') : '#F3F4F6', color: riskRating === rating ? (rating === 'Low' ? '#2E7D32' : rating === 'Medium' ? '#92400E' : '#C62828') : '#6B7280', fontSize: '13px', fontWeight: 900 }}>{rating}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {step === 4 && (
+            <div className="space-y-5">
+              <StepTitle title="Step 4: Recommendation" />
+              <div className="grid grid-cols-3 gap-4">
+                <AmountBox label="Recommended amount" value={eligible} note={exceeds ? 'Revised to eligible limit' : 'As requested'} highlight />
+                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>Tenure</div><div style={{ fontSize: '17px', fontWeight: 900, marginTop: '6px' }}>Short-term (≤1 year)</div></div>
+                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>Interest Rate</div><div style={{ fontSize: '17px', fontWeight: 900, marginTop: '6px' }}>12% p.a. floating</div></div>
+              </div>
+              <div>
+                <label style={{ fontSize: '13px', color: '#3D4450', fontWeight: 800 }}>Remarks for SC</label>
+                <textarea value={recommendation} onChange={e => setRecommendation(e.target.value)} className="w-full mt-2 p-3 rounded-lg border border-[#D1D5DB]" rows={5} />
+              </div>
+              <div className="flex justify-end gap-3">
+                <button className="px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 border border-[#E5E7EB]" style={{ color: '#991B1B', fontSize: '14px' }}>Prepare Rejection Note</button>
+                <button onClick={() => setShowSubmit(true)} className="px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}><Send size={15} /> Submit to Sanction Committee</button>
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center justify-between mt-8 pt-5 border-t border-[#E5E7EB]">
+            <button onClick={() => step > 1 ? setStep(step - 1) : onNavigate('credit-queue')} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>{step > 1 ? 'Previous' : 'Back to Intake'}</button>
+            {step < 4 && <button onClick={() => setStep(step + 1)} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Next →</button>}
+          </div>
+        </div>
+      </div>
+
+      {showSubmit && (
+        <AppModal
+          title={`Submit ${appraisalLoan.id} to the Sanction Committee?`}
+          subtitle="The appraisal note will be locked and cannot be edited after submission."
+          icon={<ShieldCheck size={18} />}
+          onClose={() => setShowSubmit(false)}
+          footer={<><button onClick={() => setShowSubmit(false)} className="px-4 py-2.5 rounded-lg border border-[#E5E7EB]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowSubmit(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Confirm</button></>}
+        >
+          <div className="flex gap-3 p-3 rounded-lg" style={{ backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '13px', lineHeight: '20px' }}>
+            <AlertTriangle size={16} /> Confirming will move the Credit inbox row to Submitted to SC and append Submitted by: Amit Kulkarni with the current timestamp.
+          </div>
+        </AppModal>
+      )}
+    </Shell>
+  );
+}
+
+function StepTitle({ title }: { title: string }) {
+  return <h3 style={{ fontSize: '20px', fontWeight: 900, color: '#12151A' }}>{title}</h3>;
+}
+
+function Panel({ title, children }: { title: string; children: React.ReactNode }) {
+  return <div className="rounded-lg border border-[#E5E7EB] overflow-hidden"><div className="px-4 py-2.5" style={{ backgroundColor: '#FAFAF8', fontSize: '13px', fontWeight: 900 }}>{title}</div><div className="grid grid-cols-2 gap-0">{children}</div></div>;
+}
+
+function Field({ label, value, mono, type }: { label: string; value: string; mono?: boolean; type?: string }) {
+  return <div className="p-4 border-t border-r border-[#E5E7EB]"><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 700 }}>{label}</div><div style={{ fontSize: '14px', color: '#12151A', fontWeight: 800, marginTop: '5px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{type === 'radio' ? `● ${value}` : value}</div></div>;
+}
+
+function CalcInput({ label, value, onChange, suffix, step = 1 }: { label: string; value: number; onChange: (n: number) => void; suffix: string; step?: number }) {
+  return <label className="block mb-3"><span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</span><div className="flex items-center gap-2 mt-1"><input type="number" step={step} value={value} onChange={e => onChange(Number(e.target.value) || 0)} className="w-full px-3 rounded-md border border-[#D1D5DB]" style={{ height: '36px', fontSize: '14px', fontFamily: 'Roboto Mono' }} /><span style={{ fontSize: '11px', color: '#6B7280' }}>{suffix}</span></div></label>;
+}
+
+function Metric({ label, value, color = '#12151A' }: { label: string; value: string; color?: string }) {
+  return <div className="flex items-center justify-between py-2 border-b border-[#E5E7EB]"><span style={{ fontSize: '12px', color: '#6B7280' }}>{label}</span><span style={{ fontSize: '13px', color, fontWeight: 900, fontFamily: 'Roboto Mono' }}>{value}</span></div>;
+}
+
+function AmountBox({ label, value, note, highlight }: { label: string; value: number; note: string; highlight?: boolean }) {
+  return <div className="p-4 rounded-lg" style={{ backgroundColor: highlight ? '#F0F7F2' : '#FAFAF8', border: `1px solid ${highlight ? '#3D7A4F' : '#E5E7EB'}` }}><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</div><div style={{ fontSize: '22px', color: highlight ? '#1A3C2A' : '#0C5FA5', fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{formatCurrency(value)}</div><div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>{note}</div></div>;
+}
