@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Check, Upload, ChevronRight, ChevronLeft, Plus, Trash2, Calculator, ShieldCheck, FileCheck } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { UniversalStageTracker } from '../shared/CrossRoleComponents';
+import { GateBanner } from '../shared/GateBanner';
 import { farmerEligibility, farmerProfile } from '../../data/farmerData';
 import { formatCurrency } from '../../lib/format';
 
@@ -625,18 +626,19 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               </div>
             </div>
 
-            <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: canSubmitApplication ? 'var(--success-50)' : 'var(--warning-100)', border: `1px solid ${canSubmitApplication ? 'var(--success-200)' : 'var(--warning-200)'}` }}>
-              <div style={{ fontSize: '13px', fontWeight: 700, color: canSubmitApplication ? 'var(--success-700)' : 'var(--warning-700)', marginBottom: '4px' }}>
-                {canSubmitApplication ? 'Ready for submission' : 'Submission blocked by SOP checks'}
-              </div>
-              {!canSubmitApplication && (
-                <div style={{ fontSize: '12px', color: 'var(--warning-700)', lineHeight: '18px', marginBottom: '8px' }}>
-                  {!amountWithinLimit && 'Enter a requested amount within the calculated eligible limit. '}
-                  {!allDeclarationsChecked && 'Complete all mandatory declarations. '}
-                  {missingDocs.length > 0 && `Upload required documents: ${missingDocs.map(d => d.name).join(', ')}.`}
-                </div>
-              )}
-              <p style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>
+            <div className="mt-5">
+              <GateBanner
+                variant={canSubmitApplication ? 'ok' : 'warning'}
+                title={canSubmitApplication ? 'Ready for submission' : 'Submission blocked by SOP checks'}
+                detail={canSubmitApplication
+                  ? 'All eligibility, document and declaration checks pass. You can submit.'
+                  : [
+                      !amountWithinLimit && 'Enter a requested amount within the calculated eligible limit.',
+                      !allDeclarationsChecked && 'Complete all mandatory declarations.',
+                      missingDocs.length > 0 && `Upload required documents: ${missingDocs.map(d => d.name).join(', ')}.`,
+                    ].filter(Boolean).join(' ')}
+              />
+              <p className="mt-3 px-1" style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>
                 By submitting, you agree to the Loan Terms and authorize SFPCL to verify your details, conduct credit bureau enquiries, and process this application per Section 378ZK of the Companies Act, 2013.
               </p>
             </div>

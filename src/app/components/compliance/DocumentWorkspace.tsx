@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Check, Upload, FileText, Eye, Download, AlertTriangle } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
+import { GateBanner } from '../shared/GateBanner';
 import { WorkbenchTabs } from '../shared/WorkbenchTabs';
 import { complianceDocTabs, complianceQueueTabs } from '../../data/roleNav';
 import { mockLoans, mockDocuments } from '../../data/mockData';
@@ -579,12 +580,12 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
 
               <div className="px-5 pb-5">
                 {!canSubmit && (
-                  <div className="mb-3 p-3 rounded-xl flex gap-2" style={{ backgroundColor: 'var(--warning-100)', border: '1px solid var(--warning-200)' }}>
-                    <AlertTriangle size={14} style={{ color: 'var(--warning-500)', marginTop: '2px' }} />
-                    <div style={{ fontSize: '12px', color: 'var(--warning-700)', lineHeight: '18px' }}>
-                      Disbursement is blocked until every document is verified, PoA and Loan Agreement are stamped/notarised, Term Sheet authority signatures are complete, witness signatures are captured, bank verification is cleared, and all four checklist signatures are complete.
-                    </div>
-                  </div>
+                  <GateBanner
+                    className="mb-3"
+                    variant="blocked"
+                    title="Disbursement blocked — documentation incomplete"
+                    detail="SOP §4: every document must be verified, PoA & Loan Agreement stamped/notarised (₹500), Term Sheet authority signatures complete, witness signatures captured, bank verification cleared, and all four checklist signatures present."
+                  />
                 )}
                 {(() => {
                   const [isHolding, setIsHolding] = useState(false);

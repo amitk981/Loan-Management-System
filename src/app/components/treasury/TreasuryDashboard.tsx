@@ -2,6 +2,7 @@ import { RefreshCw } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { RoleCommandCenter } from '../shared/RoleCommandCenter';
+import { GateBanner } from '../shared/GateBanner';
 import { treasuryProfile, treasuryQueue } from '../../data/treasuryData';
 import { formatCurrency } from '../../lib/format';
 
@@ -26,16 +27,13 @@ export function TreasuryDashboard({ onNavigate, activePage }: TreasuryDashboardP
         </div>
       }
     >
-      <div className="mb-6 p-4 rounded-xl border border-[var(--sky-200)] flex items-center justify-between" style={{ backgroundColor: 'var(--sky-50)' }}>
-        <div className="flex items-center gap-3">
-          <span className="w-8 h-8 rounded-full bg-[var(--blue-600)] text-white flex items-center justify-center font-bold text-sm">ℹ</span>
-          <div>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--blue-700)' }}>Disbursement Queue: 2 Files Ready for Payment</div>
-            <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>1 file is blocked due to missing SAP Customer Code. Process pending codes first.</div>
-          </div>
-        </div>
-        <button onClick={() => onNavigate('treasury-sap-codes')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: 'var(--accent-treasury)', fontSize: '13px', fontWeight: 700 }}>Create SAP Codes</button>
-      </div>
+      <GateBanner
+        className="mb-6"
+        variant="warning"
+        title="1 file blocked — SAP Customer Code missing"
+        detail="2 files are ready for payment; 1 is blocked because its SAP Customer Code has not been created (SOP §5.1). Create the pending code before disbursement."
+        action={{ label: 'Create SAP Codes', onClick: () => onNavigate('treasury-sap-codes') }}
+      />
       <RoleCommandCenter
         title="Treasury Console"
         focus="Process payment files without SAP gaps"

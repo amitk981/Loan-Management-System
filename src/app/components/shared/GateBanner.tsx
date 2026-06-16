@@ -14,6 +14,8 @@ interface GateBannerProps {
   detail: ReactNode;
   /** Optional unblock action shown as a button. */
   action?: { label: string; onClick: () => void };
+  /** Optional secondary action (e.g. "mark pending"), shown as an outline button. */
+  secondaryAction?: { label: string; onClick: () => void };
   className?: string;
 }
 
@@ -24,7 +26,7 @@ const styles: Record<GateVariant, { bg: string; border: string; fg: string; icon
   ok: { bg: 'var(--success-50)', border: 'var(--success-200)', fg: 'var(--success-700)', icon: <CheckCircle2 size={18} />, btn: 'var(--brand-primary)' },
 };
 
-export function GateBanner({ variant, title, detail, action, className = '' }: GateBannerProps) {
+export function GateBanner({ variant, title, detail, action, secondaryAction, className = '' }: GateBannerProps) {
   const s = styles[variant];
   return (
     <div
@@ -39,14 +41,27 @@ export function GateBanner({ variant, title, detail, action, className = '' }: G
           <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px', lineHeight: '18px' }}>{detail}</div>
         </div>
       </div>
-      {action && (
-        <button
-          onClick={action.onClick}
-          className="px-4 py-2 rounded-lg text-white flex-shrink-0"
-          style={{ backgroundColor: s.btn, fontSize: '13px', fontWeight: 700 }}
-        >
-          {action.label}
-        </button>
+      {(action || secondaryAction) && (
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {secondaryAction && (
+            <button
+              onClick={secondaryAction.onClick}
+              className="px-4 py-2 rounded-lg"
+              style={{ border: `1px solid ${s.btn}`, color: s.fg, fontSize: '13px', fontWeight: 700, backgroundColor: 'transparent' }}
+            >
+              {secondaryAction.label}
+            </button>
+          )}
+          {action && (
+            <button
+              onClick={action.onClick}
+              className="px-4 py-2 rounded-lg text-white"
+              style={{ backgroundColor: s.btn, fontSize: '13px', fontWeight: 700 }}
+            >
+              {action.label}
+            </button>
+          )}
+        </div>
       )}
     </div>
   );
