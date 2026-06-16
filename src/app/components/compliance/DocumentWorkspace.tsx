@@ -700,7 +700,7 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
         {/* Right Preview Panel */}
         <div className="w-[560px] flex-shrink-0">
           <div className="bg-white rounded-2xl border border-[#EDEEF0] p-5 sticky top-4">
-            <div style={{ fontSize: '14px', fontWeight: 900, color: '#1A3C2A', marginBottom: '12px' }}>Legal Document Preview</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#1A3C2A', marginBottom: '12px' }}>Legal Document Preview</div>
             <div
               className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center"
               style={{ height: '300px', borderColor: '#EDEEF0', backgroundColor: '#FDFAF4', fontFamily: 'Georgia, serif' }}

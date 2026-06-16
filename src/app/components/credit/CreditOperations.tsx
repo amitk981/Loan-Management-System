@@ -43,7 +43,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       ? creditApplications.filter(app => app.status === 'Incomplete')
       : creditApplications.filter(app => app.status !== 'Complete');
     return (
-      <DataCard title={activePage === 'credit-returned' ? 'Incomplete Files' : 'Appraisal Worklist'} action={<button onClick={() => onNavigate('credit-queue')} style={{ fontSize: '13px', color: '#0C5FA5', fontWeight: 800 }}>Open Intake</button>}>
+      <DataCard title={activePage === 'credit-returned' ? 'Incomplete Files' : 'Appraisal Worklist'} action={<button onClick={() => onNavigate('credit-queue')} style={{ fontSize: '13px', color: '#1E88E5', fontWeight: 800 }}>Open Intake</button>}>
         <SimpleTable headers={['Loan ID', 'Borrower', 'Requested', 'Purpose', 'TAT / Blocker', 'Action']}>
           {rows.map(row => (
             <tr key={row.id} onClick={() => onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review')} className="border-b border-[#E5E7EB] clickable-row">
@@ -64,7 +64,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
     const selected = sanctionQueue.find(row => row.id === selectedSc) || sanctionQueue[2];
     return (
       <div className="space-y-5">
-        <DataCard title="Sanction Committee Queue" action={<button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}><Download size={13} /> Export CSV</button>}>
+        <DataCard title="Sanction Committee Queue" action={<button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: '#1E88E5', fontSize: '12px', fontWeight: 800 }}><Download size={13} /> Export CSV</button>}>
           <SimpleTable headers={['Loan ID', 'Name', 'Amount', 'Submitted', 'SC Level', 'Status']}>
             {sanctionQueue.map(row => (
               <tr key={row.id} onClick={() => setSelectedSc(row.id)} className="border-b border-[#E5E7EB] hover:bg-[#FAFAF8] cursor-pointer" style={{ backgroundColor: selectedSc === row.id ? '#E8F1FA' : 'white' }}>
@@ -72,14 +72,14 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
                 <Cell><strong>{row.name}</strong></Cell>
                 <Cell right mono>{formatCurrency(row.amount)}</Cell>
                 <Cell>{row.submitted}</Cell>
-                <Cell><span className="px-2 py-1 rounded-full" style={{ backgroundColor: row.level === 'CFO+2Dir' ? '#F3E8FF' : '#E8F1FA', color: row.level === 'CFO+2Dir' ? '#7C3AED' : '#0C5FA5', fontSize: '11px', fontWeight: 800 }}>{row.level}</span></Cell>
+                <Cell><span className="px-2 py-1 rounded-full" style={{ backgroundColor: row.level === 'CFO+2Dir' ? '#F3E8FF' : '#E8F1FA', color: row.level === 'CFO+2Dir' ? '#7C3AED' : '#1E88E5', fontSize: '11px', fontWeight: 800 }}>{row.level}</span></Cell>
                 <Cell><StatusBadge status={row.status} /></Cell>
               </tr>
             ))}
           </SimpleTable>
         </DataCard>
         <div className="bg-white rounded-lg p-5 border border-[#E5E7EB]">
-          <div style={{ fontSize: '16px', fontWeight: 900, color: '#12151A' }}>Expanded Row: {selected.id} — {selected.name}</div>
+          <div style={{ fontSize: '16px', fontWeight: 700, color: '#12151A' }}>Expanded Row: {selected.id} — {selected.name}</div>
           <div className="grid grid-cols-4 gap-3 mt-4">
             <Info label="SC Decision" value={selected.status.toUpperCase()} />
             <Info label="Approved by" value={selected.status === 'Approved' ? 'CFO + Dir. Sharma' : selected.status === 'Rejected' ? 'SC Rejected' : 'Pending'} />
@@ -94,7 +94,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
   };
 
   const renderRegister = () => (
-    <DataCard title="Loan Register" action={<div className="flex items-center gap-2"><input placeholder="Search by LO# / Name / Village" className="px-3 rounded-md border border-[#D1D5DB]" style={{ height: '34px', fontSize: '13px' }} /><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Export ↓</button></div>}>
+    <DataCard title="Loan Register" action={<div className="flex items-center gap-2"><input placeholder="Search by LO# / Name / Village" className="px-3 rounded-md border border-[#D1D5DB]" style={{ height: '34px', fontSize: '13px' }} /><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: '#1E88E5', fontSize: '12px', fontWeight: 800 }}>Export ↓</button></div>}>
       <SimpleTable headers={['#', 'Loan ID', 'Borrower', 'Amount', 'Disbursed', 'Stage', 'DPD', 'Action']}>
         {loanRegister.map((row, i) => (
           <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[#E5E7EB] clickable-row">
@@ -104,8 +104,8 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
             <Cell right mono>{formatCurrency(row.amount)}</Cell>
             <Cell>{row.disbursed}</Cell>
             <Cell><StatusBadge status={row.stage} /></Cell>
-            <Cell><span style={{ color: row.dpd > 90 ? '#C62828' : row.dpd > 0 ? '#F59E0B' : '#2E7D32', fontWeight: 900 }}>{row.dpd ? `${row.dpd} days` : '0'}</span></Cell>
-            <Cell><button onClick={(e) => { e.stopPropagation(); setSelectedLoan(row.id); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Open</button></Cell>
+            <Cell><span style={{ color: row.dpd > 90 ? '#C62828' : row.dpd > 0 ? '#F59E0B' : '#2E7D32', fontWeight: 700 }}>{row.dpd ? `${row.dpd} days` : '0'}</span></Cell>
+            <Cell><button onClick={(e) => { e.stopPropagation(); setSelectedLoan(row.id); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#1E88E5', fontSize: '12px', fontWeight: 800 }}>Open</button></Cell>
           </tr>
         ))}
       </SimpleTable>
@@ -119,7 +119,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
         {dpdSummary.map(item => (
           <div key={item.label} className="bg-white rounded-lg p-4 border border-[#E5E7EB]">
             <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{item.label}</div>
-            <div style={{ fontSize: '24px', color: item.color, fontWeight: 900, marginTop: '6px' }}>{item.loans ? `${item.loans} loans` : item.amount}</div>
+            <div style={{ fontSize: '24px', color: item.color, fontWeight: 700, marginTop: '6px' }}>{item.loans ? `${item.loans} loans` : item.amount}</div>
             {item.loans > 0 && <div style={{ fontSize: '13px', color: '#3D4450', fontFamily: 'Roboto Mono', marginTop: '4px' }}>{item.amount}</div>}
           </div>
         ))}
@@ -131,16 +131,16 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
               <Cell><strong>{row.borrower}</strong></Cell>
               <Cell mono blue>{row.loan}</Cell>
               <Cell right mono>{formatCurrency(row.amount)}</Cell>
-              <Cell><span style={{ color: '#C62828', fontWeight: 900 }}>{row.dpd} d</span></Cell>
-              <Cell><StatusBadge status={row.action} /><br /><span style={{ fontSize: '12px', color: '#0C5FA5', fontWeight: 800 }}>{row.note}</span></Cell>
+              <Cell><span style={{ color: '#C62828', fontWeight: 700 }}>{row.dpd} d</span></Cell>
+              <Cell><StatusBadge status={row.action} /><br /><span style={{ fontSize: '12px', color: '#1E88E5', fontWeight: 800 }}>{row.note}</span></Cell>
             </tr>
           ))}
         </SimpleTable>
       </DataCard>
       <div className="bg-white rounded-lg p-5 border border-[#E5E7EB]">
-        <h3 style={{ fontSize: '16px', fontWeight: 900, color: '#12151A' }}>Default Workflow Panel — LO00000018</h3>
+        <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#12151A' }}>Default Workflow Panel — LO00000018</h3>
         {['Missed payment detected — 12-Jan-2024', '3-month grace period given — 15-Jan-2024 → 15-Apr-2024', 'Non-payment assessed: Non-intentional (crop failure noted)', '1-year extension granted — 20-Apr-2024 → 20-Apr-2025', 'Extension period expired — 20-Apr-2025 — still not repaid'].map((item, i) => (
-          <div key={item} className="flex items-center gap-3 py-2"><span style={{ color: i < 4 ? '#2E7D32' : '#C62828', fontWeight: 900 }}>{i < 4 ? '✓' : '✕'}</span><span style={{ fontSize: '13px', color: '#3D4450' }}>{item}</span></div>
+          <div key={item} className="flex items-center gap-3 py-2"><span style={{ color: i < 4 ? '#2E7D32' : '#C62828', fontWeight: 700 }}>{i < 4 ? '✓' : '✕'}</span><span style={{ fontSize: '13px', color: '#3D4450' }}>{item}</span></div>
         ))}
         <textarea className="w-full mt-3 p-3 rounded-lg border border-[#D1D5DB]" rows={5} defaultValue="Auto-draft note for non-payment: Narayan Patil, LO00000018, sanctioned ₹1,20,000, DPD 1247 days. Crop failure recorded; extension expired. Recommendation: submit to SC for action approval and review SH-4 / undated cheque invocation." />
         <button className="mt-3 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Submit to Sanction Committee for action approval</button>
@@ -155,13 +155,13 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
         <SimpleTable headers={['Borrower', 'Loan ID', 'Principal', 'Interest (yr)', 'Status', 'Action']}>
           {interestInvoices.map(row => (
             <tr key={row.loan} onClick={() => setSelectedLoan(row.loan)} className="border-b border-[#E5E7EB] clickable-row">
-              <Cell><strong>{row.borrower}</strong></Cell><Cell mono blue>{row.loan}</Cell><Cell right mono>{formatCurrency(row.principal)}</Cell><Cell right mono>{formatCurrency(row.interest)}<br /><span style={{ fontSize: '11px', color: '#6B7280' }}>(12% p.a.)</span></Cell><Cell><StatusBadge status={row.status} /></Cell><Cell><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: row.status === 'Unpaid' ? '#FEF3C7' : '#E8F1FA', color: row.status === 'Unpaid' ? '#92400E' : '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>{row.action}</button></Cell>
+              <Cell><strong>{row.borrower}</strong></Cell><Cell mono blue>{row.loan}</Cell><Cell right mono>{formatCurrency(row.principal)}</Cell><Cell right mono>{formatCurrency(row.interest)}<br /><span style={{ fontSize: '11px', color: '#6B7280' }}>(12% p.a.)</span></Cell><Cell><StatusBadge status={row.status} /></Cell><Cell><button className="px-3 py-1.5 rounded-md" style={{ backgroundColor: row.status === 'Unpaid' ? '#FEF3C7' : '#E8F1FA', color: row.status === 'Unpaid' ? '#92400E' : '#1E88E5', fontSize: '12px', fontWeight: 800 }}>{row.action}</button></Cell>
             </tr>
           ))}
         </SimpleTable>
       </DataCard>
       <div className="bg-white rounded-lg p-5 border border-[#E5E7EB]">
-        <h3 style={{ fontSize: '16px', fontWeight: 900 }}>Capitalization Workflow</h3>
+        <h3 style={{ fontSize: '16px', fontWeight: 700 }}>Capitalization Workflow</h3>
         <p style={{ fontSize: '13px', color: '#3D4450', lineHeight: '20px', marginTop: '8px' }}>Loans with unpaid interest past 30 April: 15 cases. Bulk capitalisation will add interest to principal, recalculate FY interest, generate intimation letters, and notify Sr. Manager-Finance for SAP accrual entries.</p>
         <button className="mt-4 px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#E65100', color: 'white', fontSize: '14px' }}>Preview changes before confirming</button>
       </div>
@@ -170,7 +170,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
 
   const renderSap = () => (
     <div className="bg-white rounded-lg p-6 border border-[#E5E7EB] max-w-4xl">
-      <div className="flex items-center justify-between mb-5"><div><h3 style={{ fontSize: '18px', fontWeight: 900 }}>Create SAP Customer Code — LO00000090 — Ganesh Thorat FPC</h3><div style={{ fontSize: '13px', color: '#6B7280', marginTop: '4px' }}>Status: SC Approved ✓ → SAP Code: Not yet created ⏳</div></div><Mail color="#0C5FA5" /></div>
+      <div className="flex items-center justify-between mb-5"><div><h3 style={{ fontSize: '18px', fontWeight: 700 }}>Create SAP Customer Code — LO00000090 — Ganesh Thorat FPC</h3><div style={{ fontSize: '13px', color: '#6B7280', marginTop: '4px' }}>Status: SC Approved ✓ → SAP Code: Not yet created ⏳</div></div><Mail color="#1E88E5" /></div>
       <InfoGrid rows={[
         ['Farmer Full Name', 'Ganesh Thorat Farmers Producer Company'],
         ['Aadhaar Number', 'XXXX XXXX 4821'],
@@ -211,7 +211,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
         <div className="relative"><Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" color="#6B7280" /><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search member, folio, loan ID" className="w-full pl-9 rounded-md border border-[#D1D5DB]" style={{ height: '38px' }} /></div>
       </div>
       <div className="col-span-3 bg-white rounded-lg p-5 border border-[#E5E7EB]">
-        <h3 style={{ fontSize: '18px', fontWeight: 900 }}>Priya Ramesh Shinde</h3>
+        <h3 style={{ fontSize: '18px', fontWeight: 700 }}>Priya Ramesh Shinde</h3>
         <p style={{ fontSize: '13px', color: '#6B7280', marginTop: '4px' }}>Member since April 2021 · Active ✓ · Dindori, Nashik · Grapes (3 acres)</p>
         <InfoGrid rows={[['Folio', 'SH-2847'], ['Shareholding', '250 shares'], ['Valuation', '₹2,000/share · Total ₹5,00,000'], ['Max loan share-based', '₹50,000'], ['Repayment track record', '95% on-time'], ['KYC Status', 'PAN ✓ Aadhaar ✓ Re-KYC Due Aug 2026']]} />
       </div>
@@ -222,7 +222,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       <div className="grid grid-cols-3 gap-5">
       {['Quarterly Portfolio MIS', 'Section 186 Limit Monitor', 'NBFC Threshold Monitor'].map((title, i) => (
         <button key={title} onClick={() => onNavigate(i === 0 ? 'credit-mis' : 'shared-s186-lock')} className="bg-white rounded-lg p-5 border border-[#E5E7EB] text-left clickable-card">
-          <h3 style={{ fontSize: '16px', fontWeight: 900 }}>{title}</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 700 }}>{title}</h3>
           <div className="mt-4 h-3 rounded-full" style={{ backgroundColor: '#E5E7EB' }}><div className="h-full rounded-full" style={{ width: i === 0 ? '82%' : i === 1 ? '58%' : '40%', backgroundColor: i === 2 ? '#F59E0B' : '#2E7D32' }} /></div>
           <div style={{ fontSize: '13px', color: '#3D4450', marginTop: '12px' }}>{i === 2 ? '40% threshold watch' : 'Ready for export'}</div>
           <span className="inline-flex mt-4 px-3 py-1.5 rounded-md" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '12px', fontWeight: 800 }}>Generate</span>
@@ -234,7 +234,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
   const renderActiveLoans = () => {
     const activeRows = loanRegister.filter(row => row.stage === 'Active' || row.stage === 'Disbursed');
     return (
-      <DataCard title="Active Loans" action={<button onClick={() => onNavigate('credit-dpd')} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Open DPD Monitor</button>}>
+      <DataCard title="Active Loans" action={<button onClick={() => onNavigate('credit-dpd')} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#E8F1FA', color: '#1E88E5', fontSize: '12px', fontWeight: 800 }}>Open DPD Monitor</button>}>
         <SimpleTable headers={['Loan ID', 'Borrower', 'Sanctioned', 'Outstanding', 'DPD', 'Next Due', 'Action']}>
           {activeRows.map(row => (
             <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[#E5E7EB] clickable-row">
@@ -242,9 +242,9 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
               <Cell><strong>{row.borrower}</strong></Cell>
               <Cell right mono>{formatCurrency(row.amount)}</Cell>
               <Cell right mono>{formatCurrency(Math.round(row.amount * 0.72))}</Cell>
-              <Cell><span style={{ color: row.dpd > 90 ? '#C62828' : row.dpd > 0 ? '#F59E0B' : '#2E7D32', fontWeight: 900 }}>{row.dpd ? `${row.dpd} days` : 'Current'}</span></Cell>
+              <Cell><span style={{ color: row.dpd > 90 ? '#C62828' : row.dpd > 0 ? '#F59E0B' : '#2E7D32', fontWeight: 700 }}>{row.dpd ? `${row.dpd} days` : 'Current'}</span></Cell>
               <Cell>{row.disbursed}</Cell>
-              <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('member-loan-profile'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#0C5FA5', fontSize: '12px', fontWeight: 800 }}>Profile</button></Cell>
+              <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('member-loan-profile'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: '#FAFAF8', color: '#1E88E5', fontSize: '12px', fontWeight: 800 }}>Profile</button></Cell>
             </tr>
           ))}
         </SimpleTable>
@@ -289,19 +289,19 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
 }
 
 function DataCard({ title, action, children }: { title: string; action?: React.ReactNode; children: React.ReactNode }) {
-  return <div className="bg-white rounded-lg border border-[#E5E7EB] overflow-hidden"><div className="px-5 py-3 border-b border-[#E5E7EB] flex items-center justify-between" style={{ backgroundColor: '#FAFAF8' }}><h3 style={{ fontSize: '15px', fontWeight: 900, color: '#12151A' }}>{title}</h3>{action}</div>{children}</div>;
+  return <div className="bg-white rounded-lg border border-[#E5E7EB] overflow-hidden"><div className="px-5 py-3 border-b border-[#E5E7EB] flex items-center justify-between" style={{ backgroundColor: '#FAFAF8' }}><h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A' }}>{title}</h3>{action}</div>{children}</div>;
 }
 
 function SimpleTable({ headers, children }: { headers: string[]; children: React.ReactNode }) {
-  return <div className="table-scroll"><table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: '#6B7280', fontWeight: 900, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
+  return <div className="table-scroll"><table className="w-full"><thead><tr>{headers.map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase' }}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
 }
 
 function Cell({ children, mono, blue, right }: { children: React.ReactNode; mono?: boolean; blue?: boolean; right?: boolean }) {
-  return <td className={`px-4 py-3 ${right ? 'text-right' : ''}`} style={{ fontSize: '13px', color: blue ? '#0C5FA5' : '#3D4450', fontFamily: mono ? 'Roboto Mono' : 'inherit', fontWeight: blue ? 800 : 500 }}>{children}</td>;
+  return <td className={`px-4 py-3 ${right ? 'text-right' : ''}`} style={{ fontSize: '13px', color: blue ? '#1E88E5' : '#3D4450', fontFamily: mono ? 'Roboto Mono' : 'inherit', fontWeight: blue ? 800 : 500 }}>{children}</td>;
 }
 
 function Info({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
-  return <div className="bg-white rounded-lg p-4 border border-[#E5E7EB]"><div style={{ fontSize: '11px', color: '#6B7280', fontWeight: 900, textTransform: 'uppercase' }}>{label}</div><div style={{ fontSize: '18px', color: '#12151A', fontWeight: 900, marginTop: '6px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{value}</div></div>;
+  return <div className="bg-white rounded-lg p-4 border border-[#E5E7EB]"><div style={{ fontSize: '11px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase' }}>{label}</div><div style={{ fontSize: '18px', color: '#12151A', fontWeight: 700, marginTop: '6px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{value}</div></div>;
 }
 
 function InfoGrid({ rows }: { rows: string[][] }) {

@@ -42,7 +42,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
       <div className="grid grid-cols-12 gap-5">
         <div className="col-span-7 bg-white rounded-lg p-5 border border-[#EDEEF0]">
           <div className="flex items-center justify-between mb-4">
-            <h3 style={{ fontSize: '18px', fontWeight: 900, color: '#12151A' }}>October 2025</h3>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#12151A' }}>October 2025</h3>
             <div className="flex rounded-lg border border-[#EDEEF0] overflow-hidden">
               {(['Month View', 'Quarter View', 'Year View'] as const).map(label => <button key={label} onClick={() => setCalendarView(label)} className="px-3 py-1.5" style={{ backgroundColor: calendarView === label ? '#1A3C2A' : 'white', color: calendarView === label ? 'white' : '#3D4450', fontSize: '12px', fontWeight: 800 }}>{label}</button>)}
             </div>
@@ -58,7 +58,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
         </div>
         <div className="col-span-5 bg-white rounded-lg p-5 border border-[#EDEEF0]">
           <div style={{ fontSize: '12px', color: '#9EA8B3', fontWeight: 800 }}>Selected: Oct {selectedDay}</div>
-          <h3 style={{ fontSize: '20px', color: '#1A3C2A', fontWeight: 900, marginTop: '10px' }}>Maharashtra Stamp Act</h3>
+          <h3 style={{ fontSize: '20px', color: '#1A3C2A', fontWeight: 700, marginTop: '10px' }}>Maharashtra Stamp Act</h3>
           <p style={{ fontSize: '14px', color: '#3D4450', lineHeight: '22px', marginTop: '8px' }}>Annual Declaration</p>
           <InfoGrid rows={[['Statute', 'Maharashtra Stamp Act, 1958'], ['Owner', 'Company Secretary'], ['Evidence Required', 'Annual declaration + stamp register'], ['Frequency', 'Annual'], ['Status', 'Due in 3 days']]} />
           <div className="mt-5 flex gap-3"><button className="px-3 py-2 rounded-lg border border-[#EDEEF0]">Upload Evidence</button><button className="px-3 py-2 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white' }}>Mark Complete</button></div>
@@ -78,7 +78,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
         <div key={row.loan} className="bg-white rounded-lg p-5 border border-[#EDEEF0]">
           <div className="flex items-start justify-between">
             <div>
-              <div style={{ fontSize: '18px', fontFamily: 'Roboto Mono', color: '#1E88E5', fontWeight: 900 }}>{row.loan} · {row.borrower} · {formatCurrency(row.amount)} · Repaid: {row.repaid}</div>
+              <div style={{ fontSize: '18px', fontFamily: 'Roboto Mono', color: '#1E88E5', fontWeight: 700 }}>{row.loan} · {row.borrower} · {formatCurrency(row.amount)} · Repaid: {row.repaid}</div>
               <div style={{ fontSize: '13px', color: '#6B7280', marginTop: '8px' }}>Repayment confirmed by: {row.finance} · SAP confirmed ✅</div>
             </div>
             <StatusBadge status={row.status} size="md" />
@@ -86,12 +86,12 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
           <div className="grid grid-cols-2 gap-5 mt-5">
             <Checklist title="Pre-NOC Checklist" items={['Full principal repaid', 'All interest invoices settled', 'No outstanding dues', 'SAP balance = ₹0']} done />
             <div className="p-4 rounded-lg" style={{ backgroundColor: '#FDFAF4', border: '1px solid #EDEEF0' }}>
-              <h4 style={{ fontSize: '14px', fontWeight: 900, color: '#1A3C2A', marginBottom: '10px' }}>Security Return</h4>
+              <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#1A3C2A', marginBottom: '10px' }}>Security Return</h4>
               {['SH-4 Form returned to borrower', 'Blank-dated cheque returned', 'CDSL Unpledge initiated (if D-MAT)'].map(item => <div key={item} className="flex items-center justify-between py-2"><span style={{ fontSize: '13px', color: '#3D4450' }}>□ {item}</span><button className="px-2 py-1 rounded-md" style={{ backgroundColor: '#E8F5E9', color: '#1A3C2A', fontSize: '11px', fontWeight: 800 }}>Mark Returned</button></div>)}
             </div>
           </div>
           <div className="mt-5 p-4 rounded-lg" style={{ backgroundColor: '#F7F8FA', border: '1px solid #EDEEF0' }}>
-            <div style={{ fontSize: '14px', fontWeight: 900, color: '#12151A', marginBottom: '10px' }}>NOC Document</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: '#12151A', marginBottom: '10px' }}>NOC Document</div>
             <button onClick={() => setShowNoc(true)} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '14px' }}>Generate NOC →</button>
           </div>
         </div>
@@ -135,7 +135,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
       ].map(([title, note, page]) => (
         <button key={title} onClick={() => onNavigate(page)} className="bg-white rounded-lg p-5 border border-[#EDEEF0] text-left clickable-card">
           <FileText size={18} color="#1A3C2A" />
-          <h3 style={{ fontSize: '15px', fontWeight: 900, color: '#12151A', marginTop: '12px' }}>{title}</h3>
+          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#12151A', marginTop: '12px' }}>{title}</h3>
           <div style={{ fontSize: '13px', color: '#3D4450', lineHeight: '20px', marginTop: '8px' }}>{note}</div>
           <span className="inline-flex mt-4 px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#E8F5E9', color: '#1A3C2A', fontSize: '12px', fontWeight: 800 }}><Download size={13} style={{ marginRight: 6 }} />Generate</span>
         </button>
@@ -197,7 +197,7 @@ export function ComplianceOperations({ onNavigate, activePage }: ComplianceOpera
 }
 
 function DataCard({ title, action, children }: { title: string; action?: React.ReactNode; children: React.ReactNode }) {
-  return <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden"><div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: '#FDFAF4' }}><h3 style={{ fontSize: '15px', fontWeight: 900, color: '#1A3C2A' }}>{title}</h3>{action}</div>{children}</div>;
+  return <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden"><div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: '#FDFAF4' }}><h3 style={{ fontSize: '15px', fontWeight: 700, color: '#1A3C2A' }}>{title}</h3>{action}</div>{children}</div>;
 }
 
 function SimpleTable({ headers, children }: { headers: string[]; children: React.ReactNode }) {
@@ -213,5 +213,5 @@ function InfoGrid({ rows }: { rows: string[][] }) {
 }
 
 function Checklist({ title, items, done }: { title: string; items: string[]; done?: boolean }) {
-  return <div className="p-4 rounded-lg" style={{ backgroundColor: '#FDFAF4', border: '1px solid #EDEEF0' }}><h4 style={{ fontSize: '14px', fontWeight: 900, color: '#1A3C2A', marginBottom: '10px' }}>{title}</h4>{items.map(item => <div key={item} className="flex items-center gap-2 py-2" style={{ fontSize: '13px', color: '#3D4450' }}>{done ? <CheckCircle size={15} color="#22C55E" /> : '□'} {item}</div>)}</div>;
+  return <div className="p-4 rounded-lg" style={{ backgroundColor: '#FDFAF4', border: '1px solid #EDEEF0' }}><h4 style={{ fontSize: '14px', fontWeight: 700, color: '#1A3C2A', marginBottom: '10px' }}>{title}</h4>{items.map(item => <div key={item} className="flex items-center gap-2 py-2" style={{ fontSize: '13px', color: '#3D4450' }}>{done ? <CheckCircle size={15} color="#22C55E" /> : '□'} {item}</div>)}</div>;
 }

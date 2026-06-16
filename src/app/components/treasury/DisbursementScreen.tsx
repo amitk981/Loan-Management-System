@@ -42,7 +42,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
             return (
               <div key={title} className="flex items-start flex-1">
                 <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: step > idx ? '#22C55E' : step === idx ? '#0891B2' : '#EDEEF0', color: step >= idx ? 'white' : '#9EA8B3', fontWeight: 900 }}>{step > idx ? <Check size={15} /> : idx}</div>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: step > idx ? '#22C55E' : step === idx ? '#0891B2' : '#EDEEF0', color: step >= idx ? 'white' : '#9EA8B3', fontWeight: 700 }}>{step > idx ? <Check size={15} /> : idx}</div>
                   <div style={{ fontSize: '12px', color: step >= idx ? '#0891B2' : '#6B7280', fontWeight: step === idx ? 900 : 600, marginTop: 6 }}>{title}</div>
                   <div style={{ fontSize: '10px', color: '#9EA8B3' }}>{hint}</div>
                 </div>
@@ -57,7 +57,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
         <div className="grid grid-cols-5 gap-5">
           <div className="col-span-3 bg-white rounded-lg border border-[#EDEEF0] overflow-hidden flex flex-col">
             <div className="px-5 py-4 border-b border-[#EDEEF0] flex items-center justify-between">
-              <div><h3 style={{ fontSize: 18, fontWeight: 900 }}>Pre-Disbursement Verification</h3><p style={{ fontSize: 13, color: '#6B7280' }}><span style={{ fontFamily: 'Roboto Mono', color: '#0891B2' }}>{disbursementLoan.id}</span> · {disbursementLoan.borrower}</p></div>
+              <div><h3 style={{ fontSize: 18, fontWeight: 700 }}>Pre-Disbursement Verification</h3><p style={{ fontSize: 13, color: '#6B7280' }}><span style={{ fontFamily: 'Roboto Mono', color: '#0891B2' }}>{disbursementLoan.id}</span> · {disbursementLoan.borrower}</p></div>
               <label className="flex items-center gap-2 cursor-pointer bg-[#F7F8FA] px-3 py-1.5 rounded-lg border border-[#EDEEF0]">
                 <input type="checkbox" checked={gatesPassed} onChange={e => setGatesPassed(e.target.checked)} style={{ accentColor: '#22C55E' }} />
                 <span style={{ fontSize: 12, fontWeight: 700, color: '#3D4450' }}>Simulate Gates Passed</span>
@@ -68,7 +68,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
               <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#FEF2F2', borderBottom: '1px solid #FECACA' }}>
                 <XCircle size={24} style={{ color: '#EF4444' }} />
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 900, color: '#991B1B' }}>Disbursement Blocked — Gate Failure</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#991B1B' }}>Disbursement Blocked — Gate Failure</div>
                   <div style={{ fontSize: 13, color: '#991B1B', marginTop: 2 }}>One or more pre-flight gates have failed. Resolve exceptions before proceeding.</div>
                 </div>
               </div>
@@ -96,7 +96,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
 
       {step === 2 && (
         <div className="max-w-4xl mx-auto bg-white rounded-lg p-6 border border-[#EDEEF0]">
-          <h3 style={{ fontSize: 18, fontWeight: 900, marginBottom: 16 }}>Beneficiary Bank Account Verification</h3>
+          <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>Beneficiary Bank Account Verification</h3>
           <div className="border-2 border-[#EDEEF0] rounded-lg overflow-hidden">
             <div className="p-4 border-b border-[#EDEEF0]" style={{ backgroundColor: '#F7F8FA' }}><strong>Beneficiary Bank Details — {disbursementLoan.borrower}</strong><div style={{ fontSize: 12, color: '#6B7280' }}>Source: Application Form (Cancelled Cheque)</div></div>
             <div className="grid grid-cols-2 gap-0">
@@ -122,7 +122,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
       {step === 3 && (
         <div className="grid grid-cols-11 gap-5">
           <div className="col-span-6 bg-white rounded-lg p-5 border border-[#EDEEF0]">
-            <h3 style={{ fontSize: 18, fontWeight: 900 }}>Initiate Payment</h3><p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>Initiated by: Sr. Manager – Finance · Maker role</p>
+            <h3 style={{ fontSize: 18, fontWeight: 700 }}>Initiate Payment</h3><p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>Initiated by: Sr. Manager – Finance · Maker role</p>
             <Field label="Disbursement Amount" value={formatCurrency(disbursementLoan.amount, true)} note="Sanctioned by CFO + Director — cannot be edited" mono large />
             <div className="mb-4">
               <label style={{ fontSize: 13, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 6 }}>Payment Mode <span className="px-2 py-0.5 rounded-full" style={{ backgroundColor: '#F3F4F6', color: '#6B7280', fontSize: 10 }}>Auto-selected</span></label>
@@ -141,7 +141,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
             <div className="flex gap-3"><button onClick={() => setStep(2)} className="px-4 py-2.5 rounded-lg border border-[#EDEEF0]">← Back</button><button onClick={() => setStep(4)} className="flex-1 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: '#0891B2', color: 'white' }}><Send size={15} style={{ display: 'inline', marginRight: 6 }} />Send to Finance Controller for Authorization →</button></div>
           </div>
           <div className="col-span-5 bg-[#F7F8FA] rounded-lg p-5 border border-[#EDEEF0] sticky top-24 self-start">
-            <h3 style={{ fontSize: 16, fontWeight: 900, marginBottom: 14 }}>Payment Preview</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 14 }}>Payment Preview</h3>
             {[
               ['FROM', 'SFPCL · RBL Bank · XXXX-8842'],
               ['TO', `${disbursementLoan.borrower} · SBI · XXXX-4821`],
@@ -157,7 +157,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
 
       {step === 4 && (
         <div className="max-w-3xl mx-auto bg-white rounded-lg p-6 border border-[#EDEEF0]">
-          <div className="flex items-center gap-3 mb-4"><Lock size={24} style={{ color: '#0891B2' }} /><h3 style={{ fontSize: 18, fontWeight: 900 }}>Chief Financial Controller Authorization</h3></div>
+          <div className="flex items-center gap-3 mb-4"><Lock size={24} style={{ color: '#0891B2' }} /><h3 style={{ fontSize: 18, fontWeight: 700 }}>Chief Financial Controller Authorization</h3></div>
           <div className="p-4 rounded-lg mb-5" style={{ backgroundColor: '#E0F2FE', color: '#0E7490' }}>2FA is mandatory. Finance Manager cannot authorize own transaction. OTP expires in 4:32.</div>
           <div className="grid grid-cols-2 gap-3 mb-5">{[['Borrower', disbursementLoan.borrower], ['Amount', formatCurrency(disbursementLoan.amount, true)], ['Mode', mode], ['Initiated By', 'Rajesh Kulkarni']].map(([l, v]) => <Info key={l} label={l} value={v} />)}</div>
           <div className="flex justify-center gap-2 mb-5">{otp.map((digit, i) => <input key={i} id={`treasury-otp-${i}`} aria-label={`OTP digit ${i + 1}`} value={digit} onChange={e => handleOtp(i, e.target.value)} maxLength={1} className="text-center rounded-lg border border-[#D1D5DB]" style={{ width: 52, height: 56, fontSize: 22, fontFamily: 'Roboto Mono' }} />)}</div>
@@ -167,7 +167,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
 
       {step === 5 && (
         <div className="max-w-3xl mx-auto bg-white rounded-lg p-6 border border-[#EDEEF0]">
-          <h3 style={{ fontSize: 18, fontWeight: 900 }}>SAP Entry Confirmation</h3><p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>Post the disbursement entry to maintain accurate financial records</p>
+          <h3 style={{ fontSize: 18, fontWeight: 700 }}>SAP Entry Confirmation</h3><p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>Post the disbursement entry to maintain accurate financial records</p>
           <pre className="rounded-lg p-5 overflow-x-auto" style={{ backgroundColor: '#1A1A2E', color: 'white', fontFamily: 'Roboto Mono', fontSize: 13, lineHeight: '22px' }}>{`SAP Journal Entry — Auto-Generated
 ═══════════════════════════════════════
 Transaction Code : FB01
@@ -190,7 +190,7 @@ Posted by: Rajesh Kulkarni`}</pre>
       {step === 6 && (
         <div className="max-w-2xl mx-auto bg-white rounded-lg p-8 border-2 border-[#22C55E] text-center">
           <div className="w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-5" style={{ backgroundColor: '#DCFCE7' }}><Check size={48} style={{ color: '#22C55E' }} /></div>
-          <h2 style={{ fontSize: 28, fontWeight: 900, color: '#22C55E' }}>Disbursement Complete!</h2>
+          <h2 style={{ fontSize: 28, fontWeight: 700, color: '#22C55E' }}>Disbursement Complete!</h2>
           <p style={{ fontSize: 15, color: '#3D4450', marginTop: 6 }}>{formatCurrency(disbursementLoan.amount, true)} disbursed to {disbursementLoan.borrower} · {disbursementLoan.id}</p>
           <div className="text-left p-4 rounded-lg mt-5" style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
             {[
@@ -212,7 +212,7 @@ Posted by: Rajesh Kulkarni`}</pre>
 function LoanSummary() {
   return (
     <div className="col-span-2 bg-white rounded-lg p-5 border border-[#EDEEF0] sticky top-24 self-start">
-      <div className="flex items-center justify-between mb-4"><h3 style={{ fontSize: 15, fontWeight: 900 }}>Loan Summary</h3><span className="px-2 py-1 rounded-full" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 11, fontWeight: 800 }}>Stage 5: Disbursement</span></div>
+      <div className="flex items-center justify-between mb-4"><h3 style={{ fontSize: 15, fontWeight: 700 }}>Loan Summary</h3><span className="px-2 py-1 rounded-full" style={{ backgroundColor: '#E0F2FE', color: '#0891B2', fontSize: 11, fontWeight: 800 }}>Stage 5: Disbursement</span></div>
       {[
         ['Loan ID', disbursementLoan.id], ['Borrower', disbursementLoan.borrower], ['Folio No.', disbursementLoan.folio], ['Sanctioned Amt', formatCurrency(disbursementLoan.amount)], ['Loan Type', disbursementLoan.type], ['Purpose', disbursementLoan.purpose], ['Interest Rate', disbursementLoan.rate], ['Repayment Date', disbursementLoan.repaymentDate], ['Sanction Date', disbursementLoan.sanctionDate], ['Authority', disbursementLoan.authority],
       ].map(([label, value]) => <Preview key={label} label={label} value={value} />)}
@@ -226,7 +226,7 @@ function Info({ label, value, mono }: { label: string; value: string; mono?: boo
 }
 
 function Field({ label, value, note, mono, large }: { label: string; value: string; note?: string; mono?: boolean; large?: boolean }) {
-  return <div className="mb-4"><label style={{ fontSize: 13, fontWeight: 800 }}>{label}</label><div className="mt-1 px-3 rounded-lg border border-[#EDEEF0] bg-[#F7F8FA] flex items-center" style={{ height: large ? 56 : 42, fontFamily: mono ? 'Roboto Mono' : 'inherit', fontSize: large ? 24 : 14, fontWeight: 900 }}>{value}</div>{note && <div style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>{note}</div>}</div>;
+  return <div className="mb-4"><label style={{ fontSize: 13, fontWeight: 800 }}>{label}</label><div className="mt-1 px-3 rounded-lg border border-[#EDEEF0] bg-[#F7F8FA] flex items-center" style={{ height: large ? 56 : 42, fontFamily: mono ? 'Roboto Mono' : 'inherit', fontSize: large ? 24 : 14, fontWeight: 700 }}>{value}</div>{note && <div style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>{note}</div>}</div>;
 }
 
 function Preview({ label, value }: { label: string; value: string }) {

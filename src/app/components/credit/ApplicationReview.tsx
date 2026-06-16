@@ -68,23 +68,23 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
               [4, 'Recommendation'],
             ].map(([id, label]) => (
               <button key={id} onClick={() => setStep(id as number)} className="w-full px-4 py-3 flex items-center gap-3 text-left border-b border-[#E5E7EB] last:border-b-0" style={{ backgroundColor: step === id ? '#E8F1FA' : 'white' }}>
-                <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: step === id ? '#0C5FA5' : Number(id) < step ? '#2E7D32' : '#F3F4F6', color: step === id || Number(id) < step ? 'white' : '#6B7280', fontSize: '12px', fontWeight: 900 }}>{Number(id) < step ? '✓' : id}</span>
-                <span style={{ fontSize: '13px', color: step === id ? '#0C5FA5' : '#3D4450', fontWeight: 800 }}>{label}</span>
+                <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: step === id ? '#1E88E5' : Number(id) < step ? '#2E7D32' : '#F3F4F6', color: step === id || Number(id) < step ? 'white' : '#6B7280', fontSize: '12px', fontWeight: 700 }}>{Number(id) < step ? '✓' : id}</span>
+                <span style={{ fontSize: '13px', color: step === id ? '#1E88E5' : '#3D4450', fontWeight: 800 }}>{label}</span>
               </button>
             ))}
           </div>
 
           <div className="bg-white rounded-lg p-4 border border-[#E5E7EB] sticky top-4">
-            <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 900, textTransform: 'uppercase', marginBottom: '12px' }}>Live Eligibility Calc</div>
+            <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase', marginBottom: '12px' }}>Live Eligibility Calc</div>
             <CalcInput label="Shares Held" value={shares} onChange={setShares} suffix="shares" />
             <Metric label="Valuation / share" value={`₹${appraisalLoan.valuationPerShare.toLocaleString('en-IN')}`} />
-            <Metric label="Limit (shares)" value={formatCurrency(shareLimit)} color="#0C5FA5" />
+            <Metric label="Limit (shares)" value={formatCurrency(shareLimit)} color="#1E88E5" />
             <CalcInput label="Land (acres)" value={landAcres} onChange={setLandAcres} suffix="acres" step={0.25} />
             <Metric label="Scale of Finance" value="₹20,000/acre" />
-            <Metric label="Limit (land)" value={formatCurrency(landLimit)} color="#0C5FA5" />
+            <Metric label="Limit (land)" value={formatCurrency(landLimit)} color="#1E88E5" />
             <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: '#F0F7F2', border: '2px solid #3D7A4F' }}>
-              <div style={{ fontSize: '11px', color: '#2E7D32', fontWeight: 900 }}>ELIGIBLE LIMIT</div>
-              <div style={{ fontSize: '28px', color: '#1A3C2A', fontWeight: 900, fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
+              <div style={{ fontSize: '11px', color: '#2E7D32', fontWeight: 700 }}>ELIGIBLE LIMIT</div>
+              <div style={{ fontSize: '28px', color: '#1A3C2A', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
               <div style={{ fontSize: '11px', color: '#6B7280' }}>Lower of share and land limits</div>
             </div>
           </div>
@@ -126,7 +126,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
                 <AmountBox label="Final eligible amount" value={eligible} note="Lower of two" highlight />
               </div>
               <div className="p-4 rounded-lg" style={{ backgroundColor: exceeds ? '#FEF2F2' : '#F0FDF4', border: `1px solid ${exceeds ? '#FECACA' : '#BBF7D0'}` }}>
-                <div style={{ fontSize: '13px', color: exceeds ? '#C62828' : '#166534', fontWeight: 900 }}>{exceeds ? `Requested exceeds eligible by ${formatCurrency(requested - eligible)}` : 'Requested amount is within eligible limit'}</div>
+                <div style={{ fontSize: '13px', color: exceeds ? '#C62828' : '#166534', fontWeight: 700 }}>{exceeds ? `Requested exceeds eligible by ${formatCurrency(requested - eligible)}` : 'Requested amount is within eligible limit'}</div>
                 <div className="mt-3 flex items-center gap-3">
                   <input type="number" value={requested} onChange={e => setRequested(Number(e.target.value) || 0)} className="px-3 rounded-md border border-[#D1D5DB]" style={{ height: '40px', fontFamily: 'Roboto Mono', fontSize: '15px' }} />
                   <span style={{ fontSize: '13px', color: '#3D4450' }}>Requested amount</span>
@@ -153,7 +153,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
                 <div style={{ fontSize: '13px', color: '#3D4450', fontWeight: 800, marginBottom: '8px' }}>Overall Risk Rating</div>
                 <div className="flex gap-2">
                   {(['Low', 'Medium', 'High'] as const).map(rating => (
-                    <button key={rating} onClick={() => setRiskRating(rating)} className="px-4 py-2 rounded-lg" style={{ backgroundColor: riskRating === rating ? (rating === 'Low' ? '#DCFCE7' : rating === 'Medium' ? '#FEF3C7' : '#FEE2E2') : '#F3F4F6', color: riskRating === rating ? (rating === 'Low' ? '#2E7D32' : rating === 'Medium' ? '#92400E' : '#C62828') : '#6B7280', fontSize: '13px', fontWeight: 900 }}>{rating}</button>
+                    <button key={rating} onClick={() => setRiskRating(rating)} className="px-4 py-2 rounded-lg" style={{ backgroundColor: riskRating === rating ? (rating === 'Low' ? '#DCFCE7' : rating === 'Medium' ? '#FEF3C7' : '#FEE2E2') : '#F3F4F6', color: riskRating === rating ? (rating === 'Low' ? '#2E7D32' : rating === 'Medium' ? '#92400E' : '#C62828') : '#6B7280', fontSize: '13px', fontWeight: 700 }}>{rating}</button>
                   ))}
                 </div>
               </div>
@@ -165,8 +165,8 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
               <StepTitle title="Step 4: Recommendation" />
               <div className="grid grid-cols-3 gap-4">
                 <AmountBox label="Recommended amount" value={eligible} note={exceeds ? 'Revised to eligible limit' : 'As requested'} highlight />
-                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>Tenure</div><div style={{ fontSize: '17px', fontWeight: 900, marginTop: '6px' }}>Short-term (≤1 year)</div></div>
-                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>Interest Rate</div><div style={{ fontSize: '17px', fontWeight: 900, marginTop: '6px' }}>12% p.a. floating</div></div>
+                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>Tenure</div><div style={{ fontSize: '17px', fontWeight: 700, marginTop: '6px' }}>Short-term (≤1 year)</div></div>
+                <div className="p-4 rounded-lg border border-[#E5E7EB]"><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>Interest Rate</div><div style={{ fontSize: '17px', fontWeight: 700, marginTop: '6px' }}>12% p.a. floating</div></div>
               </div>
               <div>
                 <label style={{ fontSize: '13px', color: '#3D4450', fontWeight: 800 }}>Remarks for SC</label>
@@ -204,11 +204,11 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
 }
 
 function StepTitle({ title }: { title: string }) {
-  return <h3 style={{ fontSize: '20px', fontWeight: 900, color: '#12151A' }}>{title}</h3>;
+  return <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#12151A' }}>{title}</h3>;
 }
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
-  return <div className="rounded-lg border border-[#E5E7EB] overflow-hidden"><div className="px-4 py-2.5" style={{ backgroundColor: '#FAFAF8', fontSize: '13px', fontWeight: 900 }}>{title}</div><div className="grid grid-cols-2 gap-0">{children}</div></div>;
+  return <div className="rounded-lg border border-[#E5E7EB] overflow-hidden"><div className="px-4 py-2.5" style={{ backgroundColor: '#FAFAF8', fontSize: '13px', fontWeight: 700 }}>{title}</div><div className="grid grid-cols-2 gap-0">{children}</div></div>;
 }
 
 function Field({ label, value, mono, type }: { label: string; value: string; mono?: boolean; type?: string }) {
@@ -220,9 +220,9 @@ function CalcInput({ label, value, onChange, suffix, step = 1 }: { label: string
 }
 
 function Metric({ label, value, color = '#12151A' }: { label: string; value: string; color?: string }) {
-  return <div className="flex items-center justify-between py-2 border-b border-[#E5E7EB]"><span style={{ fontSize: '12px', color: '#6B7280' }}>{label}</span><span style={{ fontSize: '13px', color, fontWeight: 900, fontFamily: 'Roboto Mono' }}>{value}</span></div>;
+  return <div className="flex items-center justify-between py-2 border-b border-[#E5E7EB]"><span style={{ fontSize: '12px', color: '#6B7280' }}>{label}</span><span style={{ fontSize: '13px', color, fontWeight: 700, fontFamily: 'Roboto Mono' }}>{value}</span></div>;
 }
 
 function AmountBox({ label, value, note, highlight }: { label: string; value: number; note: string; highlight?: boolean }) {
-  return <div className="p-4 rounded-lg" style={{ backgroundColor: highlight ? '#F0F7F2' : '#FAFAF8', border: `1px solid ${highlight ? '#3D7A4F' : '#E5E7EB'}` }}><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</div><div style={{ fontSize: '22px', color: highlight ? '#1A3C2A' : '#0C5FA5', fontWeight: 900, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{formatCurrency(value)}</div><div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>{note}</div></div>;
+  return <div className="p-4 rounded-lg" style={{ backgroundColor: highlight ? '#F0F7F2' : '#FAFAF8', border: `1px solid ${highlight ? '#3D7A4F' : '#E5E7EB'}` }}><div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</div><div style={{ fontSize: '22px', color: highlight ? '#1A3C2A' : '#1E88E5', fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{formatCurrency(value)}</div><div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>{note}</div></div>;
 }

@@ -76,7 +76,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               {filtered.map(app => (
                 <button key={app.id} onClick={() => setSelectedId(app.id)} className="w-full p-4 text-left border-b border-[#E5E7EB] hover:bg-[#FAFAF8]" style={{ backgroundColor: selected.id === app.id ? '#E8F1FA' : 'white' }}>
                   <div className="flex items-center justify-between">
-                    <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#0C5FA5', fontWeight: 800 }}>{app.id}</span>
+                    <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: '#1E88E5', fontWeight: 800 }}>{app.id}</span>
                     <StatusBadge status={app.status} />
                   </div>
                   <div style={{ fontSize: '14px', color: '#12151A', fontWeight: 800, marginTop: '6px' }}>{app.shortName}</div>
@@ -92,7 +92,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               <div className="flex items-center justify-between">
                 <div>
                   <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 700 }}>APPLICATION</div>
-                  <div style={{ fontSize: '22px', color: '#12151A', fontWeight: 900, fontFamily: 'Roboto Mono' }}>{selected.id}</div>
+                  <div style={{ fontSize: '22px', color: '#12151A', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{selected.id}</div>
                 </div>
                 <StatusBadge status={selected.status === 'Incomplete' ? `Incomplete — ${selected.blocker}` : selected.status} size="md" />
               </div>
@@ -132,7 +132,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
                         <div style={{ fontSize: '12px', color: '#6B7280' }}>{doc.detail}</div>
                       </div>
                       <StatusBadge status={doc.state} />
-                      {doc.state === 'Missing' && <span style={{ fontSize: '12px', color: '#0C5FA5', fontWeight: 800 }}>Request</span>}
+                      {doc.state === 'Missing' && <span style={{ fontSize: '12px', color: '#1E88E5', fontWeight: 800 }}>Request</span>}
                     </button>
                   );
                 })}
@@ -141,7 +141,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
 
             <div className="flex gap-3 border-t border-[#E5E7EB] pt-5">
               <button onClick={() => setShowNotice(true)} disabled={missingDocs.length === 0} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: missingDocs.length ? '#FEF3C7' : '#F3F4F6', color: missingDocs.length ? '#92400E' : '#9CA3AF', fontSize: '13px' }}>Send Deficiency Notice</button>
-              <button disabled={!canAssign} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#E8F1FA' : '#F3F4F6', color: canAssign ? '#0C5FA5' : '#9CA3AF', fontSize: '13px' }}>Mark Complete</button>
+              <button disabled={!canAssign} className="px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#E8F1FA' : '#F3F4F6', color: canAssign ? '#1E88E5' : '#9CA3AF', fontSize: '13px' }}>Mark Complete</button>
               <button onClick={() => onNavigate('credit-review')} disabled={!canAssign} className="ml-auto px-4 py-2.5 rounded-lg font-semibold" style={{ backgroundColor: canAssign ? '#1A3C2A' : '#9CA3AF', color: 'white', fontSize: '13px' }}>Assign to Appraisal →</button>
             </div>
           </div>
@@ -171,7 +171,7 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-5">
-      <h3 style={{ fontSize: '14px', color: '#12151A', fontWeight: 900, marginBottom: '10px' }}>{title}</h3>
+      <h3 style={{ fontSize: '14px', color: '#12151A', fontWeight: 700, marginBottom: '10px' }}>{title}</h3>
       <div className="rounded-lg border border-[#E5E7EB] overflow-hidden">{children}</div>
     </div>
   );

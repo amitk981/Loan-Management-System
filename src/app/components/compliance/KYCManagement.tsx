@@ -65,7 +65,7 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
         ].map(([label, value, color, nextStatus]) => (
           <button key={label} onClick={() => setStatus(nextStatus as typeof status)} className="bg-white rounded-lg p-4 border border-[#EDEEF0] text-left clickable-card">
             <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: 800 }}>{label}</div>
-            <div style={{ fontSize: '26px', color, fontWeight: 900, marginTop: '5px' }}>{value}</div>
+            <div style={{ fontSize: '26px', color, fontWeight: 700, marginTop: '5px' }}>{value}</div>
           </button>
         ))}
       </div>
@@ -92,7 +92,7 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
               <td className="px-4" style={{ fontSize: '14px', color: '#12151A', fontWeight: 700 }}>{row.name}</td>
               <td className="px-4" style={{ fontSize: '13px', color: '#3D4450' }}>{row.kycDate}</td>
               <td className="px-4" style={{ fontSize: '13px', color: '#3D4450' }}>{row.expiry}</td>
-              <td className="px-4" style={{ fontSize: '13px', color: row.daysLeft < 0 ? '#EF4444' : row.daysLeft < 30 ? '#F59E0B' : '#E65100', fontWeight: 900 }}>{row.daysLeft < 0 ? `${row.daysLeft} days` : `${row.daysLeft} days`}</td>
+              <td className="px-4" style={{ fontSize: '13px', color: row.daysLeft < 0 ? '#EF4444' : row.daysLeft < 30 ? '#F59E0B' : '#E65100', fontWeight: 700 }}>{row.daysLeft < 0 ? `${row.daysLeft} days` : `${row.daysLeft} days`}</td>
               <td className="px-4"><StatusBadge status={row.status} /></td>
               <td className="px-4"><button onClick={(e) => { e.stopPropagation(); setRequestMember(row); }} className="px-3 py-1.5 rounded-lg flex items-center gap-1.5" style={{ backgroundColor: row.daysLeft < 0 ? '#FEE2E2' : '#E8F5E9', color: row.daysLeft < 0 ? '#EF4444' : '#1A3C2A', fontSize: '12px', fontWeight: 800 }}><Send size={11} /> Send</button></td>
             </tr>

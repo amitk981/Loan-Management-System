@@ -42,7 +42,7 @@ export function SanctionOperations({ onNavigate, activePage }: SanctionOperation
     <div className="bg-white rounded-lg p-5 border-2" style={{ borderColor: '#D97706', borderTopWidth: 4 }}>
       <div className="flex items-start justify-between">
         <div>
-          <h3 style={{ fontSize: '18px', fontWeight: 900, color: '#92400E' }}>Special Case — GM Approval Required</h3>
+          <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#92400E' }}>Special Case — GM Approval Required</h3>
           <p style={{ fontSize: '13px', color: '#3D4450', marginTop: '8px' }}>Loan: {specialCase.loan} · Borrower: {specialCase.borrower} · Amount Requested: {formatCurrency(specialCase.amount)}</p>
           <p style={{ fontSize: '13px', color: '#3D4450', marginTop: '4px' }}>Relationship: {specialCase.relationship} · Application date: {specialCase.applicationDate}</p>
           <p style={{ fontSize: '13px', color: '#92400E', marginTop: '12px', fontWeight: 800 }}>Legal basis: Companies Act 2013, Section 378ZK. R. Deshmukh is excluded from deliberations automatically.</p>
@@ -52,7 +52,7 @@ export function SanctionOperations({ onNavigate, activePage }: SanctionOperation
       <div className="mt-5 space-y-3">
         {['Application received', 'Special case flag raised (by Credit Manager)', 'R. Deshmukh excluded from SC deliberations (system-enforced)', 'General Meeting resolution obtained', 'GM resolution verified by CS', 'SC review excluding R. Deshmukh', 'SC decision recorded'].map((step, i) => (
           <div key={step} className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: i < 3 ? '#DCFCE7' : i === 3 ? '#FEF3C7' : '#EDEEF0', color: i < 3 ? '#166534' : i === 3 ? '#92400E' : '#9EA8B3', fontWeight: 900 }}>{i < 3 ? '✓' : i + 1}</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: i < 3 ? '#DCFCE7' : i === 3 ? '#FEF3C7' : '#EDEEF0', color: i < 3 ? '#166534' : i === 3 ? '#92400E' : '#9EA8B3', fontWeight: 700 }}>{i < 3 ? '✓' : i + 1}</div>
             <div style={{ fontSize: '13px', color: i > 3 ? '#9EA8B3' : '#3D4450', fontWeight: i === 3 ? 900 : 600 }}>{step}</div>
             {i === 3 && <button className="ml-auto px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#1A3C2A', color: 'white', fontSize: '12px', fontWeight: 800 }}>Upload GM Resolution ↑</button>}
           </div>
@@ -121,22 +121,22 @@ export function SanctionOperations({ onNavigate, activePage }: SanctionOperation
       </DataCard>
       <div className="grid grid-cols-2 gap-5">
         <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]">
-          <h3 style={{ fontSize: '16px', fontWeight: 900 }}>s.186 Lending Capacity</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 700 }}>s.186 Lending Capacity</h3>
           <Info label="Paid-up Capital" value="₹4,20,00,000" />
           <Info label="Free Reserves" value="₹2,10,00,000" />
           <Info label="Permissible limit" value="₹3,78,00,000 (higher of two)" />
           <Info label="Current deployed" value={formatCurrency(scPortfolio.activePortfolio)} />
           <Info label="Headroom" value="₹1,93,80,000" />
           <div className="h-3 rounded-full mt-4" style={{ backgroundColor: '#EDEEF0' }}><div className="h-full rounded-full" style={{ width: '48.7%', backgroundColor: '#22C55E' }} /></div>
-          <div style={{ fontSize: '13px', color: '#166534', fontWeight: 900, marginTop: '8px' }}>Well within limit · warning threshold 85%</div>
+          <div style={{ fontSize: '13px', color: '#166534', fontWeight: 700, marginTop: '8px' }}>Well within limit · warning threshold 85%</div>
         </div>
         <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]">
-          <h3 style={{ fontSize: '16px', fontWeight: 900 }}>NBFC Principal Business Test Monitor</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 700 }}>NBFC Principal Business Test Monitor</h3>
           {[
             ['Financial Assets / Total Assets', '38%', '12% headroom'],
             ['Income from Financial Assets / Total Income', '31%', '19% headroom'],
           ].map(([label, pct, note]) => <div key={label} className="mt-4"><div className="flex justify-between" style={{ fontSize: '13px', fontWeight: 800 }}><span>{label}</span><span>{pct}</span></div><div className="h-3 rounded-full mt-1" style={{ backgroundColor: '#EDEEF0' }}><div className="h-full rounded-full" style={{ width: pct, backgroundColor: '#22C55E' }} /></div><div style={{ fontSize: '12px', color: '#3D4450', marginTop: '4px' }}>{note} · Threshold 50%</div></div>)}
-          <div className="mt-5 p-3 rounded-lg" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: '13px', fontWeight: 900 }}>NBFC registration not required at current ratios</div>
+          <div className="mt-5 p-3 rounded-lg" style={{ backgroundColor: '#F0FDF4', color: '#166534', fontSize: '13px', fontWeight: 700 }}>NBFC registration not required at current ratios</div>
         </div>
       </div>
     </div>
@@ -144,13 +144,13 @@ export function SanctionOperations({ onNavigate, activePage }: SanctionOperation
 
   const renderDefault = () => (
     <div className="bg-white rounded-lg p-5 border border-[#EDEEF0]">
-      <div className="flex items-start justify-between"><div><h3 style={{ fontSize: '18px', fontWeight: 900 }}>Escalation Case — SC Decision Required</h3><p style={{ fontSize: '13px', color: '#3D4450', marginTop: '6px' }}>Loan: {defaultEscalation.loan} · {defaultEscalation.borrower} · {formatCurrency(defaultEscalation.outstanding)} outstanding</p></div><StatusBadge status="Pending Approval" size="md" /></div>
+      <div className="flex items-start justify-between"><div><h3 style={{ fontSize: '18px', fontWeight: 700 }}>Escalation Case — SC Decision Required</h3><p style={{ fontSize: '13px', color: '#3D4450', marginTop: '6px' }}>Loan: {defaultEscalation.loan} · {defaultEscalation.borrower} · {formatCurrency(defaultEscalation.outstanding)} outstanding</p></div><StatusBadge status="Pending Approval" size="md" /></div>
       <div className="grid grid-cols-2 gap-5 mt-5">
         <div className="p-4 rounded-lg" style={{ backgroundColor: '#F7F8FA' }}>{['Original repayment due: 15-Mar-2024', '3-month grace period expired: 15-Jun-2024', 'Non-intentional assessment: crop loss', '1-year extension expired: 15-Jun-2025', 'Non-payment note prepared: 09-Oct-2025'].map(x => <div key={x} style={{ fontSize: '13px', color: '#3D4450', padding: '7px 0' }}>✅ {x}</div>)}</div>
         <div className="p-4 rounded-lg" style={{ backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '13px', lineHeight: '22px' }}>{defaultEscalation.note}<br /><br />— Amit Kulkarni, Credit Manager · 09-Oct-2025</div>
       </div>
       <div className="mt-5 p-4 rounded-lg" style={{ backgroundColor: '#F7F8FA', border: '1px solid #EDEEF0' }}>
-        <h4 style={{ fontSize: '14px', fontWeight: 900, marginBottom: '10px' }}>Select action to authorise</h4>
+        <h4 style={{ fontSize: '14px', fontWeight: 700, marginBottom: '10px' }}>Select action to authorise</h4>
         {['Invoke SH-4 — initiate share transfer proceedings', 'Present undated cheque — fill ₹1,20,000 + present to bank', 'Both — simultaneous invocation', 'Grant further discretionary extension'].map(a => <label key={a} className="block py-2" style={{ fontSize: '13px', color: '#3D4450' }}><input name="action" type="radio" style={{ accentColor: '#7C3AED', marginRight: 8 }} />{a}</label>)}
         <textarea className="w-full mt-3 p-3 rounded-lg border border-[#D1D5DB]" rows={3} placeholder="SC Authorisation Notes (mandatory)" />
         <label className="flex gap-2 mt-3" style={{ fontSize: '13px', color: '#3D4450' }}><input type="checkbox" style={{ accentColor: '#7C3AED' }} />Record in Exception Register</label>
@@ -161,7 +161,7 @@ export function SanctionOperations({ onNavigate, activePage }: SanctionOperation
 
   const renderReturns = () => (
     <div className="bg-white rounded-lg p-5 border border-[#EDEEF0] max-w-4xl">
-      <h3 style={{ fontSize: '18px', fontWeight: 900 }}>Return for Clarification — LO00000089 · Narayan FPC</h3>
+      <h3 style={{ fontSize: '18px', fontWeight: 700 }}>Return for Clarification — LO00000089 · Narayan FPC</h3>
       {['Income evidence insufficient — request 3 more months of bank statements', 'Land documents missing — 7/12 extract not uploaded', 'Loan purpose unclear — request detailed end-use description', 'FPC membership not verified', 'Prior default with associate company', 'Other'].map(r => <label key={r} className="block py-2" style={{ fontSize: '13px', color: '#3D4450' }}><input type="checkbox" style={{ accentColor: '#7C3AED', marginRight: 8 }} />{r}</label>)}
       <textarea className="w-full mt-3 p-3 rounded-lg border border-[#D1D5DB]" rows={4} placeholder="Additional instructions to Credit Team" />
       <div className="mt-4" style={{ fontSize: '13px', color: '#6B7280' }}>Returned by: S. Nair (CFO) · Expected resubmission within: 3 days</div>
@@ -194,11 +194,11 @@ function renderGeneric(onNavigate: (page: string) => void) {
     ['Board Minutes Archive', 'sc-board'],
     ['Policy Authority Matrix', 'sc-policy'],
     ['SOP Reference', 'shared-audit-trail'],
-  ].map(([title, page]) => <button key={title} onClick={() => onNavigate(page)} className="bg-white rounded-lg p-5 border border-[#EDEEF0] text-left clickable-card"><FileText size={18} color="#7C3AED" /><h3 style={{ fontSize: '15px', fontWeight: 900, marginTop: '12px' }}>{title}</h3><div style={{ fontSize: '13px', color: '#3D4450', lineHeight: '20px', marginTop: '8px' }}>Resolution references and authority rules.</div><span className="inline-flex mt-4 px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#EDE9FE', color: '#7C3AED', fontSize: '12px', fontWeight: 800 }}><Download size={13} style={{ marginRight: 6 }} />Export</span></button>)}</div>;
+  ].map(([title, page]) => <button key={title} onClick={() => onNavigate(page)} className="bg-white rounded-lg p-5 border border-[#EDEEF0] text-left clickable-card"><FileText size={18} color="#7C3AED" /><h3 style={{ fontSize: '15px', fontWeight: 700, marginTop: '12px' }}>{title}</h3><div style={{ fontSize: '13px', color: '#3D4450', lineHeight: '20px', marginTop: '8px' }}>Resolution references and authority rules.</div><span className="inline-flex mt-4 px-3 py-1.5 rounded-lg" style={{ backgroundColor: '#EDE9FE', color: '#7C3AED', fontSize: '12px', fontWeight: 800 }}><Download size={13} style={{ marginRight: 6 }} />Export</span></button>)}</div>;
 }
 
 function DataCard({ title, action, children }: { title: string; action?: ReactNode; children: ReactNode }) {
-  return <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden"><div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: '#F7F8FA' }}><h3 style={{ fontSize: '15px', fontWeight: 900 }}>{title}</h3>{action}</div>{children}</div>;
+  return <div className="bg-white rounded-lg border border-[#EDEEF0] overflow-hidden"><div className="px-5 py-3 border-b border-[#EDEEF0] flex items-center justify-between" style={{ backgroundColor: '#F7F8FA' }}><h3 style={{ fontSize: '15px', fontWeight: 700 }}>{title}</h3>{action}</div>{children}</div>;
 }
 
 function SimpleTable({ headers, children }: { headers: string[]; children: ReactNode }) {
@@ -206,7 +206,7 @@ function SimpleTable({ headers, children }: { headers: string[]; children: React
 }
 
 function Cell({ children, mono, blue, right }: { children: ReactNode; mono?: boolean; blue?: boolean; right?: boolean }) {
-  return <td className={`px-4 py-3 ${right ? 'text-right' : ''}`} style={{ fontSize: '13px', color: blue ? '#0C5FA5' : '#3D4450', fontFamily: mono ? 'Roboto Mono' : 'inherit', fontWeight: blue ? 900 : 500 }}>{children}</td>;
+  return <td className={`px-4 py-3 ${right ? 'text-right' : ''}`} style={{ fontSize: '13px', color: blue ? '#1E88E5' : '#3D4450', fontFamily: mono ? 'Roboto Mono' : 'inherit', fontWeight: blue ? 900 : 500 }}>{children}</td>;
 }
 
 function Info({ label, value }: { label: string; value: string }) {
