@@ -22,7 +22,7 @@ export function UniversalStageTracker({ currentStage = 5, compact = false }: { c
                 >
                   {done ? <Check size={16} /> : stage}
                 </button>
-                {!compact && <div style={{ fontSize: 12, color: active ? 'var(--brand-primary)' : 'var(--neutral-700)', fontWeight: active ? 700 : 700, textAlign: 'center', marginTop: 8, maxWidth: 96 }}>{label}</div>}
+                {!compact && <div style={{ fontSize: 12, color: active ? 'var(--brand-primary)' : 'var(--neutral-700)', fontWeight: active ? 700 : 500, textAlign: 'center', marginTop: 8, maxWidth: 96 }}>{label}</div>}
               </div>
               {i < loanStages.length - 1 && <div className="flex-1 h-1 mx-2 mt-4 rounded-full" style={{ backgroundColor: done ? 'var(--success-500)' : 'var(--neutral-200)', borderTop: done ? '0' : '1px dashed var(--neutral-300)' }} />}
             </div>

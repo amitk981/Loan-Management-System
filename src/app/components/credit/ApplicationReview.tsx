@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { AlertTriangle, Check, Send, ShieldCheck } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { AppModal } from '../shared/AppModal';
@@ -200,7 +201,7 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
           subtitle="The appraisal note will be locked and cannot be edited after submission."
           icon={<ShieldCheck size={18} />}
           onClose={() => setShowSubmit(false)}
-          footer={<><button onClick={() => setShowSubmit(false)} className="px-4 py-2.5 rounded-lg border border-[var(--neutral-250)]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowSubmit(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Confirm</button></>}
+          footer={<><button onClick={() => setShowSubmit(false)} className="px-4 py-2.5 rounded-lg border border-[var(--neutral-250)]" style={{ fontSize: '14px' }}>Cancel</button><button onClick={() => { setShowSubmit(false); setSubmitted(true); toast.success(`${appraisalLoan.id} submitted to Sanction Committee`, { description: 'Appraisal note locked; Days Waiting reset from this stage-entry time.' }); }} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Confirm</button></>}
         >
           <div className="flex gap-3 p-3 rounded-lg" style={{ backgroundColor: 'var(--warning-100)', color: 'var(--warning-700)', fontSize: '13px', lineHeight: '20px' }}>
             <AlertTriangle size={16} /> Confirming will move the Credit inbox row to Submitted to SC and append Submitted by: Amit Kulkarni with the current timestamp.

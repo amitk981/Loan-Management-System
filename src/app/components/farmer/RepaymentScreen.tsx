@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { CheckCircle, Copy, Info, Landmark, Receipt, Upload } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { AppModal } from '../shared/AppModal';
@@ -217,7 +218,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
           footer={
             <>
               <button onClick={() => setShowConfirm(false)} className="px-4 py-2.5 rounded-xl border border-[var(--neutral-200)]" style={{ fontSize: '14px' }}>Edit</button>
-              <button onClick={() => { setShowConfirm(false); setSubmitted(true); }} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Submit</button>
+              <button onClick={() => { setShowConfirm(false); setSubmitted(true); toast.success('Payment submitted', { description: `₹${Number(amount).toLocaleString('en-IN')} via ${method === 'direct' ? 'direct transfer' : 'subsidiary deduction'}. Treasury posts to SAP by the next working day; principal is cleared before interest.` }); }} className="px-4 py-2.5 rounded-xl font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Submit</button>
             </>
           }
         >

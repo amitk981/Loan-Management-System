@@ -1,9 +1,13 @@
 # WhatsLoan — SFPCL Member Credit Portal (project map)
 
 A multi-role web prototype that digitises SFPCL's member loan lifecycle, governed by
-`SOP_SFPCL_LOANDISBURSEMENT v1.0` (Section 378ZK, Companies Act 2013). Read
-`Docs/SFPCL_Design_Audit_and_Redesign_Plan.md` for the full audit, SOP study, user
-journeys, system flow, and the redesign plan. The two SOP PDFs live in `Docs/`.
+`SOP_SFPCL_LOANDISBURSEMENT v1.0` (Section 378ZK, Companies Act 2013). The two SOP PDFs
+are the source of truth and live in `Docs/`:
+- `Docs/Final SOP - Loan Disbursement V10 (1).pdf` — the full 33-page SOP.
+- `Docs/SFPCL_Loan Sanction- Doc & Disbursement-SOP_WhatsLoan-25052026.pdf` — the visual brief.
+
+For the living UX/prototype audit, issue ledger, and the execution log, read
+`Docs/DESIGN_AUDIT_LEDGER.md` and `Docs/DESIGN_AUDIT_IMPLEMENTATION_LOG.md`.
 
 ## Stack
 React 18 + TypeScript + Vite + Tailwind + shadcn/ui. All data is **mocked** (`src/app/data/`).
@@ -28,8 +32,8 @@ Custom URL-param router (`?page=`) — no real nested routes yet.
 - `src/app/components/shared/` — cross-role components (StatusBadge, LoanTracker, TableStates…)
 - `src/app/components/ui/` — shadcn primitives (don't edit casually)
 - `src/app/data/` — mock data per role
-- `src/styles/theme.css` — **design tokens (the intended source of truth)**
-- `Docs/SFPCL_LoanPlatform_Figma_DesignBrief.md` — the documented design system
+- `src/styles/theme.css` — **design tokens (the source of truth)**; `src/styles/globals.css` farmer surface aliases these tokens
+- `Docs/DESIGN_AUDIT_LEDGER.md` — the living UX/prototype audit + issue ledger (the documented design system reference)
 
 ## Enhancement pass — done (branch `enhance/vibe-check-pass`)
 - ✅ **`formatCurrency` centralised** → `src/app/lib/format.ts` (was 18 copies).

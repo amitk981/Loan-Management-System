@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Check, Clock, FileText, Plus, Search, Send, X } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { WorkbenchTabs } from '../shared/WorkbenchTabs';
+import { EmptyTableState } from '../shared/TableStates';
 import { creditIntakeTabs } from '../../data/roleNav';
 import { AppModal } from '../shared/AppModal';
 import { creditApplications } from '../../data/creditData';
@@ -13,9 +14,19 @@ interface ApplicationQueueProps {
   activePage: string;
 }
 
+// Aging cue against the SOP 2-day Credit TAT (audit DA-018), derived from the mock "submittedAgo".
+function tatChip(submittedAgo: string): { label: string; color: string; bg: string } {
+  if (submittedAgo.includes('h')) return { label: 'Day 1 of 2', color: 'var(--success-700)', bg: 'var(--success-50)' };
+  const days = parseInt(submittedAgo, 10) || 1;
+  if (days >= 2) return { label: `TAT breached · ${days}d`, color: 'var(--error-700)', bg: 'var(--error-50)' };
+  return { label: `Day ${days} of 2`, color: 'var(--warning-700)', bg: 'var(--warning-50)' };
+}
 
 export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueueProps) {
   const [search, setSearch] = useState('');
+  // Brief simulated load so the prototype demonstrates a loading state (audit DA-012).
+  const [loading, setLoading] = useState(true);
+  useEffect(() => { const id = window.setTimeout(() => setLoading(false), 600); return () => window.clearTimeout(id); }, []);
   const [filter, setFilter] = useState<'All' | 'Today' | 'Incomplete' | 'Assigned to me'>('All');
   const [selectedId, setSelectedId] = useState(creditApplications[0].id);
   const [showNotice, setShowNotice] = useState(false);
@@ -73,17 +84,35 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               </div>
             </div>
             <div className="max-h-[548px] overflow-y-auto">
-              {filtered.map(app => (
-                <button key={app.id} onClick={() => setSelectedId(app.id)} className="w-full p-4 text-left border-b border-[var(--neutral-250)] hover:bg-[var(--neutral-150)]" style={{ backgroundColor: selected.id === app.id ? 'var(--accent-blue-50)' : 'white' }}>
-                  <div className="flex items-center justify-between">
-                    <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 700 }}>{app.id}</span>
-                    <StatusBadge status={app.status} />
+              {loading ? (
+                Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="p-4 border-b border-[var(--neutral-250)]">
+                    <div className="h-3 w-24 rounded-full animate-pulse mb-2.5" style={{ backgroundColor: 'var(--neutral-200)' }} />
+                    <div className="h-3 w-40 rounded-full animate-pulse mb-2" style={{ backgroundColor: 'var(--neutral-200)' }} />
+                    <div className="h-2.5 w-32 rounded-full animate-pulse" style={{ backgroundColor: 'var(--neutral-200)' }} />
                   </div>
-                  <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '6px' }}>{app.shortName}</div>
-                  <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '3px' }}>{app.village} · {formatCurrency(app.amount)} req.</div>
-                  <div style={{ fontSize: '12px', color: app.status === 'Overdue' ? 'var(--error-700)' : 'var(--neutral-500)', marginTop: '6px', fontWeight: 700 }}>{app.blocker} · {app.submittedAgo}</div>
-                </button>
-              ))}
+                ))
+              ) : filtered.length === 0 ? (
+                <EmptyTableState title="No applications match" message="Try clearing the search or switching the filter to 'All'." />
+              ) : (
+                filtered.map(app => {
+                  const tat = tatChip(app.submittedAgo);
+                  return (
+                    <button key={app.id} onClick={() => setSelectedId(app.id)} className="w-full p-4 text-left border-b border-[var(--neutral-250)] hover:bg-[var(--neutral-150)]" style={{ backgroundColor: selected.id === app.id ? 'var(--accent-blue-50)' : 'white' }}>
+                      <div className="flex items-center justify-between">
+                        <span style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 700 }}>{app.id}</span>
+                        <StatusBadge status={app.status} />
+                      </div>
+                      <div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '6px' }}>{app.shortName}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '3px' }}>{app.village} · {formatCurrency(app.amount)} req.</div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full" style={{ backgroundColor: tat.bg, color: tat.color, fontSize: '11px', fontWeight: 700 }}><Clock size={10} /> {tat.label}</span>
+                        <span style={{ fontSize: '12px', color: app.status === 'Overdue' ? 'var(--error-700)' : 'var(--neutral-500)', fontWeight: 700 }}>{app.blocker} · {app.submittedAgo}</span>
+                      </div>
+                    </button>
+                  );
+                })
+              )}
             </div>
           </div>
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { ChevronDown, FileText, MessageCircle, Phone, Send, Upload } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
@@ -114,7 +115,7 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
               </span>
             </button>
             <button
-              onClick={() => description.trim() && setSubmitted(true)}
+              onClick={() => { if (description.trim()) { setSubmitted(true); toast.success('Grievance submitted: GRV-2025-0047', { description: `Logged in the Grievance Register. We'll respond via ${contactPreference}.` }); } }}
               disabled={!description.trim()}
               className="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2"
               style={{ backgroundColor: description.trim() ? 'var(--brand-primary)' : 'var(--neutral-400)', color: 'white', fontSize: '14px', cursor: description.trim() ? 'pointer' : 'not-allowed' }}

@@ -3,9 +3,11 @@ import { StatusBadge } from './StatusBadge';
 import { useAuth } from '../../context/AuthContext';
 import { STAGES } from '../../lib/loanState';
 import { formatCurrency } from '../../lib/format';
+import { useLoans } from '../../data/loanStore';
 
 // The Pipeline board: one shared view of every loan grouped by the 6 SOP stages.
-// The loan (not the menu) is the object; clicking a card opens the shared Loan File.
+// The loan (not the menu) is the object; clicking a card opens THAT loan's file (carries the id).
+// Cards read the live loan store, so sanction decisions taken in the Loan File move cards here.
 // Each role's owned stage is highlighted so they see "what's mine" at a glance.
 
 interface PipelineProps {
@@ -16,25 +18,10 @@ interface PipelineProps {
 // Which role owns each stage column (for the highlight).
 const STAGE_OWNER = ['farmer', 'credit', 'sanction', 'compliance', 'treasury', 'credit'];
 
-interface Card { id: string; borrower: string; amount: number; status: string; stage: number }
-
-const PIPELINE: Card[] = [
-  { id: 'LO00000091', borrower: 'Priya Shinde', amount: 60000, status: 'Incomplete', stage: 1 },
-  { id: 'LO00000092', borrower: 'Sunil Pawar', amount: 120000, status: 'Application Received', stage: 1 },
-  { id: 'LO00000089', borrower: 'Rajesh Patil', amount: 95000, status: 'Under Assessment', stage: 2 },
-  { id: 'LO00000090', borrower: 'Ganesh Thorat FPC', amount: 480000, status: 'Under Assessment', stage: 2 },
-  { id: 'LO00000086', borrower: 'Narayan FPC', amount: 540000, status: 'Awaiting SC Approval', stage: 3 },
-  { id: 'LO00000085', borrower: 'Meena Joshi', amount: 180000, status: 'Under SC Review', stage: 3 },
-  { id: 'LO00000084', borrower: 'Anil Deshmukh', amount: 220000, status: 'Docs Preparation', stage: 4 },
-  { id: 'LO00000083', borrower: 'Kavita Rane', amount: 300000, status: 'Awaiting Signature', stage: 4 },
-  { id: 'LO00000082', borrower: 'Suresh More', amount: 150000, status: 'Pending Initiation', stage: 5 },
-  { id: 'LO00000018', borrower: 'Narayan Patil', amount: 120000, status: 'Overdue', stage: 6 },
-  { id: 'LO00000001', borrower: 'Ramesh Jadhav', amount: 60000, status: 'Active', stage: 6 },
-];
-
 export function Pipeline({ onNavigate, activePage }: PipelineProps) {
   const { user } = useAuth();
   const role = user?.role || 'credit';
+  const loans = useLoans();
 
   return (
     <Shell
@@ -47,7 +34,7 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
       <div className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: 'thin' }}>
         {STAGES.map((label, i) => {
           const stage = i + 1;
-          const cards = PIPELINE.filter(c => c.stage === stage);
+          const cards = loans.filter(c => c.stage === stage);
           const mine = STAGE_OWNER[i] === role;
           return (
             <div key={label} className="flex-shrink-0" style={{ width: '260px' }}>
@@ -68,7 +55,7 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
                 {cards.map(c => (
                   <button
                     key={c.id}
-                    onClick={() => onNavigate('loan-file')}
+                    onClick={() => onNavigate(`loan-file::${c.id}`)}
                     className="w-full text-left bg-white rounded-lg p-3 border border-[var(--neutral-200)] clickable-card"
                   >
                     <div className="flex items-center justify-between mb-1.5">
@@ -76,7 +63,7 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
                       <StatusBadge status={c.status} />
                     </div>
                     <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>{c.borrower}</div>
-                    <div style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--neutral-700)', marginTop: '2px' }}>{formatCurrency(c.amount)}</div>
+                    <div style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--neutral-700)', marginTop: '2px' }}>{formatCurrency(c.requested)}</div>
                   </button>
                 ))}
               </div>

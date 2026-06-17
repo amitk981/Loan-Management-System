@@ -33,14 +33,16 @@ export const STAGE_OF_STATE: Record<LoanState, number> = {
   active: 6, overdue: 6, grace: 6, extension: 6, non_recoverable: 6, recovery: 6, closed: 6, archived: 6,
 };
 
-/** The single tone palette — derives every status chip's colours. */
+/** The single tone palette — derives every status chip's colours.
+ *  Values reference theme.css tokens so re-theming a token re-colours every badge
+ *  (audit DA-019); the literal hex each token resolves to is noted for reference. */
 export const TONE_STYLES: Record<Tone, { bg: string; text: string }> = {
-  success: { bg: '#DCFCE7', text: '#166534' },
-  warning: { bg: '#FEF3C7', text: '#92400E' },
-  error: { bg: '#FEE2E2', text: '#991B1B' },
-  info: { bg: '#DBEAFE', text: '#1E40AF' },
-  neutral: { bg: '#EDEEF0', text: '#3D4450' },
-  special: { bg: '#F3E8FF', text: '#7C3AED' },
+  success: { bg: 'var(--success-100)', text: 'var(--success-700)' }, // #DCFCE7 / #166534
+  warning: { bg: 'var(--warning-100)', text: 'var(--warning-700)' }, // #FEF3C7 / #92400E
+  error: { bg: 'var(--error-100)', text: 'var(--error-900)' },       // #FEE2E2 / #991B1B
+  info: { bg: 'var(--info-100)', text: 'var(--info-900)' },          // #DBEAFE / #1E40AF
+  neutral: { bg: 'var(--neutral-200)', text: 'var(--neutral-700)' }, // #EDEEF0 / #3D4450
+  special: { bg: 'var(--purple-100)', text: 'var(--accent-sanction)' }, // #F3E8FF / #7C3AED
 };
 
 /**

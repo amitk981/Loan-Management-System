@@ -65,7 +65,7 @@ const mockUsers: Record<UserRole, User> = {
     id: 'USR005',
     name: 'Suresh Nair',
     role: 'treasury',
-    roleLabel: 'Finance Manager',
+    roleLabel: 'Sr. Manager – Finance',
     email: 'suresh.n@sfpcl.com',
     mobile: '9876543214',
   },

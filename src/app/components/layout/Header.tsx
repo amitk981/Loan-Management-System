@@ -44,6 +44,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
       { label: 'My Active Loan', meta: 'Status, documents and repayment', page: 'farmer-active-loans' },
       { label: 'Apply for Loan', meta: '5-step application wizard', page: 'farmer-apply' },
       { label: 'Make Payment', meta: 'Direct transfer or subsidiary deduction', page: 'farmer-repayment' },
+      { label: 'Key Facts', meta: 'Your rate, charges and terms in plain language', page: 'farmer-key-facts' },
       { label: 'My Documents', meta: 'PoA, agreement, NOC downloads', page: 'farmer-documents' },
       { label: 'Support & Grievance', meta: 'Raise complaint or get help', page: 'farmer-support' },
     ],
@@ -65,6 +66,9 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
       { label: 'Compliance Calendar', meta: 'Statutory deadlines and evidence', page: 'cs-calendar' },
       { label: 'CDSL Pledge Tracker', meta: 'D-MAT pledge lifecycle', page: 'cs-cdsl' },
       { label: 'Security Return', meta: 'SH-4 and cheque return log', page: 'cs-security-return' },
+      { label: 'Stamp Register', meta: 'Stamp duty log (Maharashtra Stamp Act)', page: 'cs-stamp' },
+      { label: 'Grievances', meta: 'Complaint-handling log & TAT', page: 'cs-grievance' },
+      { label: 'Loan & Sanction Registers', meta: 'Statutory registers', page: 'cs-loan-register' },
     ],
     sanction: [
       { label: 'Approval Queue', meta: '7-point scrutiny decisions', page: 'sc-awaiting' },
@@ -72,6 +76,8 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
       { label: 'Final Sign-off', meta: 'Post-CS checklist release to Treasury', page: 'sc-final-signoff' },
       { label: 'Special Cases', meta: 'Director/relative GM approval', page: 'sc-special-cases' },
       { label: 'Portfolio Health', meta: 'DPD and exposure summary', page: 'sc-health' },
+      { label: 'Exposure & Limits', meta: 's.186 capacity and exposure', page: 'sc-exposure' },
+      { label: 'DPD Summary', meta: 'Delinquency buckets', page: 'sc-dpd' },
       { label: 'Recovery Actions', meta: 'Default escalation decisions', page: 'sc-default-escalations' },
     ],
     treasury: [
@@ -81,6 +87,8 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
       { label: 'Incoming Repayments', meta: 'Post UTR receipts to SAP', page: 'treasury-incoming' },
       { label: 'Bank Reconciliation', meta: 'Match statement to SAP', page: 'treasury-reconciliation' },
       { label: 'Interest Accruals', meta: 'Monthly and year-end invoices', page: 'treasury-interest' },
+      { label: 'SAP Entries Log', meta: 'Posted SAP journal entries', page: 'treasury-sap-log' },
+      { label: 'Subsidiary Deductions', meta: 'Tri-party repayment queue', page: 'treasury-deductions' },
     ],
     admin: [
       { label: 'Portfolio Overview', meta: 'System-wide lending health', page: 'admin-portfolio' },

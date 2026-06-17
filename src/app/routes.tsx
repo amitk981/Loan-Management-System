@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createBrowserRouter } from 'react-router';
+import { Toaster } from 'sonner';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { LoginPage } from './components/auth/LoginPage';
@@ -14,6 +15,7 @@ import { LoanApplication } from './components/farmer/LoanApplication';
 import { LoanStatus } from './components/farmer/LoanStatus';
 import { RepaymentScreen } from './components/farmer/RepaymentScreen';
 import { SupportGrievance } from './components/farmer/SupportGrievance';
+import { KeyFacts } from './components/farmer/KeyFacts';
 
 // Credit
 import { CreditDashboard } from './components/credit/CreditDashboard';
@@ -52,7 +54,7 @@ const defaultPages: Record<string, string> = {
 };
 
 const rolePages: Record<string, string[]> = {
-  farmer: ['farmer-dashboard', 'farmer-apply', 'farmer-active-loans', 'farmer-loan-history', 'farmer-documents', 'farmer-repayment', 'farmer-support', 'farmer-noc'],
+  farmer: ['farmer-dashboard', 'farmer-apply', 'farmer-active-loans', 'farmer-loan-history', 'farmer-documents', 'farmer-repayment', 'farmer-support', 'farmer-noc', 'farmer-key-facts'],
   credit: ['credit-dashboard', 'credit-queue', 'credit-pending', 'credit-returned', 'credit-review', 'credit-sc-queue', 'credit-active-loans', 'credit-repayments', 'credit-dpd', 'credit-register', 'credit-rejected', 'credit-exceptions', 'credit-mis', 'credit-interest-invoices', 'credit-calculator', 'credit-search-member', 'credit-member-profile', 'credit-analytics', 'credit-defaults', 'credit-all-apps', 'credit-manual-entry'],
   compliance: ['cs-dashboard', 'cs-queue', 'cs-workspace', 'cs-archive', 'cs-awaiting-prep', 'cs-awaiting-review', 'cs-signoff', 'cs-poa', 'cs-triparty', 'cs-sh4', 'cs-termsheet', 'cs-agreement', 'cs-kyc', 'cs-pending-kyc', 'cs-rekyc', 'cs-noc', 'cs-calendar', 'cs-cdsl', 'cs-security-return', 'cs-loan-register', 'cs-sanction-register', 'cs-exception-register', 'cs-grievance', 'cs-stamp', 'cs-poa-register', 'cs-reports'],
   sanction: ['sc-dashboard', 'sc-awaiting', 'sc-my-sign', 'sc-joint', 'sc-review', 'sc-special-cases', 'sc-returns', 'sc-register', 'sc-exceptions', 'sc-health', 'sc-exposure', 'sc-dpd', 'sc-board', 'sc-policy', 'sc-security-invocation', 'sc-default-escalations'],
@@ -85,20 +87,32 @@ const utilityPages = [
 function readPageFromUrl() {
   return new URLSearchParams(window.location.search).get('page') || '';
 }
+function readIdFromUrl() {
+  return new URLSearchParams(window.location.search).get('id') || '';
+}
 
 function AppRoot() {
   const { user } = useAuth();
   const [activePage, setActivePage] = useState<string>(() => readPageFromUrl());
+  const [activeLoanId, setActiveLoanId] = useState<string>(() => readIdFromUrl());
 
-  const navigate = (page: string) => {
+  // Navigation can carry a loan id: onNavigate('loan-file::LO00000089').
+  // The double-colon is backward compatible — calls without it behave exactly as before.
+  const navigate = (target: string) => {
+    const sep = target.indexOf('::');
+    const page = sep >= 0 ? target.slice(0, sep) : target;
+    const id = sep >= 0 ? target.slice(sep + 2) : '';
     const url = new URL(window.location.href);
     url.searchParams.set('page', page);
+    if (id) url.searchParams.set('id', id);
+    else url.searchParams.delete('id');
     window.history.pushState({}, '', url);
     setActivePage(page);
+    setActiveLoanId(id);
   };
 
   useEffect(() => {
-    const handlePop = () => setActivePage(readPageFromUrl());
+    const handlePop = () => { setActivePage(readPageFromUrl()); setActiveLoanId(readIdFromUrl()); };
     window.addEventListener('popstate', handlePop);
     return () => window.removeEventListener('popstate', handlePop);
   }, []);
@@ -118,7 +132,7 @@ function AppRoot() {
     return null;
   }
 
-  const props = { onNavigate: navigate, activePage };
+  const props = { onNavigate: navigate, activePage, activeLoanId };
 
   if (activePage === 'notifications-center') return <NotificationsCenter {...props} />;
   if (activePage === 'user-profile') return <UserProfile {...props} />;
@@ -141,6 +155,7 @@ function AppRoot() {
     if (activePage === 'farmer-apply') return <LoanApplication {...props} />;
     if (activePage === 'farmer-active-loans' || activePage === 'farmer-loan-history' || activePage === 'farmer-noc') return <LoanStatus {...props} />;
     if (activePage === 'farmer-documents') return <LoanStatus {...props} />;
+    if (activePage === 'farmer-key-facts') return <KeyFacts {...props} />;
     if (activePage === 'farmer-repayment') return <RepaymentScreen {...props} />;
     if (activePage === 'farmer-support') return <SupportGrievance {...props} />;
     return <FarmerDashboard {...props} />;
@@ -198,6 +213,7 @@ function Root() {
     <LanguageProvider>
       <AuthProvider>
         <AppRoot />
+        <Toaster position="top-right" richColors closeButton toastOptions={{ style: { fontFamily: 'Inter, sans-serif' } }} />
       </AuthProvider>
     </LanguageProvider>
   );

@@ -13,7 +13,9 @@
   --neutral-100: #F7F8FA;
   --neutral-200: #EDEEF0;
   --neutral-300: #D1D5DB;
-  --neutral-400: #9EA8B3;
+  /* --neutral-400 darkened from #9EA8B3 (~2.6:1) to meet WCAG AA 4.5:1 for the
+     pervasive small "muted"/helper text that uses it (audit DA-022). */
+  --neutral-400: #6B7280;
   --neutral-700: #3D4450;
   --neutral-900: #12151A;
   --success-100: #DCFCE7;
@@ -27,7 +29,9 @@
   --gold-500: #D97706;
   /* Extended semantic shades (status text/backgrounds, role accents) */
   --neutral-150: #FAFAF8;
-  --neutral-500: #6B7280;
+  /* --neutral-500 nudged darker so it stays a visible step below the (now darker)
+     --neutral-400 while comfortably passing WCAG AA (audit DA-022/DA-023). */
+  --neutral-500: #5B6472;
   --success-50: #F0FDF4;
   --success-200: #BBF7D0;
   --success-600: #2E7D32;
@@ -60,6 +64,11 @@
   --cream-50: #FDFAF4;
 
   /* One-off palette tokens (final hex sweep) */
+  --green-950: #0F3323;
+  --slate-300: #CBD5E1;
+  --farmer-hero-1: #123624;
+  --farmer-hero-2: #1E5F40;
+  --farmer-hero-3: #2A8057;
   --green-900: #16452F;
   --green-800: #286C4B;
   --green-700b: #3D7A4F;
@@ -279,5 +288,16 @@
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
+  }
+
+  /* Respect users who prefer reduced motion (audit DA-024): neutralise animations
+     and transitions globally rather than per-component. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }

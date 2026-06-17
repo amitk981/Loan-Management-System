@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Check, CheckCircle, Eye, Lock, Send, XCircle } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { GateBanner } from '../shared/GateBanner';
 import { disbursementLoan, preflightGates } from '../../data/treasuryData';
+import { disburseLoan } from '../../data/loanStore';
 import { formatCurrency } from '../../lib/format';
 
 interface DisbursementScreenProps {
@@ -163,7 +165,7 @@ export function DisbursementScreen({ onNavigate, activePage }: DisbursementScree
           <div className="p-4 rounded-lg mb-5" style={{ backgroundColor: 'var(--info-50)', color: 'var(--accent-treasury-700)' }}>2FA is mandatory. Finance Manager cannot authorize own transaction. OTP expires in 4:32.</div>
           <div className="grid grid-cols-2 gap-3 mb-5">{[['Borrower', disbursementLoan.borrower], ['Amount', formatCurrency(disbursementLoan.amount, true)], ['Mode', mode], ['Initiated By', 'Rajesh Kulkarni']].map(([l, v]) => <Info key={l} label={l} value={v} />)}</div>
           <div className="flex justify-center gap-2 mb-5">{otp.map((digit, i) => <input key={i} id={`treasury-otp-${i}`} aria-label={`OTP digit ${i + 1}`} value={digit} onChange={e => handleOtp(i, e.target.value)} maxLength={1} className="text-center rounded-lg border border-[var(--neutral-300)]" style={{ width: 52, height: 56, fontSize: 22, fontFamily: 'Roboto Mono' }} />)}</div>
-          <div className="grid grid-cols-2 gap-3"><button onClick={() => setStep(5)} className="py-3 rounded-lg font-medium" style={{ backgroundColor: 'var(--success-500)', color: 'white' }}>Authorize & Execute Payment</button><button className="py-3 rounded-lg font-medium" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)' }}><XCircle size={16} style={{ display: 'inline', marginRight: 6 }} />Reject / Hold</button></div>
+          <div className="grid grid-cols-2 gap-3"><button onClick={() => { setStep(5); disburseLoan(disbursementLoan.id); toast.success('Payment authorized & executed', { description: `${disbursementLoan.id} disbursed via RBL Bank. Loan moves to Stage 6 — Monitoring & Repayment.` }); }} className="py-3 rounded-lg font-medium" style={{ backgroundColor: 'var(--success-500)', color: 'white' }}>Authorize & Execute Payment</button><button className="py-3 rounded-lg font-medium" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)' }}><XCircle size={16} style={{ display: 'inline', marginRight: 6 }} />Reject / Hold</button></div>
         </div>
       )}
 
@@ -185,7 +187,7 @@ Company Code     : SFPCL
 Status: Pending Confirmation
 Posted by: Rajesh Kulkarni`}</pre>
           <label className="flex gap-3 mt-5" style={{ fontSize: 13, color: 'var(--neutral-700)' }}><input type="checkbox" checked={sapConfirmed} onChange={e => setSapConfirmed(e.target.checked)} style={{ accentColor: 'var(--accent-treasury)' }} />I confirm the journal entry is accurate and the disbursement has been completed.</label>
-          <div className="flex gap-3 mt-5"><button className="px-4 py-2.5 rounded-lg border border-[var(--neutral-200)]" style={{ color: 'var(--error-500)' }}>Report Discrepancy</button><button disabled={!sapConfirmed} onClick={() => setStep(6)} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: sapConfirmed ? 'var(--brand-secondary)' : 'var(--neutral-400)', color: 'white' }}>Confirm SAP Entry</button></div>
+          <div className="flex gap-3 mt-5"><button className="px-4 py-2.5 rounded-lg border border-[var(--neutral-200)]" style={{ color: 'var(--error-500)' }}>Report Discrepancy</button><button disabled={!sapConfirmed} onClick={() => { setStep(6); toast.success('SAP entry confirmed', { description: `Disbursement advice ready; ${disbursementLoan.id} marked disbursed.` }); }} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: sapConfirmed ? 'var(--brand-secondary)' : 'var(--neutral-400)', color: 'white' }}>Confirm SAP Entry</button></div>
         </div>
       )}
 

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Plus, Download, FileText, TrendingUp, Clock, ChevronRight, Bell, BadgeIndianRupee, CheckCircle2, AlertCircle, Info, IdCard, AlertOctagon } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { GateBanner } from '../shared/GateBanner';
 import { LoanTracker } from '../shared/LoanTracker';
+import { useLanguage } from '../../context/LanguageContext';
 import { farmerDocuments, farmerEligibility, farmerLoan, farmerNotifications, farmerProfile, farmerTransactions } from '../../data/farmerData';
 import { formatCurrency } from '../../lib/format';
 
@@ -21,16 +23,45 @@ const notifIcons: Record<string, { icon: JSX.Element; bg: string; color: string;
 };
 
 export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps) {
+  const { t } = useLanguage();
 
   const repaidPct = Math.round((farmerLoan.totalRepaid / farmerLoan.sanctionedAmount) * 100);
 
-  // Simulated loan state — in real app this comes from API
-  // States: 'active' | 'under-processing' | 'overdue' | 'no-loan'
-  const loanState = 'active'; // Change to 'under-processing' to preview that state
+  // Loan state is now reachable from the UI (audit DA-002) via the "Preview state"
+  // control below, instead of a hardcoded const that required a code edit to demo.
+  type DemoState = 'active' | 'under-processing' | 'overdue' | 'no-loan' | 'kyc-blocked' | 'default-blocked';
+  const [demo, setDemo] = useState<DemoState>('active');
+  const demoOptions: { key: DemoState; label: string }[] = [
+    { key: 'active', label: 'Active' },
+    { key: 'under-processing', label: 'Processing' },
+    { key: 'overdue', label: 'Overdue' },
+    { key: 'no-loan', label: 'No loan' },
+    { key: 'kyc-blocked', label: 'KYC expired' },
+    { key: 'default-blocked', label: 'In default' },
+  ];
 
-  // KYC expiry check (simulated — in real app would be dynamic)
-  const kycExpired = false; // Set to true to see the blocked state
-  const hasActiveDefault = false; // Set to true to see the duplicate loan block
+  const loanState = demo === 'under-processing' ? 'under-processing' : demo === 'no-loan' ? 'no-loan' : 'active';
+  const isOverdue = demo === 'overdue';
+  const kycExpired = demo === 'kyc-blocked';
+  const hasActiveDefault = demo === 'default-blocked';
+  const noLoan = demo === 'no-loan';
+
+  const DemoSwitcher = () => (
+    <div className="mb-4 flex items-center gap-2 flex-wrap p-2 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px dashed var(--neutral-300)' }}>
+      <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '0.06em', paddingLeft: 4 }}>{t('fd.previewState', 'Preview state')}</span>
+      {demoOptions.map(opt => (
+        <button
+          key={opt.key}
+          onClick={() => setDemo(opt.key)}
+          aria-pressed={demo === opt.key}
+          className="px-3 py-1 rounded-lg transition-colors"
+          style={{ fontSize: '12px', fontWeight: 500, backgroundColor: demo === opt.key ? 'var(--brand-primary)' : 'white', color: demo === opt.key ? 'white' : 'var(--neutral-700)', border: '1px solid var(--neutral-200)' }}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
 
   // Time-based greeting
   const hour = new Date().getHours();
@@ -61,12 +92,13 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
               : 'Apply for a new loan'
           }
         >
-          <Plus size={16} /> Apply for Loan
+          <Plus size={16} /> {t('fd.applyForLoan', 'Apply for Loan')}
           {(kycExpired || hasActiveDefault) && <AlertOctagon size={14} />}
         </button>
       }
     >
       <div className="farmer-page">
+        <DemoSwitcher />
         {/* KYC Expiry / Default Hard Block Banners (SOP gates via shared GateBanner) */}
         {kycExpired && (
           <GateBanner
@@ -85,15 +117,30 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
             detail="You have an active default on LO000022. No new loan can be disbursed to a borrower with an existing default (SOP §6). Contact your Credit Manager before applying."
           />
         )}
-        <div className="mb-6 p-4 rounded-xl border border-[var(--success-200)] flex items-center justify-between" style={{ backgroundColor: 'var(--success-50)' }}>
+        {noLoan ? (
+          <div className="farmer-panel p-8 text-center">
+            <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: 'var(--brand-light)' }}>
+              <TrendingUp size={28} style={{ color: 'var(--brand-primary)' }} />
+            </div>
+            <h2 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--neutral-950)' }}>{t('fd.noLoanTitle', "You don't have an active loan yet")}</h2>
+            <p style={{ fontSize: '14px', color: 'var(--neutral-500)', marginTop: '6px', maxWidth: 460, marginLeft: 'auto', marginRight: 'auto', lineHeight: '21px' }}>
+              You're eligible for up to {formatCurrency(farmerEligibility.eligible)} based on your shareholding and land. Start a 5-step application — most members finish in under 10 minutes.
+            </p>
+            <button onClick={() => onNavigate('farmer-apply')} className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px', fontWeight: 700 }}>
+              <Plus size={16} /> {t('fd.startFirst', 'Start your first application')}
+            </button>
+          </div>
+        ) : (
+        <>
+        <div className="mb-6 p-4 rounded-xl border flex items-center justify-between" style={{ backgroundColor: isOverdue ? 'var(--error-50)' : 'var(--success-50)', borderColor: isOverdue ? 'var(--error-200)' : 'var(--success-200)' }}>
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-full bg-[var(--success-500)] text-white flex items-center justify-center font-bold text-sm">✓</span>
+            <span className="w-8 h-8 rounded-full text-white flex items-center justify-center font-bold text-sm" style={{ backgroundColor: isOverdue ? 'var(--error-500)' : 'var(--success-500)' }}>{isOverdue ? '!' : '✓'}</span>
             <div>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--success-700)' }}>Your loan is Active & in Good Standing</div>
-              <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>Next instalment of ₹19,500 is due by 31 Mar 2027.</div>
+              <div style={{ fontSize: '14px', fontWeight: 700, color: isOverdue ? 'var(--error-700)' : 'var(--success-700)' }}>{isOverdue ? t('fd.overdueTitle', 'Instalment overdue — please pay to avoid penalty interest') : t('fd.goodStanding', 'Your loan is Active & in Good Standing')}</div>
+              <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '2px' }}>{isOverdue ? 'Your instalment of ₹19,500 was due 31 Mar 2027. A 3-month grace period applies before default review (SOP §6.2).' : 'Next instalment of ₹19,500 is due by 31 Mar 2027.'}</div>
             </div>
           </div>
-          <button onClick={() => onNavigate('farmer-repayment')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: 'var(--brand-primary)', fontSize: '13px', fontWeight: 700 }}>Pay Now</button>
+          <button onClick={() => onNavigate('farmer-repayment')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: isOverdue ? 'var(--error-500)' : 'var(--brand-primary)', fontSize: '13px', fontWeight: 700 }}>{isOverdue ? t('fd.payOverdue', 'Pay overdue amount') : t('fd.payNow', 'Pay Now')}</button>
         </div>
         <section className="grid grid-cols-12 gap-5 mb-6">
           {/* Hero Card — conditionally rendered based on loan state */}
@@ -152,7 +199,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
               <div className="relative z-10 flex flex-col h-full min-h-[250px]">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(255,255,255,0.68)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Active Loan</div>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(255,255,255,0.68)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{t('fd.activeLoan', 'Active Loan')}</div>
                     <div style={{ fontSize: '15px', color: 'rgba(255,255,255,0.88)', fontFamily: 'Roboto Mono', marginTop: '4px' }}>{farmerLoan.id}</div>
                   </div>
                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'var(--warning-500)', color: 'white', fontSize: '12px', fontWeight: 700 }}>
@@ -160,14 +207,14 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                   </span>
                 </div>
                 <div className="mt-auto">
-                  <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.66)', fontWeight: 700 }}>Outstanding balance</div>
+                  <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.66)', fontWeight: 700 }}>{t('fd.outstanding', 'Outstanding balance')}</div>
                   <div style={{ fontSize: '48px', lineHeight: '58px', fontWeight: 700, color: 'white', letterSpacing: '0' }}>{formatCurrency(farmerLoan.outstandingBalance)}</div>
                   <div className="w-full max-w-xl h-2 rounded-full mt-4" style={{ backgroundColor: 'rgba(255,255,255,0.18)' }}>
                     <div className="h-full rounded-full" style={{ width: `${repaidPct}%`, backgroundColor: 'white' }} />
                   </div>
                   <div className="flex items-center justify-between max-w-xl mt-2" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.68)' }}>
-                    <span>{formatCurrency(farmerLoan.totalRepaid)} repaid</span>
-                    <span>{repaidPct}% complete</span>
+                    <span>{formatCurrency(farmerLoan.totalRepaid)} {t('fd.repaid', 'repaid')}</span>
+                    <span>{repaidPct}% {t('fd.complete', 'complete')}</span>
                   </div>
                   <div className="flex items-center gap-3 mt-6">
                     <button
@@ -175,7 +222,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                       className="px-5 py-2.5 rounded-xl"
                       style={{ backgroundColor: 'white', color: 'var(--green-900)', fontSize: '14px', fontWeight: 700 }}
                     >
-                      Pay instalment
+                      {t('fd.payInstalment', 'Pay instalment')}
                     </button>
                     <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.72)' }}>Suggested payment: {formatCurrency(19500)}</span>
                   </div>
@@ -187,17 +234,17 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
           <div className="col-span-5 farmer-panel p-5">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="farmer-kicker">Borrower Command</div>
-                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--neutral-950)', marginTop: '4px' }}>What you can do now</h2>
+                <div className="farmer-kicker">{t('fd.borrowerCommand', 'Borrower Command')}</div>
+                <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--neutral-950)', marginTop: '4px' }}>{t('fd.whatYouCanDo', 'What you can do now')}</h2>
               </div>
               <StatusBadge status="Good Standing" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: 'Track loan', detail: 'Stage, schedule, timeline', icon: <Clock size={18} />, page: 'farmer-active-loans', color: 'var(--blue-500)' },
-                { label: 'Download files', detail: 'Agreement, invoices, forms', icon: <FileText size={18} />, page: 'farmer-documents', color: 'var(--green-800)' },
-                { label: 'Apply again', detail: `${formatCurrency(farmerEligibility.eligible)} eligible limit`, icon: <TrendingUp size={18} />, page: 'farmer-apply', color: 'var(--accent-sanction)' },
-                { label: 'Ask for help', detail: 'Raise or track a ticket', icon: <Bell size={18} />, page: 'farmer-support', color: 'var(--gold-500)' },
+                { label: t('fd.trackLoan', 'Track loan'), detail: 'Stage, schedule, timeline', icon: <Clock size={18} />, page: 'farmer-active-loans', color: 'var(--blue-500)' },
+                { label: t('fd.downloadFiles', 'Download files'), detail: 'Agreement, invoices, forms', icon: <FileText size={18} />, page: 'farmer-documents', color: 'var(--green-800)' },
+                { label: t('fd.applyAgain', 'Apply again'), detail: `${formatCurrency(farmerEligibility.eligible)} eligible limit`, icon: <TrendingUp size={18} />, page: 'farmer-apply', color: 'var(--accent-sanction)' },
+                { label: t('fd.askForHelp', 'Ask for help'), detail: 'Raise or track a ticket', icon: <Bell size={18} />, page: 'farmer-support', color: 'var(--gold-500)' },
               ].map(item => (
                 <button key={item.label} onClick={() => onNavigate(item.page)} className="farmer-panel-tight p-4 text-left clickable-card" style={{ minHeight: '122px' }}>
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${item.color}15`, color: item.color }}>
@@ -214,13 +261,13 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       {/* Loan Journey Tracker */}
       <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-[var(--neutral-200)]">
         <div className="flex items-center justify-between mb-6">
-          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Loan Journey</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>{t('fd.loanJourney', 'Loan Journey')}</h3>
           <button
             onClick={() => onNavigate('farmer-active-loans')}
             className="flex items-center gap-1 transition-colors hover:text-[var(--brand-accent-700)]"
             style={{ fontSize: '13px', color: 'var(--brand-accent)', fontWeight: 500 }}
           >
-            View Details <ChevronRight size={14} />
+            {t('fd.viewDetails', 'View Details')} <ChevronRight size={14} />
           </button>
         </div>
         <LoanTracker
@@ -235,8 +282,8 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
         {/* Recent Transactions */}
         <div className="col-span-3 bg-white rounded-2xl p-5 shadow-sm border border-[var(--neutral-200)]">
           <div className="flex items-center justify-between mb-4">
-            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Recent Transactions</h3>
-            <button onClick={() => onNavigate('farmer-repayment')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>{t('fd.recentTransactions', 'Recent Transactions')}</h3>
+            <button onClick={() => onNavigate('farmer-repayment')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>{t('fd.viewAll', 'View All')} <ChevronRight size={14} /></button>
           </div>
           <div className="table-scroll">
             <table className="w-full">
@@ -265,8 +312,8 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
         {/* My Documents */}
         <div className="col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-[var(--neutral-200)]">
           <div className="flex items-center justify-between mb-4">
-            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Documents</h3>
-            <button onClick={() => onNavigate('farmer-documents')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>{t('fd.documents', 'Documents')}</h3>
+            <button onClick={() => onNavigate('farmer-documents')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>{t('fd.viewAll', 'View All')} <ChevronRight size={14} /></button>
           </div>
           <div className="space-y-1">
             {farmerDocuments.slice(3, 9).map((doc, i) => (
@@ -294,8 +341,8 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
       {/* Notifications */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-[var(--neutral-200)]">
         <div className="flex items-center justify-between mb-4">
-          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>Recent Alerts</h3>
-          <button onClick={() => onNavigate('notifications-center')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>View All <ChevronRight size={14} /></button>
+          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--neutral-900)' }}>{t('fd.recentAlerts', 'Recent Alerts')}</h3>
+          <button onClick={() => onNavigate('notifications-center')} className="flex items-center gap-1 hover:text-[var(--brand-accent-700)] transition-colors" style={{ fontSize: '13px', color: 'var(--brand-accent)' }}>{t('fd.viewAll', 'View All')} <ChevronRight size={14} /></button>
         </div>
         <div className="space-y-1">
           {farmerNotifications.map(n => {
@@ -318,6 +365,8 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
           })}
         </div>
       </div>
+        </>
+      )}
       </div>
     </Shell>
   );

@@ -30,6 +30,7 @@ const farmerNav: NavItem[] = [
     section: 'My Loan',
     children: [
       { label: 'Active Loan', key: 'farmer-active-loans' },
+      { label: 'Key Facts', key: 'farmer-key-facts' },
       { label: 'Loan History', key: 'farmer-loan-history' },
       { label: 'My Documents', key: 'farmer-documents' },
       { label: 'NOC & Closure', key: 'farmer-noc' },

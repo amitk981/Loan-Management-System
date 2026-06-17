@@ -1,6 +1,9 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 export type AppLanguage = 'EN' | 'मर' | 'हि';
+
+// Map our short codes to BCP-47 for the document `lang` attribute (audit DA-024).
+const htmlLangCode: Record<AppLanguage, string> = { EN: 'en', 'मर': 'mr', 'हि': 'hi' };
 
 interface LanguageContextType {
   lang: AppLanguage;
@@ -55,6 +58,46 @@ const dictionary: Record<AppLanguage, Record<string, string>> = {
     'nav.userManagement': 'वापरकर्ता व्यवस्थापन',
     'nav.audit': 'ऑडिट लॉग',
     'nav.config': 'सिस्टम सेटिंग्ज',
+    // Login
+    'login.welcome': 'पुन्हा स्वागत आहे',
+    'login.subtitle': 'तुमच्या कर्ज पोर्टलमध्ये लॉग इन करा',
+    'login.selectRole': 'तुमची भूमिका निवडा',
+    // Farmer dashboard
+    'fd.applyForLoan': 'कर्जासाठी अर्ज करा',
+    'fd.previewState': 'पूर्वावलोकन स्थिती',
+    'fd.goodStanding': 'तुमचे कर्ज सक्रिय व सुस्थितीत आहे',
+    'fd.overdueTitle': 'हप्ता थकीत — दंड व्याज टाळण्यासाठी भरा',
+    'fd.payNow': 'आता भरा',
+    'fd.payOverdue': 'थकीत रक्कम भरा',
+    'fd.payInstalment': 'हप्ता भरा',
+    'fd.activeLoan': 'सक्रिय कर्ज',
+    'fd.outstanding': 'थकबाकी शिल्लक',
+    'fd.repaid': 'परतफेड',
+    'fd.complete': 'पूर्ण',
+    'fd.whatYouCanDo': 'तुम्ही आता काय करू शकता',
+    'fd.borrowerCommand': 'कर्जदार नियंत्रण',
+    'fd.trackLoan': 'कर्ज ट्रॅक करा',
+    'fd.downloadFiles': 'कागदपत्रे डाउनलोड करा',
+    'fd.applyAgain': 'पुन्हा अर्ज करा',
+    'fd.askForHelp': 'मदत मागा',
+    'fd.loanJourney': 'कर्ज प्रवास',
+    'fd.recentTransactions': 'अलीकडील व्यवहार',
+    'fd.documents': 'कागदपत्रे',
+    'fd.recentAlerts': 'अलीकडील सूचना',
+    'fd.viewAll': 'सर्व पहा',
+    'fd.viewDetails': 'तपशील पहा',
+    'fd.noLoanTitle': 'तुमच्याकडे सध्या सक्रिय कर्ज नाही',
+    'fd.startFirst': 'तुमचा पहिला अर्ज सुरू करा',
+    // Key Facts disclosure
+    'kf.title': 'महत्त्वाची माहिती पत्रक',
+    'kf.subtitle': 'तुमच्या कर्जाचे दर, शुल्क व अटी — सोप्या भाषेत',
+    'kf.interestRate': 'व्याज दर',
+    'kf.penalInterest': 'दंड व्याज',
+    'kf.otherCharges': 'इतर शुल्क',
+    'kf.tenure': 'मुदत',
+    'kf.repaymentDate': 'परतफेड तारीख',
+    'kf.security': 'तारण',
+    'kf.dispute': 'तक्रार निवारण',
   },
   'हि': {
     'app.search': 'ऋण और सदस्य खोजें',
@@ -101,6 +144,46 @@ const dictionary: Record<AppLanguage, Record<string, string>> = {
     'nav.userManagement': 'उपयोगकर्ता प्रबंधन',
     'nav.audit': 'ऑडिट लॉग',
     'nav.config': 'सिस्टम सेटिंग्स',
+    // Login
+    'login.welcome': 'वापस स्वागत है',
+    'login.subtitle': 'अपने ऋण पोर्टल में लॉग इन करें',
+    'login.selectRole': 'अपनी भूमिका चुनें',
+    // Farmer dashboard
+    'fd.applyForLoan': 'ऋण के लिए आवेदन करें',
+    'fd.previewState': 'पूर्वावलोकन स्थिति',
+    'fd.goodStanding': 'आपका ऋण सक्रिय और सुस्थिति में है',
+    'fd.overdueTitle': 'किस्त बकाया — दंड ब्याज से बचने हेतु भुगतान करें',
+    'fd.payNow': 'अभी भुगतान करें',
+    'fd.payOverdue': 'बकाया राशि भरें',
+    'fd.payInstalment': 'किस्त भरें',
+    'fd.activeLoan': 'सक्रिय ऋण',
+    'fd.outstanding': 'बकाया शेष',
+    'fd.repaid': 'चुकाया',
+    'fd.complete': 'पूर्ण',
+    'fd.whatYouCanDo': 'आप अभी क्या कर सकते हैं',
+    'fd.borrowerCommand': 'उधारकर्ता नियंत्रण',
+    'fd.trackLoan': 'ऋण ट्रैक करें',
+    'fd.downloadFiles': 'दस्तावेज़ डाउनलोड करें',
+    'fd.applyAgain': 'फिर से आवेदन करें',
+    'fd.askForHelp': 'मदद मांगें',
+    'fd.loanJourney': 'ऋण यात्रा',
+    'fd.recentTransactions': 'हाल के लेन-देन',
+    'fd.documents': 'दस्तावेज़',
+    'fd.recentAlerts': 'हाल की सूचनाएं',
+    'fd.viewAll': 'सभी देखें',
+    'fd.viewDetails': 'विवरण देखें',
+    'fd.noLoanTitle': 'आपके पास अभी कोई सक्रिय ऋण नहीं है',
+    'fd.startFirst': 'अपना पहला आवेदन शुरू करें',
+    // Key Facts disclosure
+    'kf.title': 'मुख्य तथ्य विवरण',
+    'kf.subtitle': 'आपके ऋण की दरें, शुल्क और शर्तें — सरल भाषा में',
+    'kf.interestRate': 'ब्याज दर',
+    'kf.penalInterest': 'दंड ब्याज',
+    'kf.otherCharges': 'अन्य शुल्क',
+    'kf.tenure': 'अवधि',
+    'kf.repaymentDate': 'चुकौती तिथि',
+    'kf.security': 'प्रतिभूति',
+    'kf.dispute': 'विवाद समाधान',
   },
 };
 
@@ -112,6 +195,8 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<AppLanguage>('EN');
+  // Keep <html lang> in sync so screen readers announce the right language (audit DA-024).
+  useEffect(() => { document.documentElement.lang = htmlLangCode[lang]; }, [lang]);
   const t = (key: string, fallback: string) => dictionary[lang][key] || fallback;
   return <LanguageContext.Provider value={{ lang, setLang, t }}>{children}</LanguageContext.Provider>;
 }

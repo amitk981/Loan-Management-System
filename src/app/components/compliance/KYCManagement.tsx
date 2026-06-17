@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { Download, Search, Send } from 'lucide-react';
+import { EmptyTableState } from '../shared/TableStates';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { WorkbenchTabs } from '../shared/WorkbenchTabs';
@@ -85,7 +87,9 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
             <th className="px-4 py-3"><input type="checkbox" onChange={e => setSelected(e.target.checked ? rows.map(r => r.folio) : [])} style={{ accentColor: 'var(--brand-primary)' }} /></th>
             {['Member', 'Name', 'KYC Date', 'Expiry', 'Days Left', 'Status', 'Action'].map(h => <th key={h} className="px-4 py-3 text-left" style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 700, textTransform: 'uppercase' }}>{h}</th>)}
           </tr></thead>
-          <tbody>{rows.map(row => (
+          <tbody>{rows.length === 0 && (
+            <tr><td colSpan={7}><EmptyTableState title="No members match" message="No KYC records for this filter. Clear the search or choose a different status/type." /></td></tr>
+          )}{rows.map(row => (
             <tr key={row.folio} onClick={() => setRequestMember(row)} className="border-b border-[var(--neutral-200)] clickable-row">
               <td className="px-4 py-4"><input type="checkbox" checked={selected.includes(row.folio)} onClick={e => e.stopPropagation()} onChange={() => setSelected(prev => prev.includes(row.folio) ? prev.filter(id => id !== row.folio) : [...prev, row.folio])} style={{ accentColor: 'var(--brand-primary)' }} /></td>
               <td className="px-4" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 700 }}>{row.folio}</td>
@@ -106,7 +110,7 @@ export function KYCManagement({ onNavigate, activePage }: KYCManagementProps) {
           subtitle={`${requestMember.name} (${requestMember.folio}) · Expired: ${requestMember.expiry}`}
           icon={<Send size={18} />}
           onClose={() => setRequestMember(null)}
-          footer={<><button onClick={() => setRequestMember(null)} className="px-4 py-2.5 rounded-lg border border-[var(--neutral-200)]">Cancel</button><button onClick={() => setRequestMember(null)} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Send Request</button></>}
+          footer={<><button onClick={() => setRequestMember(null)} className="px-4 py-2.5 rounded-lg border border-[var(--neutral-200)]">Cancel</button><button onClick={() => { const m = requestMember; setRequestMember(null); toast.success('Re-KYC request sent', { description: m ? `${m.name} (${m.folio}) notified to refresh KYC (re-KYC every 2 years).` : 'Member notified to refresh KYC.' }); }} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white' }}>Send Request</button></>}
         >
           <div style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>
             Send via: SMS, Email, or Both<br /><br />

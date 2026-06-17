@@ -1,21 +1,30 @@
 import { useState } from 'react';
 import { Check, Lock, FileText, ArrowRight } from 'lucide-react';
+import { toast } from 'sonner';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from './StatusBadge';
 import { GateBanner } from './GateBanner';
 import { UniversalStageTracker, AuditTrailPanel, RoleAccessNote } from './CrossRoleComponents';
 import { WorkbenchTabs } from './WorkbenchTabs';
+import { withGlossary } from './Abbr';
 import { useAuth } from '../../context/AuthContext';
-import { appraisalLoan } from '../../data/creditData';
 import { formatCurrency } from '../../lib/format';
+import {
+  type Loan, useLoan, getLoan, DEFAULT_LOAN_ID,
+  eligibleLimit, shareLimitOf, landLimitOf, isOverLimit, authorityFor,
+  approveLoan, rejectLoan,
+} from '../../data/loanStore';
 
 // The shared Loan File: ONE object every role opens, with role-gated tabs.
 // Replaces the pattern of 20 sibling list pages per role (see audit §G.4).
 // Each tab maps to a SOP stage; the role that owns that stage edits it, others read.
+// The specific loan is resolved from the id in the URL (?id=) — every list/board row
+// now opens its OWN loan, not a single hardcoded demo (audit DA-001).
 
 interface LoanFileProps {
   onNavigate: (page: string) => void;
   activePage: string;
+  activeLoanId?: string;
 }
 
 type TabKey = 'application' | 'appraisal' | 'sanction' | 'documents' | 'disbursement' | 'repayment' | 'audit';
@@ -36,17 +45,17 @@ const ROLE_HOME: Record<string, TabKey> = {
   compliance: 'documents', treasury: 'disbursement', admin: 'audit',
 };
 
-export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
+export function LoanFile({ onNavigate, activePage, activeLoanId }: LoanFileProps) {
   const { user } = useAuth();
   const role = user?.role || 'credit';
-  const loan = appraisalLoan;
+  const loan = useLoan(activeLoanId) ?? getLoan(DEFAULT_LOAN_ID)!;
 
-  const shareLimit = loan.shares * loan.valuationPerShare;
-  const landLimit = loan.landAcres * loan.scaleOfFinance;
-  const eligible = Math.min(shareLimit, landLimit);
-  const overLimit = loan.requested > eligible;
-  const authority = loan.requested > 500000 || overLimit ? 'CFO + 2 Directors' : 'CFO + 1 Director';
-  const currentStage = 2; // appraisal in progress for this demo loan
+  const shareLimit = shareLimitOf(loan);
+  const landLimit = landLimitOf(loan);
+  const eligible = eligibleLimit(loan);
+  const overLimit = isOverLimit(loan);
+  const authority = authorityFor(loan);
+  const currentStage = loan.stage; // live stage from the shared register
 
   const [tab, setTab] = useState<TabKey>(ROLE_HOME[role] || 'application');
   const owns = (t: TabKey) => {
@@ -78,7 +87,7 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
           </div>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1.5 rounded-full" style={{ backgroundColor: authority.includes('2') ? 'var(--purple-100)' : 'var(--accent-blue-50)', color: authority.includes('2') ? 'var(--accent-sanction)' : 'var(--brand-accent-700)', fontSize: '12px', fontWeight: 700 }}>{authority}</span>
-            <StatusBadge status="Under Assessment" size="md" />
+            <StatusBadge status={loan.status} size="md" />
           </div>
         </div>
         <UniversalStageTracker currentStage={currentStage} />
@@ -106,7 +115,7 @@ export function LoanFile({ onNavigate, activePage }: LoanFileProps) {
 
       {tab === 'application' && <ApplicationTab loan={loan} />}
       {tab === 'appraisal' && <AppraisalTab loan={loan} shareLimit={shareLimit} landLimit={landLimit} eligible={eligible} editable={owns('appraisal')} onNavigate={onNavigate} />}
-      {tab === 'sanction' && <SanctionTab authority={authority} editable={owns('sanction')} />}
+      {tab === 'sanction' && <SanctionTab loan={loan} authority={authority} editable={owns('sanction')} />}
       {tab === 'documents' && <DocumentsTab editable={owns('documents')} onNavigate={onNavigate} />}
       {tab === 'disbursement' && <DisbursementTab editable={owns('disbursement')} onNavigate={onNavigate} />}
       {tab === 'repayment' && <RepaymentTab />}
@@ -136,7 +145,7 @@ function Row({ label, value, mono }: { label: string; value: string; mono?: bool
   );
 }
 
-function ApplicationTab({ loan }: { loan: typeof appraisalLoan }) {
+function ApplicationTab({ loan }: { loan: Loan }) {
   const kyc = ['PAN Card', 'Aadhaar Card', 'Share Certificates', '7/12 Extract', 'Crop Plan', 'Bank Statement (6 mo)'];
   return (
     <div className="grid grid-cols-2 gap-5">
@@ -163,7 +172,7 @@ function ApplicationTab({ loan }: { loan: typeof appraisalLoan }) {
   );
 }
 
-function AppraisalTab({ loan, shareLimit, landLimit, eligible, editable, onNavigate }: { loan: typeof appraisalLoan; shareLimit: number; landLimit: number; eligible: number; editable: boolean; onNavigate: (p: string) => void }) {
+function AppraisalTab({ loan, shareLimit, landLimit, eligible, editable, onNavigate }: { loan: Loan; shareLimit: number; landLimit: number; eligible: number; editable: boolean; onNavigate: (p: string) => void }) {
   const gates = [
     'Active member of the FPC',
     'No existing default at SFPCL or subsidiary',
@@ -222,8 +231,17 @@ function SignatureLadder({ authority }: { authority: string }) {
   );
 }
 
-function SanctionTab({ authority, editable }: { authority: string; editable: boolean }) {
+function SanctionTab({ loan, authority, editable }: { loan: Loan; authority: string; editable: boolean }) {
   const checks = ['Eligibility verification', 'Loan amount within limit', 'Purpose of loan', 'Compliance checks (Companies Act)', 'Past borrowing history', 'Risk assessment', 'Documentation completeness'];
+  const decided = loan.decision;
+  const handleApprove = () => {
+    approveLoan(loan.id);
+    toast.success(`${loan.id} approved`, { description: `Recorded in the Credit Sanction Register (Annexure K). Moved to Stage 4 — Documentation. Authority: ${authority}.` });
+  };
+  const handleReject = () => {
+    rejectLoan(loan.id);
+    toast.error(`${loan.id} rejected`, { description: `Reason recorded; the Credit Team will issue a Rejection Note (Annexure L) to ${loan.borrower}.` });
+  };
   return (
     <div className="grid grid-cols-2 gap-5">
       <Card title="Credit scrutiny (7 checks)">
@@ -238,10 +256,15 @@ function SanctionTab({ authority, editable }: { authority: string; editable: boo
       </Card>
       <Card title={`Authority: ${authority}`}>
         <SignatureLadder authority={authority} />
-        {editable && (
+        {decided && (
+          <div className="mt-4">
+            <StatusBadge status={decided === 'approved' ? 'Approved' : 'Rejected'} size="md" />
+          </div>
+        )}
+        {editable && !decided && (
           <div className="flex gap-2 mt-4">
-            <button className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Approve</button>
-            <button className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontSize: '14px' }}>Reject with reason</button>
+            <button onClick={handleApprove} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Approve</button>
+            <button onClick={handleReject} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontSize: '14px' }}>Reject with reason</button>
           </div>
         )}
         <p style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '10px', lineHeight: '18px' }}>Decision is recorded in the Credit Sanction Register (Annexure K). For loans above ₹5L the first signature locks "pending 2nd director".</p>
@@ -256,8 +279,8 @@ function DocStateCard({ name, state, note }: { name: string; state: string; note
       <div className="flex items-center gap-2.5">
         <FileText size={16} style={{ color: 'var(--brand-primary)' }} />
         <div>
-          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>{name}</div>
-          <div style={{ fontSize: '11px', color: 'var(--neutral-400)' }}>{note}</div>
+          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-900)' }}>{withGlossary(name)}</div>
+          <div style={{ fontSize: '11px', color: 'var(--neutral-400)' }}>{withGlossary(note)}</div>
         </div>
       </div>
       <StatusBadge status={state} />

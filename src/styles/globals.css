@@ -1,13 +1,15 @@
 /* Farmer role product surfaces only. Keep this file scoped; broad resets live in theme/Shell. */
+/* Farmer vars now alias the shared theme.css tokens (audit DA-016) — value-preserving,
+   so the farmer surface is one design language with the back-office, not a parallel palette. */
 .farmer-page {
-  --farmer-ink: #111827;
-  --farmer-muted: #667085;
-  --farmer-line: #E4E7EC;
-  --farmer-soft: #F2F6F3;
-  --farmer-green: #16452F;
-  --farmer-green-2: #286C4B;
-  --farmer-blue: #1E6CEB;
-  --farmer-amber: #D97706;
+  --farmer-ink: var(--neutral-950);      /* was #111827 */
+  --farmer-muted: var(--neutral-550);    /* was #667085 */
+  --farmer-line: var(--gray-200b);       /* was #E4E7EC */
+  --farmer-soft: var(--green-50c);       /* was #F2F6F3 */
+  --farmer-green: var(--green-900);      /* was #16452F */
+  --farmer-green-2: var(--green-800);    /* was #286C4B */
+  --farmer-blue: var(--blue-500);        /* was #1E6CEB */
+  --farmer-amber: var(--gold-500);       /* was #D97706 */
 }
 
 .farmer-panel {
@@ -27,16 +29,16 @@
 .farmer-hero {
   background:
     radial-gradient(circle at 82% 16%, rgba(125, 211, 252, 0.28), transparent 34%),
-    linear-gradient(135deg, #123624 0%, #1E5F40 52%, #2A8057 100%);
+    linear-gradient(135deg, var(--farmer-hero-1) 0%, var(--farmer-hero-2) 52%, var(--farmer-hero-3) 100%);
   color: white;
   border-radius: 22px;
   box-shadow: 0 18px 42px rgba(18, 54, 36, 0.22);
 }
 
 .farmer-kicker {
-  color: #667085;
+  color: var(--neutral-550);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -44,7 +46,7 @@
 .farmer-value {
   color: var(--farmer-ink);
   font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
@@ -59,11 +61,11 @@
   background: var(--farmer-green);
   color: white;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .farmer-action:hover {
-  background: #0F3323;
+  background: var(--green-950);
 }
 
 .farmer-action-secondary {
@@ -78,16 +80,16 @@
   background: white;
   color: var(--farmer-green);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .farmer-input,
 .farmer-select,
 .farmer-textarea {
   width: 100%;
-  border: 1px solid #CBD5E1;
+  border: 1px solid var(--slate-300);
   background: white;
-  color: #111827;
+  color: var(--neutral-950);
   border-radius: 12px;
   font-size: 14px;
 }
@@ -111,19 +113,19 @@
 }
 
 .farmer-readonly {
-  background: #F8FAFC;
-  color: #667085;
+  background: var(--gray-50b);
+  color: var(--neutral-550);
 }
 
 .farmer-upload {
-  border: 1.5px dashed #CBD5E1;
-  background: #F8FAFC;
+  border: 1.5px dashed var(--slate-300);
+  background: var(--gray-50b);
   border-radius: 14px;
 }
 
 .farmer-upload:hover {
-  border-color: #286C4B;
-  background: #F0FDF4;
+  border-color: var(--green-800);
+  background: var(--success-50);
 }
 
 .farmer-grid-shell {

@@ -25,10 +25,16 @@ export default defineConfig({
     tailwindcss(),
   ],
   resolve: {
+    // Force a single React instance so libraries that import React (e.g. sonner's
+    // Toaster) share the app's React and don't hit "invalid hook call" at runtime.
+    dedupe: ['react', 'react-dom'],
     alias: {
       // Alias @ to the src directory
       '@': path.resolve(__dirname, './src'),
     },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'sonner'],
   },
   build: {
     chunkSizeWarningLimit: 700,

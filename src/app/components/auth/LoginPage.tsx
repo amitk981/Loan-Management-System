@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Eye, EyeOff, ChevronRight, Smartphone, Lock, CheckCircle } from 'lucide-react';
 import { useAuth, UserRole, mockUsers } from '../../context/AuthContext';
+import { AppLanguage, useLanguage } from '../../context/LanguageContext';
 
 type RolePill = { id: UserRole; label: string; icon: string };
 const rolePills: RolePill[] = [
@@ -9,6 +10,14 @@ const rolePills: RolePill[] = [
   { id: 'compliance', label: 'CS / Compliance', icon: '📋' },
   { id: 'sanction', label: 'Sanction Committee', icon: '✅' },
   { id: 'treasury', label: 'Finance / Treasury', icon: '💰' },
+  { id: 'admin', label: 'Admin', icon: '🛠️' },
+];
+
+// Login language selector → real app language (audit DA-004).
+const loginLangs: { label: string; code: AppLanguage }[] = [
+  { label: 'English', code: 'EN' },
+  { label: 'मराठी', code: 'मर' },
+  { label: 'हिंदी', code: 'हि' },
 ];
 
 type LoginMethod = 'otp' | 'password';
@@ -42,6 +51,7 @@ function RoleLineArt({ color }: { color: string }) {
 
 export function LoginPage() {
   const { login } = useAuth();
+  const { lang, setLang, t } = useLanguage();
   const [authView, setAuthView] = useState<AuthView>('login');
   const [selectedRole, setSelectedRole] = useState<UserRole>('farmer');
   const [loginMethod, setLoginMethod] = useState<LoginMethod>('otp');
@@ -216,25 +226,33 @@ export function LoginPage() {
         <div className="w-full max-w-sm">
           <div className="flex justify-end mb-6">
             <div className="flex items-center rounded-lg border border-[var(--neutral-200)] overflow-hidden">
-              {['English', 'मराठी', 'हिंदी'].map((l, i) => (
-                <button key={i} className="px-3 py-1.5" style={{ fontSize: '12px', color: 'var(--neutral-700)' }}>{l}</button>
+              {loginLangs.map(({ label, code }) => (
+                <button
+                  key={code}
+                  onClick={() => setLang(code)}
+                  aria-pressed={lang === code}
+                  className="px-3 py-1.5 transition-colors"
+                  style={{ fontSize: '12px', backgroundColor: lang === code ? 'var(--brand-primary)' : 'white', color: lang === code ? 'white' : 'var(--neutral-700)' }}
+                >
+                  {label}
+                </button>
               ))}
             </div>
           </div>
 
           <div className="mb-8">
             <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--neutral-900)', lineHeight: '36px', marginBottom: '6px' }}>
-              {authView === 'reset' ? 'Reset Password' : 'Welcome Back'}
+              {authView === 'reset' ? 'Reset Password' : t('login.welcome', 'Welcome Back')}
             </h1>
             <p style={{ fontSize: '14px', color: 'var(--neutral-400)' }}>
-              {authView === 'reset' ? 'Complete the 3-step reset flow' : 'Log in to your loan portal'}
+              {authView === 'reset' ? 'Complete the 3-step reset flow' : t('login.subtitle', 'Log in to your loan portal')}
             </p>
           </div>
 
           {/* Role Selector */}
           <div className="mb-6">
             <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)', display: 'block', marginBottom: '8px' }}>
-              Select your role
+              {t('login.selectRole', 'Select your role')}
             </label>
             <div className="flex flex-wrap gap-2">
               {rolePills.map(role => (

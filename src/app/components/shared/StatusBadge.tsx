@@ -9,8 +9,10 @@ interface StatusBadgeProps {
 // Callers still pass a status string; the tone resolver maps it to a colour.
 export function StatusBadge({ status, size = 'sm' }: StatusBadgeProps) {
   const { bg, text } = styleFor(status);
+  // Minimum 12px even at 'sm' so status — the most-scanned element — stays legible
+  // for the older, rural audience (audit DA-023).
   const padding = size === 'sm' ? '2px 8px' : '4px 12px';
-  const fontSize = size === 'sm' ? '11px' : '13px';
+  const fontSize = size === 'sm' ? '12px' : '13px';
 
   return (
     <span

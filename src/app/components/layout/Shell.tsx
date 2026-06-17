@@ -25,6 +25,33 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
     setExpandedGroups(defaultExpandedGroups[user?.role || 'farmer'] || []);
   }, [user?.role]);
 
+  // Make non-native clickable rows/cards keyboard-operable app-wide (audit DA-025).
+  // Native <button>/<a>/<input> already handle Enter/Space, so we only enhance
+  // synthesized clickables (e.g. <tr className="clickable-row" onClick>) — adding
+  // tabindex + role=button and synthesizing a click on Enter/Space.
+  useEffect(() => {
+    const NATIVE = new Set(['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA']);
+    const enhance = () => {
+      document.querySelectorAll<HTMLElement>('.clickable-row, .clickable-card').forEach(el => {
+        if (NATIVE.has(el.tagName)) return;
+        if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+        if (!el.getAttribute('role')) el.setAttribute('role', 'button');
+      });
+    };
+    enhance();
+    const mo = new MutationObserver(enhance);
+    mo.observe(document.body, { childList: true, subtree: true });
+    const onKey = (e: KeyboardEvent) => {
+      const el = document.activeElement as HTMLElement | null;
+      if (!el || NATIVE.has(el.tagName)) return;
+      if (!el.classList.contains('clickable-row') && !el.classList.contains('clickable-card')) return;
+      if (e.target !== el) return; // let nested controls handle their own keys
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => { mo.disconnect(); document.removeEventListener('keydown', onKey); };
+  }, []);
+
   const toggleGroup = (key: string) => {
     setExpandedGroups(prev =>
       prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]

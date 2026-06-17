@@ -60,7 +60,7 @@ export const complianceRows = [
   ['Producer Co. Lending', 'Loan register + member cap monitoring', 'Ongoing', 'CS', 'Live'],
   ['Loan Limits (s.186)', '60%/100% free reserves tracker', 'Quarterly', 'CFO', 'Q2 Due Nov'],
   ['NBFC Test', 'Asset/income ratio <50%', 'Quarterly', 'CFO', 'Q2 Due Nov'],
-  ['KYC / AML', 'PMLA 2002 — re-KYC every 2 years', 'Bi-annual', 'Credit Head', '9 due this qtr'],
+  ['KYC / AML', 'PMLA 2002 — re-KYC every 2 years', 'Biennial (every 2 yrs)', 'Credit Head', '9 due this qtr'],
   ['Stamp Duty Documentation', 'Maharashtra Stamp Act — ₹500 PoA + Loan Agreement', 'At execution', 'CS', 'On track'],
   ['Money-lending Laws', 'Confirm exemption', 'Annual', 'CS', 'Due Oct 15'],
   ['Record Retention', 'Companies Act — 8-year physical + electronic archive', 'Annual', 'CS + Auditor', 'FY25 done'],

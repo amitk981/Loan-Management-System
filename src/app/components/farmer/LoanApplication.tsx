@@ -1,10 +1,22 @@
 import { useState } from 'react';
 import { Check, Upload, ChevronRight, ChevronLeft, Plus, Trash2, Calculator, ShieldCheck, FileCheck } from 'lucide-react';
+import { toast } from 'sonner';
 import { Shell } from '../layout/Shell';
 import { UniversalStageTracker } from '../shared/CrossRoleComponents';
 import { GateBanner } from '../shared/GateBanner';
 import { farmerEligibility, farmerProfile } from '../../data/farmerData';
+import { getLoans } from '../../data/loanStore';
 import { formatCurrency } from '../../lib/format';
+
+// Next sequential reference from the shared register, so the submitted id is coherent
+// with every other screen instead of a hardcoded constant (audit DA-029).
+function nextLoanRef(): string {
+  const max = getLoans().reduce((m, l) => {
+    const n = parseInt(l.id.replace(/\D/g, ''), 10);
+    return Number.isFinite(n) && n > m ? n : m;
+  }, 0);
+  return 'LO' + String(max + 1).padStart(8, '0');
+}
 
 interface LoanApplicationProps {
   onNavigate: (page: string) => void;
@@ -26,6 +38,7 @@ interface LandParcel {
 export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps) {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
+  const [submittedRef, setSubmittedRef] = useState('');
   const [shares, setShares] = useState(farmerProfile.shares);
   const [landAcres, setLandAcres] = useState(farmerProfile.landAcres);
   const [requestedAmount, setRequestedAmount] = useState(String(farmerEligibility.eligible));
@@ -36,6 +49,13 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
     { survey: '123/1', village: farmerProfile.village, area: String(farmerProfile.landAcres), crop: 'Grapes', season: '2025-26' },
   ]);
   const [declarations, setDeclarations] = useState({ d1: false, d2: false, d3: false });
+  // Per-step required fields, now actually enforced (audit DA-014).
+  const [dob, setDob] = useState('');
+  const [address, setAddress] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [ifsc, setIfsc] = useState('');
+  // Guarantor is optional unless the member declares one is required (SOP §Sec3) — audit DA-007.
+  const [guarantorRequired, setGuarantorRequired] = useState(false);
   const [reviewDocs, setReviewDocs] = useState([
     { name: 'PAN Card', uploaded: true },
     { name: 'Aadhaar Card', uploaded: true },
@@ -43,6 +63,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
     { name: 'Crop Plan', uploaded: false },
     { name: 'Bank Statement', uploaded: true },
     { name: 'Cancelled Cheque', uploaded: true },
+    { name: 'NACH/ECS Mandate', uploaded: false }, // SOP §Sec3 security obligation (audit DA-006)
     { name: 'Passport Photo', uploaded: true },
     { name: 'Nominee KYC', uploaded: false },
   ]);
@@ -56,6 +77,10 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
   const allDeclarationsChecked = Object.values(declarations).every(Boolean);
   const missingDocs = reviewDocs.filter(doc => !doc.uploaded);
   const amountWithinLimit = reqAmount > 0 && reqAmount <= eligibleLimit;
+  // Per-step validity (audit DA-014) — Next is blocked until each step's required fields are filled.
+  const step1Valid = nomineeAdult && dob.trim() !== '' && address.trim() !== '';
+  const step3Valid = accountNumber.trim() !== '' && ifsc.trim() !== '';
+  const stepValid = (s: number) => (s === 1 ? step1Valid : s === 3 ? step3Valid : true);
   const canSubmitApplication = amountWithinLimit && allDeclarationsChecked && missingDocs.length === 0;
 
 
@@ -69,7 +94,10 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
 
   const handleSubmit = () => {
     if (!canSubmitApplication) return;
+    const ref = nextLoanRef();
+    setSubmittedRef(ref);
     setSubmitted(true);
+    toast.success('Application submitted', { description: `Reference ${ref} created. The Credit Team will respond within the 2-day TAT.` });
   };
 
   if (submitted) {
@@ -89,7 +117,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             style={{ backgroundColor: 'var(--brand-light)', border: '1px solid var(--success-100)' }}
           >
             <div style={{ fontSize: '12px', color: 'var(--brand-secondary)', fontWeight: 500, marginBottom: '4px' }}>Application Reference</div>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--brand-primary)', fontFamily: 'Roboto Mono' }}>LO00000052</div>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--brand-primary)', fontFamily: 'Roboto Mono' }}>{submittedRef || 'LO00000052'}</div>
           </div>
           <div className="w-full max-w-3xl mb-5"><UniversalStageTracker currentStage={1} /></div>
           <p style={{ fontSize: '14px', color: 'var(--neutral-700)', marginBottom: '24px' }}>
@@ -172,7 +200,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             <div className="mt-5 p-4 rounded-xl" style={{ backgroundColor: 'var(--gray-50b)', border: '1px solid var(--gray-200b)' }}>
               <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-950)' }}>Current blocker</div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-550)', lineHeight: '18px', marginTop: '5px' }}>
-                {step === 1 && !nomineeAdult ? 'Confirm nominee is 18+.' : step === 5 && !canSubmitApplication ? 'Finish documents, declarations, and amount checks.' : 'No blocker on this step.'}
+                {step === 1 && !step1Valid ? 'Enter Date of Birth and Address, and confirm nominee is 18+.' : step === 3 && !step3Valid ? 'Enter a valid Account Number and IFSC.' : step === 5 && !canSubmitApplication ? 'Finish documents, declarations, and amount checks.' : 'No blocker on this step.'}
               </div>
             </div>
           </aside>
@@ -198,7 +226,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Date of Birth <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <input type="date" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
+                <input type="date" value={dob} onChange={e => setDob(e.target.value)} className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Alternate Mobile</label>
@@ -216,7 +244,7 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               </div>
               <div className="col-span-2">
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Residential Address <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <textarea rows={3} className="w-full px-4 py-3 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)] resize-none" style={{ fontSize: '14px', color: 'var(--neutral-900)' }} placeholder="Enter your full address..." />
+                <textarea rows={3} value={address} onChange={e => setAddress(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)] resize-none" style={{ fontSize: '14px', color: 'var(--neutral-900)' }} placeholder="Enter your full address..." />
               </div>
               <div>
                 <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Village / Taluka <span style={{ color: 'var(--error-500)' }}>*</span></label>
@@ -478,20 +506,67 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
             <div className="mt-5 pt-5 border-t border-[var(--neutral-200)]">
               <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '16px' }}>Bank Account Details</h3>
               <div className="grid grid-cols-2 gap-4">
-                {['Account Holder Name', 'Bank Name', 'Account Number', 'IFSC Code', 'Branch Name'].map((label, i) => (
+                {['Account Holder Name', 'Bank Name'].map((label, i) => (
                   <div key={i}>
                     <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>{label} <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                    <input type="text" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: label.includes('IFSC') || label.includes('Account Number') ? 'Roboto Mono' : 'inherit' }} />
+                    <input type="text" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
                   </div>
                 ))}
+                <div>
+                  <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Account Number <span style={{ color: 'var(--error-500)' }}>*</span></label>
+                  <input type="text" inputMode="numeric" value={accountNumber} onChange={e => setAccountNumber(e.target.value.replace(/\D/g, '').slice(0, 18))} placeholder="Digits only" className="w-full px-4 rounded-xl border focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: 'Roboto Mono', borderColor: accountNumber && accountNumber.length < 9 ? 'var(--error-500)' : 'var(--neutral-300)' }} />
+                  {accountNumber !== '' && accountNumber.length < 9 && <p style={{ fontSize: '12px', color: 'var(--error-500)', marginTop: '4px' }}>Account number looks too short (9–18 digits).</p>}
+                </div>
+                <div>
+                  <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>IFSC Code <span style={{ color: 'var(--error-500)' }}>*</span></label>
+                  <input type="text" value={ifsc} onChange={e => setIfsc(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 11))} placeholder="ABCD0123456" className="w-full px-4 rounded-xl border focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: 'Roboto Mono', borderColor: ifsc && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc) ? 'var(--error-500)' : 'var(--neutral-300)' }} />
+                  {ifsc !== '' && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc) && <p style={{ fontSize: '12px', color: 'var(--error-500)', marginTop: '4px' }}>IFSC format: 4 letters, 0, then 6 characters.</p>}
+                </div>
+                <div>
+                  <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Branch Name <span style={{ color: 'var(--error-500)' }}>*</span></label>
+                  <input type="text" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)' }} />
+                </div>
               </div>
-              <div className="mt-4">
-                <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Upload Cancelled Cheque <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                <button type="button" onClick={() => markDocUploaded('Cancelled Cheque')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: 'var(--neutral-300)' }}>
-                  <Upload size={20} style={{ color: 'var(--neutral-400)' }} />
-                  <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload scanned copy of cancelled cheque</span>
-                </button>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Upload Cancelled Cheque <span style={{ color: 'var(--error-500)' }}>*</span></label>
+                  <button type="button" onClick={() => markDocUploaded('Cancelled Cheque')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: 'var(--neutral-300)' }}>
+                    <Upload size={20} style={{ color: 'var(--neutral-400)' }} />
+                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload scanned copy of cancelled cheque</span>
+                  </button>
+                </div>
+                <div>
+                  <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>NACH / ECS Auto-Debit Mandate <span style={{ color: 'var(--error-500)' }}>*</span></label>
+                  <button type="button" onClick={() => markDocUploaded('NACH/ECS Mandate')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: 'var(--neutral-300)' }}>
+                    <Upload size={20} style={{ color: 'var(--neutral-400)' }} />
+                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Sign &amp; upload NACH/ECS mandate (security per SOP)</span>
+                  </button>
+                </div>
               </div>
+            </div>
+
+            {/* Guarantor — optional unless required (SOP §Sec3) — audit DA-007 */}
+            <div className="mt-5 pt-5 border-t border-[var(--neutral-200)]">
+              <label className="flex items-start gap-2 mb-3 cursor-pointer">
+                <input type="checkbox" checked={guarantorRequired} onChange={e => setGuarantorRequired(e.target.checked)} className="mt-0.5" style={{ accentColor: 'var(--brand-primary)' }} />
+                <span style={{ fontSize: '13px', color: 'var(--neutral-700)', lineHeight: '20px' }}>A guarantor is required for this loan (the Credit Team will advise if applicable).</span>
+              </label>
+              {guarantorRequired && (
+                <div className="grid grid-cols-2 gap-4">
+                  {['Guarantor Name', 'Guarantor Mobile', 'Guarantor PAN', 'Relationship to Applicant'].map((label, i) => (
+                    <div key={i}>
+                      <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>{label} <span style={{ color: 'var(--error-500)' }}>*</span></label>
+                      <input type="text" className="w-full px-4 rounded-xl border border-[var(--neutral-300)] focus:outline-none focus:border-[var(--brand-primary)]" style={{ height: '44px', fontSize: '14px', color: 'var(--neutral-900)', fontFamily: label.includes('PAN') ? 'Roboto Mono' : 'inherit' }} />
+                    </div>
+                  ))}
+                  <div className="col-span-2">
+                    <button type="button" onClick={() => markDocUploaded('Cancelled Cheque')} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: 'var(--neutral-300)' }}>
+                      <Upload size={18} style={{ color: 'var(--neutral-400)' }} />
+                      <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload guarantor ID &amp; consent</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -665,10 +740,11 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
           </button>
           {step < 5 && (
             <button
-              onClick={() => setStep(step + 1)}
-              disabled={step === 1 && !nomineeAdult}
+              onClick={() => stepValid(step) && setStep(step + 1)}
+              disabled={!stepValid(step)}
+              title={!stepValid(step) ? 'Complete the required fields marked * on this step to continue.' : undefined}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all hover:opacity-90"
-              style={{ backgroundColor: step === 1 && !nomineeAdult ? 'var(--neutral-400)' : 'var(--brand-primary)', color: 'white', fontSize: '14px', cursor: step === 1 && !nomineeAdult ? 'not-allowed' : 'pointer' }}
+              style={{ backgroundColor: !stepValid(step) ? 'var(--neutral-400)' : 'var(--brand-primary)', color: 'white', fontSize: '14px', cursor: !stepValid(step) ? 'not-allowed' : 'pointer' }}
             >
               Next: {steps[step].label} <ChevronRight size={16} />
             </button>
