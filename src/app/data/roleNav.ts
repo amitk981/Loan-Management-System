@@ -89,6 +89,8 @@ export const sanctionPortfolioTabs = [
   { key: 'sc-health', label: 'Portfolio Health' },
   { key: 'sc-exposure', label: 'Exposure & Limits' },
   { key: 'sc-dpd', label: 'DPD Summary' },
+  { key: 'sc-default-escalations', label: 'Recovery Actions' },
+  { key: 'sc-policy', label: 'Policy Settings' },
 ];
 
 export const treasuryDisbursementTabs = [
@@ -109,6 +111,7 @@ export const treasuryFinanceTabs = [
 export const treasurySapTabs = [
   { key: 'treasury-sap-codes', label: 'Customer Codes' },
   { key: 'treasury-sap-log', label: 'SAP Entries Log' },
+  { key: 'treasury-ledger', label: 'Ledger Summary' },
 ];
 
 export const complianceRegisterTabs = [
@@ -117,6 +120,7 @@ export const complianceRegisterTabs = [
   { key: 'cs-noc', label: 'NOC Queue', badge: 2 },
   { key: 'cs-calendar', label: 'Calendar', badge: 3 },
   { key: 'cs-stamp', label: 'Stamp Register' },
+  { key: 'cs-cdsl', label: 'CDSL Pledge' },
   { key: 'cs-grievance', label: 'Grievances' },
   { key: 'cs-reports', label: 'Reports' },
 ];
@@ -129,10 +133,10 @@ export const complianceRegisterTabs = [
  */
 export const defaultExpandedGroups: Record<string, string[]> = {
   farmer: [],
-  credit: ['credit-inbox'],
-  compliance: ['cs-doc-queue'],
-  sanction: ['sc-decisions'],
-  treasury: ['treasury-disburse'],
+  credit: [],
+  compliance: [],
+  sanction: [],
+  treasury: [],
   admin: [],
 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Bell, Search, Menu, ChevronDown, LogOut, User } from 'lucide-react';
+import { Bell, Search, Menu, X, ChevronDown, LogOut, User } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { AppLanguage, useLanguage } from '../../context/LanguageContext';
 import { mockNotifications } from '../../data/mockData';
@@ -9,9 +9,10 @@ interface HeaderProps {
   onMenuToggle: () => void;
   onNavigate: (page: string) => void;
   breadcrumbs?: string[];
+  menuOpen?: boolean;
 }
 
-export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderProps) {
+export function Header({ onMenuToggle, onNavigate, breadcrumbs = [], menuOpen = false }: HeaderProps) {
   const { user, logout } = useAuth();
   const { lang, setLang, t } = useLanguage();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -159,10 +160,11 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
     >
       <button
         onClick={onMenuToggle}
-        aria-label="Toggle sidebar"
+        aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={menuOpen}
         className="text-white/70 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10"
       >
-        <Menu size={20} />
+        {menuOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
       <div className="flex items-center gap-2">
@@ -174,13 +176,13 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
             className="w-7 h-7 rounded-md flex items-center justify-center font-bold text-sm"
             style={{ backgroundColor: 'var(--brand-accent)', color: 'white' }}
           >W</span>
-          WhatsLoan
+          <span className="hidden xs:inline">WhatsLoan</span>
         </div>
       </div>
 
       <div className="flex-1 flex items-center">
         {breadcrumbs.length > 0 && (
-          <div className="flex items-center gap-1.5 ml-4" style={{ fontSize: '13px' }}>
+          <div className="breadcrumbs-bar flex items-center gap-1.5 ml-4" style={{ fontSize: '13px' }}>
             {breadcrumbs.map((crumb, i) => {
               const isLast = i === breadcrumbs.length - 1;
               const target = !isLast ? crumbTargets[crumb] : undefined;
@@ -223,7 +225,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
           </button>
           {showSearch && (
             <div
-              className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-[var(--neutral-200)] w-96 z-50 overflow-hidden"
+              className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-[var(--neutral-200)] w-[min(24rem,calc(100vw-1.5rem))] z-50 overflow-hidden"
               style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)', animation: 'fadeIn 0.15s ease' }}
             >
               <div className="p-3 border-b border-[var(--neutral-200)]">
@@ -273,7 +275,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
           </button>
           {showNotifications && (
             <div
-              className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-[var(--neutral-200)] w-80 z-50 overflow-hidden"
+              className="absolute right-0 top-10 bg-white rounded-xl shadow-lg border border-[var(--neutral-200)] w-[min(20rem,calc(100vw-1.5rem))] z-50 overflow-hidden"
               style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.15)', animation: 'fadeIn 0.15s ease' }}
             >
               <style>{`@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }`}</style>

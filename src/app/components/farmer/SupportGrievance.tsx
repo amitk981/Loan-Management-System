@@ -32,6 +32,8 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
   const [attachmentAdded, setAttachmentAdded] = useState(false);
   const [supportAction, setSupportAction] = useState('');
 
+  const openTickets = grievanceRows.filter(r => r.status === 'Open').length;
+
   return (
     <Shell
       activePage={activePage}
@@ -56,22 +58,22 @@ export function SupportGrievance({ onNavigate, activePage }: SupportGrievancePro
 
       <div className="grid grid-cols-4 gap-4 mb-5">
         {[
-          ['Call Support', '1800-123-7722', <Phone size={20} />, 'Calling support desk: 1800-123-7722'],
-          ['WhatsApp Help', '+91 98765 43210', <MessageCircle size={20} />, 'Opening WhatsApp support chat for your registered mobile.'],
-          ['Visit Office', 'Dindori member desk', <FileText size={20} />, 'Office visit details selected. Carry PAN, Aadhaar, and loan ID LO00000047.'],
-          ['Track Tickets', `${grievanceRows.length} recent`, <ChevronDown size={20} />, 'Ticket list opened below.'],
-        ].map(([title, sub, icon, action]) => (
+          { title: 'Call Support', sub: '1800-123-7722', icon: <Phone size={20} />, color: 'var(--brand-primary)', action: 'Calling support desk: 1800-123-7722' },
+          { title: 'WhatsApp Help', sub: '+91 98765 43210', icon: <MessageCircle size={20} />, color: 'var(--success-500)', action: 'Opening WhatsApp support chat for your registered mobile.' },
+          { title: 'Visit Office', sub: 'Dindori member desk', icon: <FileText size={20} />, color: 'var(--brand-accent)', action: 'Office visit details selected. Carry PAN, Aadhaar, and loan ID LO00000047.' },
+          { title: 'Track Tickets', sub: `${openTickets} open · ${grievanceRows.length} total`, icon: <ChevronDown size={20} />, color: 'var(--gold-500)', action: 'Ticket list opened below.' },
+        ].map(card => (
           <button
-            key={title as string}
+            key={card.title}
             onClick={() => {
-              setSupportAction(action as string);
-              if (title === 'Track Tickets') document.getElementById('grievance-tickets')?.scrollIntoView({ behavior: 'smooth' });
+              setSupportAction(card.action);
+              if (card.title === 'Track Tickets') document.getElementById('grievance-tickets')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="bg-white rounded-2xl p-4 border border-[var(--neutral-200)] text-left clickable-card"
           >
-            <div style={{ color: 'var(--brand-primary)', marginBottom: '10px' }}>{icon}</div>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)' }}>{title}</div>
-            <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>{sub}</div>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${card.color}15`, color: card.color }}>{card.icon}</div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)' }}>{card.title}</div>
+            <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>{card.sub}</div>
           </button>
         ))}
       </div>

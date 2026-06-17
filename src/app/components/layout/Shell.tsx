@@ -14,9 +14,18 @@ interface ShellProps {
   actions?: ReactNode;
 }
 
+const MOBILE_BREAKPOINT = 1024;
+
 export function Shell({ children, activePage, onNavigate, breadcrumbs = [], pageTitle, pageSubtitle, actions }: ShellProps) {
   const { user } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  // Below the breakpoint the sidebar becomes an off-canvas drawer (full labels,
+  // backdrop, slide-in) instead of a cramped icon rail. `isMobile` drives the
+  // whole layout switch; `mobileOpen` is the drawer's open state.
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < MOBILE_BREAKPOINT
+  );
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
     () => defaultExpandedGroups[user?.role || 'farmer'] || []
   );
@@ -24,6 +33,34 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
   useEffect(() => {
     setExpandedGroups(defaultExpandedGroups[user?.role || 'farmer'] || []);
   }, [user?.role]);
+
+  useEffect(() => {
+    const onResize = () => {
+      const mobile = window.innerWidth < MOBILE_BREAKPOINT;
+      setIsMobile(mobile);
+      if (!mobile) setMobileOpen(false);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // Close the drawer whenever the route changes, and lock body scroll while open.
+  useEffect(() => { setMobileOpen(false); }, [activePage]);
+  useEffect(() => {
+    if (mobileOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [mobileOpen]);
+
+  // Esc closes the drawer.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMobileOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [mobileOpen]);
 
   // Make non-native clickable rows/cards keyboard-operable app-wide (audit DA-025).
   // Native <button>/<a>/<input> already handle Enter/Space, so we only enhance
@@ -58,7 +95,12 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
     );
   };
 
-  const sidebarWidth = sidebarCollapsed ? 64 : 240;
+  const sidebarWidth = isMobile ? 0 : sidebarCollapsed ? 64 : 240;
+
+  const handleMenuToggle = () => {
+    if (isMobile) setMobileOpen(o => !o);
+    else setSidebarCollapsed(c => !c);
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--neutral-100)', fontFamily: 'Inter, "Noto Sans Devanagari", sans-serif' }}>
@@ -84,17 +126,20 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
         .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         .table-scroll::-webkit-scrollbar { height: 4px; }
         .table-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 2px; }
+        /* Drawer slide + backdrop fade */
+        .sidebar-backdrop { animation: backdropIn 0.2s ease; }
+        @keyframes backdropIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Below the breakpoint the sidebar is an off-canvas drawer; main content
+           takes the full width and the grids/typography reflow to a single column. */
         @media (max-width: 1024px) {
-          .app-shell-main { margin-left: 64px !important; }
-          .app-sidebar { width: 64px !important; }
-          .sidebar-label, .sidebar-section, .sidebar-children, .sidebar-badge, .sidebar-chevron, .sidebar-user { display: none !important; }
+          .app-shell-main { margin-left: 0 !important; }
           .shell-content .grid-cols-5, .shell-content .grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
           .shell-content .col-span-3, .shell-content .col-span-2 { grid-column: span 2 / span 2 !important; }
           .shell-content table { min-width: 760px; }
           .shell-content .sticky { position: static !important; }
+          .breadcrumbs-bar { display: none !important; }
         }
         @media (max-width: 768px) {
-          .app-shell-main { margin-left: 64px !important; }
           .shell-titlebar { min-height: 64px !important; height: auto !important; padding: 12px 16px !important; align-items: flex-start !important; gap: 12px; flex-direction: column; }
           .shell-titlebar > div:last-child { width: 100%; flex-wrap: wrap; }
           .shell-content { padding: 16px !important; overflow-x: auto; }
@@ -109,26 +154,32 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
         @media (max-width: 480px) {
           .shell-content { padding: 12px !important; }
           .shell-titlebar h1 { font-size: 18px !important; line-height: 24px !important; }
-          .app-shell-main { margin-left: 0 !important; padding-bottom: 64px; }
-          .app-sidebar { top: auto !important; right: 0 !important; bottom: 0 !important; width: 100% !important; height: 56px !important; flex-direction: row !important; overflow-x: auto !important; }
-          .app-sidebar > div:first-child { display: flex !important; flex-direction: row !important; padding: 4px !important; overflow-x: auto !important; }
-          .app-sidebar button { min-width: 54px !important; height: 48px !important; justify-content: center !important; padding-left: 12px !important; padding-right: 12px !important; }
-          .app-sidebar .absolute.left-16 { display: none !important; }
           header { gap: 8px !important; padding-left: 8px !important; padding-right: 8px !important; }
-          header .flex-1 .ml-4 { display: none !important; }
         }
       `}</style>
       <Header
-        onMenuToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        onMenuToggle={handleMenuToggle}
         onNavigate={onNavigate}
         breadcrumbs={breadcrumbs}
+        menuOpen={isMobile && mobileOpen}
       />
+      {isMobile && mobileOpen && (
+        <div
+          className="sidebar-backdrop fixed inset-0 z-40"
+          style={{ top: '56px', backgroundColor: 'rgba(0,0,0,0.45)' }}
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
       <Sidebar
-        collapsed={sidebarCollapsed}
+        collapsed={!isMobile && sidebarCollapsed}
         activePage={activePage}
         onNavigate={onNavigate}
         expandedGroups={expandedGroups}
         onToggleGroup={toggleGroup}
+        mobile={isMobile}
+        mobileOpen={mobileOpen}
+        onCloseMobile={() => setMobileOpen(false)}
       />
       <main
         className="app-shell-main transition-all duration-300"

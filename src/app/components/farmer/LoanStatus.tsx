@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, CreditCard, FileText, Info, FileCheck, Banknote, Clock, Copy } from 'lucide-react';
+import { Download, CreditCard, FileText, Info, FileCheck, Banknote, Clock, Copy, Wallet, Percent, CalendarClock, BadgeIndianRupee, CalendarRange, Check } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { LoanTracker } from '../shared/LoanTracker';
@@ -28,7 +28,11 @@ function DocCard({ doc, onOpen }: { doc: typeof farmerDocuments[number]; onOpen:
         <StatusBadge status={doc.status} />
       </div>
       <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)', marginTop: '12px', minHeight: '38px' }}>{doc.name}</div>
-      <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>{doc.date === '—' ? 'Not generated yet' : `Generated ${doc.date}`}</div>
+      <div className="flex items-center gap-2 mt-1.5">
+        <span className="px-2 py-0.5 rounded-md" style={{ fontSize: '11px', fontWeight: 700, backgroundColor: 'var(--neutral-100)', color: 'var(--neutral-550)' }}>{doc.group}</span>
+        <span style={{ fontSize: '11px', color: 'var(--neutral-400)' }}>{doc.type}</span>
+      </div>
+      <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '6px' }}>{doc.date === '—' ? 'Not generated yet' : `Generated ${doc.date}`}</div>
       {doc.redacted && (
         <div className="mt-3 p-2 rounded-lg" style={{ backgroundColor: 'var(--warning-100)', color: 'var(--warning-700)', fontSize: '11px', lineHeight: '16px' }}>
           Summary view only. Risk details redacted per SOP.
@@ -127,7 +131,10 @@ export function LoanStatus({ onNavigate, activePage, activeTab: urlTab }: LoanSt
             <div className="mt-5 text-left">
               <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)', marginBottom: '8px' }}>The following have been returned to you:</div>
               {['SH-4 Form (returned by CS team)', 'Blank-dated Cheque (returned by CS team)'].map(item => (
-                <button key={item} onClick={() => onNavigate('farmer-documents')} className="w-full text-left p-2 rounded-lg clickable-row" style={{ fontSize: '14px', color: 'var(--success-700)', marginTop: '6px' }}>{item}</button>
+                <button key={item} onClick={() => onNavigate('farmer-documents')} className="w-full text-left p-2 rounded-lg clickable-row flex items-center gap-2" style={{ fontSize: '14px', color: 'var(--success-700)', marginTop: '6px' }}>
+                  <span className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--success-100)', color: 'var(--success-700)' }}><Check size={12} /></span>
+                  {item}
+                </button>
               ))}
             </div>
             <div className="mt-7 flex items-center justify-center gap-3">
@@ -150,13 +157,16 @@ export function LoanStatus({ onNavigate, activePage, activeTab: urlTab }: LoanSt
       <Shell activePage={activePage} onNavigate={onNavigate} breadcrumbs={['My Loans', 'Loan History']} pageTitle="Loan History" pageSubtitle="Past and active loans">
         <div className="grid grid-cols-3 gap-5 mb-5">
           {[
-            ['Total Borrowed', formatCurrency(totalBorrowed), 'var(--brand-primary)', 'farmer-active-loans'],
-            ['Total Repaid', formatCurrency(totalRepaid), 'var(--success-500)', 'farmer-repayment'],
-            ['Active Loans', '1', 'var(--brand-accent)', 'farmer-active-loans'],
-          ].map(([label, value, color, page]) => (
-            <button key={label} onClick={() => onNavigate(page)} className="bg-white rounded-2xl p-5 border border-[var(--neutral-200)] text-left clickable-card">
-              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>{label}</div>
-              <div style={{ fontSize: '26px', color, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: '6px' }}>{value}</div>
+            { label: 'Total Borrowed', value: formatCurrency(totalBorrowed), color: 'var(--brand-primary)', page: 'farmer-active-loans', icon: <Wallet size={16} /> },
+            { label: 'Total Repaid', value: formatCurrency(totalRepaid), color: 'var(--success-500)', page: 'farmer-repayment', icon: <BadgeIndianRupee size={16} /> },
+            { label: 'Active Loans', value: '1', color: 'var(--brand-accent)', page: 'farmer-active-loans', icon: <CreditCard size={16} /> },
+          ].map(stat => (
+            <button key={stat.label} onClick={() => onNavigate(stat.page)} className="bg-white rounded-2xl p-5 border border-[var(--neutral-200)] text-left clickable-card">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${stat.color}15`, color: stat.color }}>{stat.icon}</span>
+                <span style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>{stat.label}</span>
+              </div>
+              <div style={{ fontSize: '26px', color: stat.color, fontWeight: 700, fontFamily: 'Roboto Mono' }}>{stat.value}</div>
             </button>
           ))}
         </div>
@@ -248,16 +258,19 @@ export function LoanStatus({ onNavigate, activePage, activeTab: urlTab }: LoanSt
           <div className="bg-white rounded-2xl p-6 border border-[var(--neutral-200)]">
             <div className="grid grid-cols-5 gap-4">
               {[
-                ['Sanctioned Amount', formatCurrency(farmerLoan.sanctionedAmount), ''],
-                ['Outstanding', formatCurrency(farmerLoan.outstandingBalance), ''],
-                ['Interest Rate', farmerLoan.interestRate, 'Floating · Updated Apr 2025'],
-                ['Tenure', '12 months', 'Short-term'],
-                ['Next Due', farmerLoan.nextDueDate, farmerLoan.dueIn],
-              ].map(([label, value, sub]) => (
-                <div key={label}>
-                  <div style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 700, marginBottom: '6px' }}>{label}</div>
-                  <div style={{ fontSize: '20px', fontWeight: 700, color: label === 'Next Due' ? 'var(--warning-500)' : 'var(--neutral-900)', fontFamily: label.includes('Amount') || label === 'Outstanding' ? 'Roboto Mono' : 'inherit' }}>{value}</div>
-                  {sub && <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>{sub}</div>}
+                { label: 'Sanctioned Amount', value: formatCurrency(farmerLoan.sanctionedAmount), sub: `Disbursed ${farmerLoan.disbursedDate}`, mono: true, icon: <Wallet size={15} />, color: 'var(--brand-primary)' },
+                { label: 'Outstanding', value: formatCurrency(farmerLoan.outstandingBalance), sub: `${formatCurrency(farmerLoan.outstandingPrincipal)} principal · ${formatCurrency(farmerLoan.outstandingInterest)} interest`, mono: true, icon: <BadgeIndianRupee size={15} />, color: 'var(--accent-sanction)' },
+                { label: 'Interest Rate', value: farmerLoan.interestRate, sub: `Floating · Updated ${farmerLoan.interestRateEffective}`, mono: false, icon: <Percent size={15} />, color: 'var(--gold-500)' },
+                { label: 'Tenure', value: '12 months', sub: 'Short-term', mono: false, icon: <CalendarRange size={15} />, color: 'var(--brand-accent)' },
+                { label: 'Next Due', value: farmerLoan.nextDueDate, sub: farmerLoan.dueIn, mono: false, icon: <CalendarClock size={15} />, color: 'var(--warning-500)', highlight: true },
+              ].map(stat => (
+                <div key={stat.label}>
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <span className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${stat.color}15`, color: stat.color }}>{stat.icon}</span>
+                    <span style={{ fontSize: '11px', color: 'var(--neutral-400)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.03em' }}>{stat.label}</span>
+                  </div>
+                  <div style={{ fontSize: '20px', fontWeight: 700, color: stat.highlight ? 'var(--warning-500)' : 'var(--neutral-900)', fontFamily: stat.mono ? 'Roboto Mono' : 'inherit' }}>{stat.value}</div>
+                  {stat.sub && <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px', lineHeight: '16px' }}>{stat.sub}</div>}
                 </div>
               ))}
             </div>
@@ -292,6 +305,14 @@ export function LoanStatus({ onNavigate, activePage, activeTab: urlTab }: LoanSt
               <div style={{ fontSize: '32px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{formatCurrency(farmerLoan.outstandingBalance)}</div>
               <div className="w-80 max-w-full h-2 bg-[var(--neutral-200)] rounded-full mt-3"><div className="h-full rounded-full" style={{ width: '28.75%', backgroundColor: 'var(--success-500)' }} /></div>
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '6px' }}>{formatCurrency(farmerLoan.totalRepaid)} repaid of {formatCurrency(farmerLoan.sanctionedAmount)}</div>
+            </div>
+            <div className="px-6 border-l border-[var(--neutral-200)] self-stretch flex flex-col justify-center">
+              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>Instalments Paid</div>
+              <div style={{ fontSize: '32px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>
+                {farmerRepaymentSchedule.filter(r => r.status === 'Paid').length}
+                <span style={{ fontSize: '18px', color: 'var(--neutral-400)' }}> / {farmerRepaymentSchedule.length}</span>
+              </div>
+              <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '4px' }}>{farmerRepaymentSchedule.filter(r => r.status !== 'Paid').length} remaining</div>
             </div>
             <div className="text-right">
               <div style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 700 }}>Next Payment Due</div>

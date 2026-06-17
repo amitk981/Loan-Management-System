@@ -16,6 +16,9 @@ interface SidebarProps {
   onNavigate: (page: string) => void;
   expandedGroups: string[];
   onToggleGroup: (key: string) => void;
+  mobile?: boolean;
+  mobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 const farmerNav: NavItem[] = [
@@ -47,16 +50,12 @@ const creditNav: NavItem[] = [
     icon: <Inbox size={20} />,
     label: 'Application Inbox',
     key: 'credit-queue',
-    groupKey: 'credit-inbox',
     badge: 12,
     section: 'Intake',
-    match: ['credit-pending', 'credit-all-apps'],
-    children: [
-      { label: 'New Applications', key: 'credit-queue', badge: 12 },
-      { label: 'Returned / Incomplete', key: 'credit-returned' },
-      { label: 'SC Tracker', key: 'credit-sc-queue' },
-      { label: 'Manual Entry', key: 'credit-manual-entry' },
-    ],
+    // Sibling intake views (Pending Appraisal, Returned, SC Tracker) are
+    // WorkbenchTabs on this hub page, not nested sidebar children. `match`
+    // keeps this door lit for every tab/route it owns (IA-01).
+    match: ['credit-pending', 'credit-all-apps', 'credit-returned', 'credit-sc-queue', 'credit-manual-entry'],
   },
   { icon: <FileCheck size={20} />, label: 'Appraisal Note', key: 'credit-review', section: 'Intake' },
   // Portfolio registers (Active Loans, DPD, Defaults, MIS, Rejected, Exceptions)
@@ -77,34 +76,28 @@ const complianceNav: NavItem[] = [
     icon: <ClipboardCheck size={20} />,
     label: 'Document Queue',
     key: 'cs-queue',
-    groupKey: 'cs-doc-queue',
     badge: 14,
     section: 'Documents',
-    match: ['cs-awaiting-prep', 'cs-awaiting-review', 'cs-signoff', 'cs-poa', 'cs-triparty', 'cs-sh4', 'cs-termsheet', 'cs-agreement'],
-    children: [
-      { label: 'All Pending', key: 'cs-queue', badge: 14 },
-      { label: 'Workspace Hub', key: 'cs-workspace' },
-    ],
+    // Queue + Workspace sibling views are WorkbenchTabs on this hub, not nested
+    // sidebar children. `match` keeps the door lit for every tab/route it owns.
+    match: ['cs-awaiting-prep', 'cs-awaiting-review', 'cs-signoff', 'cs-workspace', 'cs-poa', 'cs-triparty', 'cs-sh4', 'cs-termsheet', 'cs-agreement'],
   },
   {
     icon: <CheckSquare size={20} />,
     label: 'KYC & CDSL Pledge',
     key: 'cs-kyc',
-    groupKey: 'cs-kyc-group',
     badge: 9,
     section: 'Compliance',
+    // Member views (Pending KYC, Re-KYC) are WorkbenchTabs on this hub. CDSL
+    // Pledge now lives as a tab on Registers & Operations (its rendering hub).
     match: ['cs-pending-kyc', 'cs-rekyc'],
-    children: [
-      { label: 'All Members', key: 'cs-kyc' },
-      { label: 'CDSL Pledge Tracker', key: 'cs-cdsl' },
-    ],
   },
   // NOC, Calendar, Security Return, Stamp, Grievance and the registers are all
   // tabs on this one hub — no separate "CS Operations" nav door needed.
   // `match` keeps this door lit for every register tab the hub owns (IA-01).
   {
     icon: <BookOpen size={20} />, label: 'Registers & Operations', key: 'cs-loan-register', badge: 2, section: 'Registers',
-    match: ['cs-sanction-register', 'cs-noc', 'cs-calendar', 'cs-stamp', 'cs-grievance', 'cs-reports', 'cs-archive', 'cs-exception-register', 'cs-security-return', 'cs-poa-register'],
+    match: ['cs-sanction-register', 'cs-noc', 'cs-calendar', 'cs-stamp', 'cs-cdsl', 'cs-grievance', 'cs-reports', 'cs-archive', 'cs-exception-register', 'cs-security-return', 'cs-poa-register'],
   },
 ];
 
@@ -115,18 +108,11 @@ const sanctionNav: NavItem[] = [
     icon: <CheckSquare size={20} />,
     label: 'Approval Queue',
     key: 'sc-awaiting',
-    groupKey: 'sc-decisions',
     badge: 7,
     section: 'Decisions',
-    match: ['sc-review'],
-    children: [
-      { label: 'Awaiting Approval', key: 'sc-awaiting', badge: 7 },
-      { label: 'Awaiting My Sign', key: 'sc-my-sign', badge: 5 },
-      { label: 'Joint Approvals', key: 'sc-joint', badge: 2 },
-      { label: 'Special Cases', key: 'sc-special-cases', badge: 1 },
-      { label: 'Returns', key: 'sc-returns' },
-      { label: 'Final Sign-off', key: 'sc-final-signoff', badge: 2 },
-    ],
+    // Decision sub-views are WorkbenchTabs on this hub, not nested children.
+    // `match` keeps the door lit for every tab/route it owns.
+    match: ['sc-review', 'sc-my-sign', 'sc-joint', 'sc-special-cases', 'sc-returns', 'sc-final-signoff'],
   },
   // Sanction / Exception registers and Board Minutes are tabs on this hub.
   {
@@ -137,15 +123,9 @@ const sanctionNav: NavItem[] = [
     icon: <TrendingUp size={20} />,
     label: 'Oversight',
     key: 'sc-health',
-    groupKey: 'sc-oversight',
     section: 'Oversight',
-    children: [
-      { label: 'Portfolio Health', key: 'sc-health' },
-      { label: 'Exposure & Limits', key: 'sc-exposure' },
-      { label: 'DPD Summary', key: 'sc-dpd' },
-      { label: 'Recovery Actions', key: 'sc-default-escalations' },
-      { label: 'Policy Settings', key: 'sc-policy' },
-    ],
+    // Oversight sub-views are WorkbenchTabs on this hub, not nested children.
+    match: ['sc-exposure', 'sc-dpd', 'sc-default-escalations', 'sc-policy'],
   },
 ];
 
@@ -156,27 +136,18 @@ const treasuryNav: NavItem[] = [
     icon: <DollarSign size={20} />,
     label: 'Disbursements',
     key: 'treasury-pending',
-    groupKey: 'treasury-disburse',
     badge: 2,
     section: 'Disbursements',
-    children: [
-      { label: 'Pending Initiation', key: 'treasury-pending', badge: 2 },
-      { label: 'Authorizations', key: 'treasury-auth', badge: 2 },
-      { label: 'Disbursed Today', key: 'treasury-today' },
-      { label: 'Process Flow', key: 'treasury-disbursement' },
-    ],
+    // Disbursement sub-views are WorkbenchTabs on this hub, not nested children.
+    match: ['treasury-auth', 'treasury-today', 'treasury-disbursement'],
   },
   {
     icon: <Building size={20} />,
     label: 'SAP Management',
     key: 'treasury-sap-codes',
-    groupKey: 'treasury-sap',
     section: 'Disbursements',
-    children: [
-      { label: 'Customer Codes', key: 'treasury-sap-codes' },
-      { label: 'SAP Entries Log', key: 'treasury-sap-log' },
-      { label: 'Ledger Summary', key: 'treasury-ledger' },
-    ],
+    // SAP sub-views (Entries Log, Ledger Summary) are WorkbenchTabs on this hub.
+    match: ['treasury-sap-log', 'treasury-ledger'],
   },
   // Incoming, Deductions, Accruals, Reconciliation, Reports & Export Centre are
   // all tabs on this Finance hub — one nav door, not two. `match` keeps the door
@@ -262,28 +233,36 @@ function isItemActive(item: NavItem, activePage: string) {
     || false;
 }
 
-export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onToggleGroup }: SidebarProps) {
+export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onToggleGroup, mobile = false, mobileOpen = false, onCloseMobile }: SidebarProps) {
   const { user } = useAuth();
   const { t } = useLanguage();
   const navItems = navByRole[user?.role || 'farmer'] || farmerNav;
   const accent = roleAccents[user?.role || 'farmer'] || 'var(--brand-accent)';
+  // In the drawer the labels always show, even though desktop may be collapsed.
+  const showLabels = mobile ? true : !collapsed;
   let lastSection = '';
+
+  // On mobile every navigation closes the drawer.
+  const go = (page: string) => { onNavigate(page); if (mobile) onCloseMobile?.(); };
 
   const handleParentClick = (item: NavItem) => {
     const gid = groupId(item);
     if (item.children && !expandedGroups.includes(gid)) {
       onToggleGroup(gid);
     }
-    onNavigate(item.key);
+    go(item.key);
   };
 
   return (
     <aside
-      className="app-sidebar fixed left-0 top-14 bottom-0 z-40 flex flex-col transition-all duration-300 overflow-hidden"
+      className="app-sidebar fixed left-0 top-14 bottom-0 z-50 flex flex-col transition-transform duration-300 overflow-hidden shadow-xl"
       style={{
-        width: collapsed ? '64px' : '240px',
+        width: mobile ? '280px' : collapsed ? '64px' : '240px',
         backgroundColor: 'var(--brand-primary)',
+        transform: mobile && !mobileOpen ? 'translateX(-100%)' : 'translateX(0)',
+        boxShadow: mobile && mobileOpen ? '0 0 40px rgba(0,0,0,0.3)' : undefined,
       }}
+      aria-hidden={mobile && !mobileOpen}
     >
       <div className="flex-1 overflow-y-auto py-2 shell-scroll" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.12) transparent' }}>
         {navItems.map((item, index) => {
@@ -291,7 +270,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
           const isActive = isItemActive(item, activePage);
           const isExpanded = expandedGroups.includes(gid) || (item.children && isActive);
           const itemLabel = t(item.i18nKey || labelI18nKeys[item.label] || `nav.${item.key}`, item.label);
-          const showSection = !collapsed && item.section && item.section !== lastSection;
+          const showSection = showLabels && item.section && item.section !== lastSection;
           if (showSection) lastSection = item.section!;
 
           return (
@@ -321,10 +300,10 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                     if (item.children) {
                       handleParentClick(item);
                     } else {
-                      onNavigate(item.key);
+                      go(item.key);
                     }
                   }}
-                  title={collapsed ? itemLabel : undefined}
+                  title={!showLabels ? itemLabel : undefined}
                   aria-label={item.children ? `${itemLabel} menu` : itemLabel}
                   aria-current={isActive ? 'page' : undefined}
                   aria-expanded={item.children ? isExpanded : undefined}
@@ -332,7 +311,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                   <span className="flex-shrink-0" style={{ opacity: isActive ? 1 : 0.72 }} aria-hidden="true">
                     {item.icon}
                   </span>
-                  {!collapsed && (
+                  {showLabels && (
                     <>
                       <span className="sidebar-label flex-1 text-left truncate" style={{ fontSize: '13.5px', fontWeight: isActive ? 500 : 400, lineHeight: '20px' }}>
                         {itemLabel}
@@ -348,7 +327,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                     </>
                   )}
                 </button>
-                {!collapsed && item.children && (
+                {showLabels && item.children && (
                   <button
                     type="button"
                     className="sidebar-chevron flex-shrink-0 p-2 mr-1 rounded hover:bg-white/10"
@@ -362,14 +341,14 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                     />
                   </button>
                 )}
-                {collapsed && (
+                {!showLabels && (
                   <div className="absolute left-16 bg-[var(--neutral-900)] text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 whitespace-nowrap z-50 pointer-events-none shadow-lg">
                     {itemLabel}
                   </div>
                 )}
               </div>
 
-              {!collapsed && item.children && isExpanded && (
+              {showLabels && item.children && isExpanded && (
                 <div className="sidebar-children pb-1" style={{ backgroundColor: 'rgba(0,0,0,0.12)' }}>
                   {item.children.map(child => {
                     const isChildActive = activePage === child.key;
@@ -385,7 +364,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
                           backgroundColor: isChildActive ? 'rgba(45,122,79,0.35)' : 'transparent',
                           borderLeft: isChildActive ? `2px solid ${accent}` : '2px solid transparent',
                         }}
-                        onClick={() => onNavigate(child.key)}
+                        onClick={() => go(child.key)}
                         aria-current={isChildActive ? 'page' : undefined}
                         aria-label={childLabel}
                       >
@@ -405,11 +384,11 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
         })}
       </div>
 
-      {!collapsed && (
+      {showLabels && (
         <div className="sidebar-footer px-3 py-3 border-t space-y-2" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
           {user?.role !== 'farmer' && (
             <button
-              onClick={() => onNavigate('notifications-center')}
+              onClick={() => go("notifications-center")}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/8 transition-colors text-left"
               style={{ fontSize: '12px', color: 'rgba(255,255,255,0.65)' }}
             >
@@ -418,7 +397,7 @@ export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onT
             </button>
           )}
           <button
-            onClick={() => onNavigate('user-profile')}
+            onClick={() => go("user-profile")}
             className="w-full flex items-center gap-2 p-2 rounded-xl hover:bg-white/8 transition-colors text-left"
             style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
           >

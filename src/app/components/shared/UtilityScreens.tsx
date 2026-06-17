@@ -112,11 +112,12 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
             </div>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { label: 'Track loan', page: 'farmer-active-loans', note: 'Status, schedule and timeline' },
-                { label: 'Make payment', page: 'farmer-repayment', note: 'Pay instalment or upload UTR' },
-                { label: 'My documents', page: 'farmer-documents', note: 'Agreements, invoices and forms' },
+                { label: 'Track loan', page: 'farmer-active-loans', note: 'Status, schedule and timeline', icon: <Calendar size={18} />, color: 'var(--brand-primary)' },
+                { label: 'Make payment', page: 'farmer-repayment', note: 'Pay instalment or upload UTR', icon: <CreditCard size={18} />, color: 'var(--success-500)' },
+                { label: 'My documents', page: 'farmer-documents', note: 'Agreements, invoices and forms', icon: <FileText size={18} />, color: 'var(--brand-accent)' },
               ].map(item => (
                 <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-2xl p-4 border border-[var(--neutral-200)] text-left clickable-card">
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${item.color}15`, color: item.color }}>{item.icon}</div>
                   <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 700 }}>{item.label}</div>
                   <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
                 </button>
@@ -236,12 +237,20 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
             </div>
 
             <div className="grid grid-cols-3 gap-3">
-              {meta.pages.map(item => (
-                <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-2xl p-4 border border-[var(--neutral-200)] text-left clickable-card">
-                  <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 700 }}>{item.label}</div>
-                  <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
-                </button>
-              ))}
+              {meta.pages.map((item, i) => {
+                const slot = [
+                  { icon: <Search size={18} />, color: 'var(--brand-primary)' },
+                  { icon: <FileText size={18} />, color: 'var(--brand-accent)' },
+                  { icon: <ShieldAlert size={18} />, color: 'var(--warning-500)' },
+                ][i % 3];
+                return (
+                  <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-2xl p-4 border border-[var(--neutral-200)] text-left clickable-card">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${slot.color}15`, color: slot.color }}>{slot.icon}</div>
+                    <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 700 }}>{item.label}</div>
+                    <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
+                  </button>
+                );
+              })}
             </div>
 
             <AuditTrailPanel farmerSafe={false} />

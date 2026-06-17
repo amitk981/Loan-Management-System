@@ -179,3 +179,65 @@
 - Fix 2: every dropzone (Step 3 land/bank docs, cancelled cheque, NACH/ECS; Step 4 applicant + nominee KYC) now reflects `reviewDocs[*].uploaded` — green border + `FileCheck` + "Uploaded — tap to replace".
 - Verified live as Farmer: filling DOB+address flipped Step 1 → "Details captured" and progress 1/5 → 2/5; uploading Crop Plan turned its zone green and dropped both the "Documents" KPI (6/9 → 7/9) and the rail's "3 docs pending" → "2 docs pending". Build green (1663 modules); no new console errors.
 - Scorecard S3 (Apply) Info-hierarchy 4→5 / Action-feedback bump; S5 (Pipeline) Task-fit →5.
+
+---
+
+## Responsive navigation — off-canvas mobile drawer (2026-06-17, pass III)
+
+**Problem.** Below 1024px the shared shell degraded badly: the sidebar shrank to a
+64px **unlabeled icon rail** (tablet), then on phones (<480px) became a cramped
+horizontal-scrolling **bottom icon bar** with all labels, sections, badges and the
+user card hidden via `display:none` overrides. Nav was effectively unusable on a
+phone — no labels, no sub-items, no role/section context.
+
+**Fix (layout/Shell.tsx, layout/Sidebar.tsx, layout/Header.tsx).**
+- Shell now tracks `isMobile` (`< 1024px`, via a `resize` listener) and a `mobileOpen`
+  drawer state. Below the breakpoint the sidebar renders as a **full-label 280px
+  off-canvas drawer** that slides in over a dimmed backdrop; at ≥1024px the original
+  desktop collapse (240↔64px) is unchanged.
+- Drawer UX niceties: tap-backdrop / Esc / route-change all close it; body scroll is
+  locked while open; the header hamburger swaps to an **X** (`aria-expanded`) only in
+  the mobile-open state; every drawer nav tap auto-closes the drawer.
+- The old `@media` sidebar-rail / bottom-bar hacks were deleted; the responsive grid +
+  typography reflow rules (multi-col → single col, large headings scaled down) were kept.
+  Breadcrumbs hide < 1024px (the drawer is the wayfinding surface there).
+
+**Verified live.** Mobile (375px): hamburger opens a labeled drawer with backdrop, X
+closes it, content reflows to a single column full-width. Desktop (1280px, after a real
+resize event): 240px labeled sidebar + content margin restored, multi-column grid intact.
+`npx vite build` green (1663 modules); no console errors. Note: the preview harness
+doesn't auto-dispatch `resize`, so the breakpoint switch was confirmed by dispatching one
+manually — real browsers fire it natively on viewport change.
+
+---
+
+## Credit · New Applications (Application Queue) — responsive master-detail + intake polish
+
+**Problem.** The intake screen (`credit/ApplicationQueue.tsx`) used a fixed 12-col
+master/detail grid (`col-span-4` list + `col-span-8` detail) that did not reflow below
+the desktop breakpoint — on phone/tablet the two panes collided into an unreadable sliver.
+KYC progress was implicit (a flat list), primary actions gave no feedback, and several
+controls lacked focus/hover/disabled affordances.
+
+**Fix (credit/ApplicationQueue.tsx).**
+- **Responsive master-detail.** Panes now stack: `flex flex-col lg:grid lg:grid-cols-12`.
+  Below `lg`, a `mobileView` state (`'list' | 'detail'`) shows one pane at a time — tapping
+  an application opens the detail with a **"← Back to list"** button; both panes show
+  side-by-side at ≥1024px. `InfoGrid` collapses 2-col → 1-col on mobile.
+- **KYC progress made explicit.** Added an `X of N verified` count + an amber/green
+  progress bar (`role=progressbar`, ARIA values) above the document checklist.
+- **Action feedback & states.** `Mark Complete`, document `Request`, and deficiency-notice
+  send now fire `sonner` toasts; `Assign to Appraisal` shows a "resolve KYC first" tooltip
+  while disabled; the footer action bar is `sticky bottom-0`. Complete docs are no longer
+  pointlessly clickable (disabled), missing docs show a `Request →` affordance.
+- **A11y / interaction polish.** `aria-pressed` on filter + language toggles, `aria-label`
+  on search, a clear-search (×) button, focus-visible outlines, hover brightness on
+  primary buttons, and a truncation-safe flex on doc rows. The "Add Manual" label
+  shortens to "Add" on `<sm`.
+
+**Verified live.** Logged in as Credit (OTP 123456), `?page=credit-queue`.
+Mobile (375px): list shows 3 cards / detail hidden; tapping a card hides the list and
+shows the detail with a visible Back button and a 67% (4-of-6) KYC bar. Desktop (1280px):
+both panes render (`list:flex`, `detail:block`), selected row carries the blue accent
+border, progress bar + sticky footer actions confirmed by screenshot. `npx vite build`
+green (1663 modules); no console errors.

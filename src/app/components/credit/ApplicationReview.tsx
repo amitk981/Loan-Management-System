@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { AlertTriangle, Check, Send, ShieldCheck } from 'lucide-react';
+import { AlertTriangle, Check, Send, ShieldCheck, CheckCircle2, AlertCircle, ChevronRight } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { AppModal } from '../shared/AppModal';
 import { StatusBadge } from '../shared/StatusBadge';
@@ -25,11 +25,25 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
   const [showSubmit, setShowSubmit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const [riskNotes, setRiskNotes] = useState('Repayment routed through tri-party subsidiary deduction. Bank average supports short-term working capital cycle. Crop price risk mitigated through existing Sahyadri procurement relationship.');
   const shareLimit = shares * appraisalLoan.valuationPerShare;
   const landLimit = landAcres * appraisalLoan.scaleOfFinance;
   const eligible = Math.min(shareLimit, landLimit);
   const exceeds = requested > eligible;
   const isDirectorCase = appraisalLoan.borrower.includes('Ganesh') || appraisalLoan.borrower.includes('Director');
+
+  // Live utilisation of the eligible limit by the requested amount.
+  const utilisation = eligible > 0 ? Math.min(100, Math.round((requested / eligible) * 100)) : 0;
+
+  // Per-step readiness — drives the progress bar, step nav state, and pre-submit checklist.
+  const stepDone: Record<number, boolean> = {
+    1: true, // eligibility checks all pass in this prototype
+    2: requested > 0,
+    3: riskNotes.trim().length > 20,
+    4: recommendation.trim().length > 0,
+  };
+  const doneCount = [1, 2, 3, 4].filter(s => stepDone[s]).length;
+  const progressPct = Math.round((doneCount / 4) * 100);
 
   if (submitted) {
     return (
@@ -56,24 +70,38 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
       actions={<StatusBadge status="Under Assessment" size="md" />}
     >
       {isDirectorCase && <div className="mb-5"><DirectorCaseBanner /></div>}
-      <div className="mb-5 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--warning-100)' }}>
-        <div className="h-full" style={{ width: '62%', backgroundColor: 'var(--warning-500)' }} />
+      <div className="mb-5">
+        <div className="flex items-center justify-between mb-1.5">
+          <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--neutral-700)' }}>Appraisal progress</span>
+          <span style={{ fontSize: '12px', fontWeight: 700, color: progressPct === 100 ? 'var(--success-600)' : 'var(--brand-accent)' }}>{doneCount} of 4 sections ready · {progressPct}%</span>
+        </div>
+        <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--neutral-175)' }}>
+          <div className="h-full transition-all" style={{ width: `${progressPct}%`, backgroundColor: progressPct === 100 ? 'var(--success-600)' : 'var(--brand-accent)' }} />
+        </div>
       </div>
 
       <div className="grid grid-cols-12 gap-5">
         <div className="col-span-3 space-y-4">
           <div className="bg-white rounded-lg border border-[var(--neutral-250)] overflow-hidden">
-            {[
-              [1, 'Eligibility Check'],
-              [2, 'Loan Limit Calc'],
-              [3, 'Risk Assessment'],
-              [4, 'Recommendation'],
-            ].map(([id, label]) => (
-              <button key={id} onClick={() => setStep(id as number)} className="w-full px-4 py-3 flex items-center gap-3 text-left border-b border-[var(--neutral-250)] last:border-b-0" style={{ backgroundColor: step === id ? 'var(--accent-blue-50)' : 'white' }}>
-                <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: step === id ? 'var(--brand-accent)' : Number(id) < step ? 'var(--success-600)' : 'var(--neutral-175)', color: step === id || Number(id) < step ? 'white' : 'var(--neutral-500)', fontSize: '12px', fontWeight: 700 }}>{Number(id) < step ? '✓' : id}</span>
-                <span style={{ fontSize: '13px', color: step === id ? 'var(--brand-accent)' : 'var(--neutral-700)', fontWeight: 700 }}>{label}</span>
-              </button>
-            ))}
+            {([
+              [1, 'Eligibility Check', 'Member, default & purpose'],
+              [2, 'Loan Limit Calc', 'Eligible amount & headroom'],
+              [3, 'Risk Assessment', 'Repayment & crop risk'],
+              [4, 'Recommendation', 'Terms & note to SC'],
+            ] as [number, string, string][]).map(([id, label, hint]) => {
+              const active = step === id;
+              const done = stepDone[id] && !active;
+              return (
+                <button key={id} onClick={() => setStep(id)} className="w-full px-4 py-3 flex items-center gap-3 text-left border-b border-[var(--neutral-250)] last:border-b-0 transition-colors hover:bg-[var(--neutral-100)]" style={{ backgroundColor: active ? 'var(--accent-blue-50)' : 'white' }}>
+                  <span className="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: active ? 'var(--brand-accent)' : done ? 'var(--success-600)' : 'var(--neutral-175)', color: active || done ? 'white' : 'var(--neutral-500)', fontSize: '12px', fontWeight: 700 }}>{done ? <Check size={13} /> : id}</span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block truncate" style={{ fontSize: '13px', color: active ? 'var(--brand-accent)' : 'var(--neutral-700)', fontWeight: 700 }}>{label}</span>
+                    <span className="block truncate" style={{ fontSize: '11px', color: 'var(--neutral-500)', fontWeight: 400 }}>{done ? 'Ready' : hint}</span>
+                  </span>
+                  {active && <ChevronRight size={15} style={{ color: 'var(--brand-accent)' }} />}
+                </button>
+              );
+            })}
           </div>
 
           <div className="bg-white rounded-lg p-4 border border-[var(--neutral-250)] sticky top-4">
@@ -84,10 +112,22 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
             <CalcInput label="Land (acres)" value={landAcres} onChange={setLandAcres} suffix="acres" step={0.25} />
             <Metric label="Scale of Finance" value="₹20,000/acre" />
             <Metric label="Limit (land)" value={formatCurrency(landLimit)} color="var(--brand-accent)" />
-            <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: 'var(--green-50c)', border: '2px solid var(--green-700b)' }}>
-              <div style={{ fontSize: '11px', color: 'var(--success-600)', fontWeight: 700 }}>ELIGIBLE LIMIT</div>
+            <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: exceeds ? 'var(--warning-100)' : 'var(--green-50c)', border: `2px solid ${exceeds ? 'var(--warning-500)' : 'var(--green-700b)'}` }}>
+              <div style={{ fontSize: '11px', color: exceeds ? 'var(--warning-700)' : 'var(--success-600)', fontWeight: 700 }}>ELIGIBLE LIMIT</div>
               <div style={{ fontSize: '28px', color: 'var(--brand-primary)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{formatCurrency(eligible)}</div>
               <div style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>Lower of share and land limits</div>
+              <div className="mt-3 pt-3" style={{ borderTop: '1px dashed var(--neutral-300)' }}>
+                <div className="flex items-center justify-between mb-1">
+                  <span style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>Requested</span>
+                  <span style={{ fontSize: '12px', fontWeight: 700, fontFamily: 'Roboto Mono', color: exceeds ? 'var(--warning-700)' : 'var(--neutral-900)' }}>{formatCurrency(requested)} · {utilisation}%</span>
+                </div>
+                <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--neutral-200)' }}>
+                  <div className="h-full" style={{ width: `${utilisation}%`, backgroundColor: exceeds ? 'var(--warning-500)' : 'var(--success-600)' }} />
+                </div>
+                <div style={{ fontSize: '11px', color: exceeds ? 'var(--warning-700)' : 'var(--neutral-500)', marginTop: '4px', fontWeight: exceeds ? 700 : 400 }}>
+                  {exceeds ? `Over limit by ${formatCurrency(requested - eligible)}` : `Headroom ${formatCurrency(eligible - requested)}`}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -96,25 +136,32 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
           {step === 1 && (
             <div className="space-y-5">
               <StepTitle title="Step 1: Borrower Eligibility Check" />
+              <div className="flex items-center gap-3 p-4 rounded-lg" style={{ backgroundColor: 'var(--green-50c)', border: '1px solid var(--green-700b)' }}>
+                <CheckCircle2 size={22} style={{ color: 'var(--success-600)' }} />
+                <div className="flex-1">
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--success-700)' }}>Borrower is eligible — all 9 checks passed</div>
+                  <div style={{ fontSize: '12px', color: 'var(--neutral-700)' }}>Active member, no default, purpose compliant, nominee valid. {isDirectorCase && 'GM approval still required (relative of Director) before sanction.'}</div>
+                </div>
+              </div>
               <Panel title="1.1 Member Status Verification">
-                <Field label="Active Member?" value="Yes" type="radio" />
-                <Field label="Years supplying produce" value="4 yrs" />
-                <Field label="Supplying to" value="SFPCL" />
-                <Field label="Source verified from" value="Share Register" />
+                <Field label="Active Member?" value="Yes" status="pass" />
+                <Field label="Years supplying produce" value="4 yrs" status="pass" />
+                <Field label="Supplying to" value="SFPCL" status="pass" />
+                <Field label="Source verified from" value="Share Register" status="pass" />
               </Panel>
               <Panel title="1.2 Existing Loan Default Check">
-                <Field label="Any existing default in SFPCL?" value="No" type="radio" />
-                <Field label="Any default in subsidiary co.?" value="No" type="radio" />
-                <Field label="Outstanding loans (current)" value="₹0" mono />
+                <Field label="Any existing default in SFPCL?" value="No" status="pass" />
+                <Field label="Any default in subsidiary co.?" value="No" status="pass" />
+                <Field label="Outstanding loans (current)" value="₹0" mono status="pass" />
               </Panel>
               <Panel title="1.3 Loan Purpose Compliance">
-                <Field label="Stated purpose" value={appraisalLoan.purpose} />
-                <Field label="Category" value={appraisalLoan.category} />
+                <Field label="Stated purpose" value={appraisalLoan.purpose} status="pass" />
+                <Field label="Category" value={appraisalLoan.category} status="pass" />
               </Panel>
               <Panel title="1.4 Nominee Eligibility">
-                <Field label="Nominee Name" value="Board resolution attached" />
-                <Field label="Is nominee minor?" value="No" type="radio" />
-                <Field label="Aadhaar verified?" value="Yes" />
+                <Field label="Nominee Name" value="Board resolution attached" status="pass" />
+                <Field label="Is nominee minor?" value="No" status="pass" />
+                <Field label="Aadhaar verified?" value="Yes" status="pass" />
               </Panel>
             </div>
           )}
@@ -156,14 +203,30 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
               </Panel>
               <div>
                 <label style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700 }}>Risk Mitigation Notes</label>
-                <textarea className="w-full mt-2 p-3 rounded-lg border border-[var(--neutral-300)]" rows={4} defaultValue="Repayment routed through tri-party subsidiary deduction. Bank average supports short-term working capital cycle. Crop price risk mitigated through existing Sahyadri procurement relationship." />
+                <textarea value={riskNotes} onChange={e => setRiskNotes(e.target.value)} className="w-full mt-2 p-3 rounded-lg border border-[var(--neutral-300)]" rows={4} />
+                <div style={{ fontSize: '11px', color: riskNotes.trim().length > 20 ? 'var(--success-600)' : 'var(--neutral-500)', marginTop: '4px' }}>{riskNotes.trim().length > 20 ? '✓ Mitigation recorded' : 'Add at least a line of mitigation rationale'}</div>
               </div>
               <div>
                 <div style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700, marginBottom: '8px' }}>Overall Risk Rating</div>
-                <div className="flex gap-2">
-                  {(['Low', 'Medium', 'High'] as const).map(rating => (
-                    <button key={rating} onClick={() => setRiskRating(rating)} className="px-4 py-2 rounded-lg" style={{ backgroundColor: riskRating === rating ? (rating === 'Low' ? 'var(--success-100)' : rating === 'Medium' ? 'var(--warning-100)' : 'var(--error-100)') : 'var(--neutral-175)', color: riskRating === rating ? (rating === 'Low' ? 'var(--success-600)' : rating === 'Medium' ? 'var(--warning-700)' : 'var(--error-700)') : 'var(--neutral-500)', fontSize: '13px', fontWeight: 700 }}>{rating}</button>
-                  ))}
+                <div className="grid grid-cols-3 gap-2">
+                  {(['Low', 'Medium', 'High'] as const).map(rating => {
+                    const sel = riskRating === rating;
+                    const tone = rating === 'Low' ? { bg: 'var(--success-100)', fg: 'var(--success-600)', bar: 'var(--success-600)' } : rating === 'Medium' ? { bg: 'var(--warning-100)', fg: 'var(--warning-700)', bar: 'var(--warning-500)' } : { bg: 'var(--error-100)', fg: 'var(--error-700)', bar: 'var(--error-700)' };
+                    return (
+                      <button key={rating} onClick={() => setRiskRating(rating)} className="px-4 py-3 rounded-lg text-left transition-all" style={{ backgroundColor: sel ? tone.bg : 'var(--neutral-150)', border: `2px solid ${sel ? tone.bar : 'transparent'}` }}>
+                        <div className="flex items-center justify-between">
+                          <span style={{ fontSize: '13px', fontWeight: 700, color: sel ? tone.fg : 'var(--neutral-500)' }}>{rating}</span>
+                          {sel && <Check size={15} style={{ color: tone.fg }} />}
+                        </div>
+                        <div className="flex gap-1 mt-2">
+                          {[0, 1, 2].map(i => {
+                            const fillTo = rating === 'Low' ? 1 : rating === 'Medium' ? 2 : 3;
+                            return <span key={i} className="h-1.5 flex-1 rounded-full" style={{ backgroundColor: sel && i < fillTo ? tone.bar : 'var(--neutral-250)' }} />;
+                          })}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -180,6 +243,23 @@ export function ApplicationReview({ onNavigate, activePage }: ApplicationReviewP
               <div>
                 <label style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700 }}>Remarks for SC</label>
                 <textarea value={recommendation} onChange={e => setRecommendation(e.target.value)} className="w-full mt-2 p-3 rounded-lg border border-[var(--neutral-300)]" rows={5} />
+              </div>
+              <div className="p-4 rounded-lg" style={{ backgroundColor: 'var(--neutral-150)', border: '1px solid var(--neutral-250)' }}>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--neutral-700)', textTransform: 'uppercase', marginBottom: '10px' }}>Submission readiness</div>
+                <div className="space-y-2">
+                  {[
+                    ['Eligibility verified', stepDone[1]],
+                    ['Loan limit calculated', stepDone[2]],
+                    [`Risk assessed — rated ${riskRating}`, stepDone[3]],
+                    ['Recommendation note written', stepDone[4]],
+                    [isDirectorCase ? 'GM resolution required (relative of Director)' : 'No special authority required', !isDirectorCase],
+                  ].map(([label, ok]) => (
+                    <div key={label as string} className="flex items-center gap-2">
+                      {ok ? <CheckCircle2 size={15} style={{ color: 'var(--success-600)' }} /> : <AlertCircle size={15} style={{ color: 'var(--warning-700)' }} />}
+                      <span style={{ fontSize: '13px', color: ok ? 'var(--neutral-700)' : 'var(--warning-700)', fontWeight: ok ? 400 : 700 }}>{label as string}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="flex justify-end gap-3">
                 <button className="px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 border border-[var(--neutral-250)]" style={{ color: 'var(--error-900)', fontSize: '14px' }}>Prepare Rejection Note</button>
@@ -220,8 +300,17 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   return <div className="rounded-lg border border-[var(--neutral-250)] overflow-hidden"><div className="px-4 py-2.5" style={{ backgroundColor: 'var(--neutral-150)', fontSize: '13px', fontWeight: 700 }}>{title}</div><div className="grid grid-cols-2 gap-0">{children}</div></div>;
 }
 
-function Field({ label, value, mono, type }: { label: string; value: string; mono?: boolean; type?: string }) {
-  return <div className="p-4 border-t border-r border-[var(--neutral-250)]"><div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div><div style={{ fontSize: '14px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '5px', fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{type === 'radio' ? `● ${value}` : value}</div></div>;
+function Field({ label, value, mono, status }: { label: string; value: string; mono?: boolean; status?: 'pass' | 'flag' }) {
+  return (
+    <div className="p-4 border-t border-r border-[var(--neutral-250)]">
+      <div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div>
+      <div className="flex items-center gap-1.5" style={{ marginTop: '5px' }}>
+        {status === 'pass' && <CheckCircle2 size={15} style={{ color: 'var(--success-600)' }} />}
+        {status === 'flag' && <AlertCircle size={15} style={{ color: 'var(--warning-700)' }} />}
+        <span style={{ fontSize: '14px', color: status === 'flag' ? 'var(--warning-700)' : 'var(--neutral-900)', fontWeight: 700, fontFamily: mono ? 'Roboto Mono' : 'inherit' }}>{value}</span>
+      </div>
+    </div>
+  );
 }
 
 function CalcInput({ label, value, onChange, suffix, step = 1 }: { label: string; value: number; onChange: (n: number) => void; suffix: string; step?: number }) {

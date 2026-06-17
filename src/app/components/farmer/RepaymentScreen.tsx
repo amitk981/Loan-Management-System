@@ -22,6 +22,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
   const [receiptUploaded, setReceiptUploaded] = useState(false);
 
   const paymentAmount = parseFloat(amount) || 0;
+  const repaidPct = Math.round((farmerLoan.totalRepaid / farmerLoan.sanctionedAmount) * 100);
   const principalAllocation = Math.min(paymentAmount, farmerLoan.outstandingPrincipal);
   const interestAllocation = Math.min(Math.max(paymentAmount - principalAllocation, 0), farmerLoan.outstandingInterest);
   const unallocated = Math.max(paymentAmount - principalAllocation - interestAllocation, 0);
@@ -75,6 +76,13 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
           <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', marginTop: '4px' }}>
             Principal: {formatCurrency(farmerLoan.outstandingPrincipal)} + Interest: {formatCurrency(farmerLoan.outstandingInterest)}
           </div>
+          <div className="w-full max-w-md h-2 rounded-full mt-4" style={{ backgroundColor: 'rgba(255,255,255,0.18)' }}>
+            <div className="h-full rounded-full" style={{ width: `${repaidPct}%`, backgroundColor: 'white' }} />
+          </div>
+          <div className="flex items-center justify-between max-w-md mt-2" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)' }}>
+            <span>{formatCurrency(farmerLoan.totalRepaid)} repaid</span>
+            <span>{repaidPct}% complete</span>
+          </div>
           <div className="mt-4 flex gap-3 flex-wrap">
             <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}>
               <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.65)' }}>Suggested Due</div>
@@ -91,8 +99,8 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
           <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)', marginBottom: '12px' }}>Payment Method</h3>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { id: 'direct' as const, label: 'Direct Transfer', subtitle: 'NEFT / RTGS to SFPCL account', icon: <Landmark size={20} /> },
-              { id: 'subsidiary' as const, label: 'Subsidiary Deduction', subtitle: 'Deduct from Sahyadri Post Harvest payout', icon: <Receipt size={20} /> },
+              { id: 'direct' as const, label: 'Direct Transfer', subtitle: 'NEFT / RTGS to SFPCL account', icon: <Landmark size={20} />, color: 'var(--brand-primary)' },
+              { id: 'subsidiary' as const, label: 'Subsidiary Deduction', subtitle: 'Deduct from Sahyadri Post Harvest payout', icon: <Receipt size={20} />, color: 'var(--accent-sanction)' },
             ].map(m => (
               <button
                 key={m.id}
@@ -100,7 +108,7 @@ export function RepaymentScreen({ onNavigate, activePage }: RepaymentScreenProps
                 className="p-4 rounded-xl border-2 text-left transition-all"
                 style={{ borderColor: method === m.id ? 'var(--brand-primary)' : 'var(--neutral-200)', backgroundColor: method === m.id ? 'var(--success-50)' : 'white' }}
               >
-                <div style={{ color: 'var(--brand-primary)', marginBottom: '8px' }}>{m.icon}</div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${m.color}15`, color: m.color }}>{m.icon}</div>
                 <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)' }}>{m.label}</div>
                 <div style={{ fontSize: '12px', color: 'var(--neutral-400)', marginTop: '2px' }}>{m.subtitle}</div>
               </button>

@@ -63,7 +63,10 @@ export function RoleCommandCenter({ title, focus, primaryAction, secondaryAction
               const metricTone = toneFor(metric.tone || 'neutral');
               return (
                 <div key={metric.label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid var(--neutral-200)' }}>
-                  <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 700 }}>{metric.label}</div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: metricTone.fg }} />
+                    <span style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 700 }}>{metric.label}</span>
+                  </div>
                   <div style={{ fontSize: 19, color: metricTone.fg, fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{metric.value}</div>
                 </div>
               );

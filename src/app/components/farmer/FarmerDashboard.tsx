@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Download, FileText, TrendingUp, Clock, ChevronRight, Bell, BadgeIndianRupee, CheckCircle2, AlertCircle, Info, IdCard, AlertOctagon } from 'lucide-react';
+import { Plus, Download, FileText, TrendingUp, Clock, ChevronRight, Bell, BadgeIndianRupee, CheckCircle2, AlertCircle, Info, IdCard, AlertOctagon, Percent, CalendarClock, Wallet } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { GateBanner } from '../shared/GateBanner';
@@ -142,6 +142,26 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
           </div>
           <button onClick={() => onNavigate('farmer-repayment')} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: isOverdue ? 'var(--error-500)' : 'var(--brand-primary)', fontSize: '13px', fontWeight: 700 }}>{isOverdue ? t('fd.payOverdue', 'Pay overdue amount') : t('fd.payNow', 'Pay Now')}</button>
         </div>
+        {/* Loan-at-a-glance KPI strip — principal/interest split + rate + next due */}
+        {loanState === 'active' && (
+          <section className="grid grid-cols-4 gap-4 mb-6">
+            {[
+              { label: t('fd.kpiPrincipal', 'Outstanding principal'), value: formatCurrency(farmerLoan.outstandingPrincipal), sub: `of ${formatCurrency(farmerLoan.sanctionedAmount)} sanctioned`, icon: <Wallet size={16} />, color: 'var(--brand-primary)' },
+              { label: t('fd.kpiInterest', 'Interest accrued'), value: formatCurrency(farmerLoan.outstandingInterest), sub: t('fd.kpiInterestSub', 'Billed via FY invoice'), icon: <BadgeIndianRupee size={16} />, color: 'var(--accent-sanction)' },
+              { label: t('fd.kpiRate', 'Interest rate'), value: '12% p.a.', sub: `Floating · eff. ${farmerLoan.interestRateEffective}`, icon: <Percent size={16} />, color: 'var(--gold-500)' },
+              { label: t('fd.kpiNextDue', 'Next instalment'), value: farmerLoan.nextDueDate, sub: farmerLoan.dueIn, icon: <CalendarClock size={16} />, color: isOverdue ? 'var(--error-500)' : 'var(--success-500)' },
+            ].map(kpi => (
+              <div key={kpi.label} className="farmer-panel-tight p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${kpi.color}15`, color: kpi.color }}>{kpi.icon}</span>
+                  <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{kpi.label}</span>
+                </div>
+                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--neutral-950)', fontFamily: 'Roboto Mono' }}>{kpi.value}</div>
+                <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '2px' }}>{kpi.sub}</div>
+              </div>
+            ))}
+          </section>
+        )}
         <section className="grid grid-cols-12 gap-5 mb-6">
           {/* Hero Card — conditionally rendered based on loan state */}
           {loanState === 'under-processing' ? (
@@ -290,7 +310,7 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--neutral-200)' }}>
                   {['Date', 'Type', 'Amount', 'Mode', 'Status'].map(h => (
-                    <th key={h} className="pb-2 text-left" style={{ fontSize: '11px', fontWeight: 500, color: 'var(--neutral-400)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+                    <th key={h} className={`pb-2 ${h === 'Amount' ? 'text-right pr-4' : 'text-left'}`} style={{ fontSize: '11px', fontWeight: 500, color: 'var(--neutral-400)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -299,8 +319,8 @@ export function FarmerDashboard({ onNavigate, activePage }: FarmerDashboardProps
                   <tr key={i} className="border-b border-[var(--neutral-200)] clickable-row" onClick={() => onNavigate('farmer-repayment')}>
                     <td className="py-3" style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>{r.date}</td>
                     <td><span className="px-2 py-1 rounded-full" style={{ fontSize: '11px', backgroundColor: r.type === 'Disbursement' ? 'var(--info-100)' : 'var(--success-100)', color: r.type === 'Disbursement' ? 'var(--brand-accent)' : 'var(--success-500)', fontWeight: 700 }}>{r.type}</span></td>
-                    <td style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: r.sign === '+' ? 'var(--success-500)' : 'var(--neutral-700)', textAlign: 'right' }}>{r.sign}{formatCurrency(r.amount)}</td>
-                    <td style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>{r.mode}</td>
+                    <td className="pr-4" style={{ fontSize: '13px', fontFamily: 'Roboto Mono', color: r.sign === '+' ? 'var(--success-500)' : 'var(--neutral-700)', textAlign: 'right', whiteSpace: 'nowrap' }}>{r.sign}{formatCurrency(r.amount)}</td>
+                    <td className="pl-1" style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>{r.mode}</td>
                     <td><StatusBadge status={r.status} /></td>
                   </tr>
                 ))}

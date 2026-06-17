@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, Upload, ChevronRight, ChevronLeft, Plus, Trash2, Calculator, ShieldCheck, FileCheck } from 'lucide-react';
+import { Check, Upload, ChevronRight, ChevronLeft, Plus, Trash2, Calculator, ShieldCheck, FileCheck, Wallet, BadgeIndianRupee } from 'lucide-react';
 import { toast } from 'sonner';
 import { Shell } from '../layout/Shell';
 import { UniversalStageTracker } from '../shared/CrossRoleComponents';
@@ -187,15 +187,18 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
         <section className="farmer-panel p-5 mb-6">
           <div className="grid grid-cols-4 gap-4">
             {[
-              ['Eligible Limit', formatCurrency(eligibleLimit), 'Lower of shares and land limit'],
-              ['Requested', requestedAmount ? formatCurrency(reqAmount) : 'Not entered', amountWithinLimit ? 'Within SOP limit' : 'Needs correction'],
-              ['Documents', `${reviewDocs.length - missingDocs.length}/${reviewDocs.length}`, missingDocs.length ? `${missingDocs.length} pending` : 'Complete'],
-              ['Declarations', allDeclarationsChecked ? 'Complete' : 'Pending', allDeclarationsChecked ? 'Ready for final review' : 'Required before submit'],
-            ].map(([label, value, helper]) => (
-              <div key={label} className="farmer-panel-tight p-4">
-                <div className="farmer-kicker">{label}</div>
-                <div className="farmer-value mt-2" style={{ fontSize: '22px', lineHeight: '28px', color: label === 'Requested' && !amountWithinLimit ? 'var(--error-800)' : 'var(--neutral-950)' }}>{value}</div>
-                <div style={{ fontSize: '12px', color: 'var(--neutral-550)', marginTop: '5px' }}>{helper}</div>
+              { label: 'Eligible Limit', value: formatCurrency(eligibleLimit), helper: 'Lower of shares and land limit', icon: <Wallet size={15} />, color: 'var(--brand-primary)' },
+              { label: 'Requested', value: requestedAmount ? formatCurrency(reqAmount) : 'Not entered', helper: amountWithinLimit ? 'Within SOP limit' : 'Needs correction', icon: <BadgeIndianRupee size={15} />, color: amountWithinLimit ? 'var(--accent-sanction)' : 'var(--error-500)' },
+              { label: 'Documents', value: `${reviewDocs.length - missingDocs.length}/${reviewDocs.length}`, helper: missingDocs.length ? `${missingDocs.length} pending` : 'Complete', icon: <FileCheck size={15} />, color: missingDocs.length ? 'var(--warning-500)' : 'var(--success-500)' },
+              { label: 'Declarations', value: allDeclarationsChecked ? 'Complete' : 'Pending', helper: allDeclarationsChecked ? 'Ready for final review' : 'Required before submit', icon: <ShieldCheck size={15} />, color: allDeclarationsChecked ? 'var(--success-500)' : 'var(--warning-500)' },
+            ].map(stat => (
+              <div key={stat.label} className="farmer-panel-tight p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${stat.color}15`, color: stat.color }}>{stat.icon}</span>
+                  <span className="farmer-kicker">{stat.label}</span>
+                </div>
+                <div className="farmer-value" style={{ fontSize: '22px', lineHeight: '28px', color: stat.label === 'Requested' && !amountWithinLimit ? 'var(--error-800)' : 'var(--neutral-950)' }}>{stat.value}</div>
+                <div style={{ fontSize: '12px', color: 'var(--neutral-550)', marginTop: '5px' }}>{stat.helper}</div>
               </div>
             ))}
           </div>
