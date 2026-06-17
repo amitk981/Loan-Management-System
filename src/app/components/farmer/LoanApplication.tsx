@@ -78,10 +78,41 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
   const missingDocs = reviewDocs.filter(doc => !doc.uploaded);
   const amountWithinLimit = reqAmount > 0 && reqAmount <= eligibleLimit;
   // Per-step validity (audit DA-014) — Next is blocked until each step's required fields are filled.
+  const ifscValid = /^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc);
+  const accountValid = accountNumber.length >= 9 && accountNumber.length <= 18;
   const step1Valid = nomineeAdult && dob.trim() !== '' && address.trim() !== '';
-  const step3Valid = accountNumber.trim() !== '' && ifsc.trim() !== '';
+  const step3Valid = accountValid && ifscValid;
   const stepValid = (s: number) => (s === 1 ? step1Valid : s === 3 ? step3Valid : true);
   const canSubmitApplication = amountWithinLimit && allDeclarationsChecked && missingDocs.length === 0;
+
+  // Real per-step completion (not the page pointer) so the rail is trustworthy:
+  // a step shows a green tick only when its own required fields/checks actually pass.
+  const stepDone: Record<number, boolean> = {
+    1: step1Valid,
+    2: amountWithinLimit,
+    3: step3Valid,
+    4: allDeclarationsChecked,
+    5: canSubmitApplication,
+  };
+  const doneCount = Object.values(stepDone).filter(Boolean).length;
+  const progressPct = Math.round((doneCount / steps.length) * 100);
+  // Short, signal-rich status line per step (uses only real state).
+  const stepStatus = (id: number, isActive: boolean): string => {
+    if (stepDone[id]) {
+      return id === 2 ? `${formatCurrency(reqAmount)} within limit`
+        : id === 3 ? 'Bank & land captured'
+        : id === 4 ? 'Declarations signed'
+        : id === 5 ? 'Ready to submit'
+        : 'Details captured';
+    }
+    if (id === 2) return reqAmount > eligibleLimit ? 'Amount over limit' : 'Set loan amount';
+    if (id === 3) return 'Bank details needed';
+    if (id === 4) return 'Declarations pending';
+    if (id === 5) return missingDocs.length ? `${missingDocs.length} doc${missingDocs.length > 1 ? 's' : ''} pending` : 'Final checks';
+    if (id === 1) return 'DOB, address & nominee';
+    return isActive ? 'Current section' : 'Not started';
+  };
+  const isUploaded = (name: string) => reviewDocs.find(d => d.name === name)?.uploaded ?? false;
 
 
   const addLandParcel = () => {
@@ -172,25 +203,33 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
 
         <div className="farmer-grid-shell">
           <aside className="farmer-panel p-4 sticky top-4">
-            <div className="farmer-kicker mb-3">Application Steps</div>
+            <div className="flex items-center justify-between mb-2">
+              <div className="farmer-kicker">Application Steps</div>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--green-900)' }}>{doneCount}/{steps.length} done</span>
+            </div>
+            {/* Overall progress — real completion across the 5 steps */}
+            <div className="h-1.5 rounded-full mb-4 overflow-hidden" style={{ backgroundColor: 'var(--gray-150b)' }}>
+              <div className="h-full rounded-full" style={{ width: `${progressPct}%`, backgroundColor: 'var(--green-900)', transition: 'width 0.3s ease' }} />
+            </div>
             <div className="space-y-2">
               {steps.map(s => {
                 const isActive = step === s.id;
-                const complete = step > s.id;
+                const complete = stepDone[s.id];
                 return (
                   <button
                     key={s.id}
                     onClick={() => setStep(s.id)}
+                    aria-current={isActive ? 'step' : undefined}
                     className="w-full flex items-center gap-3 rounded-xl p-3 text-left"
                     style={{ backgroundColor: isActive ? 'var(--brand-light)' : 'transparent', border: `1px solid ${isActive ? 'var(--green-200c)' : 'transparent'}` }}
                   >
-                    <span className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: complete || isActive ? 'var(--green-900)' : 'var(--gray-150b)', color: complete || isActive ? 'white' : 'var(--gray-450)', fontSize: '13px', fontWeight: 700 }}>
+                    <span className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: complete ? 'var(--green-900)' : isActive ? 'var(--brand-light)' : 'var(--gray-150b)', color: complete ? 'white' : isActive ? 'var(--green-900)' : 'var(--gray-450)', fontSize: '13px', fontWeight: 700, border: !complete && isActive ? '1.5px solid var(--green-900)' : 'none' }}>
                       {complete ? <Check size={15} /> : s.id}
                     </span>
-                    <span>
+                    <span className="min-w-0">
                       <span style={{ display: 'block', fontSize: '14px', fontWeight: 700, color: isActive ? 'var(--green-900)' : 'var(--neutral-950)' }}>{s.label}</span>
-                      <span style={{ display: 'block', fontSize: '12px', color: 'var(--neutral-550)', marginTop: '2px' }}>
-                        {complete ? 'Completed' : isActive ? 'Current section' : 'Not started'}
+                      <span className="flex items-center gap-1.5" style={{ fontSize: '12px', color: complete ? 'var(--success-700)' : isActive ? 'var(--neutral-700)' : 'var(--neutral-550)', marginTop: '2px' }}>
+                        {complete && <Check size={11} />}{stepStatus(s.id, isActive)}
                       </span>
                     </span>
                   </button>
@@ -446,11 +485,13 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                 <button
                   type="button"
                   onClick={() => markDocUploaded(zone.doc)}
-                  className="border-2 border-dashed rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-all hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)]"
-                  style={{ borderColor: 'var(--neutral-300)', padding: '20px', backgroundColor: 'var(--neutral-60)' }}
+                  className="w-full border-2 border-dashed rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-all hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)]"
+                  style={{ borderColor: isUploaded(zone.doc) ? 'var(--success-500)' : 'var(--neutral-300)', padding: '20px', backgroundColor: isUploaded(zone.doc) ? 'var(--success-50)' : 'var(--neutral-60)' }}
                 >
-                  <Upload size={24} style={{ color: 'var(--neutral-400)' }} />
-                  <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Drag files here or <span style={{ color: 'var(--brand-accent)' }}>click to browse</span></span>
+                  {isUploaded(zone.doc) ? <FileCheck size={24} style={{ color: 'var(--success-500)' }} /> : <Upload size={24} style={{ color: 'var(--neutral-400)' }} />}
+                  <span style={{ fontSize: '13px', color: isUploaded(zone.doc) ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: isUploaded(zone.doc) ? 700 : 400 }}>
+                    {isUploaded(zone.doc) ? 'Uploaded — tap to replace' : <>Drag files here or <span style={{ color: 'var(--brand-accent)' }}>click to browse</span></>}
+                  </span>
                   <span style={{ fontSize: '11px', color: 'var(--neutral-400)' }}>{zone.note}</span>
                 </button>
               </div>
@@ -530,16 +571,16 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div>
                   <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>Upload Cancelled Cheque <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                  <button type="button" onClick={() => markDocUploaded('Cancelled Cheque')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: 'var(--neutral-300)' }}>
-                    <Upload size={20} style={{ color: 'var(--neutral-400)' }} />
-                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload scanned copy of cancelled cheque</span>
+                  <button type="button" onClick={() => markDocUploaded('Cancelled Cheque')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: isUploaded('Cancelled Cheque') ? 'var(--success-500)' : 'var(--neutral-300)', backgroundColor: isUploaded('Cancelled Cheque') ? 'var(--success-50)' : 'transparent' }}>
+                    {isUploaded('Cancelled Cheque') ? <FileCheck size={20} style={{ color: 'var(--success-500)' }} /> : <Upload size={20} style={{ color: 'var(--neutral-400)' }} />}
+                    <span style={{ fontSize: '13px', color: isUploaded('Cancelled Cheque') ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: isUploaded('Cancelled Cheque') ? 700 : 400 }}>{isUploaded('Cancelled Cheque') ? 'Cancelled cheque uploaded' : 'Upload scanned copy of cancelled cheque'}</span>
                   </button>
                 </div>
                 <div>
                   <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>NACH / ECS Auto-Debit Mandate <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                  <button type="button" onClick={() => markDocUploaded('NACH/ECS Mandate')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: 'var(--neutral-300)' }}>
-                    <Upload size={20} style={{ color: 'var(--neutral-400)' }} />
-                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Sign &amp; upload NACH/ECS mandate (security per SOP)</span>
+                  <button type="button" onClick={() => markDocUploaded('NACH/ECS Mandate')} className="w-full border-2 border-dashed rounded-xl p-5 flex items-center gap-3 cursor-pointer hover:border-[var(--brand-secondary)] transition-colors" style={{ borderColor: isUploaded('NACH/ECS Mandate') ? 'var(--success-500)' : 'var(--neutral-300)', backgroundColor: isUploaded('NACH/ECS Mandate') ? 'var(--success-50)' : 'transparent' }}>
+                    {isUploaded('NACH/ECS Mandate') ? <FileCheck size={20} style={{ color: 'var(--success-500)' }} /> : <Upload size={20} style={{ color: 'var(--neutral-400)' }} />}
+                    <span style={{ fontSize: '13px', color: isUploaded('NACH/ECS Mandate') ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: isUploaded('NACH/ECS Mandate') ? 700 : 400 }}>{isUploaded('NACH/ECS Mandate') ? 'NACH/ECS mandate uploaded' : <>Sign &amp; upload NACH/ECS mandate (security per SOP)</>}</span>
                   </button>
                 </div>
               </div>
@@ -589,10 +630,10 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
                   <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>
                     {doc.label} {doc.required && <span style={{ color: 'var(--error-500)' }}>*</span>}
                   </label>
-                  <button type="button" onClick={() => markDocUploaded(doc.doc)} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)] transition-all text-left" style={{ borderColor: 'var(--neutral-300)' }}>
-                    <Upload size={18} style={{ color: 'var(--neutral-400)' }} />
+                  <button type="button" onClick={() => markDocUploaded(doc.doc)} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)] transition-all text-left" style={{ borderColor: isUploaded(doc.doc) ? 'var(--success-500)' : 'var(--neutral-300)', backgroundColor: isUploaded(doc.doc) ? 'var(--success-50)' : 'transparent' }}>
+                    {isUploaded(doc.doc) ? <FileCheck size={18} style={{ color: 'var(--success-500)' }} /> : <Upload size={18} style={{ color: 'var(--neutral-400)' }} />}
                     <div>
-                      <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload {doc.label}</span>
+                      <span style={{ fontSize: '13px', color: isUploaded(doc.doc) ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: isUploaded(doc.doc) ? 700 : 400 }}>{isUploaded(doc.doc) ? `${doc.label} uploaded` : `Upload ${doc.label}`}</span>
                       <div style={{ fontSize: '11px', color: 'var(--neutral-400)' }}>{doc.note}</div>
                     </div>
                   </button>
@@ -605,9 +646,9 @@ export function LoanApplication({ onNavigate, activePage }: LoanApplicationProps
               {['PAN Card (Nominee)', 'Aadhaar Card (Nominee)', 'Passport Photo (Nominee)'].map((label, i) => (
                 <div key={i}>
                   <label className="block mb-1.5" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-700)' }}>{label} <span style={{ color: 'var(--error-500)' }}>*</span></label>
-                  <button type="button" onClick={() => markDocUploaded('Nominee KYC')} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)] transition-all text-left" style={{ borderColor: 'var(--neutral-300)' }}>
-                    <Upload size={18} style={{ color: 'var(--neutral-400)' }} />
-                    <span style={{ fontSize: '13px', color: 'var(--neutral-700)' }}>Upload {label}</span>
+                  <button type="button" onClick={() => markDocUploaded('Nominee KYC')} className="w-full border-2 border-dashed rounded-xl p-4 flex items-center gap-2 cursor-pointer hover:border-[var(--brand-secondary)] hover:bg-[var(--success-50)] transition-all text-left" style={{ borderColor: isUploaded('Nominee KYC') ? 'var(--success-500)' : 'var(--neutral-300)', backgroundColor: isUploaded('Nominee KYC') ? 'var(--success-50)' : 'transparent' }}>
+                    {isUploaded('Nominee KYC') ? <FileCheck size={18} style={{ color: 'var(--success-500)' }} /> : <Upload size={18} style={{ color: 'var(--neutral-400)' }} />}
+                    <span style={{ fontSize: '13px', color: isUploaded('Nominee KYC') ? 'var(--success-700)' : 'var(--neutral-700)', fontWeight: isUploaded('Nominee KYC') ? 700 : 400 }}>{isUploaded('Nominee KYC') ? `${label} uploaded` : `Upload ${label}`}</span>
                   </button>
                 </div>
               ))}

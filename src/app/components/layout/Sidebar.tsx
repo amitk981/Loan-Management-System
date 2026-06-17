@@ -50,6 +50,7 @@ const creditNav: NavItem[] = [
     groupKey: 'credit-inbox',
     badge: 12,
     section: 'Intake',
+    match: ['credit-pending', 'credit-all-apps'],
     children: [
       { label: 'New Applications', key: 'credit-queue', badge: 12 },
       { label: 'Returned / Incomplete', key: 'credit-returned' },
@@ -61,8 +62,12 @@ const creditNav: NavItem[] = [
   // Portfolio registers (Active Loans, DPD, Defaults, MIS, Rejected, Exceptions)
   // are reached as tabs on this one hub page — no nested sidebar children needed.
   // Member lookup + Loan Calculator are reached via global search (top bar),
-  // keeping the sidebar at the 5-item task spine.
-  { icon: <BookOpen size={20} />, label: 'Registers & Reports', key: 'credit-register', section: 'Portfolio' },
+  // keeping the sidebar at the 5-item task spine. `match` keeps this door lit
+  // for every tab/deep-link the hub owns (IA-01).
+  {
+    icon: <BookOpen size={20} />, label: 'Registers & Reports', key: 'credit-register', section: 'Portfolio',
+    match: ['credit-register', 'credit-active-loans', 'credit-dpd', 'credit-defaults', 'credit-mis', 'credit-rejected', 'credit-exceptions', 'credit-repayments', 'credit-interest-invoices', 'credit-analytics', 'credit-search-member', 'credit-member-profile'],
+  },
 ];
 
 const complianceNav: NavItem[] = [
@@ -75,6 +80,7 @@ const complianceNav: NavItem[] = [
     groupKey: 'cs-doc-queue',
     badge: 14,
     section: 'Documents',
+    match: ['cs-awaiting-prep', 'cs-awaiting-review', 'cs-signoff', 'cs-poa', 'cs-triparty', 'cs-sh4', 'cs-termsheet', 'cs-agreement'],
     children: [
       { label: 'All Pending', key: 'cs-queue', badge: 14 },
       { label: 'Workspace Hub', key: 'cs-workspace' },
@@ -87,6 +93,7 @@ const complianceNav: NavItem[] = [
     groupKey: 'cs-kyc-group',
     badge: 9,
     section: 'Compliance',
+    match: ['cs-pending-kyc', 'cs-rekyc'],
     children: [
       { label: 'All Members', key: 'cs-kyc' },
       { label: 'CDSL Pledge Tracker', key: 'cs-cdsl' },
@@ -94,7 +101,11 @@ const complianceNav: NavItem[] = [
   },
   // NOC, Calendar, Security Return, Stamp, Grievance and the registers are all
   // tabs on this one hub — no separate "CS Operations" nav door needed.
-  { icon: <BookOpen size={20} />, label: 'Registers & Operations', key: 'cs-loan-register', badge: 2, section: 'Registers' },
+  // `match` keeps this door lit for every register tab the hub owns (IA-01).
+  {
+    icon: <BookOpen size={20} />, label: 'Registers & Operations', key: 'cs-loan-register', badge: 2, section: 'Registers',
+    match: ['cs-sanction-register', 'cs-noc', 'cs-calendar', 'cs-stamp', 'cs-grievance', 'cs-reports', 'cs-archive', 'cs-exception-register', 'cs-security-return', 'cs-poa-register'],
+  },
 ];
 
 const sanctionNav: NavItem[] = [
@@ -107,6 +118,7 @@ const sanctionNav: NavItem[] = [
     groupKey: 'sc-decisions',
     badge: 7,
     section: 'Decisions',
+    match: ['sc-review'],
     children: [
       { label: 'Awaiting Approval', key: 'sc-awaiting', badge: 7 },
       { label: 'Awaiting My Sign', key: 'sc-my-sign', badge: 5 },
@@ -117,7 +129,10 @@ const sanctionNav: NavItem[] = [
     ],
   },
   // Sanction / Exception registers and Board Minutes are tabs on this hub.
-  { icon: <BookOpen size={20} />, label: 'Registers', key: 'sc-register', section: 'Decisions' },
+  {
+    icon: <BookOpen size={20} />, label: 'Registers', key: 'sc-register', section: 'Decisions',
+    match: ['sc-exceptions', 'sc-board', 'sc-security-invocation'],
+  },
   {
     icon: <TrendingUp size={20} />,
     label: 'Oversight',
@@ -164,8 +179,12 @@ const treasuryNav: NavItem[] = [
     ],
   },
   // Incoming, Deductions, Accruals, Reconciliation, Reports & Export Centre are
-  // all tabs on this Finance hub — one nav door, not two.
-  { icon: <Receipt size={20} />, label: 'Repayments & Finance', key: 'treasury-incoming', section: 'Finance' },
+  // all tabs on this Finance hub — one nav door, not two. `match` keeps the door
+  // lit for every finance tab it owns (IA-01).
+  {
+    icon: <Receipt size={20} />, label: 'Repayments & Finance', key: 'treasury-incoming', section: 'Finance',
+    match: ['treasury-deductions', 'treasury-interest', 'treasury-reconciliation', 'treasury-reports', 'treasury-exports'],
+  },
 ];
 
 const adminNav: NavItem[] = [
@@ -237,7 +256,10 @@ function groupId(item: NavItem) {
 }
 
 function isItemActive(item: NavItem, activePage: string) {
-  return activePage === item.key || item.children?.some(c => c.key === activePage) || false;
+  return activePage === item.key
+    || item.children?.some(c => c.key === activePage)
+    || item.match?.includes(activePage)
+    || false;
 }
 
 export function Sidebar({ collapsed, activePage, onNavigate, expandedGroups, onToggleGroup }: SidebarProps) {

@@ -90,29 +90,40 @@ function readPageFromUrl() {
 function readIdFromUrl() {
   return new URLSearchParams(window.location.search).get('id') || '';
 }
+function readTabFromUrl() {
+  return new URLSearchParams(window.location.search).get('tab') || '';
+}
 
 function AppRoot() {
   const { user } = useAuth();
   const [activePage, setActivePage] = useState<string>(() => readPageFromUrl());
   const [activeLoanId, setActiveLoanId] = useState<string>(() => readIdFromUrl());
+  const [activeTab, setActiveTab] = useState<string>(() => readTabFromUrl());
 
-  // Navigation can carry a loan id: onNavigate('loan-file::LO00000089').
-  // The double-colon is backward compatible — calls without it behave exactly as before.
+  // Navigation target convention: `page[::id[::tab]]`.
+  //   'credit-dashboard'                          → ?page=credit-dashboard
+  //   'loan-file::LO00000089'                     → ?page=loan-file&id=LO00000089
+  //   'loan-file::LO00000089::appraisal'          → ?page=…&id=…&tab=appraisal
+  //   'farmer-active-loans::::timeline'           → ?page=…&tab=timeline (no id)
+  // All three segments are optional after the page; '::' splitting keeps every
+  // older 'page' / 'page::id' call working unchanged. The third segment makes an
+  // inner page tab URL-addressable so it survives refresh and back/forward (IA-03).
   const navigate = (target: string) => {
-    const sep = target.indexOf('::');
-    const page = sep >= 0 ? target.slice(0, sep) : target;
-    const id = sep >= 0 ? target.slice(sep + 2) : '';
+    const [page, id = '', tab = ''] = target.split('::');
     const url = new URL(window.location.href);
     url.searchParams.set('page', page);
     if (id) url.searchParams.set('id', id);
     else url.searchParams.delete('id');
+    if (tab) url.searchParams.set('tab', tab);
+    else url.searchParams.delete('tab');
     window.history.pushState({}, '', url);
     setActivePage(page);
     setActiveLoanId(id);
+    setActiveTab(tab);
   };
 
   useEffect(() => {
-    const handlePop = () => { setActivePage(readPageFromUrl()); setActiveLoanId(readIdFromUrl()); };
+    const handlePop = () => { setActivePage(readPageFromUrl()); setActiveLoanId(readIdFromUrl()); setActiveTab(readTabFromUrl()); };
     window.addEventListener('popstate', handlePop);
     return () => window.removeEventListener('popstate', handlePop);
   }, []);
@@ -132,7 +143,7 @@ function AppRoot() {
     return null;
   }
 
-  const props = { onNavigate: navigate, activePage, activeLoanId };
+  const props = { onNavigate: navigate, activePage, activeLoanId, activeTab };
 
   if (activePage === 'notifications-center') return <NotificationsCenter {...props} />;
   if (activePage === 'user-profile') return <UserProfile {...props} />;

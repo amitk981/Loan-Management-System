@@ -3,8 +3,18 @@ import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { RoleCommandCenter } from '../shared/RoleCommandCenter';
 import { mockLoans, mockUsers, mockAuditLogs, portfolioDonut } from '../../data/mockData';
+import { getLoan } from '../../data/loanStore';
 import { Bell, Edit, Search, ShieldCheck, Upload, UserPlus, UserX } from 'lucide-react';
 import { formatCurrency } from '../../lib/format';
+
+// Portfolio rows open the canonical shared Loan File when the row's id exists in
+// the live loan store (carries identity — IA-02); otherwise they fall back to the
+// borrower lookup. This is a strict improvement: no row regresses, and as the
+// admin dataset converges onto the store (IA-08) more rows open the right file.
+function openLoanRow(id: string, onNavigate: (p: string) => void) {
+  if (getLoan(id)) onNavigate(`loan-file::${id}`);
+  else onNavigate('member-loan-profile');
+}
 
 interface AdminScreensProps {
   onNavigate: (page: string) => void;
@@ -54,7 +64,7 @@ export function PortfolioOverview({ onNavigate, activePage }: AdminScreensProps)
             </thead>
             <tbody>
               {mockLoans.map(loan => (
-                <tr key={loan.id} onClick={() => onNavigate('member-loan-profile')} className="border-b border-[var(--neutral-200)] clickable-row">
+                <tr key={loan.id} onClick={() => openLoanRow(loan.id, onNavigate)} className="border-b border-[var(--neutral-200)] clickable-row">
                   <td className="px-4 py-3" style={{ fontSize: '13px', color: 'var(--brand-accent)', fontFamily: 'Roboto Mono' }}>{loan.id}</td>
                   <td className="px-4" style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 500 }}>{loan.farmerName}</td>
                   <td className="px-4 text-right" style={{ fontSize: '13px', fontFamily: 'Roboto Mono' }}>{formatCurrency(loan.sanctionedAmount)}</td>

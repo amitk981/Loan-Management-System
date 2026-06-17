@@ -10,9 +10,11 @@ import { formatCurrency } from '../../lib/format';
 interface LoanStatusProps {
   onNavigate: (page: string) => void;
   activePage: string;
+  activeTab?: string;
 }
 
 type LoanTab = 'overview' | 'documents' | 'repayment' | 'timeline';
+const LOAN_TABS: LoanTab[] = ['overview', 'documents', 'repayment', 'timeline'];
 
 
 function DocCard({ doc, onOpen }: { doc: typeof farmerDocuments[number]; onOpen: (doc: typeof farmerDocuments[number]) => void }) {
@@ -44,9 +46,14 @@ function DocCard({ doc, onOpen }: { doc: typeof farmerDocuments[number]; onOpen:
   );
 }
 
-export function LoanStatus({ onNavigate, activePage }: LoanStatusProps) {
-  const initialTab: LoanTab = activePage === 'farmer-documents' ? 'documents' : 'overview';
-  const [activeTab, setActiveTab] = useState<LoanTab>(initialTab);
+export function LoanStatus({ onNavigate, activePage, activeTab: urlTab }: LoanStatusProps) {
+  // The Overview/Documents/Repayment/Timeline tab is URL-addressable (?tab=) so it
+  // survives refresh and back/forward (IA-03). No local tab state — changing tab
+  // navigates, keeping the URL as the single source of truth.
+  const activeTab: LoanTab = (LOAN_TABS.includes(urlTab as LoanTab)
+    ? urlTab
+    : (activePage === 'farmer-documents' ? 'documents' : 'overview')) as LoanTab;
+  const setActiveTab = (t: LoanTab) => onNavigate(`${activePage}::::${t}`);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [documentModal, setDocumentModal] = useState<typeof farmerDocuments[number] | null>(null);
   const [uploadModal, setUploadModal] = useState(false);

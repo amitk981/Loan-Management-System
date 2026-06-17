@@ -9,6 +9,14 @@ export interface NavItem {
   children?: { label: string; key: string; badge?: number }[];
   badge?: number;
   section?: string;
+  /**
+   * Extra `?page=` keys that this nav door OWNS but does not list as a child.
+   * Hub pages expose sibling views as WorkbenchTabs (each tab is its own
+   * `?page=` route). Those tab keys are neither `key` nor a `child`, so without
+   * `match` the sidebar lost its "you are here" highlight on every hub tab
+   * (IA-01). `isItemActive` treats any page in `match` as activating this door.
+   */
+  match?: string[];
 }
 
 export const roleAccents: Record<string, string> = {

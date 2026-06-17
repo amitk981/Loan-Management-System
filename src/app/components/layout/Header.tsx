@@ -126,6 +126,32 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
   const initials = user?.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'U';
   const roleColor = roleColors[user?.role || 'admin'];
 
+  // Make ancestor breadcrumbs navigable (IA-05). The last crumb is "you are here"
+  // and stays static; ancestor crumbs that name a real destination become up-links.
+  // Keyed by the exact crumb label the screens already pass to <Shell breadcrumbs=…>.
+  const roleHomes: Record<string, string> = {
+    farmer: 'farmer-dashboard', credit: 'credit-dashboard', compliance: 'cs-dashboard',
+    sanction: 'sc-dashboard', treasury: 'treasury-dashboard', admin: 'admin-portfolio',
+  };
+  const roleHome = roleHomes[user?.role || 'farmer'];
+  const crumbTargets: Record<string, string> = {
+    Dashboard: roleHome,
+    'Farmer Portal': 'farmer-dashboard',
+    'My Loans': 'farmer-active-loans',
+    'My Loan': 'farmer-active-loans',
+    'My Documents': 'farmer-documents',
+    'Credit Assessment': 'credit-dashboard',
+    Compliance: 'cs-dashboard',
+    'Sanction Committee': 'sc-dashboard',
+    Treasury: 'treasury-dashboard',
+    Admin: 'admin-portfolio',
+    Pipeline: 'pipeline',
+    Notifications: 'notifications-center',
+    'My Account': 'user-profile',
+    Workspace: 'user-profile',
+    'Cross-Role Integration': 'integration-overview',
+  };
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 flex items-center px-4 gap-4"
@@ -155,14 +181,28 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [] }: HeaderPro
       <div className="flex-1 flex items-center">
         {breadcrumbs.length > 0 && (
           <div className="flex items-center gap-1.5 ml-4" style={{ fontSize: '13px' }}>
-            {breadcrumbs.map((crumb, i) => (
-              <span key={i} className="flex items-center gap-1.5">
-                {i > 0 && <span className="text-white/40">›</span>}
-                <span className={i === breadcrumbs.length - 1 ? 'text-white' : 'text-white/50'}>
-                  {crumb}
+            {breadcrumbs.map((crumb, i) => {
+              const isLast = i === breadcrumbs.length - 1;
+              const target = !isLast ? crumbTargets[crumb] : undefined;
+              return (
+                <span key={i} className="flex items-center gap-1.5">
+                  {i > 0 && <span className="text-white/40" aria-hidden="true">›</span>}
+                  {target ? (
+                    <button
+                      onClick={() => onNavigate(target)}
+                      className="text-white/60 hover:text-white hover:underline transition-colors rounded"
+                      style={{ fontSize: '13px' }}
+                    >
+                      {crumb}
+                    </button>
+                  ) : (
+                    <span className={isLast ? 'text-white' : 'text-white/50'} aria-current={isLast ? 'page' : undefined}>
+                      {crumb}
+                    </span>
+                  )}
                 </span>
-              </span>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

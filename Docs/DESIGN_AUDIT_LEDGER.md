@@ -633,3 +633,37 @@ Noted during the scan, **deliberately not in the issue ledger** (no prototype-ex
 ---
 
 *Living document — update the §14 ledger, §16 roadmap, and §1 summary on each design pass. Add new findings as `DA-032`, `DA-033`, … Keep evidence (file:line, doc section) on every row.*
+
+---
+
+## 20. IA + UI review pass (2026-06-17) — IA-01…IA-08
+
+> A focused navigation/IA + UI pass driven by two new companion docs: `Docs/INFORMATION_ARCHITECTURE_REVIEW.md` (full nav map, A–E classification, verification checklist) and `Docs/UI_REDESIGN_SCORECARD.md` (per-screen 1–5 scoring vs Nielsen + WCAG 2.2 AA + the design system + M3). The prior DA-001…DA-031 pass had already collapsed the nav to a 5-item spine and made hub tabs URL-addressable; this pass found and fixed the **active-state** and **shortcut-identity** defects that remained, plus made breadcrumbs navigable. Build green; live-verified on the dev server.
+
+| ID | Finding | Severity | Status | Resolution / evidence | Files |
+|---|---|---|---|---|---|
+| IA-01 | Sidebar lit **no** door when on a hub `WorkbenchTab` (its `?page=` key was neither the door key nor a child) — active-state vanished on `credit-dpd`, `cs-noc`, `treasury-reconciliation`, `sc-exceptions`, etc. | High | **Done** | Added `NavItem.match[]`; `isItemActive` matches it; populated every hub door's tab/deep-link keys. Live: `credit-dpd`/`-exceptions`/`-search-member`→"Registers & Reports"; `credit-pending`→"Application Inbox"; exactly one door lit; regressions held. | `data/roleNav.ts`, `layout/Sidebar.tsx` |
+| IA-02 | Credit Register / Active-Loans "Open File" rows navigated id-less → always opened fallback `LO00000090` regardless of row. | High | **Done** | Rows now pass the row id (`loan-file::${row.id}`). Live: `LO00000018`→correct loan; non-store ids carry the id and fall back gracefully (IA-08). | `credit/CreditOperations.tsx` |
+| IA-03 | `LoanStatus`/`LoanFile` inner tabs are local state (not URL-addressable). | Low | **Accepted** | Option C internal page tabs within one loan context — allowed by IA principles. Loan id already in URL; `?tab=` deep-link is a clean future enhancement. | — |
+| IA-04 | Page-title vs breadcrumb mismatch. | Low | **None found** | Hubs derive title+breadcrumb from one `pageCopy[activePage]`; audited all call-sites — consistent. | — |
+| IA-05 | Breadcrumbs were inert text (no up-navigation). | Medium | **Done** | `Header` renders ancestor crumbs that map to a destination as buttons; terminal crumb stays `aria-current="page"`. Live: "Credit Assessment"→`credit-dashboard`. | `layout/Header.tsx` |
+| IA-06 | Infrequent hub tabs (Stamp/NOC/Grievance/…) have no sidebar door. | Medium | **Mitigated** | Intentional (5-item spine). Reachable via Header search + now-lit parent door. Future: hub "section index" card grid. | — |
+| IA-07 | Unknown `?page=` silently redirects to role default (no 404/empty). | Low | **Accepted** | Fine for a closed prototype; documented. | — |
+| IA-08 | `creditData.loanRegister` + admin `mockData.mockLoans` only partially keyed to `loanStore`. | Medium | **Open (data)** | Why IA-02 is "correct-or-graceful-fallback". Converge on the store (continuation of DA-029). Admin rows deliberately left on `member-loan-profile` rather than routed to a mostly-missing id. | `data/creditData.ts`, `data/mockData.ts` |
+
+**Verification (honest):** `npx vite build` green before & after (1663 modules). Logged into the running app as Credit and confirmed via `preview_eval`/`preview_snapshot`: active-state correct on 6 page keys, breadcrumb navigates, row→loan-file carries id and resolves store-backed loans correctly. `preview_console_logs` (errors): none. Screenshot of `credit-dpd` shows the Registers door lit. Cross-role active-state shares the same `isItemActive`+`match` mechanism (not re-clicked per role, but logically identical).
+
+---
+
+## 21. IA + UI implementation pass II (2026-06-17) — deferred items delivered
+
+> Picks up the items the §20 pass deferred. Build green; live-verified on the dev server (5188).
+
+| ID | Finding | Severity | Status | Resolution / evidence | Files |
+|---|---|---|---|---|---|
+| IA-03 | `LoanFile`/`LoanStatus` inner tabs were local state — not URL-addressable, lost on refresh, invisible to back/forward. | Low→**actioned** | **Done** | Router gained a third segment `page::id::tab`→`?tab=` (popstate-restored). LoanFile + farmer LoanStatus tabs are now URL-driven; tab label flows into breadcrumb/subtitle. Live: `?tab=sanction` survived re-auth (Sanction tab selected); tab click updates URL; `history.back()` restored both URL and selected tab. | `routes.tsx`, `shared/LoanFile.tsx`, `farmer/LoanStatus.tsx` |
+| IA-09 | SC Approve/Reject committed irreversible store mutations on one click; "Reject with reason" captured no reason. | Medium | **Done** | Inline `role="alertdialog"` confirm in LoanFile SanctionTab; reject requires a written reason (Confirm disabled until non-empty); Cancel restores. Treasury disburse left as-is (5-step maker-checker already guards it). | `shared/LoanFile.tsx` |
+| IA-10 | Several filtered tables rendered an empty `<tbody>`; `?id=` that didn't resolve silently opened the demo loan. | Medium | **Done** | `EmptyTableState` on Credit Appraisal-Worklist/Returned + Active-Loans; LoanFile shows a real **Loan-not-found** state (recovery → Pipeline) for unresolved ids. | `credit/CreditOperations.tsx`, `shared/LoanFile.tsx` |
+| IA-08 | Admin portfolio rows opened a generic page without identity (dataset partially keyed to the store). | Medium | **Mitigated** | Rows now open the canonical Loan File when the id resolves in `loanStore`, else fall back to borrower-lookup — strict improvement, no wrong-loan risk. Full convergence still pending (DA-029). | `admin/AdminScreens.tsx` |
+
+**Verification (honest):** `npx vite build` green (1663 modules). Live on 5188: IA-03 deep-link survives re-auth + back/forward; LoanFile not-found state screenshotted; reject-confirmation gates on a required reason and Cancel restores without mutation. No console errors. The decision-confirm was exercised as Sanction/CFO on `LO00000086`; the empty-state branches were verified by code path + build (the demo datasets are populated, so they render the table — the empty branch is the documented fallback).

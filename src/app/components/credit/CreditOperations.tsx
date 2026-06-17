@@ -3,6 +3,7 @@ import { AlertTriangle, Download, FileText, Mail, Search, Send, ShieldCheck } fr
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { WorkbenchTabs } from '../shared/WorkbenchTabs';
+import { EmptyTableState } from '../shared/TableStates';
 import { creditIntakeTabs, creditWorkbenchTabs } from '../../data/roleNav';
 import { appraisalLoan, auditTrail, creditApplications, dpdRows, dpdSummary, interestInvoices, loanRegister, sanctionQueue } from '../../data/creditData';
 import { formatCurrency } from '../../lib/format';
@@ -44,6 +45,12 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
       : creditApplications.filter(app => app.status !== 'Complete');
     return (
       <DataCard title={activePage === 'credit-returned' ? 'Incomplete Files' : 'Appraisal Worklist'} action={<button onClick={() => onNavigate('credit-queue')} style={{ fontSize: '13px', color: 'var(--brand-accent)', fontWeight: 700 }}>Open Intake</button>}>
+        {rows.length === 0 ? (
+          <EmptyTableState
+            title={activePage === 'credit-returned' ? 'No incomplete files' : 'Worklist clear'}
+            message={activePage === 'credit-returned' ? 'Every returned file has been completed. Nothing is waiting on the borrower.' : 'No applications are pending appraisal right now. New requests appear in the Intake inbox.'}
+          />
+        ) : (
         <SimpleTable headers={['Loan ID', 'Borrower', 'Requested', 'Purpose', 'TAT / Blocker', 'Action']}>
           {rows.map(row => (
             <tr key={row.id} onClick={() => onNavigate(row.status === 'Incomplete' ? 'credit-queue' : 'credit-review')} className="border-b border-[var(--neutral-250)] clickable-row">
@@ -56,6 +63,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
             </tr>
           ))}
         </SimpleTable>
+        )}
       </DataCard>
     );
   };
@@ -105,7 +113,7 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
             <Cell>{row.disbursed}</Cell>
             <Cell><StatusBadge status={row.stage} /></Cell>
             <Cell><span style={{ color: row.dpd > 90 ? 'var(--error-700)' : row.dpd > 0 ? 'var(--warning-500)' : 'var(--success-600)', fontWeight: 700 }}>{row.dpd ? `${row.dpd} days` : '0'}</span></Cell>
-            <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('loan-file'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--neutral-150)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Open File</button></Cell>
+            <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate(`loan-file::${row.id}`); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--neutral-150)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Open File</button></Cell>
           </tr>
         ))}
       </SimpleTable>
@@ -235,6 +243,9 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
     const activeRows = loanRegister.filter(row => row.stage === 'Active' || row.stage === 'Disbursed');
     return (
       <DataCard title="Active Loans" action={<button onClick={() => onNavigate('credit-dpd')} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--accent-blue-50)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Open DPD Monitor</button>}>
+        {activeRows.length === 0 ? (
+          <EmptyTableState title="No active loans" message="No loans have been disbursed yet. Approved loans appear here once Treasury completes disbursement." />
+        ) : (
         <SimpleTable headers={['Loan ID', 'Borrower', 'Sanctioned', 'Outstanding', 'DPD', 'Next Due', 'Action']}>
           {activeRows.map(row => (
             <tr key={row.id} onClick={() => setSelectedLoan(row.id)} className="border-b border-[var(--neutral-250)] clickable-row">
@@ -244,10 +255,11 @@ export function CreditOperations({ onNavigate, activePage }: CreditOperationsPro
               <Cell right mono>{formatCurrency(Math.round(row.amount * 0.72))}</Cell>
               <Cell><span style={{ color: row.dpd > 90 ? 'var(--error-700)' : row.dpd > 0 ? 'var(--warning-500)' : 'var(--success-600)', fontWeight: 700 }}>{row.dpd ? `${row.dpd} days` : 'Current'}</span></Cell>
               <Cell>{row.disbursed}</Cell>
-              <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate('loan-file'); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--neutral-150)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Open File</button></Cell>
+              <Cell><button onClick={(e) => { e.stopPropagation(); onNavigate(`loan-file::${row.id}`); }} className="px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--neutral-150)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Open File</button></Cell>
             </tr>
           ))}
         </SimpleTable>
+        )}
       </DataCard>
     );
   };

@@ -25,6 +25,7 @@ interface LoanFileProps {
   onNavigate: (page: string) => void;
   activePage: string;
   activeLoanId?: string;
+  activeTab?: string;
 }
 
 type TabKey = 'application' | 'appraisal' | 'sanction' | 'documents' | 'disbursement' | 'repayment' | 'audit';
@@ -45,10 +46,13 @@ const ROLE_HOME: Record<string, TabKey> = {
   compliance: 'documents', treasury: 'disbursement', admin: 'audit',
 };
 
-export function LoanFile({ onNavigate, activePage, activeLoanId }: LoanFileProps) {
+export function LoanFile({ onNavigate, activePage, activeLoanId, activeTab }: LoanFileProps) {
   const { user } = useAuth();
   const role = user?.role || 'credit';
-  const loan = useLoan(activeLoanId) ?? getLoan(DEFAULT_LOAN_ID)!;
+  const resolved = useLoan(activeLoanId);
+  const loan = resolved ?? getLoan(DEFAULT_LOAN_ID)!;
+  // True when an id was requested in the URL but no such loan exists in the store.
+  const notFound = !!activeLoanId && !resolved;
 
   const shareLimit = shareLimitOf(loan);
   const landLimit = landLimitOf(loan);
@@ -57,19 +61,51 @@ export function LoanFile({ onNavigate, activePage, activeLoanId }: LoanFileProps
   const authority = authorityFor(loan);
   const currentStage = loan.stage; // live stage from the shared register
 
-  const [tab, setTab] = useState<TabKey>(ROLE_HOME[role] || 'application');
+  // The active tab lives in the URL (?tab=) so it survives refresh and works with
+  // browser back/forward (IA-03). When no tab is set, fall back to the role's home
+  // stage. Changing tab navigates — it does NOT hold local state — so the URL stays
+  // the single source of truth for "which tab am I on".
+  const urlTab = TABS.find(t => t.key === activeTab)?.key;
+  const tab: TabKey = (urlTab ?? ROLE_HOME[role] ?? 'application') as TabKey;
+  const setTab = (k: TabKey) => onNavigate(`loan-file::${loan.id}::${k}`);
+  const activeTabLabel = TABS.find(t => t.key === tab)?.label ?? '';
   const owns = (t: TabKey) => {
     const owner = TABS.find(x => x.key === t)?.owner;
     return owner === 'all' || owner === role;
   };
 
+  if (notFound) {
+    return (
+      <Shell
+        activePage={activePage}
+        onNavigate={onNavigate}
+        breadcrumbs={['Pipeline', 'Loan File', activeLoanId!]}
+        pageTitle="Loan File"
+        pageSubtitle="Loan not found"
+      >
+        <div className="bg-white rounded-xl border border-[var(--neutral-200)] p-10 text-center max-w-lg mx-auto mt-6">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--warning-50)' }}>
+            <FileText size={22} style={{ color: 'var(--gold-500)' }} />
+          </div>
+          <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--neutral-900)' }}>Loan {activeLoanId} not found</h2>
+          <p style={{ fontSize: '14px', color: 'var(--neutral-500)', marginTop: '8px', lineHeight: '20px' }}>
+            This loan reference is not in the register. It may have been archived, or the link may be out of date.
+          </p>
+          <button onClick={() => onNavigate('pipeline')} className="mt-5 px-4 py-2.5 rounded-lg font-medium inline-flex items-center gap-2" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>
+            Back to Pipeline <ArrowRight size={15} />
+          </button>
+        </div>
+      </Shell>
+    );
+  }
+
   return (
     <Shell
       activePage={activePage}
       onNavigate={onNavigate}
-      breadcrumbs={['Pipeline', 'Loan File', loan.id]}
+      breadcrumbs={['Pipeline', 'Loan File', loan.id, activeTabLabel]}
       pageTitle={`Loan File — ${loan.id}`}
-      pageSubtitle={`${loan.borrower} · ${loan.category}`}
+      pageSubtitle={`${loan.borrower} · ${loan.category} · ${activeTabLabel}`}
     >
       {/* Header: the shared object's identity + where it is in the 6 stages */}
       <div className="bg-white rounded-xl border border-[var(--neutral-200)] p-5 mb-5">
@@ -234,12 +270,19 @@ function SignatureLadder({ authority }: { authority: string }) {
 function SanctionTab({ loan, authority, editable }: { loan: Loan; authority: string; editable: boolean }) {
   const checks = ['Eligibility verification', 'Loan amount within limit', 'Purpose of loan', 'Compliance checks (Companies Act)', 'Past borrowing history', 'Risk assessment', 'Documentation completeness'];
   const decided = loan.decision;
+  // Approve/Reject mutate the shared register irreversibly, so they require an
+  // explicit second confirmation (Nielsen #5 — error prevention). Reject also
+  // requires a written reason before it can be committed.
+  const [pending, setPending] = useState<null | 'approve' | 'reject'>(null);
+  const [reason, setReason] = useState('');
   const handleApprove = () => {
     approveLoan(loan.id);
+    setPending(null);
     toast.success(`${loan.id} approved`, { description: `Recorded in the Credit Sanction Register (Annexure K). Moved to Stage 4 — Documentation. Authority: ${authority}.` });
   };
   const handleReject = () => {
     rejectLoan(loan.id);
+    setPending(null);
     toast.error(`${loan.id} rejected`, { description: `Reason recorded; the Credit Team will issue a Rejection Note (Annexure L) to ${loan.borrower}.` });
   };
   return (
@@ -261,10 +304,31 @@ function SanctionTab({ loan, authority, editable }: { loan: Loan; authority: str
             <StatusBadge status={decided === 'approved' ? 'Approved' : 'Rejected'} size="md" />
           </div>
         )}
-        {editable && !decided && (
+        {editable && !decided && !pending && (
           <div className="flex gap-2 mt-4">
-            <button onClick={handleApprove} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Approve</button>
-            <button onClick={handleReject} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontSize: '14px' }}>Reject with reason</button>
+            <button onClick={() => setPending('approve')} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Approve</button>
+            <button onClick={() => { setReason(''); setPending('reject'); }} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--error-100)', color: 'var(--error-900)', fontSize: '14px' }}>Reject with reason</button>
+          </div>
+        )}
+        {editable && !decided && pending === 'approve' && (
+          <div className="mt-4 p-3 rounded-lg border" style={{ borderColor: 'var(--brand-primary)', backgroundColor: 'var(--accent-blue-50)' }} role="alertdialog" aria-label="Confirm approval">
+            <p style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-900)' }}>Approve {loan.id} for {formatCurrency(loan.requested)}?</p>
+            <p style={{ fontSize: '12px', color: 'var(--neutral-600)', marginTop: '4px', lineHeight: '18px' }}>This is recorded in the Credit Sanction Register and moves the loan to Stage 4 — Documentation. It cannot be undone here.</p>
+            <div className="flex gap-2 mt-3">
+              <button onClick={handleApprove} className="flex-1 py-2 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '13px' }}>Confirm approval</button>
+              <button onClick={() => setPending(null)} className="flex-1 py-2 rounded-lg font-medium" style={{ backgroundColor: 'var(--neutral-100)', color: 'var(--neutral-700)', fontSize: '13px' }}>Cancel</button>
+            </div>
+          </div>
+        )}
+        {editable && !decided && pending === 'reject' && (
+          <div className="mt-4 p-3 rounded-lg border" style={{ borderColor: 'var(--error-500)', backgroundColor: 'var(--error-50)' }} role="alertdialog" aria-label="Confirm rejection">
+            <p style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-900)' }}>Reject {loan.id}?</p>
+            <label htmlFor="reject-reason" style={{ display: 'block', fontSize: '12px', color: 'var(--neutral-600)', marginTop: '8px' }}>Reason (required — included in the Rejection Note, Annexure L)</label>
+            <textarea id="reject-reason" value={reason} onChange={(e) => setReason(e.target.value)} rows={2} className="w-full mt-1 p-2 rounded-lg border" style={{ borderColor: 'var(--neutral-300)', fontSize: '13px', resize: 'vertical' }} placeholder="e.g. Requested amount exceeds eligible limit and no exception approved." />
+            <div className="flex gap-2 mt-3">
+              <button onClick={handleReject} disabled={!reason.trim()} className="flex-1 py-2 rounded-lg font-medium" style={{ backgroundColor: reason.trim() ? 'var(--error-500)' : 'var(--neutral-200)', color: reason.trim() ? 'white' : 'var(--neutral-400)', fontSize: '13px', cursor: reason.trim() ? 'pointer' : 'not-allowed' }}>Confirm rejection</button>
+              <button onClick={() => setPending(null)} className="flex-1 py-2 rounded-lg font-medium" style={{ backgroundColor: 'var(--neutral-100)', color: 'var(--neutral-700)', fontSize: '13px' }}>Cancel</button>
+            </div>
           </div>
         )}
         <p style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '10px', lineHeight: '18px' }}>Decision is recorded in the Credit Sanction Register (Annexure K). For loans above ₹5L the first signature locks "pending 2nd director".</p>
