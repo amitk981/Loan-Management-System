@@ -74,7 +74,7 @@ const complianceNav: NavItem[] = [
   { icon: <GitBranch size={20} />, label: 'Pipeline', key: 'pipeline', section: 'Today' },
   {
     icon: <ClipboardCheck size={20} />,
-    label: 'Document Queue',
+    label: 'Pending Documents',
     key: 'cs-queue',
     badge: 14,
     section: 'Documents',

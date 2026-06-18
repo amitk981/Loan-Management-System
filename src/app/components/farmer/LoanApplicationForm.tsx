@@ -94,7 +94,7 @@ export function LoanApplicationForm({ onNavigate, activePage, mode = 'farmer', a
   const [shares, setShares] = useState(who.shares);
   const [landAcres, setLandAcres] = useState(who.landAcres);
   const initialEligible = Math.min(who.shares * who.loanValuePerShare, who.landAcres * who.scaleOfFinance);
-  const [requestedAmount, setRequestedAmount] = useState(String(initialEligible || farmerEligibility.eligible));
+  const [requestedAmount, setRequestedAmount] = useState('');
   const [purpose, setPurpose] = useState('Crop Production & Farm Inputs');
   const [nomineeAdult, setNomineeAdult] = useState(true);
   const [rekycRequested, setRekycRequested] = useState(false);
@@ -226,10 +226,9 @@ export function LoanApplicationForm({ onNavigate, activePage, mode = 'farmer', a
       <div className="farmer-page">
         {topSlot && <div className="mb-5">{topSlot}</div>}
         <section className="farmer-panel p-5 mb-6">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {[
               { label: 'Eligible Limit', value: formatCurrency(eligibleLimit), helper: 'Lower of shares and land limit', icon: <Wallet size={15} />, color: 'var(--brand-primary)' },
-              { label: 'Requested', value: requestedAmount ? formatCurrency(reqAmount) : 'Not entered', helper: amountWithinLimit ? 'Within SOP limit' : 'Needs correction', icon: <BadgeIndianRupee size={15} />, color: amountWithinLimit ? 'var(--accent-sanction)' : 'var(--error-500)' },
               { label: 'Documents', value: `${reviewDocs.length - missingDocs.length}/${reviewDocs.length}`, helper: missingDocs.length ? `${missingDocs.length} pending` : 'Complete', icon: <FileCheck size={15} />, color: missingDocs.length ? 'var(--warning-500)' : 'var(--success-500)' },
               { label: 'Declarations', value: allDeclarationsChecked ? 'Complete' : 'Pending', helper: allDeclarationsChecked ? 'Ready for final review' : 'Required before submit', icon: <ShieldCheck size={15} />, color: allDeclarationsChecked ? 'var(--success-500)' : 'var(--warning-500)' },
             ].map(stat => (
@@ -238,7 +237,7 @@ export function LoanApplicationForm({ onNavigate, activePage, mode = 'farmer', a
                   <span className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${stat.color}15`, color: stat.color }}>{stat.icon}</span>
                   <span className="farmer-kicker">{stat.label}</span>
                 </div>
-                <div className="farmer-value" style={{ fontSize: '22px', lineHeight: '28px', color: stat.label === 'Requested' && !amountWithinLimit ? 'var(--error-800)' : 'var(--neutral-950)' }}>{stat.value}</div>
+                <div className="farmer-value" style={{ fontSize: '22px', lineHeight: '28px', color: 'var(--neutral-950)' }}>{stat.value}</div>
                 <div style={{ fontSize: '12px', color: 'var(--neutral-550)', marginTop: '5px' }}>{stat.helper}</div>
               </div>
             ))}

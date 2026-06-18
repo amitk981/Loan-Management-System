@@ -70,10 +70,8 @@ export function LoanFile({ onNavigate, activePage, activeLoanId, activeTab }: Lo
   const tab: TabKey = (urlTab ?? ROLE_HOME[role] ?? 'application') as TabKey;
   const setTab = (k: TabKey) => onNavigate(`loan-file::${loan.id}::${k}`);
   const activeTabLabel = TABS.find(t => t.key === tab)?.label ?? '';
-  const owns = (t: TabKey) => {
-    const owner = TABS.find(x => x.key === t)?.owner;
-    return owner === 'all' || owner === role;
-  };
+  // Design-only: every section is read-only, no role owns any tab.
+  const owns = (_t: TabKey) => false;
 
   if (notFound) {
     return (
@@ -164,9 +162,7 @@ export function LoanFile({ onNavigate, activePage, activeLoanId, activeTab }: Lo
         accent="var(--brand-primary)"
       />
 
-      {!owns(tab) && tab !== 'audit' && (
-        <div className="mb-4"><RoleAccessNote /></div>
-      )}
+
 
       {tab === 'application' && <ApplicationTab loan={loan} />}
       {tab === 'appraisal' && <AppraisalTab loan={loan} shareLimit={shareLimit} landLimit={landLimit} eligible={eligible} editable={owns('appraisal')} onNavigate={onNavigate} />}

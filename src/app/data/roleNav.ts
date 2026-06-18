@@ -61,14 +61,7 @@ export const complianceQueueTabs = [
   { key: 'cs-signoff', label: 'CS Sign-off', badge: 3 },
 ];
 
-export const complianceDocTabs = [
-  { key: 'cs-workspace', label: 'Workspace' },
-  { key: 'cs-poa', label: 'PoA' },
-  { key: 'cs-triparty', label: 'Tri-Party' },
-  { key: 'cs-sh4', label: 'SH-4 / CDSL' },
-  { key: 'cs-termsheet', label: 'Term Sheet' },
-  { key: 'cs-agreement', label: 'Loan Agreement' },
-];
+
 
 export const complianceKycTabs = [
   { key: 'cs-kyc', label: 'All Members' },

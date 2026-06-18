@@ -1,8 +1,9 @@
-import { ArrowRight, Check } from 'lucide-react';
+import { AlertTriangle, ArrowRight, BellRing, Check, ChevronRight, Clock, ShieldAlert } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { RoleCommandCenter } from '../shared/RoleCommandCenter';
+import { formatCurrency } from '../../lib/format';
 
 interface CreditDashboardProps {
   onNavigate: (page: string) => void;
@@ -10,16 +11,16 @@ interface CreditDashboardProps {
 }
 
 const actionQueue = [
-  { icon: '!', loan: 'LO00000089', name: 'Rajesh Patil', note: 'Appraisal Note overdue 1d', status: 'Overdue', page: 'credit-review', color: 'var(--error-700)' },
-  { icon: '→', loan: 'LO00000091', name: 'Priya Shinde', note: 'Docs incomplete — PAN missing', status: 'Incomplete', page: 'credit-queue', color: 'var(--brand-accent-700)' },
-  { icon: '→', loan: 'LO00000086', name: 'Narayan FPC', note: 'Sent to SC — awaiting decision', status: 'Awaiting SC Approval', page: 'credit-sc-queue', color: 'var(--brand-accent-700)' },
-  { icon: '✓', loan: 'LO00000082', name: 'Disbursed', note: 'Update loan register', status: 'Disbursed', page: 'credit-register', color: 'var(--success-600)' },
+  { icon: '!', loan: 'LO00000089', name: 'Rajesh Patil', note: 'Appraisal Note overdue 1d', status: 'Overdue', page: 'credit-review', color: 'var(--error-700)', priority: 'High', when: '1d overdue' },
+  { icon: '→', loan: 'LO00000091', name: 'Priya Shinde', note: 'Docs incomplete — PAN missing', status: 'Incomplete', page: 'credit-queue', color: 'var(--warning-700)', priority: 'Medium', when: '2h ago' },
+  { icon: '→', loan: 'LO00000086', name: 'Narayan FPC', note: 'Sent to SC — awaiting decision', status: 'Awaiting SC Approval', page: 'credit-sc-queue', color: 'var(--brand-accent-700)', priority: 'Tracking', when: '1d ago' },
+  { icon: '✓', loan: 'LO00000082', name: 'Disbursed', note: 'Update loan register', status: 'Disbursed', page: 'credit-register', color: 'var(--success-600)', priority: 'Done', when: 'Today' },
 ];
 
 const alerts = [
-  { title: 'TAT Breach', body: 'LO00000076 — Appraisal due 2 days ago', color: 'var(--warning-800)', page: 'credit-review' },
-  { title: 'Default Flag', body: 'LO00000051 — Principal overdue 94 days', color: 'var(--error-700)', page: 'credit-dpd' },
-  { title: 'Re-KYC Due', body: '14 members — KYC expiring in 30d', color: 'var(--warning-500)', page: 'credit-all-apps' },
+  { title: 'TAT Breach', body: 'LO00000076 — Appraisal due 2 days ago', color: 'var(--warning-800)', page: 'credit-review', Icon: Clock },
+  { title: 'Default Flag', body: 'LO00000051 — Principal overdue 94 days', color: 'var(--error-700)', page: 'credit-dpd', Icon: ShieldAlert },
+  { title: 'Re-KYC Due', body: '14 members — KYC expiring in 30d', color: 'var(--warning-500)', page: 'credit-all-apps', Icon: AlertTriangle },
 ];
 
 const dpdData = [
@@ -27,6 +28,13 @@ const dpdData = [
   { label: '1-2yr', count: 12, pct: 8, color: 'var(--warning-500)' },
   { label: '2-3yr', count: 5, pct: 4, color: 'var(--warning-800)' },
   { label: '3yr+', count: 3, pct: 2, color: 'var(--error-500)' },
+];
+
+const healthStats = [
+  { label: 'Outstanding', value: formatCurrency(18420000), tone: 'var(--brand-accent)' },
+  { label: 'Avg Loan', value: formatCurrency(125306), tone: 'var(--neutral-700)' },
+  { label: 'NPA Rate', value: '1.4%', tone: 'var(--error-700)' },
+  { label: 'On-time', value: '94%', tone: 'var(--success-700)' },
 ];
 
 export function CreditDashboard({ onNavigate, activePage }: CreditDashboardProps) {

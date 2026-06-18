@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Check, Upload, FileText, Eye, Download, AlertTriangle } from 'lucide-react';
+import { Check, Upload, FileText, Eye, Download, AlertTriangle, CheckCircle2, Clock, User, ArrowRight, Lock, FileCheck, Pen, Stamp, Users, CircleDot, ShieldCheck, Package, ChevronRight } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
 import { GateBanner } from '../shared/GateBanner';
 import { WorkbenchTabs } from '../shared/WorkbenchTabs';
-import { complianceDocTabs, complianceQueueTabs } from '../../data/roleNav';
+import { complianceQueueTabs } from '../../data/roleNav';
 import { mockLoans, mockDocuments } from '../../data/mockData';
 import { csWorkspaceLoan } from '../../data/complianceData';
 
@@ -50,6 +50,26 @@ const signatureBlocks = [
   { role: 'Senior Manager – Finance', note: 'Loan disbursed to applicant\'s account', color: 'var(--accent-treasury)' },
 ];
 
+type QueueStatus = 'awaiting-prep' | 'awaiting-review' | 'cs-signoff';
+
+const queueLoans: { id: string; borrower: string; folio: string; amount: number; village: string; docsReady: number; docsTotal: number; queueStatus: QueueStatus; daysInQueue: number; priority: 'high' | 'medium' | 'low'; nextAction: string }[] = [
+  { id: 'LO00000047', borrower: 'Ramesh Patil', folio: 'SH-04821', amount: 200000, village: 'Nashik', docsReady: 11, docsTotal: 15, queueStatus: 'awaiting-prep', daysInQueue: 3, priority: 'high', nextAction: 'Complete PoA stamping & notarisation' },
+  { id: 'LO00000052', borrower: 'Anita Deshmukh', folio: 'SH-05102', amount: 350000, village: 'Pune', docsReady: 8, docsTotal: 15, queueStatus: 'awaiting-prep', daysInQueue: 1, priority: 'medium', nextAction: 'Upload KYC witness documents' },
+  { id: 'LO00000055', borrower: 'Vikram Shinde', folio: 'SH-05230', amount: 150000, village: 'Satara', docsReady: 6, docsTotal: 15, queueStatus: 'awaiting-prep', daysInQueue: 5, priority: 'high', nextAction: 'Start Annexure H assembly' },
+  { id: 'LO00000048', borrower: 'Sunita Jadhav', folio: 'SH-03412', amount: 100000, village: 'Pune', docsReady: 13, docsTotal: 15, queueStatus: 'awaiting-review', daysInQueue: 2, priority: 'medium', nextAction: 'Resolve bank signature mismatch' },
+  { id: 'LO00000053', borrower: 'Manoj Kulkarni', folio: 'SH-04920', amount: 275000, village: 'Kolhapur', docsReady: 14, docsTotal: 15, queueStatus: 'awaiting-review', daysInQueue: 1, priority: 'low', nextAction: 'Verify SH-4 witness signature' },
+  { id: 'LO00000049', borrower: 'Priya Gaikwad', folio: 'SH-05001', amount: 500000, village: 'Nashik', docsReady: 15, docsTotal: 15, queueStatus: 'cs-signoff', daysInQueue: 1, priority: 'high', nextAction: 'CS countersignature pending' },
+  { id: 'LO00000054', borrower: 'Rahul Mane', folio: 'SH-05150', amount: 180000, village: 'Solapur', docsReady: 15, docsTotal: 15, queueStatus: 'cs-signoff', daysInQueue: 2, priority: 'medium', nextAction: 'Final checklist review' },
+  { id: 'LO00000056', borrower: 'Kavita Bhosale', folio: 'SH-05310', amount: 420000, village: 'Sangli', docsReady: 15, docsTotal: 15, queueStatus: 'cs-signoff', daysInQueue: 0, priority: 'low', nextAction: 'CS countersignature pending' },
+];
+
+const queueStatusForPage: Record<string, QueueStatus | 'all'> = {
+  'cs-queue': 'all',
+  'cs-awaiting-prep': 'awaiting-prep',
+  'cs-awaiting-review': 'awaiting-review',
+  'cs-signoff': 'cs-signoff',
+};
+
 export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceProps) {
   const loan = {
     ...mockLoans[0],
@@ -89,6 +109,9 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
   const [bankLetterReady, setBankLetterReady] = useState(false);
   const [witnessConfirmed, setWitnessConfirmed] = useState(false);
   const [termSheetSignatures, setTermSheetSignatures] = useState({ cfo: false, director1: false, director2: false });
+  const [isHolding, setIsHolding] = useState(false);
+  const [holdProgress, setHoldProgress] = useState(0);
+  const [selectedQueueLoan, setSelectedQueueLoan] = useState<string | null>(null);
 
   const allDocsChecked = checkedDocs.every(Boolean);
   const legalDocsExecuted = poaStamped && poaNotarised && agreementStamped && agreementNotarised;
@@ -112,9 +135,28 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
     setActiveTab(routeTabMap[activePage] || 'checklist');
   }, [activePage]);
 
+  useEffect(() => {
+    let interval: any;
+    if (isHolding && canSubmit) {
+      interval = setInterval(() => {
+        setHoldProgress(p => {
+          if (p >= 100) {
+            clearInterval(interval);
+            onNavigate('cs-queue');
+            return 100;
+          }
+          return p + 5;
+        });
+      }, 100);
+    } else {
+      setHoldProgress(0);
+    }
+    return () => clearInterval(interval);
+  }, [isHolding, canSubmit]);
+
   const workspaceCopy: Record<string, { title: string; subtitle: string }> = {
     'cs-workspace': { title: 'Document Workspace', subtitle: 'Tabbed legal file hub for approved loan documentation' },
-    'cs-queue': { title: 'Pending Document Queue', subtitle: 'Document checklist, execution and custody actions pending CS attention' },
+    'cs-queue': { title: 'Pending Documents', subtitle: 'Document checklist, execution and custody actions pending CS attention' },
     'cs-awaiting-prep': { title: 'Awaiting Preparation', subtitle: 'Start document assembly and complete Annexure H evidence' },
     'cs-awaiting-review': { title: 'Awaiting Review', subtitle: 'Resolve bank verification and execution exceptions before sign-off' },
     'cs-signoff': { title: 'Awaiting CS Sign-off', subtitle: 'Final checklist and countersignature gate before Treasury release' },
@@ -126,98 +168,240 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
   };
   const workspace = workspaceCopy[activePage] || { title: `Document Workspace — ${loan.id}`, subtitle: `${loan.farmerName} · Stage 4: Documentation in Progress` };
   const showQueueTabs = complianceQueueTabs.some(tab => tab.key === activePage);
-  const showDocTabs = complianceDocTabs.some(tab => tab.key === activePage);
 
   return (
     <Shell
       activePage={activePage}
       onNavigate={onNavigate}
-      breadcrumbs={['Compliance', activePage.startsWith('cs-awaiting') || activePage === 'cs-signoff' ? 'Document Queue' : 'Document Templates', workspace.title]}
+      breadcrumbs={['Compliance', activePage.startsWith('cs-awaiting') || activePage === 'cs-signoff' || activePage === 'cs-queue' ? 'Pending Documents' : 'Document Templates', workspace.title]}
       pageTitle={workspace.title}
-      pageSubtitle={`${loan.id} · ${loan.farmerName} · ₹${csWorkspaceLoan.amount.toLocaleString('en-IN')}`}
+      pageSubtitle={showQueueTabs && !selectedQueueLoan ? workspace.subtitle : `${loan.id} · ${loan.farmerName} · ₹${csWorkspaceLoan.amount.toLocaleString('en-IN')}`}
       actions={
-        <div className="flex items-center gap-3">
-          <span style={{ fontSize: '13px', color: 'var(--neutral-400)' }}>5/8 core instruments done</span>
-          <div className="w-32 h-2 bg-[var(--neutral-200)] rounded-full overflow-hidden">
-            <div className="h-full rounded-full" style={{ width: '62.5%', backgroundColor: 'var(--brand-secondary)' }} />
+        (!showQueueTabs || selectedQueueLoan) ? (
+          <div className="flex items-center gap-3">
+            <span style={{ fontSize: '13px', color: 'var(--neutral-400)' }}>5/8 core instruments done</span>
+            <div className="w-32 h-2 bg-[var(--neutral-200)] rounded-full overflow-hidden">
+              <div className="h-full rounded-full" style={{ width: '62.5%', backgroundColor: 'var(--brand-secondary)' }} />
+            </div>
           </div>
-        </div>
+        ) : undefined
       }
     >
-      {showQueueTabs && <WorkbenchTabs tabs={complianceQueueTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />}
-      {showDocTabs && <WorkbenchTabs tabs={complianceDocTabs} activeKey={activePage} onChange={onNavigate} accent="var(--brand-primary)" />}
-      <div className="grid grid-cols-4 gap-3 mb-5">
+      {showQueueTabs && !selectedQueueLoan && <WorkbenchTabs tabs={complianceQueueTabs} activeKey={activePage} onChange={(p) => { setSelectedQueueLoan(null); onNavigate(p); }} accent="var(--brand-primary)" />}
+
+      {/* Queue List View — shown when on queue tabs and no loan selected */}
+      {showQueueTabs && !selectedQueueLoan && (() => {
+        const filter = queueStatusForPage[activePage] || 'all';
+        const filtered = filter === 'all' ? queueLoans : queueLoans.filter(l => l.queueStatus === filter);
+        const counts = { prep: queueLoans.filter(l => l.queueStatus === 'awaiting-prep').length, review: queueLoans.filter(l => l.queueStatus === 'awaiting-review').length, signoff: queueLoans.filter(l => l.queueStatus === 'cs-signoff').length };
+        const toneMap = { prep: { fg: 'var(--warning-600)', dot: 'var(--warning-500)' }, review: { fg: 'var(--info-600)', dot: 'var(--info-500)' }, signoff: { fg: 'var(--success-600)', dot: 'var(--success-500)' } };
+        return (
+          <>
+            <div className="grid grid-cols-3 gap-4 mb-5">
+              {[
+                { label: 'Awaiting Prep', count: counts.prep, key: 'prep' as const, icon: Package, bg: 'var(--warning-50)', border: 'var(--warning-200)' },
+                { label: 'Awaiting Review', count: counts.review, key: 'review' as const, icon: Eye, bg: 'var(--info-50)', border: 'var(--info-200)' },
+                { label: 'CS Sign-off', count: counts.signoff, key: 'signoff' as const, icon: ShieldCheck, bg: 'var(--success-50)', border: 'var(--success-200)' },
+              ].map(s => {
+                const t = toneMap[s.key];
+                const Icon = s.icon;
+                return (
+                  <div key={s.label} className="p-4 rounded-xl flex items-center gap-4" style={{ backgroundColor: s.bg, border: `1px solid ${s.border}` }}>
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${t.dot}1A`, color: t.dot }}>
+                      <Icon size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{s.label}</div>
+                      <div style={{ fontSize: 26, color: t.fg, fontWeight: 700, fontFamily: 'Roboto Mono', lineHeight: '32px' }}>{s.count}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="bg-white rounded-2xl border border-[var(--neutral-200)] overflow-hidden">
+              <table className="w-full">
+                <thead>
+                  <tr style={{ backgroundColor: 'var(--cream-50)', borderBottom: '2px solid var(--neutral-200)' }}>
+                    {['Loan ID', 'Borrower', 'Amount', 'Docs', 'Days', 'Priority', 'Next Action', ''].map(h => (
+                      <th key={h} className="text-left px-5 py-3.5" style={{ fontSize: '11px', fontWeight: 700, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map(ql => {
+                    const docPct = (ql.docsReady / ql.docsTotal) * 100;
+                    const docColor = ql.docsReady === ql.docsTotal ? 'var(--success-500)' : docPct >= 80 ? 'var(--brand-secondary)' : 'var(--warning-500)';
+                    return (
+                    <tr key={ql.id} className="clickable-row group" onClick={() => setSelectedQueueLoan(ql.id)} style={{ cursor: 'pointer', borderBottom: '1px solid var(--neutral-200)' }}>
+                      <td className="px-5 py-4" style={{ fontSize: '13px', fontWeight: 700, fontFamily: 'Roboto Mono', color: 'var(--brand-primary)' }}>{ql.id}</td>
+                      <td className="px-5 py-4">
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-900)' }}>{ql.borrower}</div>
+                        <div style={{ fontSize: '11px', color: 'var(--neutral-400)', marginTop: '2px' }}>{ql.folio} · {ql.village}</div>
+                      </td>
+                      <td className="px-5 py-4" style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-700)', fontFamily: 'Roboto Mono' }}>₹{ql.amount.toLocaleString('en-IN')}</td>
+                      <td className="px-5 py-4">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-20 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--neutral-200)' }}>
+                            <div className="h-full rounded-full transition-all" style={{ width: `${docPct}%`, backgroundColor: docColor }} />
+                          </div>
+                          <span style={{ fontSize: '12px', color: ql.docsReady === ql.docsTotal ? 'var(--success-600)' : 'var(--neutral-500)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{ql.docsReady}/{ql.docsTotal}</span>
+                        </div>
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md" style={{ fontSize: '12px', fontWeight: 700, fontFamily: 'Roboto Mono', backgroundColor: ql.daysInQueue >= 3 ? 'var(--error-50)' : 'var(--neutral-100)', color: ql.daysInQueue >= 3 ? 'var(--error-600)' : 'var(--neutral-500)' }}>
+                          {ql.daysInQueue >= 3 && <Clock size={11} />}{ql.daysInQueue}d
+                        </span>
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full" style={{ fontSize: '11px', fontWeight: 700, backgroundColor: ql.priority === 'high' ? 'var(--error-50)' : ql.priority === 'medium' ? 'var(--warning-50)' : 'var(--neutral-100)', color: ql.priority === 'high' ? 'var(--error-600)' : ql.priority === 'medium' ? 'var(--warning-700)' : 'var(--neutral-500)', border: `1px solid ${ql.priority === 'high' ? 'var(--error-200)' : ql.priority === 'medium' ? 'var(--warning-200)' : 'var(--neutral-200)'}` }}>
+                          <CircleDot size={9} />{ql.priority}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4" style={{ fontSize: '12px', color: 'var(--neutral-700)', fontWeight: 500 }}>{ql.nextAction}</td>
+                      <td className="px-5 py-4"><ChevronRight size={16} style={{ color: 'var(--neutral-300)' }} className="transition-transform group-hover:translate-x-0.5" /></td>
+                    </tr>
+                  );})}
+                </tbody>
+              </table>
+            </div>
+          </>
+        );
+      })()}
+
+      {/* Workspace View — shown when on doc tabs or a queue loan is selected */}
+      {(!showQueueTabs || selectedQueueLoan) && (<>
+      {selectedQueueLoan && (
+        <button onClick={() => setSelectedQueueLoan(null)} className="mb-4 flex items-center gap-1.5 px-3 py-1.5 rounded-lg" style={{ fontSize: '13px', color: 'var(--brand-primary)', backgroundColor: 'var(--brand-50)', border: '1px solid var(--brand-100)' }}>
+          ← Back to queue
+        </button>
+      )}
+      {activeTab === 'checklist' && (
+        <>
+          <div className="grid grid-cols-4 gap-3 mb-5">
         {[
-          { label: 'Documents', value: `${checkedCount}/15`, ready: allDocsChecked, note: allDocsChecked ? 'All file items present' : `${15 - checkedCount} pending` },
-          { label: 'PoA Execution', value: poaStamped && poaNotarised ? 'Ready' : 'Blocked', ready: poaStamped && poaNotarised, note: '₹500 stamp + notary' },
-          { label: 'Loan Agreement', value: agreementStamped && agreementNotarised ? 'Ready' : 'Blocked', ready: agreementStamped && agreementNotarised, note: '₹500 stamp + notary' },
-          { label: 'Signatures', value: `${Object.values(signatures).filter(Boolean).length}/4`, ready: allSignaturesDone, note: 'CS → Credit → Sanction → Finance' },
-        ].map(item => (
-          <button key={item.label} onClick={() => setActiveTab(item.label === 'Documents' || item.label === 'Signatures' ? 'checklist' : item.label === 'PoA Execution' ? 'poa' : 'agreement')} className="rounded-xl p-4 border text-left clickable-card" style={{ backgroundColor: item.ready ? 'var(--success-50)' : 'var(--warning-50)', borderColor: item.ready ? 'var(--success-200)' : 'var(--warning-200)' }}>
-            <div style={{ fontSize: '11px', color: item.ready ? 'var(--green-600b)' : 'var(--warning-900)', fontWeight: 700, textTransform: 'uppercase' }}>{item.label}</div>
-            <div style={{ fontSize: '20px', color: item.ready ? 'var(--success-700)' : 'var(--warning-700)', fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
-            <div style={{ fontSize: '12px', color: item.ready ? 'var(--success-500)' : 'var(--warning-900)', marginTop: '2px' }}>{item.note}</div>
+          { label: 'Documents', value: `${checkedCount}/15`, ready: allDocsChecked, note: allDocsChecked ? 'All file items present' : `${15 - checkedCount} pending`, icon: FileCheck, tab: 'checklist' as DocTab },
+          { label: 'PoA Execution', value: poaStamped && poaNotarised ? 'Ready' : 'Blocked', ready: poaStamped && poaNotarised, note: '₹500 stamp + notary', icon: Stamp, tab: 'poa' as DocTab },
+          { label: 'Loan Agreement', value: agreementStamped && agreementNotarised ? 'Ready' : 'Blocked', ready: agreementStamped && agreementNotarised, note: '₹500 stamp + notary', icon: Pen, tab: 'agreement' as DocTab },
+          { label: 'Signatures', value: `${Object.values(signatures).filter(Boolean).length}/4`, ready: allSignaturesDone, note: 'CS → Credit → Sanction → Finance', icon: Users, tab: 'checklist' as DocTab },
+        ].map(item => {
+          const Icon = item.icon;
+          return (
+          <button key={item.label} onClick={() => setActiveTab(item.tab)} className="rounded-xl p-4 border-2 text-left clickable-card" style={{ backgroundColor: item.ready ? 'var(--success-50)' : 'white', borderColor: item.ready ? 'var(--success-200)' : 'var(--warning-200)' }}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: item.ready ? 'var(--success-100)' : 'var(--warning-100)', color: item.ready ? 'var(--success-600)' : 'var(--warning-700)' }}>
+                <Icon size={18} />
+              </div>
+              {item.ready && <CheckCircle2 size={18} style={{ color: 'var(--success-500)' }} />}
+            </div>
+            <div style={{ fontSize: '11px', color: item.ready ? 'var(--success-600)' : 'var(--warning-900)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{item.label}</div>
+            <div style={{ fontSize: '22px', color: item.ready ? 'var(--success-700)' : 'var(--neutral-900)', fontWeight: 700, marginTop: '2px', fontFamily: 'Roboto Mono' }}>{item.value}</div>
+            <div style={{ fontSize: '12px', color: item.ready ? 'var(--success-500)' : 'var(--neutral-500)', marginTop: '4px' }}>{item.note}</div>
           </button>
-        ))}
+        );})}
       </div>
 
-      <div className="rounded-xl p-4 mb-5 border border-[var(--neutral-200)]" style={{ backgroundColor: 'var(--success-50)' }}>
-        <div style={{ fontSize: '13px', color: 'var(--success-700)', fontWeight: 700 }}>
-          Start here: PoA → Tri-Party → SH-4/CDSL → Term Sheet → Loan Agreement → Bank Verification → Checklist
+      <div className="rounded-xl p-4 mb-5 flex items-start gap-3" style={{ backgroundColor: 'var(--brand-light)', border: '1px solid var(--success-200)' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: 'var(--success-100)', color: 'var(--brand-secondary)' }}>
+          <ArrowRight size={16} />
         </div>
-        <div style={{ fontSize: '12px', color: 'var(--neutral-700)', marginTop: '6px' }}>
-          Work through each tab below. Treasury cannot disburse until checklist and CS sign-off are complete.
+        <div>
+          <div style={{ fontSize: '13px', color: 'var(--brand-primary)', fontWeight: 700 }}>
+            Start here: PoA → Tri-Party → SH-4/CDSL → Term Sheet → Loan Agreement → Bank Verification → Checklist
+          </div>
+          <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '4px' }}>
+            Work through each tab below. Treasury cannot disburse until checklist and CS sign-off are complete.
+          </div>
         </div>
       </div>
+      </>
+      )}
 
-      {/* Document Progress Tracker */}
-      <div className="bg-white rounded-2xl p-4 mb-5 border border-[var(--neutral-200)]">
-        <div className="flex items-center gap-2 overflow-x-auto">
-          {docTabs.map((tab, i) => {
-            const statusMap: Record<DocTab, string> = {
-              poa: poaStamped && poaNotarised ? 'Ready' : 'Pending',
-              triparty: 'Ready',
-              sh4: shareType === 'physical' ? 'SH-4' : 'CDSL',
-              termsheet: termSheetAuthorityComplete ? 'Ready' : 'Pending',
-              agreement: agreementStamped && agreementNotarised && witnessConfirmed ? 'Ready' : 'Pending',
-              bank: bankGateReady ? 'Ready' : 'Pending',
-              checklist: 'In Progress',
-            };
-            const s = statusMap[tab.id];
-            return (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  if (tab.id === 'agreement' && !termSheetAuthorityComplete) return;
-                  setActiveTab(tab.id);
-                }}
-                className="flex flex-col items-center flex-shrink-0 px-3 py-2 rounded-xl transition-all"
-                style={{
-                  backgroundColor: activeTab === tab.id ? 'var(--brand-primary)' : 'var(--neutral-100)',
-                  border: activeTab === tab.id ? 'none' : '1px solid var(--neutral-200)',
-                  opacity: tab.id === 'agreement' && !termSheetAuthorityComplete ? 0.5 : 1,
-                  cursor: tab.id === 'agreement' && !termSheetAuthorityComplete ? 'not-allowed' : 'pointer'
-                }}
-                title={tab.id === 'agreement' && !termSheetAuthorityComplete ? 'Locked until Term Sheet authority signatures are complete' : ''}
-              >
-                <span style={{ fontSize: '12px', fontWeight: activeTab === tab.id ? 500 : 400, color: activeTab === tab.id ? 'white' : 'var(--neutral-700)' }}>
-                  {tab.shortLabel}
-                </span>
-                <span
-                  className="mt-1"
-                  style={{
-                    fontSize: '10px',
-                    color: s === 'Ready' ? 'var(--success-500)' : s === 'Pending' ? 'var(--warning-500)' : activeTab === tab.id ? 'rgba(255,255,255,0.6)' : 'var(--neutral-400)',
-                    fontWeight: 500,
-                  }}
-                >
-                  {s}
-                </span>
-              </button>
-            );
-          })}
+      {/* Document Progress Tracker — Enhanced Stepper */}
+      {(() => {
+        const statusMap: Record<DocTab, string> = {
+          poa: poaStamped && poaNotarised ? 'Ready' : 'Pending',
+          triparty: 'Ready',
+          sh4: shareType === 'physical' ? 'SH-4' : 'CDSL',
+          termsheet: termSheetAuthorityComplete ? 'Ready' : 'Pending',
+          agreement: agreementStamped && agreementNotarised && witnessConfirmed ? 'Ready' : 'Pending',
+          bank: bankGateReady ? 'Ready' : 'Pending',
+          checklist: 'In Progress',
+        };
+        const readyCount = docTabs.filter(t => ['Ready', 'SH-4', 'CDSL'].includes(statusMap[t.id])).length;
+        const pct = Math.round((readyCount / docTabs.length) * 100);
+        return (
+        <div className="bg-white rounded-2xl p-5 mb-5 border border-[var(--neutral-200)]">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--neutral-900)' }}>Document stage progress</span>
+              <span className="px-2.5 py-0.5 rounded-full" style={{ fontSize: '11px', fontWeight: 700, backgroundColor: pct === 100 ? 'var(--success-50)' : 'var(--brand-50)', color: pct === 100 ? 'var(--success-700)' : 'var(--brand-primary)' }}>{pct}% complete</span>
+            </div>
+            <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--neutral-500)' }}>{readyCount} of {docTabs.length} stages ready</span>
+          </div>
+
+          <div className="relative" style={{ padding: '0 12px' }}>
+            {/* Connector line behind the nodes */}
+            <div className="absolute" style={{ top: 20, left: 52, right: 52, height: 3, backgroundColor: 'var(--neutral-200)', borderRadius: 2, zIndex: 0 }} />
+            <div className="absolute" style={{ top: 20, left: 52, height: 3, backgroundColor: 'var(--success-400)', borderRadius: 2, zIndex: 1, width: `${readyCount > 0 ? ((readyCount - 0.5) / (docTabs.length - 1)) * (100 - (104 / (docTabs.length * 14))) : 0}%`, transition: 'width 0.4s ease' }} />
+
+            <div className="flex justify-between relative" style={{ zIndex: 2 }}>
+              {docTabs.map((tab, i) => {
+                const s = statusMap[tab.id];
+                const ready = ['Ready', 'SH-4', 'CDSL'].includes(s);
+                const inProgress = s === 'In Progress';
+                const locked = tab.id === 'agreement' && !termSheetAuthorityComplete;
+                const active = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => { if (!locked) setActiveTab(tab.id); }}
+                    className="flex flex-col items-center transition-all group"
+                    style={{ width: 90, opacity: locked ? 0.45 : 1, cursor: locked ? 'not-allowed' : 'pointer' }}
+                    title={locked ? 'Locked until Term Sheet authority signatures are complete' : `${tab.label}: ${s}`}
+                  >
+                    {/* Node */}
+                    <div
+                      className="flex items-center justify-center transition-all"
+                      style={{
+                        width: active ? 42 : 38,
+                        height: active ? 42 : 38,
+                        borderRadius: '50%',
+                        backgroundColor: ready ? 'var(--success-500)' : inProgress ? 'var(--brand-primary)' : active ? 'white' : 'var(--neutral-100)',
+                        border: active && !ready && !inProgress ? '3px solid var(--brand-primary)' : ready ? '3px solid var(--success-600)' : inProgress ? '3px solid var(--brand-700)' : '2px solid var(--neutral-300)',
+                        boxShadow: active ? '0 0 0 4px var(--brand-100)' : ready ? '0 2px 6px rgba(34,139,34,0.2)' : 'none',
+                        color: ready || inProgress ? 'white' : active ? 'var(--brand-primary)' : 'var(--neutral-400)',
+                        fontSize: '13px',
+                        fontWeight: 700,
+                      }}
+                    >
+                      {ready ? <Check size={18} strokeWidth={3} /> : locked ? <Lock size={14} /> : i + 1}
+                    </div>
+
+                    {/* Label */}
+                    <span className="mt-2 text-center leading-tight" style={{
+                      fontSize: '12px',
+                      fontWeight: active ? 700 : 500,
+                      color: active ? 'var(--brand-primary)' : ready ? 'var(--success-700)' : 'var(--neutral-700)',
+                    }}>{tab.shortLabel}</span>
+
+                    {/* Status pill */}
+                    <span className="mt-1 px-2 py-0.5 rounded-full" style={{
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      backgroundColor: ready ? 'var(--success-50)' : inProgress ? 'var(--brand-50)' : locked ? 'var(--neutral-100)' : 'var(--warning-50)',
+                      color: ready ? 'var(--success-600)' : inProgress ? 'var(--brand-primary)' : locked ? 'var(--neutral-400)' : 'var(--warning-700)',
+                    }}>
+                      {locked ? 'Locked' : s}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
+        );
+      })()}
 
       <div className="flex gap-5">
         {/* Main Content */}
@@ -489,12 +673,15 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
           {/* Checklist Tab */}
           {activeTab === 'checklist' && (
             <div className="bg-white rounded-2xl border border-[var(--neutral-200)] overflow-hidden">
-              <div className="px-5 py-3 flex items-center justify-between" style={{ backgroundColor: 'var(--neutral-100)', borderBottom: '1px solid var(--neutral-200)' }}>
-                <h3 style={{ fontSize: '15px', fontWeight: 500, color: 'var(--neutral-900)' }}>Document Checklist (Annexure H)</h3>
-                <div className="flex items-center gap-2">
-                  <span style={{ fontSize: '13px', color: 'var(--neutral-400)' }}>{checkedCount} / {checklistItems.length} verified</span>
-                  <div className="w-24 h-2 bg-[var(--neutral-200)] rounded-full">
-                    <div className="h-full rounded-full" style={{ width: `${(checkedCount / 15) * 100}%`, backgroundColor: 'var(--success-500)' }} />
+              <div className="px-5 py-4 flex items-center justify-between" style={{ backgroundColor: 'var(--cream-50)', borderBottom: '2px solid var(--neutral-200)' }}>
+                <div className="flex items-center gap-2.5">
+                  <FileCheck size={17} style={{ color: 'var(--brand-primary)' }} />
+                  <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--brand-primary)' }}>Document Checklist (Annexure H)</h3>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="px-2.5 py-1 rounded-full" style={{ fontSize: '12px', fontWeight: 700, backgroundColor: checkedCount === checklistItems.length ? 'var(--success-50)' : 'var(--warning-50)', color: checkedCount === checklistItems.length ? 'var(--success-600)' : 'var(--warning-700)', border: `1px solid ${checkedCount === checklistItems.length ? 'var(--success-200)' : 'var(--warning-200)'}` }}>{checkedCount}/{checklistItems.length} verified</span>
+                  <div className="w-28 h-2.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--neutral-200)' }}>
+                    <div className="h-full rounded-full transition-all" style={{ width: `${(checkedCount / 15) * 100}%`, backgroundColor: checkedCount === 15 ? 'var(--success-500)' : 'var(--brand-secondary)' }} />
                   </div>
                 </div>
               </div>
@@ -532,10 +719,14 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
               </div>
 
               {/* Signature Blocks */}
-              <div className="px-5 py-5 border-t-2 border-[var(--neutral-200)]" style={{ backgroundColor: 'var(--neutral-100)' }}>
-                <div className="flex items-center justify-between mb-3">
-                  <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'var(--neutral-900)' }}>Required Signatures</h4>
-                  <span style={{ fontSize: '12px', color: 'var(--neutral-400)' }}>Sequential countersignature flow</span>
+              <div className="px-5 py-5 border-t-2 border-[var(--neutral-200)]" style={{ backgroundColor: 'var(--cream-50)' }}>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Users size={16} style={{ color: 'var(--brand-primary)' }} />
+                    <h4 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--brand-primary)' }}>Required Signatures</h4>
+                    <span className="px-2 py-0.5 rounded-full" style={{ fontSize: '10px', fontWeight: 700, backgroundColor: 'var(--neutral-200)', color: 'var(--neutral-500)' }}>{Object.values(signatures).filter(Boolean).length}/4</span>
+                  </div>
+                  <span style={{ fontSize: '12px', color: 'var(--neutral-400)', fontWeight: 500 }}>Sequential countersignature flow</span>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   {signatureBlocks.map((block, i) => {
@@ -588,28 +779,6 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
                   />
                 )}
                 {(() => {
-                  const [isHolding, setIsHolding] = useState(false);
-                  const [holdProgress, setHoldProgress] = useState(0);
-
-                  useEffect(() => {
-                    let interval: any;
-                    if (isHolding && canSubmit) {
-                      interval = setInterval(() => {
-                        setHoldProgress(p => {
-                          if (p >= 100) {
-                            clearInterval(interval);
-                            onNavigate('cs-queue');
-                            return 100;
-                          }
-                          return p + 5; // 2 seconds to 100
-                        });
-                      }, 100);
-                    } else {
-                      setHoldProgress(0);
-                    }
-                    return () => clearInterval(interval);
-                  }, [isHolding, canSubmit]);
-
                   return (
                     <button
                       disabled={!canSubmit}
@@ -699,29 +868,40 @@ export function DocumentWorkspace({ onNavigate, activePage }: DocumentWorkspaceP
         </div>
 
         {/* Right Preview Panel */}
-        <div className="w-[560px] flex-shrink-0">
-          <div className="bg-white rounded-2xl border border-[var(--neutral-200)] p-5 sticky top-4">
-            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--brand-primary)', marginBottom: '12px' }}>Legal Document Preview</div>
-            <div
-              className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center"
-              style={{ height: '300px', borderColor: 'var(--neutral-200)', backgroundColor: 'var(--cream-50)', fontFamily: 'Georgia, serif' }}
-            >
-              <FileText size={40} style={{ color: 'var(--neutral-200)' }} />
-              <p style={{ fontSize: '13px', color: 'var(--neutral-400)', marginTop: '8px', textAlign: 'center' }}>
-                Generate a PDF to preview it here
-              </p>
+        <div className="w-[320px] flex-shrink-0">
+          <div className="bg-white rounded-2xl border border-[var(--neutral-200)] sticky top-4 overflow-hidden">
+            <div className="px-5 py-3 flex items-center gap-2" style={{ backgroundColor: 'var(--cream-50)', borderBottom: '1px solid var(--neutral-200)' }}>
+              <FileText size={15} style={{ color: 'var(--brand-primary)' }} />
+              <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--brand-primary)' }}>Legal Document Preview</span>
             </div>
-            <div className="flex gap-2 mt-4">
-              <button className="flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5" style={{ backgroundColor: 'var(--neutral-100)', fontSize: '13px', color: 'var(--neutral-700)', border: '1px solid var(--neutral-200)' }}>
-                <Eye size={13} /> Preview
-              </button>
-              <button className="flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '13px' }}>
-                <Download size={13} /> Download
-              </button>
+            <div className="p-4">
+              <div className="mb-3 px-3 py-2 rounded-lg" style={{ backgroundColor: 'var(--neutral-100)', fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 500 }}>
+                Viewing: <strong style={{ color: 'var(--neutral-700)' }}>{docTabs.find(t => t.id === activeTab)?.label || 'Checklist'}</strong>
+              </div>
+              <div
+                className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center"
+                style={{ height: '260px', borderColor: 'var(--neutral-200)', backgroundColor: 'var(--cream-50)' }}
+              >
+                <div className="w-14 h-14 rounded-full flex items-center justify-center mb-3" style={{ backgroundColor: 'var(--neutral-100)' }}>
+                  <FileText size={24} style={{ color: 'var(--neutral-300)' }} />
+                </div>
+                <p style={{ fontSize: '13px', color: 'var(--neutral-400)', textAlign: 'center', fontWeight: 500 }}>
+                  Generate a PDF to<br />preview it here
+                </p>
+              </div>
+              <div className="flex gap-2 mt-4">
+                <button className="flex-1 py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-colors hover:bg-[var(--neutral-175)]" style={{ backgroundColor: 'var(--neutral-100)', fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 500, border: '1px solid var(--neutral-200)' }}>
+                  <Eye size={13} /> Preview
+                </button>
+                <button className="flex-1 py-2.5 rounded-xl flex items-center justify-center gap-1.5" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '13px', fontWeight: 500 }}>
+                  <Download size={13} /> Download
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      </>)}
     </Shell>
   );
 }

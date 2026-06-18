@@ -60,7 +60,7 @@ export function Header({ onMenuToggle, onNavigate, breadcrumbs = [], menuOpen = 
       { label: 'Member Search', meta: 'Borrower lookup and profile', page: 'credit-search-member' },
     ],
     compliance: [
-      { label: 'Document Queue', meta: 'Pending preparation and sign-off', page: 'cs-queue' },
+      { label: 'Pending Documents', meta: 'Pending preparation and sign-off', page: 'cs-queue' },
       { label: 'Document Workspace', meta: 'PoA through checklist tabs', page: 'cs-workspace' },
       { label: 'KYC Renewals', meta: 'Re-KYC due and overdue members', page: 'cs-kyc' },
       { label: 'NOC Queue', meta: 'Fully repaid closure workflow', page: 'cs-noc' },

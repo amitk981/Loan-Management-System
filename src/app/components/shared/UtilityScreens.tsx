@@ -1,4 +1,4 @@
-import { Bell, CreditCard, Download, FileText, User, Search, Users, CheckCircle, Calendar, ShieldAlert, DollarSign, Mail } from 'lucide-react';
+import { Bell, CreditCard, ChevronDown, Download, FileText, User, Search, Users, CheckCircle, Calendar, ShieldAlert, DollarSign, Mail } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from './StatusBadge';
 import { AuditTrailPanel, RoleAccessNote, UniversalStageTracker } from './CrossRoleComponents';
@@ -189,6 +189,22 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
     };
   const meta = profileMeta[user.role];
 
+  const roleColors: Record<string, { primary: string; gradient: string; light: string; accent: string }> = {
+    credit: { primary: 'var(--brand-primary)', gradient: 'linear-gradient(135deg, #1a3c2a 0%, #2d6a4f 60%, #40916c 100%)', light: 'var(--brand-light)', accent: 'var(--brand-accent)' },
+    compliance: { primary: 'var(--brand-primary)', gradient: 'linear-gradient(135deg, #1a3c2a 0%, #2d5a3f 60%, #357a55 100%)', light: 'var(--brand-light)', accent: 'var(--brand-secondary)' },
+    sanction: { primary: 'var(--accent-sanction)', gradient: 'linear-gradient(135deg, #4a2c0a 0%, #7c4a1e 60%, #a56b35 100%)', light: '#fef3e2', accent: 'var(--accent-sanction)' },
+    treasury: { primary: 'var(--accent-treasury)', gradient: 'linear-gradient(135deg, #0a2540 0%, #1a4a6e 60%, #2d6a9f 100%)', light: '#e8f4fd', accent: 'var(--accent-treasury)' },
+    admin: { primary: 'var(--neutral-700)', gradient: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 60%, #44445e 100%)', light: 'var(--neutral-100)', accent: 'var(--neutral-700)' },
+  };
+  const rc = roleColors[user.role] || roleColors.credit;
+  const initials = user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+
+  const quickActionIcons = [
+    { icon: <Search size={20} />, color: rc.primary, bg: rc.light },
+    { icon: <FileText size={20} />, color: rc.accent, bg: `${rc.accent}12` },
+    { icon: <ShieldAlert size={20} />, color: 'var(--warning-600)', bg: 'var(--warning-100)' },
+  ];
+
   return (
     <Shell
       activePage={activePage}
@@ -196,66 +212,167 @@ export function UserProfile({ onNavigate, activePage }: UtilityScreenProps) {
       breadcrumbs={['Workspace', 'My Workspace']}
       pageTitle="My Workspace"
       pageSubtitle={`${user.name} · ${user.roleLabel}`}
-      actions={<StatusBadge status="Active" size="md" />}
     >
-        <div className="grid grid-cols-5 gap-5">
-          <div className="col-span-2 bg-white rounded-2xl p-5 border border-[var(--neutral-200)]">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: 'var(--brand-primary)', fontSize: 18, fontWeight: 700 }}>
-                {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-              </div>
-              <div>
-                <div style={{ fontSize: 18, color: 'var(--neutral-900)', fontWeight: 700 }}>{user.name}</div>
-                <div style={{ fontSize: 13, color: 'var(--neutral-500)', marginTop: 2 }}>{user.roleLabel}</div>
-              </div>
+      {/* ── Hero Profile Header ── */}
+      <div className="rounded-2xl overflow-hidden mb-6" style={{ background: rc.gradient, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
+        <div className="px-8 py-7 flex items-center gap-6">
+          {/* Avatar */}
+          <div className="relative flex-shrink-0">
+            <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-white" style={{ backgroundColor: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', fontSize: 26, fontWeight: 700, border: '2px solid rgba(255,255,255,0.2)' }}>
+              {initials}
             </div>
-            {[
-              ['User ID', user.id],
-              ['Email', user.email],
-              ['Mobile', user.mobile],
-              ['Access Scope', meta.scope],
-            ].map(([label, value]) => (
-              <div key={label} className="py-3 border-b border-[var(--neutral-200)] last:border-0">
-                <div style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 700, textTransform: 'uppercase' }}>{label}</div>
-                <div style={{ fontSize: 13, color: 'var(--neutral-900)', fontWeight: 700, marginTop: 4, lineHeight: '20px' }}>{value}</div>
-              </div>
-            ))}
+            {/* Online indicator */}
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: '#22c55e', border: '3px solid #1a3c2a' }}>
+              <CheckCircle size={10} className="text-white" />
+            </div>
           </div>
 
-          <div className="col-span-3 space-y-5">
-            <div className="bg-white rounded-2xl p-5 border border-[var(--neutral-200)]">
-              <div style={{ fontSize: 12, color: 'var(--brand-primary)', fontWeight: 700, textTransform: 'uppercase' }}>Role Focus</div>
-              <div style={{ fontSize: 20, color: 'var(--neutral-900)', fontWeight: 700, marginTop: 6 }}>{meta.focus}</div>
-              <div className="grid grid-cols-3 gap-3 mt-5">
-                {meta.metrics.map(([label, value]) => (
-                  <div key={label} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--neutral-100)', border: '1px solid var(--neutral-200)' }}>
-                    <div style={{ fontSize: 11, color: 'var(--neutral-500)', fontWeight: 700 }}>{label}</div>
-                    <div style={{ fontSize: 22, color: 'var(--brand-primary)', fontWeight: 700, fontFamily: 'Roboto Mono', marginTop: 4 }}>{value}</div>
-                  </div>
-                ))}
-              </div>
+          {/* Name & Role */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 mb-1.5">
+              <h2 style={{ fontSize: 24, fontWeight: 700, color: 'white', lineHeight: '30px' }}>{user.name}</h2>
+              <span className="px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)', fontSize: 11, fontWeight: 700, letterSpacing: '0.03em', border: '1px solid rgba(255,255,255,0.12)' }}>
+                {user.roleLabel}
+              </span>
             </div>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.65)', lineHeight: '22px', maxWidth: 560 }}>
+              {meta.focus}
+            </p>
+          </div>
 
-            <div className="grid grid-cols-3 gap-3">
-              {meta.pages.map((item, i) => {
-                const slot = [
-                  { icon: <Search size={18} />, color: 'var(--brand-primary)' },
-                  { icon: <FileText size={18} />, color: 'var(--brand-accent)' },
-                  { icon: <ShieldAlert size={18} />, color: 'var(--warning-500)' },
-                ][i % 3];
-                return (
-                  <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-2xl p-4 border border-[var(--neutral-200)] text-left clickable-card">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${slot.color}15`, color: slot.color }}>{slot.icon}</div>
-                    <div style={{ fontSize: 14, color: 'var(--neutral-900)', fontWeight: 700 }}>{item.label}</div>
-                    <div style={{ fontSize: 12, color: 'var(--neutral-700)', lineHeight: '18px', marginTop: 6 }}>{item.note}</div>
-                  </button>
-                );
-              })}
+          {/* Status & ID */}
+          <div className="flex flex-col items-end gap-2 flex-shrink-0">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)' }}>
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#22c55e', boxShadow: '0 0 6px rgba(34,197,94,0.6)' }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#86efac' }}>Active</span>
             </div>
-
-            <AuditTrailPanel farmerSafe={false} />
+            <div className="text-right">
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>USER ID</div>
+              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{user.id}</div>
+            </div>
           </div>
         </div>
+
+        {/* Contact Strip */}
+        <div className="px-8 py-3 flex items-center gap-6" style={{ backgroundColor: 'rgba(0,0,0,0.15)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="flex items-center gap-2">
+            <Mail size={13} style={{ color: 'rgba(255,255,255,0.4)' }} />
+            <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>{user.email}</span>
+          </div>
+          <div style={{ width: 1, height: 16, backgroundColor: 'rgba(255,255,255,0.1)' }} />
+          <div className="flex items-center gap-2">
+            <User size={13} style={{ color: 'rgba(255,255,255,0.4)' }} />
+            <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>{user.mobile}</span>
+          </div>
+          <div style={{ width: 1, height: 16, backgroundColor: 'rgba(255,255,255,0.1)' }} />
+          <div className="flex items-center gap-2">
+            <Users size={13} style={{ color: 'rgba(255,255,255,0.4)' }} />
+            <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>Sahyadri Farms</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Metrics Strip ── */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        {meta.metrics.map(([label, value], i) => {
+          const colors = [
+            { text: rc.primary, bg: rc.light, border: `${rc.primary}25`, dot: rc.primary },
+            { text: 'var(--brand-accent)', bg: 'var(--accent-blue-50)', border: 'var(--accent-blue-50)', dot: 'var(--brand-accent)' },
+            { text: 'var(--warning-600)', bg: 'var(--warning-100)', border: 'var(--warning-100)', dot: 'var(--warning-600)' },
+          ][i % 3];
+          return (
+            <div key={label} className="bg-white rounded-xl p-5 border border-[var(--neutral-200)] relative overflow-hidden" style={{ transition: 'transform 0.15s ease, box-shadow 0.15s ease' }}>
+              <div className="flex items-center justify-between mb-3">
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--neutral-500)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</span>
+                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: colors.dot }} />
+              </div>
+              <div style={{ fontSize: 32, fontWeight: 700, color: colors.text, fontFamily: 'Roboto Mono', lineHeight: '38px' }}>{value}</div>
+              <div className="mt-2 inline-flex px-2.5 py-1 rounded-full" style={{ backgroundColor: colors.bg, border: `1px solid ${colors.border}` }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: colors.text }}>
+                  {i === 0 ? 'In your queue' : i === 1 ? 'Needs attention' : 'Pending review'}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Quick Actions + Info ── */}
+      <div className="grid grid-cols-5 gap-5">
+        {/* Quick actions — 3 cols */}
+        <div className="col-span-3">
+          <div className="flex items-center gap-2 mb-3">
+            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--neutral-900)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Quick Actions</span>
+            <div className="flex-1 h-px" style={{ backgroundColor: 'var(--neutral-200)' }} />
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            {meta.pages.map((item, i) => {
+              const qa = quickActionIcons[i % 3];
+              return (
+                <button key={item.page} onClick={() => onNavigate(item.page)} className="bg-white rounded-xl p-5 border border-[var(--neutral-200)] text-left group" style={{ transition: 'all 0.2s ease' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
+                >
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: qa.bg, color: qa.color }}>
+                    {qa.icon}
+                  </div>
+                  <div style={{ fontSize: 15, color: 'var(--neutral-900)', fontWeight: 700, marginBottom: 4 }}>{item.label}</div>
+                  <div style={{ fontSize: 12, color: 'var(--neutral-500)', lineHeight: '18px' }}>{item.note}</div>
+                  <div className="mt-3 flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: qa.color }}>
+                    Open <ChevronDown size={12} className="rotate-[-90deg]" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Role Info Panel — 2 cols */}
+        <div className="col-span-2 space-y-4">
+          <div className="flex items-center gap-2 mb-3">
+            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--neutral-900)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Role Details</span>
+            <div className="flex-1 h-px" style={{ backgroundColor: 'var(--neutral-200)' }} />
+          </div>
+
+          {/* Access Scope */}
+          <div className="bg-white rounded-xl p-5 border border-[var(--neutral-200)]">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: rc.light, color: rc.primary }}>
+                <ShieldAlert size={16} />
+              </div>
+              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--neutral-900)' }}>Access Scope</span>
+            </div>
+            <p style={{ fontSize: 13, color: 'var(--neutral-600)', lineHeight: '20px' }}>{meta.scope}</p>
+          </div>
+
+          {/* Session Info */}
+          <div className="bg-white rounded-xl p-5 border border-[var(--neutral-200)]">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-blue-50)', color: 'var(--brand-accent)' }}>
+                <Calendar size={16} />
+              </div>
+              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--neutral-900)' }}>Session Info</span>
+            </div>
+            <div className="space-y-2.5">
+              {[
+                ['Last Login', 'Today, 10:32 AM'],
+                ['Sessions (7d)', '12 active sessions'],
+                ['Organization', 'Sahyadri Farms FPC Ltd.'],
+              ].map(([label, value]) => (
+                <div key={label} className="flex items-center justify-between">
+                  <span style={{ fontSize: 12, color: 'var(--neutral-400)', fontWeight: 500 }}>{label}</span>
+                  <span style={{ fontSize: 12, color: 'var(--neutral-800)', fontWeight: 700 }}>{value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Audit Trail ── */}
+      <div className="mt-6">
+        <AuditTrailPanel farmerSafe={false} />
+      </div>
     </Shell>
   );
 }

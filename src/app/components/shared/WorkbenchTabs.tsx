@@ -14,9 +14,9 @@ interface WorkbenchTabsProps {
 
 export function WorkbenchTabs({ tabs, activeKey, onChange, accent = 'var(--brand-primary)', className = '' }: WorkbenchTabsProps) {
   return (
-    <div className="workbench-tabs-sticky sticky top-0 z-20 -mx-8 px-8 pt-2 pb-3 mb-2" style={{ backgroundColor: 'var(--neutral-100)', boxShadow: '0 -34px 0 0 var(--neutral-100)' }}>
+    <div className="mb-4">
     <div
-      className={`shell-scroll flex items-center gap-1 overflow-x-auto bg-white border border-[var(--neutral-200)] rounded-xl px-2 py-1.5 ${className}`}
+      className={`shell-scroll flex items-center gap-0.5 overflow-x-auto bg-white border border-[var(--neutral-200)] rounded-xl px-1.5 py-1.5 ${className}`}
       role="tablist"
       aria-label="Section navigation"
       style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
@@ -32,7 +32,7 @@ export function WorkbenchTabs({ tabs, activeKey, onChange, accent = 'var(--brand
             className="flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all flex-shrink-0"
             style={{
               backgroundColor: isActive ? accent : 'transparent',
-              color: isActive ? 'white' : 'var(--neutral-700)',
+              color: isActive ? 'white' : 'var(--neutral-500)',
               fontSize: '13px',
               fontWeight: isActive ? 700 : 500,
             }}
@@ -42,10 +42,11 @@ export function WorkbenchTabs({ tabs, activeKey, onChange, accent = 'var(--brand
               <span
                 className="px-1.5 py-0.5 rounded-full"
                 style={{
-                  backgroundColor: isActive ? 'rgba(255,255,255,0.22)' : 'var(--error-100)',
-                  color: isActive ? 'white' : 'var(--error-900)',
+                  backgroundColor: isActive ? 'rgba(255,255,255,0.22)' : 'var(--error-50)',
+                  color: isActive ? 'white' : 'var(--error-600)',
                   fontSize: '10px',
                   fontWeight: 700,
+                  border: isActive ? 'none' : '1px solid var(--error-200)',
                 }}
               >
                 {tab.badge}

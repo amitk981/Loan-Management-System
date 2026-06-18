@@ -187,13 +187,14 @@ export function Shell({ children, activePage, onNavigate, breadcrumbs = [], page
           marginLeft: `${sidebarWidth}px`,
           marginTop: '56px',
           height: 'calc(100vh - 56px)',
+          overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
         }}
       >
         {(pageTitle || actions) && (
           <div
-            className="shell-titlebar flex items-center justify-between px-8 bg-white border-b border-[var(--neutral-200)] flex-shrink-0"
+            className="shell-titlebar flex items-center justify-between px-8 bg-white border-b border-[var(--neutral-200)] flex-shrink-0 sticky top-0 z-10"
             style={{ minHeight: '64px' }}
           >
             <div>
