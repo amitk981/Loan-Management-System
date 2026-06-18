@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Search, AlertTriangle, ArrowRight, Layers, ShieldAlert, MapPin } from 'lucide-react';
+import { Search, AlertTriangle, ArrowRight, Layers, MapPin, Wallet } from 'lucide-react';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from './StatusBadge';
 import { useAuth } from '../../context/AuthContext';
@@ -88,7 +88,7 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
           accent={myQueue.length > 0}
         />
         <Kpi label="Needs attention" value={String(attention.length)} sub="High risk · over-limit · overdue" icon={<AlertTriangle size={16} />} warn={attention.length > 0} />
-        <Kpi label="Disbursed value" value={formatCurrency(filtered.filter(l => l.stage >= 5).reduce((s, l) => s + l.requested, 0))} sub={`${filtered.filter(l => l.stage >= 5).length} loans live`} icon={<ShieldAlert size={16} />} />
+        <Kpi label="Disbursed value" value={formatCurrency(filtered.filter(l => l.stage >= 5).reduce((s, l) => s + l.requested, 0))} sub={`${filtered.filter(l => l.stage >= 5).length} loans live`} icon={<Wallet size={16} />} />
       </div>
 
       {/* Toolbar — search + focus-my-queue */}
@@ -130,21 +130,24 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
           const colValue = cards.reduce((s, c) => s + c.requested, 0);
           const mine = meta.owner === role;
           return (
-            <div key={label} className="flex-shrink-0 flex flex-col" style={{ width: '288px' }}>
-              {/* Column header */}
+            <div key={label} className="flex-shrink-0 flex flex-col" style={{ width: '296px' }}>
+              {/* Column header — a thin owner-coloured top rule reads the stage without a heavy fill */}
               <div
-                className="rounded-t-xl px-4 py-3"
-                style={{ backgroundColor: mine ? 'var(--brand-primary)' : 'var(--neutral-200)', color: mine ? 'white' : 'var(--neutral-700)' }}
+                className="rounded-t-xl px-4 pt-3 pb-2.5 bg-white"
+                style={{ borderTop: `3px solid ${mine ? 'var(--brand-primary)' : 'var(--neutral-300)'}`, border: `1px solid ${mine ? 'var(--brand-primary)' : 'var(--neutral-200)'}`, borderBottom: 'none' }}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: mine ? 'rgba(255,255,255,0.22)' : 'white', fontSize: '11px', fontWeight: 700 }}>{stage}</span>
-                    <span style={{ fontSize: '13px', fontWeight: 700 }}>{label}</span>
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: mine ? 'var(--brand-primary)' : 'var(--neutral-200)', color: mine ? 'white' : 'var(--neutral-700)', fontSize: '12px', fontWeight: 700 }}>{stage}</span>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-900)' }}>{label}</span>
                   </div>
-                  <span className="px-2 rounded-full" style={{ fontSize: '12px', fontWeight: 700, backgroundColor: mine ? 'rgba(255,255,255,0.22)' : 'white' }}>{cards.length}</span>
+                  <span className="px-2 py-0.5 rounded-full" style={{ fontSize: '12px', fontWeight: 700, backgroundColor: mine ? 'var(--brand-light)' : 'var(--neutral-100)', color: mine ? 'var(--brand-primary)' : 'var(--neutral-700)' }}>{cards.length}</span>
                 </div>
-                <div className="flex items-center justify-between mt-1.5" style={{ fontSize: '11px', opacity: 0.85 }}>
-                  <span>{mine ? 'Your stage' : ROLE_LABEL[meta.owner]}</span>
+                <div className="flex items-center justify-between mt-2" style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>
+                  <span className="flex items-center gap-1" style={{ fontWeight: 500 }}>
+                    {mine && <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--brand-primary)' }} />}
+                    {mine ? 'Your stage' : ROLE_LABEL[meta.owner]}
+                  </span>
                   <span style={{ fontFamily: 'Roboto Mono' }}>{formatCurrency(colValue)}</span>
                 </div>
               </div>
@@ -170,14 +173,15 @@ export function Pipeline({ onNavigate, activePage }: PipelineProps) {
 
 function Kpi({ label, value, sub, icon, accent, warn }: { label: string; value: string; sub: string; icon: React.ReactNode; accent?: boolean; warn?: boolean }) {
   const ring = warn ? 'var(--error-500)' : accent ? 'var(--brand-primary)' : 'var(--neutral-200)';
-  const tint = warn ? 'var(--error-500)' : accent ? 'var(--brand-primary)' : 'var(--neutral-400)';
+  const tint = warn ? 'var(--error-500)' : accent ? 'var(--brand-primary)' : 'var(--neutral-500)';
+  const chipBg = warn ? 'var(--error-100)' : accent ? 'var(--brand-light)' : 'var(--neutral-100)';
   return (
     <div className="bg-white rounded-xl p-4 border" style={{ borderColor: ring }}>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2.5">
+        <span className="flex items-center justify-center rounded-lg flex-shrink-0" style={{ width: '32px', height: '32px', backgroundColor: chipBg, color: tint }}>{icon}</span>
         <span style={{ fontSize: '11px', color: 'var(--neutral-500)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
-        <span style={{ color: tint }}>{icon}</span>
       </div>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--neutral-900)', marginTop: '4px', lineHeight: '26px' }}>{value}</div>
+      <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--neutral-900)', marginTop: '8px', lineHeight: '28px' }}>{value}</div>
       <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '2px' }}>{sub}</div>
     </div>
   );
@@ -193,33 +197,79 @@ function Chip({ tone, children }: { tone: 'error' | 'warning' | 'special' | 'neu
   return <span className="px-1.5 py-0.5 rounded" style={{ backgroundColor: map.bg, color: map.fg, fontSize: '10px', fontWeight: 700 }}>{children}</span>;
 }
 
+function initials(name: string): string {
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+}
+
+// Stable, calm avatar tint derived from the borrower name (no new accents — neutral/brand family).
+function avatarTint(name: string): { bg: string; fg: string } {
+  const palette = [
+    { bg: 'var(--brand-light)', fg: 'var(--brand-primary)' },
+    { bg: 'var(--accent-sanction-100)', fg: 'var(--accent-sanction)' },
+    { bg: 'var(--success-50)', fg: 'var(--success-700)' },
+    { bg: 'var(--neutral-200)', fg: 'var(--neutral-700)' },
+  ];
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return palette[h % palette.length];
+}
+
 function PipelineCard({ loan, stage, mine, action, tab, onNavigate }: { loan: Loan; stage: number; mine: boolean; action: string; tab: string; onNavigate: (p: string) => void }) {
   const over = isOverLimit(loan);
   const authority = authorityFor(loan);
   const twoDir = authority.includes('2');
+  const limit = eligibleLimit(loan);
+  const util = limit > 0 ? Math.min(loan.requested / limit, 1.15) : 0;
+  const utilColor = over ? 'var(--error-500)' : util > 0.85 ? 'var(--warning-500)' : 'var(--success-500)';
+  const tint = avatarTint(loan.borrower);
   return (
     <div
       className="bg-white rounded-lg border clickable-card"
-      style={{ borderColor: 'var(--neutral-200)', borderLeft: mine ? '3px solid var(--brand-primary)' : '1px solid var(--neutral-200)' }}
+      style={{ borderColor: mine ? 'var(--brand-primary)' : 'var(--neutral-200)' }}
     >
       <button onClick={() => onNavigate(`loan-file::${loan.id}`)} className="w-full text-left p-3">
-        <div className="flex items-center justify-between mb-1.5">
+        <div className="flex items-center justify-between mb-2">
           <span style={{ fontSize: '12px', fontFamily: 'Roboto Mono', color: 'var(--brand-accent)', fontWeight: 500 }}>{loan.id}</span>
           <StatusBadge status={loan.status} />
         </div>
-        <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-900)' }}>{loan.borrower}</div>
-        <div style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>{loan.category}</div>
+
+        {/* Borrower identity row — avatar + name + category */}
+        <div className="flex items-center gap-2.5">
+          <span className="flex-shrink-0 flex items-center justify-center rounded-full" style={{ width: '34px', height: '34px', backgroundColor: tint.bg, color: tint.fg, fontSize: '12px', fontWeight: 700 }}>
+            {initials(loan.borrower)}
+          </span>
+          <div className="min-w-0">
+            <div className="truncate" style={{ fontSize: '13px', fontWeight: 700, color: 'var(--neutral-900)' }}>{loan.borrower}</div>
+            <div className="truncate" style={{ fontSize: '11px', color: 'var(--neutral-500)' }}>{loan.category}</div>
+          </div>
+        </div>
 
         {/* Amount + eligibility */}
-        <div className="flex items-baseline justify-between mt-2">
+        <div className="flex items-baseline justify-between mt-2.5">
           <span style={{ fontSize: '15px', fontFamily: 'Roboto Mono', fontWeight: 700, color: 'var(--neutral-900)' }}>{formatCurrency(loan.requested)}</span>
           <span style={{ fontSize: '11px', color: over ? 'var(--error-800)' : 'var(--neutral-500)' }}>
-            limit {formatCurrency(eligibleLimit(loan))}
+            limit {formatCurrency(limit)}
           </span>
         </div>
 
+        {/* Utilisation bar — how much of the eligible limit this request consumes */}
+        <div className="mt-1.5 rounded-full overflow-hidden" style={{ height: '5px', backgroundColor: 'var(--neutral-200)' }}>
+          <div className="h-full rounded-full" style={{ width: `${Math.min(util, 1) * 100}%`, backgroundColor: utilColor }} />
+        </div>
+
+        {/* Mini lifecycle tracker — position across the 6 SOP stages at a glance */}
+        <div className="flex items-center gap-1 mt-2.5" aria-label={`Stage ${stage} of 6`}>
+          {STAGES.map((_, idx) => (
+            <span
+              key={idx}
+              className="flex-1 rounded-full"
+              style={{ height: '3px', backgroundColor: idx < stage ? 'var(--brand-primary)' : 'var(--neutral-200)' }}
+            />
+          ))}
+        </div>
+
         {/* Signal chips — the risk/governance flags each stakeholder scans for */}
-        <div className="flex flex-wrap items-center gap-1.5 mt-2">
+        <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
           {over && <Chip tone="error">Over limit</Chip>}
           {loan.risk === 'High' && <Chip tone="warning">High risk</Chip>}
           {stage === 3 && <Chip tone={twoDir ? 'special' : 'neutral'}>{authority}</Chip>}

@@ -6,6 +6,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { LoginPage } from './components/auth/LoginPage';
 import { MemberLoanProfile, NotificationsCenter, UserProfile } from './components/shared/UtilityScreens';
 import { CrossRoleScreens } from './components/shared/CrossRoleScreens';
+import { ManualLoanEntry } from './components/shared/ManualLoanEntry';
 import { LoanFile } from './components/shared/LoanFile';
 import { Pipeline } from './components/shared/Pipeline';
 
@@ -158,6 +159,7 @@ function AppRoot() {
   }
   if (activePage === 'loan-file') return <LoanFile {...props} />;
   if (activePage === 'pipeline') return <Pipeline {...props} />;
+  if (activePage === 'credit-manual-entry') return <ManualLoanEntry {...props} />;
   if (utilityPages.includes(activePage)) return <CrossRoleScreens {...props} />;
 
   // --- Farmer Screens ---

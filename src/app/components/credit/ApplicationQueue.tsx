@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Check, ChevronRight, Clock, Plus, Search, Send, X } from 'lucide-react';
+import { ArrowLeft, Check, ChevronRight, Clock, FileText, Plus, Search, Send, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Shell } from '../layout/Shell';
 import { StatusBadge } from '../shared/StatusBadge';
@@ -35,11 +35,21 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
   const [showNotice, setShowNotice] = useState(false);
   const [noticeSent, setNoticeSent] = useState(false);
   const [noticeLang, setNoticeLang] = useState<'English' | 'Marathi'>('English');
+  // Reviewer can verify / request resubmission / accept a re-upload. We keep the
+  // overrides locally (data is mocked) keyed by `${appId}::${docName}` so the
+  // checklist, progress bar and "ready for appraisal" gate all react live.
+  const [docOverrides, setDocOverrides] = useState<Record<string, string>>({});
+  const [reviewDocName, setReviewDocName] = useState<string | null>(null);
   const selected = creditApplications.find(app => app.id === selectedId) || creditApplications[0];
-  const missingDocs = selected.documents.filter(doc => doc.state === 'Missing');
-  const completeDocs = selected.documents.filter(doc => doc.state === 'Complete');
-  const canAssign = selected.documents.every(doc => doc.state === 'Complete');
-  const kycPct = Math.round((completeDocs.length / selected.documents.length) * 100);
+  const docState = (docName: string, original: string) => docOverrides[`${selected.id}::${docName}`] ?? original;
+  const setDoc = (docName: string, state: string) => setDocOverrides(prev => ({ ...prev, [`${selected.id}::${docName}`]: state }));
+  // Documents with effective (override-aware) states for rendering and gating.
+  const docs = selected.documents.map(doc => ({ ...doc, state: docState(doc.name, doc.state) }));
+  const missingDocs = docs.filter(doc => doc.state === 'Missing');
+  const completeDocs = docs.filter(doc => doc.state === 'Complete');
+  const canAssign = docs.every(doc => doc.state === 'Complete');
+  const kycPct = Math.round((completeDocs.length / docs.length) * 100);
+  const reviewDoc = reviewDocName ? docs.find(d => d.name === reviewDocName) || null : null;
 
   const filtered = useMemo(() => creditApplications.filter(app => {
     const term = search.toLowerCase();
@@ -49,6 +59,13 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
   }), [filter, search]);
 
   const openApp = (id: string) => { setSelectedId(id); setMobileView('detail'); };
+
+  // Derived intake KPIs for the at-a-glance stat strip.
+  const totalCount = creditApplications.length;
+  const incompleteCount = creditApplications.filter(a => a.status === 'Incomplete').length;
+  const breachedCount = creditApplications.filter(a => !a.submittedAgo.includes('h') && (parseInt(a.submittedAgo, 10) || 0) >= 2).length;
+  const totalRequested = creditApplications.reduce((sum, a) => sum + a.amount, 0);
+  const initials = (selected.shortName || selected.name).split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
 
   return (
     <Shell
@@ -70,11 +87,23 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
           <span>Deficiency notice sent for {selected.id}. Status logged as Notified — awaiting resubmission.</span>
         </div>
       )}
-      <div className="mb-4 p-3 rounded-lg flex flex-wrap items-center justify-between gap-2" style={{ backgroundColor: 'var(--info-50)', border: '1px solid var(--sky-200)', color: 'var(--accent-treasury-700)', fontSize: '13px', fontWeight: 700 }}>
-        <span>{loading ? 'Loading applications…' : `${filtered.length} application${filtered.length === 1 ? '' : 's'} in view`}</span>
-        <button onClick={() => onNavigate('credit-manual-entry')} className="px-3 py-1.5 rounded-lg transition-colors hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" style={{ backgroundColor: 'var(--accent-treasury)', color: 'white', fontSize: '12px' }}>Open Manual Entry</button>
+      <div className="mb-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[
+          { label: 'In Intake', value: String(totalCount), hint: `${filtered.length} in view`, color: 'var(--brand-accent)', bg: 'var(--accent-blue-50)' },
+          { label: 'Incomplete', value: String(incompleteCount), hint: 'awaiting docs', color: 'var(--warning-700)', bg: 'var(--warning-100)' },
+          { label: 'TAT Breached', value: String(breachedCount), hint: '2-day Credit TAT', color: 'var(--error-700)', bg: 'var(--error-50)' },
+          { label: 'Requested', value: formatCurrency(totalRequested), hint: 'total this view', color: 'var(--success-700)', bg: 'var(--success-50)' },
+        ].map(kpi => (
+          <div key={kpi.label} className="rounded-lg p-3 border flex flex-col" style={{ backgroundColor: 'white', borderColor: 'var(--neutral-250)' }}>
+            <div className="flex items-center justify-between gap-2">
+              <span style={{ fontSize: '11px', color: 'var(--neutral-500)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{kpi.label}</span>
+              <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: kpi.color }} />
+            </div>
+            <span style={{ fontSize: '22px', color: 'var(--neutral-900)', fontWeight: 700, marginTop: '4px', fontFamily: 'Roboto Mono' }}>{kpi.value}</span>
+            <span className="inline-flex w-fit mt-1.5 px-2 py-0.5 rounded-full" style={{ backgroundColor: kpi.bg, color: kpi.color, fontSize: '11px', fontWeight: 700 }}>{kpi.hint}</span>
+          </div>
+        ))}
       </div>
-
       <div className="bg-white rounded-lg border border-[var(--neutral-250)] overflow-hidden">
         <div className="flex flex-col lg:grid lg:grid-cols-12 lg:min-h-[680px]">
           {/* List pane — full width on mobile, hidden when a detail is open there */}
@@ -136,11 +165,15 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
                 <ArrowLeft size={15} /> Back to list
               </button>
 
-              <div className="rounded-lg p-4 mb-5" style={{ backgroundColor: 'var(--neutral-150)', border: '1px solid var(--neutral-250)' }}>
+              <div className="rounded-lg p-4 mb-5" style={{ background: 'linear-gradient(180deg, var(--neutral-150), white)', border: '1px solid var(--neutral-250)' }}>
                 <div className="flex items-start justify-between gap-3 flex-wrap">
-                  <div>
-                    <div style={{ fontSize: '12px', color: 'var(--neutral-500)', fontWeight: 700 }}>APPLICATION</div>
-                    <div style={{ fontSize: '22px', color: 'var(--neutral-900)', fontWeight: 700, fontFamily: 'Roboto Mono' }}>{selected.id}</div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '15px', fontWeight: 700 }}>{initials}</div>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--neutral-500)', fontWeight: 700, letterSpacing: '0.04em' }}>APPLICATION · {selected.id}</div>
+                      <div style={{ fontSize: '18px', color: 'var(--neutral-900)', fontWeight: 700 }}>{selected.name}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '1px' }}>{selected.village} · {selected.crop} · {formatCurrency(selected.amount)} requested</div>
+                    </div>
                   </div>
                   <StatusBadge status={selected.status === 'Incomplete' ? `Incomplete — ${selected.blocker}` : selected.status} size="md" />
                 </div>
@@ -176,19 +209,19 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
                   <div className="h-full rounded-full transition-all" style={{ width: `${kycPct}%`, backgroundColor: canAssign ? 'var(--success-500)' : 'var(--warning-500)' }} />
                 </div>
                 <div className="space-y-2">
-                  {selected.documents.map(doc => {
+                  {docs.map(doc => {
                     const stateColor = doc.state === 'Complete' ? 'var(--success-600)' : doc.state === 'Missing' ? 'var(--error-700)' : 'var(--warning-500)';
                     const icon = doc.state === 'Complete' ? <Check size={15} /> : doc.state === 'Missing' ? <X size={15} /> : <Clock size={15} />;
-                    const actionable = doc.state !== 'Complete';
+                    const cta = doc.state === 'Complete' ? 'Review' : doc.state === 'Missing' ? 'Upload' : 'Verify';
                     return (
-                      <button key={doc.name} disabled={!actionable} onClick={() => doc.state === 'Missing' ? setShowNotice(true) : toast.success(`${doc.name} opened for verification`)} className="w-full flex items-center gap-3 p-3 rounded-lg text-left action-surface transition-colors disabled:cursor-default focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2" style={{ backgroundColor: `${stateColor}10`, border: `1px solid ${stateColor}22` }}>
+                      <button key={doc.name} onClick={() => setReviewDocName(doc.name)} className="w-full flex items-center gap-3 p-3 rounded-lg text-left action-surface transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2" style={{ backgroundColor: `${stateColor}10`, border: `1px solid ${stateColor}22` }}>
                         <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${stateColor}18`, color: stateColor }}>{icon}</div>
                         <div className="flex-1 min-w-0">
                           <div style={{ fontSize: '13px', color: 'var(--neutral-900)', fontWeight: 700 }}>{doc.name}</div>
                           <div style={{ fontSize: '12px', color: 'var(--neutral-500)' }}>{doc.detail}</div>
                         </div>
                         <StatusBadge status={doc.state} />
-                        {doc.state === 'Missing' && <span className="inline-flex items-center gap-0.5 shrink-0" style={{ fontSize: '12px', color: 'var(--brand-accent)', fontWeight: 700 }}>Request <ChevronRight size={13} /></span>}
+                        <span className="inline-flex items-center gap-0.5 shrink-0" style={{ fontSize: '12px', color: 'var(--brand-accent)', fontWeight: 700 }}>{cta} <ChevronRight size={13} /></span>
                       </button>
                     );
                   })}
@@ -218,6 +251,60 @@ export function ApplicationQueue({ onNavigate, activePage }: ApplicationQueuePro
               {(['English', 'Marathi'] as const).map(lang => <button key={lang} onClick={() => setNoticeLang(lang)} aria-pressed={noticeLang === lang} className="px-3 py-1.5 rounded-full" style={{ backgroundColor: noticeLang === lang ? 'var(--brand-primary)' : 'var(--neutral-175)', color: noticeLang === lang ? 'white' : 'var(--neutral-700)', fontSize: '12px', fontWeight: 700 }}>{lang}</button>)}
             </div>
             <textarea rows={7} className="w-full p-3 rounded-lg border border-[var(--neutral-300)] focus:border-[var(--brand-accent)] focus:outline-none" style={{ fontSize: '13px', color: 'var(--neutral-900)', lineHeight: '20px' }} defaultValue={noticeLang === 'English' ? `Dear ${selected.shortName}, your loan application ${selected.id} is missing: ${missingDocs.map(doc => doc.name).join(', ')}. Please upload the document to continue processing.` : `${selected.shortName}, आपल्या ${selected.id} कर्ज अर्जासाठी ${missingDocs.map(doc => doc.name).join(', ')} आवश्यक आहे. कृपया कागदपत्र अपलोड करा.`} />
+          </div>
+        </AppModal>
+      )}
+
+      {reviewDoc && (
+        <AppModal
+          title={`Review Document — ${reviewDoc.name}`}
+          subtitle={`${selected.id} · ${selected.shortName}`}
+          icon={<FileText size={18} />}
+          onClose={() => setReviewDocName(null)}
+          footer={
+            reviewDoc.state === 'Complete' ? (
+              <>
+                <button onClick={() => { setDoc(reviewDoc.name, 'Missing'); setReviewDocName(null); toast.message(`${reviewDoc.name} marked for resubmission`); }} className="px-4 py-2.5 rounded-lg border border-[var(--neutral-250)]" style={{ fontSize: '14px', color: 'var(--error-700)' }}>Request Resubmission</button>
+                <button onClick={() => setReviewDocName(null)} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--brand-primary)', color: 'white', fontSize: '14px' }}>Done</button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => { setShowNotice(true); setReviewDocName(null); }} className="px-4 py-2.5 rounded-lg border border-[var(--neutral-250)]" style={{ fontSize: '14px' }}>Send Notice to Farmer</button>
+                <button onClick={() => { setDoc(reviewDoc.name, 'Complete'); setReviewDocName(null); toast.success(`${reviewDoc.name} verified`); }} className="px-4 py-2.5 rounded-lg font-medium" style={{ backgroundColor: 'var(--success-600)', color: 'white', fontSize: '14px' }}>Accept &amp; Verify</button>
+              </>
+            )
+          }
+        >
+          <div className="space-y-4">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <span style={{ fontSize: '13px', color: 'var(--neutral-500)' }}>{reviewDoc.detail}</span>
+              <StatusBadge status={reviewDoc.state} />
+            </div>
+            {/* Mock document preview surface */}
+            <div className="rounded-lg border border-[var(--neutral-250)] flex flex-col items-center justify-center text-center" style={{ height: '220px', backgroundColor: 'var(--neutral-150)' }}>
+              {reviewDoc.state === 'Missing' ? (
+                <>
+                  <X size={28} style={{ color: 'var(--error-700)' }} />
+                  <div style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700, marginTop: '8px' }}>No file on record</div>
+                  <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '2px' }}>Upload a scan/photo or request it from the farmer.</div>
+                </>
+              ) : (
+                <>
+                  <FileText size={28} style={{ color: 'var(--brand-accent)' }} />
+                  <div style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700, marginTop: '8px' }}>{reviewDoc.name.replace(/\s+/g, '_').toLowerCase()}.pdf</div>
+                  <div style={{ fontSize: '12px', color: 'var(--neutral-500)', marginTop: '2px' }}>{reviewDoc.detail}</div>
+                  <button onClick={() => toast.message('Opening document viewer…')} className="mt-3 px-3 py-1.5 rounded-md" style={{ backgroundColor: 'var(--accent-blue-50)', color: 'var(--brand-accent)', fontSize: '12px', fontWeight: 700 }}>Open full view</button>
+                </>
+              )}
+            </div>
+            {/* Upload / resubmit control — simulated for the prototype */}
+            <label className="flex items-center justify-between gap-3 p-3 rounded-lg border border-dashed border-[var(--neutral-300)] cursor-pointer" style={{ backgroundColor: 'white' }}>
+              <span className="flex items-center gap-2" style={{ fontSize: '13px', color: 'var(--neutral-700)', fontWeight: 700 }}>
+                <Plus size={15} /> {reviewDoc.state === 'Missing' ? 'Upload document' : 'Replace / re-upload'}
+              </span>
+              <input type="file" className="hidden" onChange={() => { setDoc(reviewDoc.name, 'Pending Review'); toast.success(`${reviewDoc.name} uploaded — ready to verify`); }} />
+              <span style={{ fontSize: '12px', color: 'var(--neutral-500)' }}>PDF / JPG · max 5 MB</span>
+            </label>
           </div>
         </AppModal>
       )}

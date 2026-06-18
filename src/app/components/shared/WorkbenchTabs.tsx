@@ -14,8 +14,9 @@ interface WorkbenchTabsProps {
 
 export function WorkbenchTabs({ tabs, activeKey, onChange, accent = 'var(--brand-primary)', className = '' }: WorkbenchTabsProps) {
   return (
+    <div className="workbench-tabs-sticky sticky top-0 z-20 -mx-8 px-8 pt-2 pb-3 mb-2" style={{ backgroundColor: 'var(--neutral-100)', boxShadow: '0 -34px 0 0 var(--neutral-100)' }}>
     <div
-      className={`shell-scroll flex items-center gap-1 overflow-x-auto bg-white border border-[var(--neutral-200)] rounded-xl px-2 py-1.5 mb-5 ${className}`}
+      className={`shell-scroll flex items-center gap-1 overflow-x-auto bg-white border border-[var(--neutral-200)] rounded-xl px-2 py-1.5 ${className}`}
       role="tablist"
       aria-label="Section navigation"
       style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
@@ -53,6 +54,7 @@ export function WorkbenchTabs({ tabs, activeKey, onChange, accent = 'var(--brand
           </button>
         );
       })}
+    </div>
     </div>
   );
 }
